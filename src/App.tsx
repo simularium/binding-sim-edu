@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useMemo, useState } from "react";
+import "./App.css";
+import Viewer from "./components/Viewer";
+import { SimulariumController } from "@aics/simularium-viewer";
+import BindingSimulator from "@aics/simularium-viewer/examples/BindingSimulator2D";
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [isPlaying, setIsPlaying] = useState(false);
+    const simulariumController = useMemo(() => {
+        return new SimulariumController({});
+    }, []);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    useEffect(() => {
+        simulariumController.setCameraType(true);
+        simulariumController.changeFile(
+            {
+                clientSimulator: new BindingSimulator([
+                    { id: 0, count: 30, radius: 2, partners: [1, 2] },
+                    {
+                        id: 1,
+                        count: 300,
+                        radius: 0.7,
+                        partners: [0],
+                        kOn: 0.1,
+                        kOff: 0.5,
+                    },
+                    // { id: 2, count: 80, radius: 1.5, partners: [0], kOn: 0.1, kOff: 0.1},
+                ]),
+            },
+            "binding-simulator"
+        );
+    }, [simulariumController]);
+
+    useEffect(() => {
+        if (isPlaying) {
+            simulariumController.resume();
+        } else {
+            simulariumController.pause();
+        }
+    }, [isPlaying, simulariumController]);
+    return (
+        <>
+            <div className="viewer">
+                <button
+                    onClick={() => {
+                        setIsPlaying(!isPlaying);
+                    }}
+                >
+                    Click me
+                </button>
+                <Viewer controller={simulariumController} />
+            </div>
+        </>
+    );
 }
 
-export default App
+export default App;
