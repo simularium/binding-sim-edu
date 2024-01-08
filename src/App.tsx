@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
+
 import "./App.css";
 import Viewer from "./components/Viewer";
 import { SimulariumController } from "@aics/simularium-viewer";
-import BindingSimulator from "@aics/simularium-viewer/examples/BindingSimulator2D";
+import BindingSimulator from "./BindingSimulator2D";
 
 function App() {
     const [isPlaying, setIsPlaying] = useState(false);
