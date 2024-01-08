@@ -15,7 +15,7 @@ function App() {
         simulariumController.changeFile(
             {
                 clientSimulator: new BindingSimulator([
-                    { id: 0, count: 30, radius: 2, partners: [1, 2] },
+                    { id: 0, count: 30, radius: 3, partners: [1, 2] },
                     {
                         id: 1,
                         count: 300,
@@ -46,7 +46,7 @@ function App() {
                         setIsPlaying(!isPlaying);
                     }}
                 >
-                    Click me
+                    {isPlaying ? "Pause" : "Play"}
                 </button>
                 <Viewer controller={simulariumController} />
             </div>

@@ -4,7 +4,12 @@ import SimulariumViewer, {
     SimulariumController,
 } from "@aics/simularium-viewer";
 import "@aics/simularium-viewer/style/style.css";
-export default function Viewer({ controller }: { controller: SimulariumController }): ReactNode {
+
+export default function Viewer({
+    controller,
+}: {
+    controller: SimulariumController;
+}): ReactNode {
     const agentColors = [
         "#fee34d",
         "#f7b232",
@@ -34,10 +39,8 @@ export default function Viewer({ controller }: { controller: SimulariumControlle
     const handleTimeChange = () => {
         // console.log("time changed", timeData);
     };
-    
-
     return (
-        <div className="viewer-container" ref={viewerRef}>
+        <div className="viewer-container" key="viewer">
             <SimulariumViewer
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}
                 height={size.height}
@@ -49,7 +52,9 @@ export default function Viewer({ controller }: { controller: SimulariumControlle
                 showCameraControls={false}
                 onTrajectoryFileInfoChanged={() => {}}
                 selectionStateInfo={selectionStateInfo}
-                onUIDisplayDataChanged={console.log}
+                onUIDisplayDataChanged={(data) => {
+                    console.log("got data", data);
+                }}
                 loadInitialData={true}
                 agentColors={agentColors}
                 showPaths={true}
