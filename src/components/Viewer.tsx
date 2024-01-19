@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { ReactNode, useState } from "react";
 import SimulariumViewer, {
     RenderStyle,
@@ -29,7 +30,6 @@ export default function Viewer({
         "#9f516c",
         "#00aabf",
     ];
-    const viewerRef = React.createRef<HTMLDivElement>();
     const [size, setSize] = useState({ width: 500, height: 500 });
     const [selectionStateInfo, setSelectionStateInfo] = useState({
         highlightedAgents: [],
@@ -52,8 +52,8 @@ export default function Viewer({
                 showCameraControls={false}
                 onTrajectoryFileInfoChanged={() => {}}
                 selectionStateInfo={selectionStateInfo}
-                onUIDisplayDataChanged={(data) => {
-                    console.log("got data", data);
+                onUIDisplayDataChanged={() => {
+                    return undefined
                 }}
                 loadInitialData={true}
                 agentColors={agentColors}

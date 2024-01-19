@@ -12,6 +12,7 @@ import {
     DEFAULT_CAMERA_SPEC,
     VisTypes,
 } from "@aics/simularium-viewer";
+import { InputAgent } from "./types";
 
 class BindingInstance extends Circle {
     id: number;
@@ -20,7 +21,13 @@ class BindingInstance extends Circle {
     partners: number[];
     kOn?: number;
     kOff?: number;
-    constructor(circle: Circle, id: number, partners: number[], kOn?: number, kOff?: number) {
+    constructor(
+        circle: Circle,
+        id: number,
+        partners: number[],
+        kOn?: number,
+        kOff?: number
+    ) {
         super(circle.pos, circle.r);
         this.id = id;
         this.partners = partners;
@@ -60,7 +67,7 @@ class BindingInstance extends Circle {
         if (!this.child) {
             return;
         }
-        const angle = random(-Math.PI / 4, Math.PI / 4);
+        const angle = random(-Math.PI / 4, Math.PI / 4, true);
         const center = this.findCenter(this, this.child);
         const newCirclePosition = this.rotate(
             this.pos.x,
@@ -85,9 +92,9 @@ class BindingInstance extends Circle {
             return;
         }
         // D(r)≈(4.10901922×10^−3)/r nm^2/s
-        const diffusionCoefficient = 4 * 10**-3 / this.r;
-        
-        const amplitude = Math.sqrt(2 * diffusionCoefficient);
+        const diffusionCoefficient = (4 * 10 ** -3) / this.r;
+
+        const amplitude = Math.sqrt(2 * diffusionCoefficient) * 40;
         let xStep = random(-amplitude, amplitude, true);
         let yStep = random(-amplitude, amplitude, true);
         const posX = this.pos.x + xStep;
@@ -172,31 +179,34 @@ class BindingInstance extends Circle {
 
 const size = 100;
 
-export interface InputAgent {
-    id: number;
-    count: number;
-    radius: number;
-    partners: number[];
-    kOn?: number;
-    kOff?: number;
-}
-
 export default class BindingSimulator implements IClientSimulatorImpl {
     instances: BindingInstance[];
     currentFrame: number;
     agents: InputAgent[] = [];
     system: System;
     distanceFactor: number;
+    static: boolean = false;
+    initialState: boolean = true;
     constructor(agents: InputAgent[]) {
         this.system = new System();
         this.agents = agents;
         this.instances = [];
         this.createBoundingLines();
         this.distanceFactor = 10;
+        this.initializeAgents(agents);
+        this.currentFrame = 0;
+        this.system.separate();
+    }
+
+    private initializeAgents(agents: InputAgent[]) {
         for (let i = 0; i < agents.length; ++i) {
             const agent = agents[i];
+            agent.count = this.convertConcentrationToCount(agent.concentration);
             for (let j = 0; j < agent.count; ++j) {
-                const position: number[] = this.getRandomPointOnSide(i);
+                const position: number[] = this.getRandomPointOnSide(
+                    agent.id,
+                    agents.length
+                );
                 const circle = new Circle(
                     new Vector(...position),
                     agent.radius
@@ -212,8 +222,55 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 this.instances.push(instance);
             }
         }
-        this.currentFrame = 0;
-        this.system.separate();
+    }
+
+    public changeConcentration(agentId: number, newConcentration: number) {
+        const agent = this.agents.find((agent) => agent.id === agentId);
+        if (!agent) {
+            return;
+        }
+
+        const newCount = this.convertConcentrationToCount(newConcentration);
+        const oldCount = agent.count || 0;
+
+        // if (!this.initialState) {
+        //     agent.count = newCount;
+        //     this.initializeAgents(this.agents);
+        //     return 
+        // }
+        const diff = newCount - oldCount;
+        if (diff > 0) {
+            for (let i = 0; i < diff; ++i) {
+                const position: number[] = this.getRandomPointOnSide(
+                    agent.id,
+                    this.agents.length
+                );
+                const circle = new Circle(
+                    new Vector(...position),
+                    agent.radius
+                );
+                const instance = new BindingInstance(
+                    circle,
+                    agent.id,
+                    agent.partners,
+                    agent.kOn,
+                    agent.kOff
+                );
+                this.system.insert(instance);
+                this.instances.push(instance);
+            }
+        } else if (diff < 0) {
+            const toRemove = this.instances.filter(
+                (instance) => instance.id === agentId
+            );
+            for (let i = 0; i < Math.abs(diff); ++i) {
+                const instance = toRemove[i];
+                this.system.remove(instance);
+                this.instances.splice(this.instances.indexOf(instance), 1);
+            }
+        }
+        agent.count = newCount;
+        this.static = true;
     }
 
     private createBoundingLines() {
@@ -233,27 +290,28 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         });
     }
 
-    private randomFloat(min: number, max: number) {
-        if (max === undefined) {
-            max = min;
-            min = 0;
-        }
-        return Math.random() * (max - min) + min;
+    private convertConcentrationToCount(concentration: number) {
+        const volume = size * size * 1 * this.distanceFactor ** 2;
+        const count = concentration * volume * 10 ** -6 * 6.022;
+        return count;
     }
 
-    private getRandomPointOnSide(side: number) {
-        const dAlongSide = this.randomFloat(-size / 2, size / 2);
-        const dFromSide = this.randomFloat(0, size / 2);
+    private getRandomPointOnSide(side: number, total: number) {
+        const dFromSide = random(0, size / 2, true);
+        let dAlongSide = random(-size / 2, size / 2, true);
 
+        if (total > 2 && side === 1) {
+            dAlongSide = random(0, size / 2, true);
+        } else if (total > 2 && side === 2) {
+            dAlongSide = random(-size / 2, 0, true);
+        }
         switch (side) {
             case 0:
-                return [dFromSide, dAlongSide];
-            case 1:
                 return [-dFromSide, dAlongSide];
-            case 3:
-                return [dAlongSide, -dFromSide];
-            case 4:
-                return [dAlongSide, dFromSide];
+            case 1:
+                return [dFromSide, dAlongSide];
+            case 2:
+                return [dFromSide, dAlongSide];
             default:
                 return [dFromSide, dAlongSide];
         }
@@ -271,9 +329,56 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         // },
     }
 
-    public update(): VisDataMessage {
+    public staticUpdate() {
+        this.system.separate();
+
+        const agentData: number[] = [];
         for (let ii = 0; ii < this.instances.length; ++ii) {
-            this.instances[ii].oneStep();
+            const instance = this.instances[ii];
+            agentData.push(VisTypes.ID_VIS_TYPE_DEFAULT); // vis type
+            agentData.push(ii); // instance id
+            agentData.push(
+                instance.bound || instance.child
+                    ? 100 + instance.id
+                    : instance.id
+            ); // type
+            agentData.push(instance.pos.x); // x
+            agentData.push(instance.pos.y); // y
+            agentData.push(0); // z
+            agentData.push(0); // rx
+            agentData.push(0); // ry
+            agentData.push(0); // rz
+            agentData.push(instance.r); // collision radius
+            agentData.push(0); // subpoints
+        }
+        const frameData: VisDataMessage = {
+            // TODO get msgType out of here
+            msgType: ClientMessageEnum.ID_VIS_DATA_ARRIVE,
+            bundleStart: this.currentFrame,
+            bundleSize: 1, // frames
+            bundleData: [
+                {
+                    data: agentData,
+                    frameNumber: this.currentFrame,
+                    time: this.currentFrame,
+                },
+            ],
+            fileName: "hello world",
+        };
+        this.static = false;
+        this.currentFrame++;
+        return frameData;
+    }
+
+    public update(): VisDataMessage {
+        if (this.static) {
+            return this.staticUpdate();
+        }
+        if (this.initialState) {
+            this.initialState = false;
+        }
+        for (let i = 0; i < this.instances.length; ++i) {
+            this.instances[i].oneStep();
         }
         this.system.checkAll((response: Response) => {
             const { a, b, overlapV } = response;
@@ -353,13 +458,18 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         for (let i = 0; i < this.agents.length; ++i) {
             typeMapping[this.agents[i].id] = {
                 name: `${this.agents[i].id}`,
+                // geometry: {
+
+                //     displayType: GeometryDisplayType.SPHERE,
+                //     url: "",
+                // }
             };
             typeMapping[this.agents[i].id + 100] = {
                 name: `${this.agents[i].id}#bound`,
                 geometry: {
                     color: "#81dbe6",
                     displayType: GeometryDisplayType.SPHERE,
-                    url: ""
+                    url: "",
                 },
             };
         }
@@ -367,7 +477,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             // TODO get msgType and connId out of here
             connId: "hello world",
             msgType: ClientMessageEnum.ID_TRAJECTORY_FILE_INFO,
-            version: 2,
+            version: 3,
             timeStepSize: 1,
             totalSteps: 1000,
             // bounding volume dimensions
