@@ -16,6 +16,7 @@ const Concentration: React.FC<AgentProps> = ({ agents, onChange }) => {
                     name={agent}
                     initialValue={concentration}
                     onChange={onChange}
+                    key={agent}
                 />
             );}
         )

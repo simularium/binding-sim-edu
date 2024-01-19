@@ -4,16 +4,23 @@ import "./App.css";
 import Viewer from "./components/Viewer";
 import { SimulariumController } from "@aics/simularium-viewer";
 import BindingSimulator from "./BindingSimulator2D";
-import { AVAILABLE_AGENTS, createAgentsFromConcentrations, trajectories } from "./constants/trajectories";
+import {
+    AVAILABLE_AGENTS,
+    createAgentsFromConcentrations,
+    trajectories,
+} from "./constants/trajectories";
 import Concentration from "./components/Concentration";
 import { AvailableAgentNames } from "./types";
 
-const INITIAL_CONCENTRATIONS = {A: 10, B: 10, C: 0};
+const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 0 };
 function App() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [concentration, setConcentration] = useState(INITIAL_CONCENTRATIONS);
 
-    const [activeAgents, setActiveAgents] = useState([AvailableAgentNames.A, AvailableAgentNames.B]);
+    const [activeAgents, setActiveAgents] = useState([
+        AvailableAgentNames.A,
+        AvailableAgentNames.B,
+    ]);
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
     }, []);
@@ -26,7 +33,7 @@ function App() {
         });
         return new BindingSimulator(trajectory);
     }, [activeAgents]);
-    
+
     useEffect(() => {
         simulariumController.setCameraType(true);
         simulariumController.changeFile(
@@ -37,24 +44,26 @@ function App() {
         );
     }, [simulariumController, clientSimulator]);
 
-
     useEffect(() => {
         if (isPlaying) {
+            clientSimulator.initialState = false;
             simulariumController.resume();
         } else {
             simulariumController.pause();
         }
     }, [isPlaying, simulariumController]);
 
-    const handleConcentrationChange = (name: AvailableAgentNames, value: number) => {
+    const handleConcentrationChange = (
+        name: AvailableAgentNames,
+        value: number
+    ) => {
         const agentId = AVAILABLE_AGENTS[name].id;
         clientSimulator.changeConcentration(agentId, value);
 
         setConcentration({ ...concentration, [name]: value });
-        const time  = simulariumController.time();
+        const time = simulariumController.time();
         simulariumController.gotoTime(time + 1);
-
-    }
+    };
     return (
         <>
             <div className="viewer">
@@ -69,7 +78,10 @@ function App() {
                     agents={concentration}
                     onChange={handleConcentrationChange}
                 />
-                <select onChange={(e) => setActiveAgents(e.target.value.split(","))} defaultValue={trajectories[0]}>
+                <select
+                    onChange={(e) => setActiveAgents(e.target.value.split(","))}
+                    defaultValue={trajectories[0]}
+                >
                     <option value={trajectories[0]}>Low affinity</option>
                     <option value={trajectories[1]}>High affinity</option>
                     <option value={trajectories[2]}>Competitive</option>

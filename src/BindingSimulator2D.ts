@@ -198,6 +198,11 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.system.separate();
     }
 
+    private clearAgents() {
+        this.system = new System();
+        this.instances = [];
+    }
+
     private initializeAgents(agents: InputAgent[]) {
         for (let i = 0; i < agents.length; ++i) {
             const agent = agents[i];
@@ -229,15 +234,18 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         if (!agent) {
             return;
         }
-
         const newCount = this.convertConcentrationToCount(newConcentration);
         const oldCount = agent.count || 0;
-
-        // if (!this.initialState) {
-        //     agent.count = newCount;
-        //     this.initializeAgents(this.agents);
-        //     return 
-        // }
+        agent.count = newCount;
+        this.static = true;
+        if (!this.initialState) {
+            // if the simulation has played, it needs to be reset to the
+            // initial state
+            this.clearAgents();
+            this.initialState = true;
+            this.initializeAgents(this.agents);
+            return;
+        }
         const diff = newCount - oldCount;
         if (diff > 0) {
             for (let i = 0; i < diff; ++i) {
@@ -269,8 +277,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 this.instances.splice(this.instances.indexOf(instance), 1);
             }
         }
-        agent.count = newCount;
-        this.static = true;
     }
 
     private createBoundingLines() {
@@ -297,7 +303,8 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     private getRandomPointOnSide(side: number, total: number) {
-        const dFromSide = random(0, size / 2, true);
+        const buffer = size / 5;
+        const dFromSide = random(0 + buffer, size / 2, true);
         let dAlongSide = random(-size / 2, size / 2, true);
 
         if (total > 2 && side === 1) {
@@ -330,8 +337,9 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     public staticUpdate() {
+        // update the number of agents without 
+        // changing their positions
         this.system.separate();
-
         const agentData: number[] = [];
         for (let ii = 0; ii < this.instances.length; ++ii) {
             const instance = this.instances[ii];
@@ -371,12 +379,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     public update(): VisDataMessage {
-        if (this.static) {
+        if (this.static || this.initialState) {
             return this.staticUpdate();
         }
-        if (this.initialState) {
-            this.initialState = false;
-        }
+
         for (let i = 0; i < this.instances.length; ++i) {
             this.instances[i].oneStep();
         }
