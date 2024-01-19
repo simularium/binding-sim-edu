@@ -5,7 +5,7 @@ import { AvailableAgentNames } from "../types";
 
 interface AgentProps {
     agents: { [key in AvailableAgentNames]: number };
-    onChange: (name: AvailableAgentNames, value: number) => void;
+    onChange: (name: string, value: number) => void;
 }
 
 const Concentration: React.FC<AgentProps> = ({ agents, onChange }) => {

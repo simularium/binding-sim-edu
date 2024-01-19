@@ -59,10 +59,11 @@ function App() {
     }, [timeFactor, clientSimulator]);
 
     const handleConcentrationChange = (
-        name: AvailableAgentNames,
+        name: string,
         value: number
     ) => {
-        const agentId = AVAILABLE_AGENTS[name].id;
+        const agentName = name as AvailableAgentNames;
+        const agentId = AVAILABLE_AGENTS[agentName].id;
         clientSimulator.changeConcentration(agentId, value);
         setConcentration({ ...concentration, [name]: value });
         const time = simulariumController.time();
@@ -93,7 +94,7 @@ function App() {
                     onChange={handleConcentrationChange}
                 />
                 <select
-                    onChange={(e) => setActiveAgents(e.target.value.split(","))}
+                    onChange={(e) => setActiveAgents(e.target.value.split(",") as AvailableAgentNames[])}
                     defaultValue={trajectories[0]}
                 >
                     <option value={trajectories[0]}>Low affinity</option>
