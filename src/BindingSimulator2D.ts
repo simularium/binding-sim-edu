@@ -87,14 +87,14 @@ class BindingInstance extends Circle {
         this.child.setPosition(childPosAndRotation[0], childPosAndRotation[1]);
     }
 
-    public oneStep() {
+    public oneStep(timeFactor: number = 1) {
         if (this.bound) {
             return;
         }
         // D(r)≈(4.10901922×10^−3)/r nm^2/s
         const diffusionCoefficient = (4 * 10 ** -3) / this.r;
 
-        const amplitude = Math.sqrt(2 * diffusionCoefficient) * 40;
+        const amplitude = Math.sqrt(2 * diffusionCoefficient) * timeFactor;
         let xStep = random(-amplitude, amplitude, true);
         let yStep = random(-amplitude, amplitude, true);
         const posX = this.pos.x + xStep;
@@ -185,14 +185,16 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     agents: InputAgent[] = [];
     system: System;
     distanceFactor: number;
+    timeFactor: number;
     static: boolean = false;
     initialState: boolean = true;
-    constructor(agents: InputAgent[]) {
+    constructor(agents: InputAgent[], timeFactor: number = 25) {
         this.system = new System();
         this.agents = agents;
         this.instances = [];
         this.createBoundingLines();
         this.distanceFactor = 10;
+        this.timeFactor = timeFactor;
         this.initializeAgents(agents);
         this.currentFrame = 0;
         this.system.separate();
@@ -227,6 +229,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 this.instances.push(instance);
             }
         }
+    }
+
+    public setTimeScale(timeScale: number) {
+        this.timeFactor = timeScale;
     }
 
     public changeConcentration(agentId: number, newConcentration: number) {
@@ -337,7 +343,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     public staticUpdate() {
-        // update the number of agents without 
+        // update the number of agents without
         // changing their positions
         this.system.separate();
         const agentData: number[] = [];
@@ -384,7 +390,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         }
 
         for (let i = 0; i < this.instances.length; ++i) {
-            this.instances[i].oneStep();
+            this.instances[i].oneStep(this.timeFactor);
         }
         this.system.checkAll((response: Response) => {
             const { a, b, overlapV } = response;
@@ -497,7 +503,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 position: {
                     x: 0,
                     y: 0,
-                    z: 50,
+                    z: 65,
                 },
             },
             typeMapping: typeMapping,
@@ -506,7 +512,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 name: "nm",
             },
             timeUnits: {
-                magnitude: 100,
+                magnitude: this.timeFactor,
                 name: "ns",
             },
         };

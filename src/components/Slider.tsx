@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { AvailableAgentNames } from '../types';
 
 interface SliderProps {
+    min: number;
+    max: number;
     initialValue: number;
     onChange: (name: AvailableAgentNames, value: number) => void;
     name: AvailableAgentNames;
 }
 
 const Slider: React.FC<SliderProps> = ({
+    min,
+    max,
     initialValue,
     onChange,
     name
@@ -24,8 +28,8 @@ const Slider: React.FC<SliderProps> = ({
         <div>
             <input
                 type="range"
-                min={0}
-                max={10}
+                min={min}
+                max={max}
                 value={value}
                 onChange={handleSliderChange}
             />

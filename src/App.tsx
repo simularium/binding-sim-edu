@@ -11,26 +11,27 @@ import {
 } from "./constants/trajectories";
 import Concentration from "./components/Concentration";
 import { AvailableAgentNames } from "./types";
+import Slider from "./components/Slider";
 
 const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 0 };
 function App() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [concentration, setConcentration] = useState(INITIAL_CONCENTRATIONS);
-
+    const [timeFactor, setTimeFactor] = useState(25);
     const [activeAgents, setActiveAgents] = useState([
         AvailableAgentNames.A,
         AvailableAgentNames.B,
     ]);
+
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
     }, []);
 
     const clientSimulator = useMemo(() => {
-        const trajectory = createAgentsFromConcentrations(activeAgents, {
-            A: 10,
-            B: 10,
-            C: 0,
-        });
+        const trajectory = createAgentsFromConcentrations(
+            activeAgents,
+            INITIAL_CONCENTRATIONS
+        );
         return new BindingSimulator(trajectory);
     }, [activeAgents]);
 
@@ -51,7 +52,11 @@ function App() {
         } else {
             simulariumController.pause();
         }
-    }, [isPlaying, simulariumController]);
+    }, [isPlaying, simulariumController, clientSimulator]);
+
+    useEffect(() => {
+        clientSimulator.setTimeScale(timeFactor);
+    }, [timeFactor, clientSimulator]);
 
     const handleConcentrationChange = (
         name: AvailableAgentNames,
@@ -59,11 +64,11 @@ function App() {
     ) => {
         const agentId = AVAILABLE_AGENTS[name].id;
         clientSimulator.changeConcentration(agentId, value);
-
         setConcentration({ ...concentration, [name]: value });
         const time = simulariumController.time();
         simulariumController.gotoTime(time + 1);
     };
+
     return (
         <>
             <div className="viewer">
@@ -74,6 +79,15 @@ function App() {
                 >
                     {isPlaying ? "Pause" : "Play"}
                 </button>
+                <Slider
+                    min={0}
+                    max={100}
+                    initialValue={timeFactor}
+                    onChange={(name, value) => {
+                        setTimeFactor(value);
+                    }}
+                    name="time factor (ns)"
+                />
                 <Concentration
                     agents={concentration}
                     onChange={handleConcentrationChange}

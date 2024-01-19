@@ -43,7 +43,6 @@ export const createAgentsFromConcentrations = (
     activeAgents: AvailableAgentNames[],
     concentrations: { [key in AvailableAgentNames]: number }
 ): InputAgent[] => {
-    console.log(activeAgents)
     return activeAgents.map((agentName: AvailableAgentNames) => {
         const agent = AVAILABLE_AGENTS[agentName];
         agent.concentration = concentrations[agentName];
