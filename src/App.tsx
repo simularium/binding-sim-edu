@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import "./App.css";
 import Viewer from "./components/Viewer";
@@ -39,7 +39,6 @@ function App() {
     }, [activeAgents]);
 
     const handleTimeChange = () => {
-
         const newValue = clientSimulator.getCurrentConcentrationBound();
         const currentConcentration = concentration[AvailableAgentNames.B];
         const currentArray = concentrationOverTime[currentConcentration];
@@ -65,7 +64,7 @@ function App() {
         if (isPlaying) {
             clientSimulator.initialState = false;
             simulariumController.resume();
-            console.log("playing")
+            console.log("playing");
         } else {
             simulariumController.pause();
             console.log("paused");
@@ -80,6 +79,7 @@ function App() {
         const agentName = name as AvailableAgentNames;
         const agentId = AVAILABLE_AGENTS[agentName].id;
         clientSimulator.changeConcentration(agentId, value);
+
         setConcentration({ ...concentration, [name]: value });
         const time = simulariumController.time();
         const newState = {
@@ -111,7 +111,7 @@ function App() {
                 />
                 <Concentration
                     activeAgents={activeAgents}
-                    concentration={concentration}   
+                    concentration={concentration}
                     onChange={handleConcentrationChange}
                 />
                 <select
@@ -131,9 +131,7 @@ function App() {
                         controller={simulariumController}
                         handleTimeChange={handleTimeChange}
                     />
-                    <Plot
-                        data={concentrationOverTime}
-                    />
+                    <Plot data={concentrationOverTime} />
                 </div>
             </div>
         </>

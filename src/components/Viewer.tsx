@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 import SimulariumViewer, {
     RenderStyle,
     SimulariumController,
