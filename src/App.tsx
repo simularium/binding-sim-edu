@@ -20,7 +20,9 @@ function App() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [concentration, setConcentration] = useState(INITIAL_CONCENTRATIONS);
     const [timeFactor, setTimeFactor] = useState(25);
-    const [concentrationOverTime, setConcentrationOverTime] = useState({[concentration[AvailableAgentNames.B]]: [0]});
+    const [concentrationOverTime, setConcentrationOverTime] = useState({
+        [concentration[AvailableAgentNames.B]]: [0],
+    });
     const [activeAgents, setActiveAgents] = useState([
         AvailableAgentNames.A,
         AvailableAgentNames.B,
@@ -45,8 +47,8 @@ function App() {
         const newData = [...currentArray, newValue];
         const newState = {
             ...concentrationOverTime,
-            [currentConcentration]: newData
-        }
+            [currentConcentration]: newData,
+        };
         setConcentrationOverTime(newState);
     };
 
@@ -64,10 +66,8 @@ function App() {
         if (isPlaying) {
             clientSimulator.initialState = false;
             simulariumController.resume();
-            console.log("playing");
         } else {
             simulariumController.pause();
-            console.log("paused");
         }
     }, [isPlaying, simulariumController, clientSimulator]);
 
