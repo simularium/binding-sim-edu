@@ -18,10 +18,10 @@ const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
 function App() {
     const [isPlaying, setIsPlaying] = useState(false);
-    const [concentration, setConcentration] = useState(INITIAL_CONCENTRATIONS);
+    const [inputConcentration, setInputConcentration] = useState(INITIAL_CONCENTRATIONS);
     const [timeFactor, setTimeFactor] = useState(25);
-    const [concentrationOverTime, setConcentrationOverTime] = useState({
-        [concentration[AvailableAgentNames.B]]: [0],
+    const [productOverTime, setProductOverTime] = useState({
+        [inputConcentration[AvailableAgentNames.B]]: [0],
     });
     const [activeAgents, setActiveAgents] = useState([
         AvailableAgentNames.A,
@@ -42,14 +42,14 @@ function App() {
 
     const handleTimeChange = () => {
         const newValue = clientSimulator.getCurrentConcentrationBound();
-        const currentConcentration = concentration[AvailableAgentNames.B];
-        const currentArray = concentrationOverTime[currentConcentration];
+        const currentConcentration = inputConcentration[AvailableAgentNames.B];
+        const currentArray = productOverTime[currentConcentration];
         const newData = [...currentArray, newValue];
         const newState = {
-            ...concentrationOverTime,
+            ...productOverTime,
             [currentConcentration]: newData,
         };
-        setConcentrationOverTime(newState);
+        setProductOverTime(newState);
     };
 
     useEffect(() => {
@@ -75,18 +75,18 @@ function App() {
         clientSimulator.setTimeScale(timeFactor);
     }, [timeFactor, clientSimulator]);
 
-    const handleConcentrationChange = (name: string, value: number) => {
+    const handleNewInputConcentration = (name: string, value: number) => {
         const agentName = name as AvailableAgentNames;
         const agentId = AVAILABLE_AGENTS[agentName].id;
         clientSimulator.changeConcentration(agentId, value);
 
-        setConcentration({ ...concentration, [name]: value });
+        setInputConcentration({ ...inputConcentration, [name]: value });
         const time = simulariumController.time();
         const newState = {
-            ...concentrationOverTime,
+            ...productOverTime,
             [value]: [],
         };
-        setConcentrationOverTime(newState);
+        setProductOverTime(newState);
         simulariumController.gotoTime(time + 1);
     };
 
@@ -111,8 +111,8 @@ function App() {
                 />
                 <Concentration
                     activeAgents={activeAgents}
-                    concentration={concentration}
-                    onChange={handleConcentrationChange}
+                    concentration={inputConcentration}
+                    onChange={handleNewInputConcentration}
                 />
                 <select
                     onChange={(e) =>
@@ -131,7 +131,7 @@ function App() {
                         controller={simulariumController}
                         handleTimeChange={handleTimeChange}
                     />
-                    <Plot data={concentrationOverTime} />
+                    <Plot data={productOverTime} />
                 </div>
             </div>
         </>
