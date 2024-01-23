@@ -8,8 +8,10 @@ import "@aics/simularium-viewer/style/style.css";
 
 export default function Viewer({
     controller,
+    handleTimeChange,
 }: {
     controller: SimulariumController;
+    handleTimeChange: () => void;
 }): ReactNode {
     const agentColors = [
         "#fee34d",
@@ -36,9 +38,7 @@ export default function Viewer({
         hiddenAgents: [],
         colorChange: null,
     });
-    const handleTimeChange = () => {
-        // console.log("time changed", timeData);
-    };
+
     return (
         <div className="viewer-container" key="viewer">
             <SimulariumViewer
@@ -53,7 +53,7 @@ export default function Viewer({
                 onTrajectoryFileInfoChanged={() => {}}
                 selectionStateInfo={selectionStateInfo}
                 onUIDisplayDataChanged={() => {
-                    return undefined
+                    return undefined;
                 }}
                 loadInitialData={true}
                 agentColors={agentColors}

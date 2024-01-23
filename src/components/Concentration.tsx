@@ -4,12 +4,16 @@ import { map } from "lodash";
 import { AvailableAgentNames } from "../types";
 
 interface AgentProps {
-    agents: { [key in AvailableAgentNames]: number };
+    activeAgents: AvailableAgentNames[];
+    concentration: { [key in AvailableAgentNames]: number };
     onChange: (name: string, value: number) => void;
 }
 
-const Concentration: React.FC<AgentProps> = ({ agents, onChange }) => {
-    return map(agents, (concentration, agent: AvailableAgentNames) => {
+const Concentration: React.FC<AgentProps> = ({ concentration, onChange, activeAgents }) => {
+    return map(concentration, (concentration, agent: AvailableAgentNames) => {
+        if (!activeAgents.includes(agent)) {
+            return null;
+        }
         return (
             <Slider
                 min={1}

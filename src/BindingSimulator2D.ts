@@ -141,46 +141,46 @@ class BindingInstance extends Circle {
         return [x, y];
     }
 
-    public unBind(ligand: BindingInstance) {
+    public unBind(ligand: BindingInstance): boolean {
         if (ligand.kOff === undefined) {
-            return;
+            return false;
         }
         const willUnBind = random(0, 1, true) > ligand.kOff;
         if (!willUnBind) {
-            return;
+            return false;
         }
         this.child = null;
         this.isTrigger = false;
         ligand.bound = false;
         ligand.isTrigger = false;
-        return;
+        return true;
     }
 
-    public bind(ligand: BindingInstance) {
+    public bind(ligand: BindingInstance): boolean {
         if (ligand.bound || this.child) {
             // already have bound ligand or already bound
             // can't bind to another ligand
-            return;
+            return false;
         }
         if (ligand.kOn === undefined) {
-            return;
+            return false;
         }
         const willBind = random(0, 1, true) > ligand.kOn;
         if (!willBind) {
-            return;
+            return false;
         }
         this.child = ligand;
         this.isTrigger = true;
         ligand.bound = true;
         ligand.isTrigger = true;
-        return;
+        return true;
     }
 }
 
 const size = 100;
 
 export default class BindingSimulator implements IClientSimulatorImpl {
-    instances: BindingInstance[];
+    instances: BindingInstance[] = [];
     currentFrame: number;
     agents: InputAgent[] = [];
     system: System;
@@ -188,10 +188,11 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     timeFactor: number;
     static: boolean = false;
     initialState: boolean = true;
+    currentNumberBound: number = 0;
+    onUpdate: (data: number) => void = () => {};
     constructor(agents: InputAgent[], timeFactor: number = 25) {
         this.system = new System();
         this.agents = agents;
-        this.instances = [];
         this.createBoundingLines();
         this.distanceFactor = 10;
         this.timeFactor = timeFactor;
@@ -201,6 +202,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     private clearAgents() {
+        this.currentNumberBound = 0;
         this.system = new System();
         this.instances = [];
     }
@@ -229,10 +231,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 this.instances.push(instance);
             }
         }
-    }
-
-    public setTimeScale(timeScale: number) {
-        this.timeFactor = timeScale;
     }
 
     public changeConcentration(agentId: number, newConcentration: number) {
@@ -308,6 +306,12 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         return count;
     }
 
+    private convertCountToConcentration(count: number) {
+        const volume = size * size * 1 * this.distanceFactor ** 2;
+        const concentration = count / (volume * 10 ** -6 * 6.022);
+        return concentration;
+    }
+
     private getRandomPointOnSide(side: number, total: number) {
         const buffer = size / 5;
         const dFromSide = random(0 + buffer, size / 2, true);
@@ -340,6 +344,14 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         //         },
         //     },
         // },
+    }
+
+    public setTimeScale(timeScale: number) {
+        this.timeFactor = timeScale;
+    }
+
+    public getCurrentConcentrationBound() {
+        return this.convertCountToConcentration(this.currentNumberBound);
     }
 
     public staticUpdate() {
@@ -397,20 +409,28 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
             if (response) {
                 if (a.isBoundPair(b)) {
+                    let unbound = false;
                     if (a.r < b.r) {
-                        b.unBind(a);
+                        unbound = b.unBind(a);
                     } else {
                         // b is the ligand
-                        a.unBind(b);
+                        unbound = a.unBind(b);
+                    }
+                    if (unbound) {
+                        this.currentNumberBound--;
                     }
                 }
                 if (a.partners.includes(b.id)) {
                     // a is the ligand
+                    let bound = false;
                     if (a.r < b.r) {
-                        b.bind(a);
+                        bound = b.bind(a);
                     } else {
                         // b is the ligand
-                        a.bind(b);
+                        bound = a.bind(b);
+                    }
+                    if (bound) {
+                        this.currentNumberBound++;
                     }
                 }
                 if (a.isTrigger && b.isTrigger && !a.isBoundPair(b)) {
@@ -455,6 +475,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             ],
             fileName: "hello world",
         };
+
         this.currentFrame++;
         return frameData;
     }
