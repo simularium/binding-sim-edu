@@ -11,8 +11,8 @@ const agentB = {
     concentration: 10,
     radius: 0.7,
     partners: [0],
-    kOn: 0.5,
-    kOff: 0.3,
+    kOn: 0.6,
+    kOff: 0.2,
 };
 
 const agentC = {

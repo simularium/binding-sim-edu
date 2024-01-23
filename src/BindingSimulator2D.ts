@@ -145,7 +145,7 @@ class BindingInstance extends Circle {
         if (ligand.kOff === undefined) {
             return false;
         }
-        const willUnBind = random(0, 1, true) > ligand.kOff;
+        const willUnBind = random(0, 1, true) < ligand.kOff;
         if (!willUnBind) {
             return false;
         }
@@ -165,7 +165,7 @@ class BindingInstance extends Circle {
         if (ligand.kOn === undefined) {
             return false;
         }
-        const willBind = random(0, 1, true) > ligand.kOn;
+        const willBind = random(0, 1, true) < ligand.kOn;
         if (!willBind) {
             return false;
         }
