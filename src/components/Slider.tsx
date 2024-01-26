@@ -6,6 +6,7 @@ interface SliderProps {
     initialValue: number;
     onChange: (name: string, value: number) => void;
     name: string;
+    disabled: boolean;
 }
 
 const Slider: React.FC<SliderProps> = ({
@@ -13,7 +14,8 @@ const Slider: React.FC<SliderProps> = ({
     max,
     initialValue,
     onChange,
-    name
+    name,
+    disabled
 }) => {
     const [value, setValue] = useState(initialValue);
 
@@ -31,8 +33,11 @@ const Slider: React.FC<SliderProps> = ({
                 max={max}
                 value={value}
                 onChange={handleSliderChange}
+                disabled={disabled}
             />
-            <span>{name}: {value}</span>
+            <span>
+                {name}: {value}
+            </span>
         </div>
     );
 };

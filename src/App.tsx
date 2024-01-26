@@ -19,7 +19,7 @@ const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 function App() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [inputConcentration, setInputConcentration] = useState(INITIAL_CONCENTRATIONS);
-    const [timeFactor, setTimeFactor] = useState(25);
+    const [timeFactor, setTimeFactor] = useState(30);
     const [productOverTime, setProductOverTime] = useState({
         [inputConcentration[AvailableAgentNames.B]]: [0],
     });
@@ -113,6 +113,7 @@ function App() {
                     activeAgents={activeAgents}
                     concentration={inputConcentration}
                     onChange={handleNewInputConcentration}
+                    disabled={isPlaying}
                 />
                 <select
                     onChange={(e) =>

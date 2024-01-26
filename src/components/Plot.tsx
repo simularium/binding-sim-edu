@@ -11,7 +11,10 @@ const LinePlot: React.FC<PlotProps> = ({ data }) => {
     const traces = map(
         data,
         (yValues: number[], id: string): Partial<PlotData> => {
-            if (yValues.length === 0) {
+            if (yValues.length <= 1) {
+                // when the concentration is first changed it, 
+                // plays one frame to update, so there is one value
+                // already but not necessarily data yet 
                 return {};
             }
             return {
