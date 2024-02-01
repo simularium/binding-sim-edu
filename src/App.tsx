@@ -107,6 +107,7 @@ function App() {
                     onChange={(_, value) => {
                         setTimeFactor(value);
                     }}
+                    disabled={false}
                     name="time factor (ns)"
                 />
                 <Concentration

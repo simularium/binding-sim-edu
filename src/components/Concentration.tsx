@@ -7,7 +7,7 @@ interface AgentProps {
     activeAgents: AvailableAgentNames[];
     concentration: { [key in AvailableAgentNames]: number };
     onChange: (name: string, value: number) => void;
-    disabled?: boolean;
+    disabled: boolean;
 }
 
 const Concentration: React.FC<AgentProps> = ({ concentration, onChange, activeAgents, disabled }) => {
