@@ -307,7 +307,9 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         // 1 nm^3 = 10^-24 L
         // 1 mole = 10^6 micromoles
         // 10 ^(-24 - 6 + 23) = 10^-7
-        const volume = size * size * 1 * this.distanceFactor ** 2;
+        const depth = 1.0;
+        const volume =
+            size * this.distanceFactor * (size * this.distanceFactor) * depth;
         const count = concentration * volume * 10 ** -7 * 6.022;
         return count;
     }
@@ -317,7 +319,9 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         // volume is in nm^3 and count is the number of particles
         // 1 nm^3 = 10^-24 L
         // 1 mole = 6.022 x 10^23 particles (count)
-        const volume = size * size * 1 * this.distanceFactor ** 2;
+        const depth = 1.0;
+        const volume =
+            size * this.distanceFactor * (size * this.distanceFactor) * depth;
         const concentration = count / (volume * 10 ** -7 * 6.022);
         return concentration;
     }
