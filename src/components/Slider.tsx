@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { AvailableAgentNames } from '../types';
 
 interface SliderProps {
     min: number;
     max: number;
     initialValue: number;
-    onChange: (name: AvailableAgentNames, value: number) => void;
-    name: AvailableAgentNames;
+    onChange: (name: string, value: number) => void;
+    name: string;
+    disabled: boolean;
 }
 
 const Slider: React.FC<SliderProps> = ({
@@ -14,14 +14,14 @@ const Slider: React.FC<SliderProps> = ({
     max,
     initialValue,
     onChange,
-    name
+    name,
+    disabled
 }) => {
     const [value, setValue] = useState(initialValue);
 
     const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = parseInt(event.target.value);
         setValue(newValue);
-        onChange(name, newValue);
     };
 
     return (
@@ -32,8 +32,12 @@ const Slider: React.FC<SliderProps> = ({
                 max={max}
                 value={value}
                 onChange={handleSliderChange}
+                disabled={disabled}
+                onMouseUp={() => onChange(name, value)}
             />
-            <span>{name}: {value}</span>
+            <span>
+                {name}: {value}
+            </span>
         </div>
     );
 };

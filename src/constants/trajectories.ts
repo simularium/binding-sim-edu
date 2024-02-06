@@ -11,8 +11,8 @@ const agentB = {
     concentration: 10,
     radius: 0.7,
     partners: [0],
-    kOn: 0.1,
-    kOff: 0.5,
+    kOn: 0.6,
+    kOff: 0.2,
 };
 
 const agentC = {
@@ -20,8 +20,8 @@ const agentC = {
     concentration: 10,
     radius: 1,
     partners: [0],
-    kOn: 0.1,
-    kOff: 0.5,
+    kOn: 0.5,
+    kOff: 0.8,
 };
 
 export const AVAILABLE_AGENTS = {
