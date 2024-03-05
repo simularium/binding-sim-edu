@@ -128,7 +128,7 @@ function App() {
                     <option value={trajectories[1]}>Low affinity</option>
                     <option value={trajectories[2]}>Competitive</option>
                 </select>
-                <div style={{ display: "flex" }}>
+                <div style={{ display: "flex", gap: 20}}>
                     <Viewer
                         controller={simulariumController}
                         handleTimeChange={handleTimeChange}
