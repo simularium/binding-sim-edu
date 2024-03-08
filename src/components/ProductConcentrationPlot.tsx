@@ -23,6 +23,7 @@ const ProductConcentrationPlot: React.FC<PlotProps> = ({ data }) => {
                 type: "scatter" as const,
                 mode: "lines" as const,
                 name: id,
+   
             };
         }
     );
@@ -31,6 +32,7 @@ const ProductConcentrationPlot: React.FC<PlotProps> = ({ data }) => {
         title: "Concentration over Time",
         xaxis: { title: "Time", range: [0, "auto"] },
         yaxis: { title: "Concentration" },
+        autosize: true,
     };
 
     return <Plot data={traces} layout={layout} />;

@@ -146,29 +146,31 @@ function App() {
                 >
                     <ContentPanel {...content[reactionType][page]} />
                     <ReactionDisplay reactionType={reactionType} />
-                    <Slider
-                        // This is a debugging feature but wont
-                        // be present in the app
-                        min={0}
-                        max={100}
-                        initialValue={timeFactor}
-                        onChange={(_, value) => {
-                            setTimeFactor(value);
-                        }}
-                        disabled={false}
-                        name="time factor (ns)"
-                    />
-                    <LeftPanel
-                        activeAgents={getActiveAgents(reactionType)}
-                        inputConcentration={inputConcentration}
-                        handleNewInputConcentration={
-                            handleNewInputConcentration
-                        }
-                        bindingEventsOverTime={bindingEventsOverTime}
-                        unbindingEventsOverTime={unBindingEventsOverTime}
-                    />
-                    <RightPanel productOverTime={productOverTime} />
-                    <CenterPanel />
+                    <div style={{ display: "flex" }}>
+                        {/* <Slider
+                            // This is a debugging feature but wont
+                            // be present in the app
+                            min={0}
+                            max={100}
+                            initialValue={timeFactor}
+                            onChange={(_, value) => {
+                                setTimeFactor(value);
+                            }}
+                            disabled={false}
+                            name="time factor (ns)"
+                        /> */}
+                        <LeftPanel
+                            activeAgents={getActiveAgents(reactionType)}
+                            inputConcentration={inputConcentration}
+                            handleNewInputConcentration={
+                                handleNewInputConcentration
+                            }
+                            bindingEventsOverTime={bindingEventsOverTime}
+                            unbindingEventsOverTime={unBindingEventsOverTime}
+                        />
+                        <CenterPanel />
+                        <RightPanel productOverTime={productOverTime} />
+                    </div>
                 </SimulariumContext.Provider>
             </div>
         </>

@@ -13,7 +13,7 @@ const titles: {[key: number]: string} = {
 const EventsOverTimePlot: React.FC<PlotProps> = ({ data }) => {
     return (
         <>
-            <h1>Reaction events over time</h1>
+            <h4>Reaction events over time</h4>
             {data.map((values: number[], id) => {
                 if (values.length <= 1) {
                     // when the concentration is first changed it,
@@ -31,8 +31,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({ data }) => {
                 ];
                 const layout = {
                     title: titles[id],
-                    xaxis: { title: "Time", range: [0, "auto"] },
-                    yaxis: { title: "Count of reactions" },
+                    autosize: true
                 };
 
                 return <Plot data={trace} layout={layout} key={id}/>;

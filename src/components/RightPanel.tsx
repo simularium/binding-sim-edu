@@ -11,9 +11,11 @@ const RightPanel: React.FC<RightPanelProps> = ({ productOverTime }) => {
     const { page } = useContext(SimulariumContext);
 
     return (
-        <VisibilityControl excludedPages={[0, 1, 2]} currentPage={page}>
-            <Plot data={productOverTime} />
-        </VisibilityControl>
+        <div style={{ minWidth: 260, flex: "1 1 30%" }}>
+            <VisibilityControl excludedPages={[0, 1, 2]} currentPage={page}>
+                <Plot data={productOverTime} />
+            </VisibilityControl>
+        </div>
     );
 };
 
