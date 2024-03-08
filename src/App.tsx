@@ -1,9 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import {  useEffect, useMemo, useState } from "react";
 
 import "./App.css";
-import Viewer from "./components/Viewer";
 import { SimulariumController } from "@aics/simularium-viewer";
-import BindingSimulator from "./BindingSimulator2D";
+import BindingSimulator from "./simulation/BindingSimulator2D";
 import {
     AVAILABLE_AGENTS,
     createAgentsFromConcentrations,
@@ -16,8 +15,12 @@ import ReactionDisplay from "./components/ReactionDisplay";
 import ContentPanel from "./components/ContentPanel";
 import content from "./content";
 import { ReactionType } from "./constants";
+import CenterPanel from "./components/CenterPanel";
+import { SimulariumContext } from "./simulation/context";
 
 const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
+
+
 
 const getActiveAgents = (reactionType: ReactionType) => {
     switch (reactionType) {
@@ -26,15 +29,23 @@ const getActiveAgents = (reactionType: ReactionType) => {
         case ReactionType.A_C_AC:
             return [AvailableAgentNames.A, AvailableAgentNames.C];
         case ReactionType.A_B_C_AB_AC:
-            return [AvailableAgentNames.A, AvailableAgentNames.B, AvailableAgentNames.C];
+            return [
+                AvailableAgentNames.A,
+                AvailableAgentNames.B,
+                AvailableAgentNames.C,
+            ];
     }
-}
+};
 
 function App() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [page, setPage] = useState(0);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [reactionType, setReactionType] = useState(ReactionType.A_B_AB);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [inputConcentration, setInputConcentration] = useState(INITIAL_CONCENTRATIONS);
+    const [inputConcentration, setInputConcentration] = useState(
+        INITIAL_CONCENTRATIONS
+    );
     const [timeFactor, setTimeFactor] = useState(30);
     const [productOverTime, setProductOverTime] = useState({
         [inputConcentration[AvailableAgentNames.B]]: [0],
@@ -106,37 +117,40 @@ function App() {
     return (
         <>
             <div className="app">
-                <ContentPanel {...content[reactionType][page]} />
-                <ReactionDisplay reactionType={reactionType} />
-                <Slider
-                    // This is a debugging feature but wont  
-                    // be present in the app
-                    min={0}
-                    max={100}
-                    initialValue={timeFactor}
-                    onChange={(_, value) => {
-                        setTimeFactor(value);
+                <SimulariumContext.Provider
+                    value={{
+                        isPlaying,
+                        setIsPlaying,
+                        simulariumController,
+                        handleTimeChange,
                     }}
-                    disabled={false}
-                    name="time factor (ns)"
-                />
-                <LeftPanel 
-                    activeAgents={getActiveAgents(reactionType)}
-                    inputConcentration={inputConcentration}
-                    handleNewInputConcentration={handleNewInputConcentration}
-                    isPlaying={isPlaying}
-                />
-                <RightPanel 
-                    productOverTime={productOverTime}
-                />
-                <div style={{ display: "flex" }}>    
-                    <Viewer
-                        isPlaying={isPlaying}
-                        setIsPlaying={setIsPlaying}
-                        controller={simulariumController}
-                        handleTimeChange={handleTimeChange}
+                >
+                    <ContentPanel {...content[reactionType][page]} />
+                    <ReactionDisplay reactionType={reactionType} />
+                    <Slider
+                        // This is a debugging feature but wont
+                        // be present in the app
+                        min={0}
+                        max={100}
+                        initialValue={timeFactor}
+                        onChange={(_, value) => {
+                            setTimeFactor(value);
+                        }}
+                        disabled={false}
+                        name="time factor (ns)"
                     />
-                </div>
+                    <LeftPanel
+                        page={page}
+                        activeAgents={getActiveAgents(reactionType)}
+                        inputConcentration={inputConcentration}
+                        handleNewInputConcentration={
+                            handleNewInputConcentration
+                        }
+                        isPlaying={isPlaying}
+                    />
+                    <RightPanel page={page} productOverTime={productOverTime} />
+                    <CenterPanel />
+                </SimulariumContext.Provider>
             </div>
         </>
     );

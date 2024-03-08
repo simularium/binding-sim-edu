@@ -74,6 +74,7 @@ export default function Viewer({
                 showPaths={true}
                 onError={console.log}
                 backgroundColor={[0, 0, 0]}
+                onRecordedMovie={() => {}}
             />
         </div>
     );

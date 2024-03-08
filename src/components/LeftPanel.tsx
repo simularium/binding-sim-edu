@@ -1,8 +1,10 @@
 import React from 'react';
 import Concentration from './Concentration';
 import { AvailableAgentNames } from '../types';
+import VisibilityControl from './VisiblityControl';
 
 interface LeftPanelProps {
+    page: number;
     activeAgents: AvailableAgentNames[];
     inputConcentration: { [key in AvailableAgentNames]: number };
     isPlaying: boolean;
@@ -14,16 +16,18 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
     inputConcentration,
     handleNewInputConcentration,
     isPlaying,
+    page,
 }) => {
-
     return (
         <div>
-            <Concentration
-                activeAgents={activeAgents}
-                concentration={inputConcentration}
-                onChange={handleNewInputConcentration}
-                disabled={isPlaying}
-            />
+            <VisibilityControl excludedPages={[0, 1]} currentPage={page}>
+                <Concentration
+                    activeAgents={activeAgents}
+                    concentration={inputConcentration}
+                    onChange={handleNewInputConcentration}
+                    disabled={isPlaying}
+                />
+            </VisibilityControl>
         </div>
     );
 };

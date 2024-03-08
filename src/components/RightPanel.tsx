@@ -1,12 +1,18 @@
-import React from 'react';
-import Plot from './Plot';
+import React from "react";
+import Plot from "./Plot";
+import VisibilityControl from "./VisiblityControl";
 
 interface RightPanelProps {
-    productOverTime: {[key: number]: number[]};
+    page: number;
+    productOverTime: { [key: number]: number[] };
 }
 
-const RightPanel: React.FC<RightPanelProps> = ({ productOverTime }) => {
-    return <Plot data={productOverTime} />;
+const RightPanel: React.FC<RightPanelProps> = ({ productOverTime, page }) => {
+    return (
+        <VisibilityControl excludedPages={[0, 1, 3]} currentPage={page}>
+            <Plot data={productOverTime} />
+        </VisibilityControl>
+    );
 };
 
 export default RightPanel;
