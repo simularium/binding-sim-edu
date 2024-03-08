@@ -38,8 +38,7 @@ const getActiveAgents = (reactionType: ReactionType) => {
 };
 
 function App() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [reactionType, setReactionType] = useState(ReactionType.A_B_AB);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -123,6 +122,9 @@ function App() {
                         setIsPlaying,
                         simulariumController,
                         handleTimeChange,
+                        page,
+                        setPage,
+            
                     }}
                 >
                     <ContentPanel {...content[reactionType][page]} />

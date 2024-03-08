@@ -3,6 +3,9 @@ import { ReactionType } from "../constants";
 
 export const highAffinityContentArray: ContentPanelProps[] = [
     {
+        content: "",
+    },
+    {
         title: "Experiment 1 - High affinity",
         content:
             "Congratulations! You’ve just joined a biology lab. Your mentor has asked you to measure the strength of the binding interaction between two types of molecules. These molecules are too small to see, even under a microscope. But what if we could somehow see what the molecules in the tube are doing? What do you think you’d see?",

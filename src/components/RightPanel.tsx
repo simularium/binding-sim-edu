@@ -1,6 +1,6 @@
 import React from "react";
 import Plot from "./Plot";
-import VisibilityControl from "./VisiblityControl";
+import VisibilityControl from "./VisibilityControl";
 
 interface RightPanelProps {
     page: number;

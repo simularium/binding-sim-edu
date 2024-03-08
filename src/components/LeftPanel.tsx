@@ -1,7 +1,7 @@
 import React from 'react';
 import Concentration from './Concentration';
 import { AvailableAgentNames } from '../types';
-import VisibilityControl from './VisiblityControl';
+import VisibilityControl from './VisibilityControl';
 
 interface LeftPanelProps {
     page: number;
