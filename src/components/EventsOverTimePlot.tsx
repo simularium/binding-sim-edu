@@ -23,7 +23,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({ data }) => {
                 }
                 const trace = [
                     {
-                        x: values.map((_, i) => i),
+                        x: values.map((_, i) => i * 10),
                         y: values,
                         type: "bar" as const,
                         name: id.toString(),
@@ -35,7 +35,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({ data }) => {
                     yaxis: { title: "Count of reactions" },
                 };
 
-                return <Plot data={trace} layout={layout} />;
+                return <Plot data={trace} layout={layout} key={id}/>;
             })}
         </>
     );
