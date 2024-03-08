@@ -117,7 +117,6 @@ function App() {
         setProductOverTime(newState);
         simulariumController.gotoTime(time + 1);
     };
-
     return (
         <>
             <div className="app">
@@ -151,6 +150,8 @@ function App() {
                         handleNewInputConcentration={
                             handleNewInputConcentration
                         }
+                        bindingEventsOverTime={bindingEventsOverTime}
+                        unbindingEventsOverTime={unBindingEventsOverTime}
                     />
                     <RightPanel productOverTime={productOverTime} />
                     <CenterPanel />

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Plot from "./Plot";
+import Plot from "./ProductConcentrationPlot";
 import VisibilityControl from "./VisibilityControl";
 import { SimulariumContext } from "../simulation/context";
 

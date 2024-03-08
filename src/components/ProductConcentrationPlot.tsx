@@ -7,7 +7,7 @@ interface PlotProps {
     data: { [key: string]: number[] };
 }
 
-const LinePlot: React.FC<PlotProps> = ({ data }) => {
+const ProductConcentrationPlot: React.FC<PlotProps> = ({ data }) => {
     const traces = map(
         data,
         (yValues: number[], id: string): Partial<PlotData> => {
@@ -36,4 +36,4 @@ const LinePlot: React.FC<PlotProps> = ({ data }) => {
     return <Plot data={traces} layout={layout} />;
 };
 
-export default LinePlot;
+export default ProductConcentrationPlot;
