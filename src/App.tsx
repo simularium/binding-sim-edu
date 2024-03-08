@@ -48,6 +48,9 @@ function App() {
         [inputConcentration[AvailableAgentNames.B]]: [0],
     });
 
+    const [bindingEventsOverTime, setBindingEventsOverTime] = useState([] as number[])
+    const [unBindingEventsOverTime, setUnBindingEventsOverTime] = useState([] as number[]);
+
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
     }, []);
@@ -63,6 +66,8 @@ function App() {
 
     const handleTimeChange = () => {
         const newValue = clientSimulator.getCurrentConcentrationBound();
+        const { numberBindEvents, numberUnBindEvents } =
+            clientSimulator.getEvents();
         const currentConcentration = inputConcentration[AvailableAgentNames.B];
         const currentArray = productOverTime[currentConcentration];
         const newData = [...currentArray, newValue];
@@ -71,6 +76,8 @@ function App() {
             [currentConcentration]: newData,
         };
         setProductOverTime(newState);
+        setBindingEventsOverTime([...bindingEventsOverTime, numberBindEvents])
+        setUnBindingEventsOverTime([...unBindingEventsOverTime, numberUnBindEvents])
     };
 
     useEffect(() => {
