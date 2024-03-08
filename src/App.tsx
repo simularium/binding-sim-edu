@@ -130,6 +130,8 @@ function App() {
         };
         setProductOverTime(newState);
         simulariumController.gotoTime(time + 1);
+        setBindingEventsOverTime([]);
+        setUnBindingEventsOverTime([]);
     };
     return (
         <>

@@ -15,12 +15,6 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({ data }) => {
         <>
             <h1>Reaction events over time</h1>
             {data.map((values: number[], id) => {
-                if (values.length <= 1) {
-                    // when the concentration is first changed it,
-                    // plays one frame to update, so there is one value
-                    // already but not necessarily data yet
-                    return null;
-                }
                 const trace = [
                     {
                         x: values.map((_, i) => i * 10),
