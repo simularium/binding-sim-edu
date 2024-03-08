@@ -46,12 +46,10 @@ function App() {
 
     const clientSimulator = useMemo(() => {
         const activeAgents = getActiveAgents(reactionType);
-        console.log(activeAgents);
         const trajectory = createAgentsFromConcentrations(
             activeAgents,
             INITIAL_CONCENTRATIONS
         );
-        console.log(trajectory);
         return new BindingSimulator(trajectory);
     }, [reactionType]);
 
