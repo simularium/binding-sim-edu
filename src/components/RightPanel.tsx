@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import Plot from "./Plot";
 import VisibilityControl from "./VisibilityControl";
+import { SimulariumContext } from "../simulation/context";
 
 interface RightPanelProps {
-    page: number;
     productOverTime: { [key: number]: number[] };
 }
 
-const RightPanel: React.FC<RightPanelProps> = ({ productOverTime, page }) => {
+const RightPanel: React.FC<RightPanelProps> = ({ productOverTime }) => {
+    const { page } = useContext(SimulariumContext);
+
     return (
         <VisibilityControl excludedPages={[0, 1, 3]} currentPage={page}>
             <Plot data={productOverTime} />

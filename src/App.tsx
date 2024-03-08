@@ -1,4 +1,4 @@
-import {  useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import "./App.css";
 import { SimulariumController } from "@aics/simularium-viewer";
@@ -19,8 +19,6 @@ import CenterPanel from "./components/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
 
 const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
-
-
 
 const getActiveAgents = (reactionType: ReactionType) => {
     switch (reactionType) {
@@ -124,7 +122,6 @@ function App() {
                         handleTimeChange,
                         page,
                         setPage,
-            
                     }}
                 >
                     <ContentPanel {...content[reactionType][page]} />
@@ -142,15 +139,13 @@ function App() {
                         name="time factor (ns)"
                     />
                     <LeftPanel
-                        page={page}
                         activeAgents={getActiveAgents(reactionType)}
                         inputConcentration={inputConcentration}
                         handleNewInputConcentration={
                             handleNewInputConcentration
                         }
-                        isPlaying={isPlaying}
                     />
-                    <RightPanel page={page} productOverTime={productOverTime} />
+                    <RightPanel productOverTime={productOverTime} />
                     <CenterPanel />
                 </SimulariumContext.Provider>
             </div>
