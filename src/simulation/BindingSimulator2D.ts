@@ -205,6 +205,8 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
     private clearAgents() {
         this.currentNumberBound = 0;
+        this.currentNumberOfBindingEvents = 0;
+        this.currentNumberOfUnbindingEvents = 0;
         this.system = new System();
         this.instances = [];
     }
