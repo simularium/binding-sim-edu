@@ -8,7 +8,6 @@ interface ProgressionControlProps {
 
 const ProgressionControl: React.FC<ProgressionControlProps> = ({children, onPage}) => {
     const { page, setPage } = useContext(SimulariumContext);
-    console.log(page, onPage)
     const handleClick = () => {
         if (page === onPage) {
             setPage(page + 1);
