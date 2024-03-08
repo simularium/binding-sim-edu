@@ -3,22 +3,20 @@ import { ReactNode, useState } from "react";
 import SimulariumViewer, {
     RenderStyle,
     SimulariumController,
+    TimeData,
 } from "@aics/simularium-viewer";
 import "@aics/simularium-viewer/style/style.css";
 
 interface ViewerProps {
     controller: SimulariumController;
-    handleTimeChange: () => void;
+    handleTimeChange: (timeData: TimeData) => void;
     isPlaying: boolean;
     setIsPlaying: (isPlaying: boolean) => void;
-
 }
 
 export default function Viewer({
     controller,
     handleTimeChange,
-    isPlaying,
-    setIsPlaying,
 }: ViewerProps): ReactNode {
     const agentColors = [
         "#fee34d",
