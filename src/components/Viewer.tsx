@@ -6,13 +6,20 @@ import SimulariumViewer, {
 } from "@aics/simularium-viewer";
 import "@aics/simularium-viewer/style/style.css";
 
+interface ViewerProps {
+    controller: SimulariumController;
+    handleTimeChange: () => void;
+    isPlaying: boolean;
+    setIsPlaying: (isPlaying: boolean) => void;
+
+}
+
 export default function Viewer({
     controller,
     handleTimeChange,
-}: {
-    controller: SimulariumController;
-    handleTimeChange: () => void;
-}): ReactNode {
+    isPlaying,
+    setIsPlaying,
+}: ViewerProps): ReactNode {
     const agentColors = [
         "#fee34d",
         "#f7b232",
@@ -41,6 +48,13 @@ export default function Viewer({
 
     return (
         <div className="viewer-container" key="viewer">
+            <button
+                onClick={() => {
+                    setIsPlaying(!isPlaying);
+                }}
+            >
+                {isPlaying ? "Pause" : "Play"}
+            </button>
             <SimulariumViewer
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}
                 height={size.height}

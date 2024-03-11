@@ -7,38 +7,51 @@ import BindingSimulator from "./BindingSimulator2D";
 import {
     AVAILABLE_AGENTS,
     createAgentsFromConcentrations,
-    trajectories,
 } from "./constants/trajectories";
-import Concentration from "./components/Concentration";
 import { AvailableAgentNames } from "./types";
 import Slider from "./components/Slider";
-import Plot from "./components/Plot";
+import LeftPanel from "./components/LeftPanel";
+import RightPanel from "./components/RightPanel";
+import ReactionDisplay from "./components/ReactionDisplay";
+import ContentPanel from "./components/ContentPanel";
+import content from "./content";
+import { ReactionType } from "./constants";
 
 const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
+const getActiveAgents = (reactionType: ReactionType) => {
+    switch (reactionType) {
+        case ReactionType.A_B_AB:
+            return [AvailableAgentNames.A, AvailableAgentNames.B];
+        case ReactionType.A_C_AC:
+            return [AvailableAgentNames.A, AvailableAgentNames.C];
+        case ReactionType.A_B_C_AB_AC:
+            return [AvailableAgentNames.A, AvailableAgentNames.B, AvailableAgentNames.C];
+    }
+}
+
 function App() {
+    const [page, setPage] = useState(0);
+    const [reactionType, setReactionType] = useState(ReactionType.A_B_AB);
     const [isPlaying, setIsPlaying] = useState(false);
     const [inputConcentration, setInputConcentration] = useState(INITIAL_CONCENTRATIONS);
     const [timeFactor, setTimeFactor] = useState(30);
     const [productOverTime, setProductOverTime] = useState({
         [inputConcentration[AvailableAgentNames.B]]: [0],
     });
-    const [activeAgents, setActiveAgents] = useState([
-        AvailableAgentNames.A,
-        AvailableAgentNames.B,
-    ]);
 
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
     }, []);
 
     const clientSimulator = useMemo(() => {
+        const activeAgents = getActiveAgents(reactionType);
         const trajectory = createAgentsFromConcentrations(
             activeAgents,
             INITIAL_CONCENTRATIONS
         );
         return new BindingSimulator(trajectory);
-    }, [activeAgents]);
+    }, [reactionType]);
 
     const handleTimeChange = () => {
         const newValue = clientSimulator.getCurrentConcentrationBound();
@@ -92,15 +105,12 @@ function App() {
 
     return (
         <>
-            <div className="viewer">
-                <button
-                    onClick={() => {
-                        setIsPlaying(!isPlaying);
-                    }}
-                >
-                    {isPlaying ? "Pause" : "Play"}
-                </button>
+            <div className="app">
+                <ContentPanel {...content[reactionType][page]} />
+                <ReactionDisplay reactionType={reactionType} />
                 <Slider
+                    // This is a debugging feature but wont  
+                    // be present in the app
                     min={0}
                     max={100}
                     initialValue={timeFactor}
@@ -110,30 +120,22 @@ function App() {
                     disabled={false}
                     name="time factor (ns)"
                 />
-                <Concentration
-                    activeAgents={activeAgents}
-                    concentration={inputConcentration}
-                    onChange={handleNewInputConcentration}
-                    disabled={isPlaying}
+                <LeftPanel 
+                    activeAgents={getActiveAgents(reactionType)}
+                    inputConcentration={inputConcentration}
+                    handleNewInputConcentration={handleNewInputConcentration}
+                    isPlaying={isPlaying}
                 />
-                <select
-                    onChange={(e) =>
-                        setActiveAgents(
-                            e.target.value.split(",") as AvailableAgentNames[]
-                        )
-                    }
-                    defaultValue={trajectories[0]}
-                >
-                    <option value={trajectories[0]}>High affinity</option>
-                    <option value={trajectories[1]}>Low affinity</option>
-                    <option value={trajectories[2]}>Competitive</option>
-                </select>
-                <div style={{ display: "flex" }}>
+                <RightPanel 
+                    productOverTime={productOverTime}
+                />
+                <div style={{ display: "flex" }}>    
                     <Viewer
+                        isPlaying={isPlaying}
+                        setIsPlaying={setIsPlaying}
                         controller={simulariumController}
                         handleTimeChange={handleTimeChange}
                     />
-                    <Plot data={productOverTime} />
                 </div>
             </div>
         </>
