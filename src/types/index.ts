@@ -21,10 +21,6 @@ export type ProgressionControlChildProps =
 export type ProgressionControlChild =
   React.ReactElement<ProgressionControlChildProps>;
 
-export interface ProgressionControlProps {
-  children: ProgressionControlChild;
-  onPage: number;
-}
 export type ProgressionInputEvent = React.ChangeEvent<HTMLInputElement> &
   React.FormEvent<HTMLButtonElement>;
 

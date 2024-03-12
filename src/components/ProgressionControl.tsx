@@ -1,11 +1,15 @@
 import React, { useContext, cloneElement, isValidElement } from "react";
 import { SimulariumContext } from "../simulation/context";
 import {
-  ProgressionControlProps,
   ProgressionControlChild,
   ProgressionMouseEvent,
   ProgressionInputEvent,
 } from "../types";
+
+export interface ProgressionControlProps {
+  children: ProgressionControlChild;
+  onPage: number;
+}
 
 /**
  * Wraps an input element (button, slider, etc) and adds the progression
