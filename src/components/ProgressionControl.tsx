@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, cloneElement, isValidElement } from "react";
 import { SimulariumContext } from "../simulation/context";
 import {
   ProgressionControlProps,
@@ -24,19 +24,19 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
   };
 
   return React.Children.map(children, (child) => {
-    if (!React.isValidElement(child)) {
+    if (!isValidElement(child)) {
       return child;
     }
     const reactElement = child as ProgressionControlChild;
     if (child.props.onClick) {
-      return React.cloneElement(reactElement, {
+      return cloneElement(reactElement, {
         onClick: (event: ProgressionMouseEvent) => {
           reactElement.props.onClick?.(event);
           progress();
         },
       });
     } else if (child.props.onChange) {
-      return React.cloneElement(reactElement, {
+      return cloneElement(reactElement, {
         onChange: (event: ProgressionInputEvent) => {
           reactElement.props.onChange?.(event);
           progress();
@@ -44,7 +44,7 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
       });
     }
 
-    return React.cloneElement(reactElement, {
+    return cloneElement(reactElement, {
       onClick: progress,
     });
   });
