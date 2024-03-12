@@ -13,3 +13,20 @@ export interface InputAgent {
     kOff?: number;
     count?: number;
 }
+
+export type ProgressionControlChildProps =
+  | React.InputHTMLAttributes<HTMLInputElement>
+  | React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+export type ProgressionControlChild =
+  React.ReactElement<ProgressionControlChildProps>;
+
+export interface ProgressionControlProps {
+  children: ProgressionControlChild;
+  onPage: number;
+}
+export type ProgressionInputEvent = React.ChangeEvent<HTMLInputElement> &
+  React.FormEvent<HTMLButtonElement>;
+
+export type ProgressionMouseEvent = React.MouseEvent<HTMLButtonElement> &
+  React.MouseEvent<HTMLInputElement>;
