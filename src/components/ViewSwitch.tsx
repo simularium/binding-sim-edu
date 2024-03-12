@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import Viewer from './Viewer';
 import { SimulariumContext } from '../simulation/context';
+import ProgressionControl from './ProgressionControl';
 
 enum View {
     Lab = 'lab',
@@ -25,10 +26,13 @@ const ViewSwitch: React.FC = () => {
         return null;
     }
     return (
-        <div>
-            <button onClick={switchView}>
-                Switch to {currentView === View.Lab ? "Simulation" : "Lab"} View
-            </button>
+        <>
+            <ProgressionControl onPage={1}>
+
+                <button onClick={switchView}>
+                    Switch to {currentView === View.Lab ? "Simulation" : "Lab"} View
+                </button>
+            </ProgressionControl>
             {currentView === View.Lab ? (
                 <LabView />
             ) : null}
@@ -40,7 +44,7 @@ const ViewSwitch: React.FC = () => {
                 handleTimeChange={handleTimeChange}
             />
             
-        </div>
+        </>
     );
 };
 
