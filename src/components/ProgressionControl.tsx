@@ -9,6 +9,11 @@ interface ProgressionControlProps {
     onPage: number;
 }
 
+/** 
+ * Wraps an input element (button, slider, etc) and adds the progression 
+ * functionality to it. When the user interacts with the input, the page
+ * is incremented in addition to the input's normal behavior.
+*/ 
 const ProgressionControl: React.FC<ProgressionControlProps> = ({
     children,
     onPage,
