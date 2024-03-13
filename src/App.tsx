@@ -66,7 +66,6 @@ function App() {
 
     const handleTimeChange = (timeData: TimeData) => {
         const newValue = clientSimulator.getCurrentConcentrationBound();
-
         const currentConcentration = inputConcentration[AvailableAgentNames.B];
         const currentArray = productOverTime[currentConcentration];
         const newData = [...currentArray, newValue];

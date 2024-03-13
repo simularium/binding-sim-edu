@@ -22,6 +22,7 @@ const Slider: React.FC<SliderProps> = ({
     const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = parseInt(event.target.value);
         setValue(newValue);
+        onChange(name, newValue);
     };
 
     return (
@@ -33,7 +34,6 @@ const Slider: React.FC<SliderProps> = ({
                 value={value}
                 onChange={handleSliderChange}
                 disabled={disabled}
-                onMouseUp={() => onChange(name, value)}
             />
             <span>
                 {name}: {value}
