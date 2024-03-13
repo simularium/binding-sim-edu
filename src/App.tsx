@@ -18,6 +18,7 @@ import { ReactionType } from "./constants";
 import CenterPanel from "./components/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
 
+
 const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
 const getActiveAgents = (reactionType: ReactionType) => {
@@ -148,6 +149,7 @@ function App() {
                     <RightPanel productOverTime={productOverTime} />
                     <CenterPanel />
                 </SimulariumContext.Provider>
+
             </div>
         </>
     );

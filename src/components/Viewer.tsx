@@ -48,7 +48,6 @@ export default function Viewer({
 
     return (
         <div className="viewer-container" key="viewer">
-
             <SimulariumViewer
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}
                 height={size.height}
