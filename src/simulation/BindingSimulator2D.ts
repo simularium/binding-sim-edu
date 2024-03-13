@@ -12,7 +12,7 @@ import {
     DEFAULT_CAMERA_SPEC,
     VisTypes,
 } from "@aics/simularium-viewer";
-import { InputAgent } from "./types";
+import { InputAgent } from "../types";
 
 class BindingInstance extends Circle {
     id: number;

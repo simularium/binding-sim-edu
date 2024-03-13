@@ -48,13 +48,7 @@ export default function Viewer({
 
     return (
         <div className="viewer-container" key="viewer">
-            <button
-                onClick={() => {
-                    setIsPlaying(!isPlaying);
-                }}
-            >
-                {isPlaying ? "Pause" : "Play"}
-            </button>
+
             <SimulariumViewer
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}
                 height={size.height}
@@ -74,6 +68,7 @@ export default function Viewer({
                 showPaths={true}
                 onError={console.log}
                 backgroundColor={[0, 0, 0]}
+                onRecordedMovie={() => {}}
             />
         </div>
     );
