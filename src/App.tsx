@@ -18,7 +18,6 @@ import { ReactionType } from "./constants";
 import CenterPanel from "./components/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
 
-
 const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
 const getActiveAgents = (reactionType: ReactionType) => {
@@ -49,6 +48,9 @@ function App() {
         [inputConcentration[AvailableAgentNames.B]]: [0],
     });
 
+    const [bindingEventsOverTime, setBindingEventsOverTime] = useState<number[]>([])
+    const [unBindingEventsOverTime, setUnBindingEventsOverTime] = useState<number[]>([]);
+
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
     }, []);
@@ -64,6 +66,8 @@ function App() {
 
     const handleTimeChange = () => {
         const newValue = clientSimulator.getCurrentConcentrationBound();
+        const { numberBindEvents, numberUnBindEvents } =
+            clientSimulator.getEvents();
         const currentConcentration = inputConcentration[AvailableAgentNames.B];
         const currentArray = productOverTime[currentConcentration];
         const newData = [...currentArray, newValue];
@@ -72,6 +76,8 @@ function App() {
             [currentConcentration]: newData,
         };
         setProductOverTime(newState);
+        setBindingEventsOverTime([...bindingEventsOverTime, numberBindEvents])
+        setUnBindingEventsOverTime([...unBindingEventsOverTime, numberUnBindEvents])
     };
 
     useEffect(() => {
@@ -149,7 +155,6 @@ function App() {
                     <RightPanel productOverTime={productOverTime} />
                     <CenterPanel />
                 </SimulariumContext.Provider>
-
             </div>
         </>
     );

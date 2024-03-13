@@ -11,7 +11,6 @@ const PlayButton: React.FC = () => {
 
     return (
         <ProgressionControl onPage={2}>
-
             <button onClick={handleClick}>
                 {isPlaying ? 'Pause' : 'Play'}
             </button>

@@ -189,6 +189,8 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     static: boolean = false;
     initialState: boolean = true;
     currentNumberBound: number = 0;
+    currentNumberOfBindingEvents: number = 0;
+    currentNumberOfUnbindingEvents: number = 0;
     onUpdate: (data: number) => void = () => {};
     constructor(agents: InputAgent[], timeFactor: number = 25) {
         this.system = new System();
@@ -203,6 +205,8 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
     private clearAgents() {
         this.currentNumberBound = 0;
+        this.currentNumberOfBindingEvents = 0;
+        this.currentNumberOfUnbindingEvents = 0;
         this.system = new System();
         this.instances = [];
     }
@@ -231,6 +235,13 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 this.instances.push(instance);
             }
         }
+    }
+
+    public getEvents() {
+        return {
+            numberBindEvents: this.currentNumberOfBindingEvents,
+            numberUnBindEvents: this.currentNumberOfUnbindingEvents,
+        };
     }
 
     public changeConcentration(agentId: number, newConcentration: number) {
@@ -418,6 +429,9 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         for (let i = 0; i < this.instances.length; ++i) {
             this.instances[i].oneStep(this.timeFactor);
         }
+        // reset to zero for every time point
+        this.currentNumberOfBindingEvents = 0;
+        this.currentNumberOfUnbindingEvents = 0;
         this.system.checkAll((response: Response) => {
             const { a, b, overlapV } = response;
 
@@ -431,6 +445,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                         unbound = a.unBind(b);
                     }
                     if (unbound) {
+                        this.currentNumberOfUnbindingEvents++;
                         this.currentNumberBound--;
                     }
                 }
@@ -444,6 +459,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                         bound = a.bind(b);
                     }
                     if (bound) {
+                        this.currentNumberOfBindingEvents++;
                         this.currentNumberBound++;
                     }
                 }
