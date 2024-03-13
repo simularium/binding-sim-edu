@@ -9,12 +9,8 @@ interface CenterPanelProps {
 const CenterPanel: React.FC<CenterPanelProps> = () => {
     return (
         <div>
-            <ProgressionControl onPage={1}>
-                <ViewSwitch />
-            </ProgressionControl>
-            <ProgressionControl onPage={2}>
-                <PlayButton/>
-            </ProgressionControl>
+            <ViewSwitch />
+            <PlayButton />
         </div>
     );
 };

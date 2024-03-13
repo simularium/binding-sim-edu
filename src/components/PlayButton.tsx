@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { SimulariumContext } from '../simulation/context';
+import ProgressionControl from './ProgressionControl';
 
 const PlayButton: React.FC = () => {
     const { isPlaying, setIsPlaying } = useContext(SimulariumContext);
@@ -9,10 +10,11 @@ const PlayButton: React.FC = () => {
     };
 
     return (
-        <button onClick={handleClick}>
-            {isPlaying ? 'Pause' : 'Play'}
-        </button>
-    );
+        <ProgressionControl onPage={2}>
+            <button onClick={handleClick}>
+                {isPlaying ? 'Pause' : 'Play'}
+            </button>
+        </ProgressionControl>)
 };
 
 export default PlayButton;
