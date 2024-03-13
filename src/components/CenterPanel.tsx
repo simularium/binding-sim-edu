@@ -1,20 +1,14 @@
-import React from 'react';
-import ViewSwitch from './ViewSwitch';
-import ProgressionControl from './ProgressionControl';
-import PlayButton from './PlayButton';
+import React from "react";
+import ViewSwitch from "./ViewSwitch";
+import PlayButton from "./PlayButton";
 
-interface CenterPanelProps {
-}
+interface CenterPanelProps {}
 
 const CenterPanel: React.FC<CenterPanelProps> = () => {
     return (
         <div>
-            <ProgressionControl onPage={1}>
-                <ViewSwitch />
-            </ProgressionControl>
-            <ProgressionControl onPage={2}>
-                <PlayButton/>
-            </ProgressionControl>
+            <ViewSwitch />
+            <PlayButton />
         </div>
     );
 };

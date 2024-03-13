@@ -48,12 +48,8 @@ function App() {
         [inputConcentration[AvailableAgentNames.B]]: [0],
     });
 
-    const [bindingEventsOverTime, setBindingEventsOverTime] = useState(
-        [] as number[]
-    );
-    const [unBindingEventsOverTime, setUnBindingEventsOverTime] = useState(
-        [] as number[]
-    );
+    const [bindingEventsOverTime, setBindingEventsOverTime] = useState<number[]>([]);
+    const [unBindingEventsOverTime, setUnBindingEventsOverTime] = useState<number[]>([]);
 
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
