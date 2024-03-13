@@ -2,6 +2,10 @@ import { ContentPanelProps } from "../components/ContentPanel";
 import { ReactionType } from "../constants";
 
 export const highAffinityContentArray: ContentPanelProps[] = [
+    // making the content array 1 indexed to match the page numbers
+    {
+        content: "",
+    },
     {
         title: "Experiment 1 - High affinity",
         content:
