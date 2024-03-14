@@ -38,7 +38,7 @@ const getActiveAgents = (reactionType: ReactionType) => {
 function App() {
     const [page, setPage] = useState(1);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [reactionType, setReactionType] = useState(ReactionType.A_B_AB);
+    const [reactionType] = useState(ReactionType.A_B_AB);
     const [isPlaying, setIsPlaying] = useState(false);
     const [inputConcentration, setInputConcentration] = useState(
         INITIAL_CONCENTRATIONS
