@@ -8,7 +8,7 @@ import {
     createAgentsFromConcentrations,
 } from "./constants/trajectories";
 import { AvailableAgentNames } from "./types";
-import Slider from "./components/Slider";
+// import Slider from "./components/Slider";
 import LeftPanel from "./components/LeftPanel";
 import RightPanel from "./components/RightPanel";
 import ReactionDisplay from "./components/ReactionDisplay";
@@ -48,12 +48,8 @@ function App() {
         [inputConcentration[AvailableAgentNames.B]]: [0],
     });
 
-    const [bindingEventsOverTime, setBindingEventsOverTime] = useState(
-        [] as number[]
-    );
-    const [unBindingEventsOverTime, setUnBindingEventsOverTime] = useState(
-        [] as number[]
-    );
+    const [bindingEventsOverTime, setBindingEventsOverTime] = useState<number[]>([])
+    const [unBindingEventsOverTime, setUnBindingEventsOverTime] = useState<number[]>([]);
 
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
@@ -70,7 +66,6 @@ function App() {
 
     const handleTimeChange = (timeData: TimeData) => {
         const newValue = clientSimulator.getCurrentConcentrationBound();
-
         const currentConcentration = inputConcentration[AvailableAgentNames.B];
         const currentArray = productOverTime[currentConcentration];
         const newData = [...currentArray, newValue];

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Plot from "./ProductConcentrationPlot";
+import ProductConcentrationPlot from "./ProductConcentrationPlot";
 import VisibilityControl from "./VisibilityControl";
 import { SimulariumContext } from "../simulation/context";
 
@@ -13,7 +13,7 @@ const RightPanel: React.FC<RightPanelProps> = ({ productOverTime }) => {
     return (
         <div style={{ minWidth: 260, flex: "1 1 30%" }}>
             <VisibilityControl excludedPages={[0, 1, 2]} currentPage={page}>
-                <Plot data={productOverTime} />
+                <ProductConcentrationPlot data={productOverTime} />
             </VisibilityControl>
         </div>
     );

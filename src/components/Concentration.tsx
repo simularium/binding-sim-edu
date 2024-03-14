@@ -2,6 +2,7 @@ import React from "react";
 import Slider from "./Slider";
 import { map } from "lodash";
 import { AvailableAgentNames } from "../types";
+import ProgressionControl from "./ProgressionControl";
 
 interface AgentProps {
     activeAgents: AvailableAgentNames[];
@@ -10,21 +11,28 @@ interface AgentProps {
     disabled: boolean;
 }
 
-const Concentration: React.FC<AgentProps> = ({ concentration, onChange, activeAgents, disabled }) => {
+const Concentration: React.FC<AgentProps> = ({
+    concentration,
+    onChange,
+    activeAgents,
+    disabled,
+}) => {
     return map(concentration, (concentration, agent: AvailableAgentNames) => {
         if (!activeAgents.includes(agent)) {
             return null;
         }
         return (
-            <Slider
-                min={1}
-                max={20}
-                name={agent}
-                initialValue={concentration}
-                onChange={onChange}
-                key={agent}
-                disabled={disabled}
-            />
+            <ProgressionControl onPage={5}>
+                <Slider
+                    min={1}
+                    max={20}
+                    name={agent}
+                    initialValue={concentration}
+                    onChange={onChange}
+                    key={agent}
+                    disabled={disabled}
+                />
+            </ProgressionControl>
         );
     });
 };
