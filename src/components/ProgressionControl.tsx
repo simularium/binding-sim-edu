@@ -35,11 +35,17 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
                 | React.MouseEvent<HTMLButtonElement>
                 | React.ChangeEvent<HTMLInputElement>
         ) => {
-            progress();
-            baseHandler(
+            const returnValue = baseHandler(
                 event as React.MouseEvent<HTMLButtonElement> &
-                    React.ChangeEvent<HTMLInputElement>
-            );
+                React.ChangeEvent<HTMLInputElement>
+                );
+            // generally, all handlers are going to return undefined
+            // right now we only have one function where we don't want to progress
+            // if they haven't completed the action
+            // and that's the onClick handler for the record equilibrium button
+            if (returnValue === undefined) {
+                progress();
+            }
         };
     };
 

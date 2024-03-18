@@ -150,7 +150,7 @@ function App() {
         // TODO: do a better job of determining if we've reached equilibrium
         // this is just a proxy for now
         if (time < 600 ) {
-            return;
+            return false;
         }
         setInputEquilibriumConcentrations([
             ...inputEquilibriumConcentrations,
