@@ -34,8 +34,16 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y }) => {
     const layout = {
         ...BASE_PLOT_LAYOUT,
         title: "Equilibrium concentration",
-        xaxis: { ...BASE_PLOT_LAYOUT.xaxis, title: "[B]microM" },
-        yaxis: { ...BASE_PLOT_LAYOUT.yaxis, title: "[AB]microM" },
+        xaxis: {
+            ...BASE_PLOT_LAYOUT.xaxis,
+            title: "[B]microM",
+            range: [0, 20],
+        },
+        yaxis: {
+            ...BASE_PLOT_LAYOUT.yaxis,
+            title: "[AB]microM",
+            range: [0, 20],
+        },
     };
 
     return <Plot data={trace} layout={layout} />;
