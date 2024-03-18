@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface NavPanelProps {
-    title: number;
+    title: string;
     page: number;
     total: number;
 }
