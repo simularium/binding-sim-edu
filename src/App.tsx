@@ -18,7 +18,6 @@ import { ReactionType } from "./constants";
 import CenterPanel from "./components/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
 import NavPanel from "./components/NavPanel";
-import { set } from "lodash";
 
 const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
@@ -149,14 +148,18 @@ function App() {
             clientSimulator.getCurrentConcentrationBound();
         const reactantConcentration = inputConcentration[AvailableAgentNames.B];
 
-        const time = simulariumController.time();
         // TODO: do a better job of determining if we've reached equilibrium
-        // this is just a proxy for now
-        if (time < 600 ) {
+        // for now we're using how long the simulation has been running
+        // as a proxy for reaching equilibrium
+        const currentConcentration =
+            inputConcentration[AvailableAgentNames.B];
+        const currentArray = productOverTime[currentConcentration];
+        const currentTime = currentArray.length;
+        if (currentTime < 600) {
             setEquilibriumFeedback("Not yet!");
             setTimeout(() => {
                 setEquilibriumFeedback("");
-            }, 3000)
+            }, 3000);
             return false;
         }
         setInputEquilibriumConcentrations([
