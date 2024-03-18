@@ -22,7 +22,7 @@ const Concentration: React.FC<AgentProps> = ({
             return null;
         }
         return (
-            <ProgressionControl onPage={5}>
+            <ProgressionControl onPage={5} key={agent}>
                 <Slider
                     min={1}
                     max={20}

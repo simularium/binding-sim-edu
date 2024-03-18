@@ -46,12 +46,18 @@ function App() {
     const [productOverTime, setProductOverTime] = useState({
         [inputConcentration[AvailableAgentNames.B]]: [0],
     });
-    const [bindingEventsOverTime, setBindingEventsOverTime] = useState<number[]>([]);
-    const [unBindingEventsOverTime, setUnBindingEventsOverTime] = useState<number[]>([]);
+    const [bindingEventsOverTime, setBindingEventsOverTime] = useState<
+        number[]
+    >([]);
+    const [unBindingEventsOverTime, setUnBindingEventsOverTime] = useState<
+        number[]
+    >([]);
     const [inputEquilibriumConcentrations, setInputEquilibriumConcentrations] =
         useState<number[]>([]);
-    const [productEquilibriumConcentrations, setProductEquilibriumConcentrations] =
-        useState<number[]>([]);
+    const [
+        productEquilibriumConcentrations,
+        setProductEquilibriumConcentrations,
+    ] = useState<number[]>([]);
 
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
@@ -117,7 +123,7 @@ function App() {
     const resetState = () => {
         setBindingEventsOverTime([]);
         setUnBindingEventsOverTime([]);
-    }
+    };
 
     const handleNewInputConcentration = (name: string, value: number) => {
         const agentName = name as AvailableAgentNames;
@@ -139,6 +145,13 @@ function App() {
         const productConcentration =
             clientSimulator.getCurrentConcentrationBound();
         const reactantConcentration = inputConcentration[AvailableAgentNames.B];
+
+        const time = simulariumController.time();
+        // TODO: do a better job of determining if we've reached equilibrium
+        // this is just a proxy for now
+        if (time < 600 ) {
+            return;
+        }
         setInputEquilibriumConcentrations([
             ...inputEquilibriumConcentrations,
             reactantConcentration,
@@ -191,8 +204,10 @@ function App() {
                             productOverTime={productOverTime}
                             handleRecordEquilibrium={handleRecordEquilibrium}
                             equilibriumConcentrations={{
-                                inputEquilibriumConcentrations,
-                                productEquilibriumConcentrations,
+                                inputConcentrations:
+                                    inputEquilibriumConcentrations,
+                                productConcentrations:
+                                    productEquilibriumConcentrations,
                             }}
                         />
                     </div>
