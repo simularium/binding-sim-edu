@@ -18,6 +18,7 @@ import { ReactionType } from "./constants";
 import CenterPanel from "./components/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
 import NavPanel from "./components/NavPanel";
+import { set } from "lodash";
 
 const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
@@ -59,6 +60,7 @@ function App() {
         productEquilibriumConcentrations,
         setProductEquilibriumConcentrations,
     ] = useState<number[]>([]);
+    const [equilibriumFeedback, setEquilibriumFeedback] = useState<string>("");
 
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
@@ -151,6 +153,10 @@ function App() {
         // TODO: do a better job of determining if we've reached equilibrium
         // this is just a proxy for now
         if (time < 600 ) {
+            setEquilibriumFeedback("Not yet!");
+            setTimeout(() => {
+                setEquilibriumFeedback("");
+            }, 3000)
             return false;
         }
         setInputEquilibriumConcentrations([
@@ -161,6 +167,11 @@ function App() {
             ...productEquilibriumConcentrations,
             productConcentration,
         ]);
+        setEquilibriumFeedback("Great!");
+        setTimeout(() => {
+            setEquilibriumFeedback("");
+        }, 3000);
+                
     };
 
     return (
@@ -215,6 +226,7 @@ function App() {
                                 productConcentrations:
                                     productEquilibriumConcentrations,
                             }}
+                            equilibriumFeedback={equilibriumFeedback}
                         />
                     </div>
                 </SimulariumContext.Provider>

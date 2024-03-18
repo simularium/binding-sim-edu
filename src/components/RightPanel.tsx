@@ -12,12 +12,14 @@ interface RightPanelProps {
         inputConcentrations: number[];
         productConcentrations: number[];
     };
+    equilibriumFeedback: string;
 }
 
 const RightPanel: React.FC<RightPanelProps> = ({
     productOverTime,
     handleRecordEquilibrium,
     equilibriumConcentrations,
+    equilibriumFeedback,
 }) => {
     const { page } = useContext(SimulariumContext);
     return (
@@ -26,10 +28,14 @@ const RightPanel: React.FC<RightPanelProps> = ({
                 <ProductConcentrationPlot data={productOverTime} />
             </VisibilityControl>
             <VisibilityControl excludedPages={[0, 1, 2]} currentPage={page}>
-                <EquilibriumPlot x={equilibriumConcentrations.inputConcentrations} y={equilibriumConcentrations.productConcentrations} />
+                <EquilibriumPlot
+                    x={equilibriumConcentrations.inputConcentrations}
+                    y={equilibriumConcentrations.productConcentrations}
+                />
                 <RecordEquilibriumButton
                     handleRecordEquilibrium={handleRecordEquilibrium}
                 />
+                <div>{equilibriumFeedback}</div>
             </VisibilityControl>
         </div>
     );
