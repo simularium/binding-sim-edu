@@ -46,9 +46,12 @@ function App() {
     const [productOverTime, setProductOverTime] = useState({
         [inputConcentration[AvailableAgentNames.B]]: [0],
     });
-
     const [bindingEventsOverTime, setBindingEventsOverTime] = useState<number[]>([]);
     const [unBindingEventsOverTime, setUnBindingEventsOverTime] = useState<number[]>([]);
+    const [inputEquilibriumConcentrations, setInputEquilibriumConcentrations] =
+        useState<number[]>([]);
+    const [productEquilibriumConcentrations, setProductEquilibriumConcentrations] =
+        useState<number[]>([]);
 
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
@@ -111,6 +114,11 @@ function App() {
         clientSimulator.setTimeScale(timeFactor);
     }, [timeFactor, clientSimulator]);
 
+    const resetState = () => {
+        setBindingEventsOverTime([]);
+        setUnBindingEventsOverTime([]);
+    }
+
     const handleNewInputConcentration = (name: string, value: number) => {
         const agentName = name as AvailableAgentNames;
         const agentId = AVAILABLE_AGENTS[agentName].id;
@@ -124,9 +132,23 @@ function App() {
         };
         setProductOverTime(newState);
         simulariumController.gotoTime(time + 1);
-        setBindingEventsOverTime([]);
-        setUnBindingEventsOverTime([]);
+        resetState();
     };
+
+    const handleRecordEquilibrium = () => {
+        const productConcentration =
+            clientSimulator.getCurrentConcentrationBound();
+        const reactantConcentration = inputConcentration[AvailableAgentNames.B];
+        setInputEquilibriumConcentrations([
+            ...inputEquilibriumConcentrations,
+            reactantConcentration,
+        ]);
+        setProductEquilibriumConcentrations([
+            ...productEquilibriumConcentrations,
+            productConcentration,
+        ]);
+    };
+
     return (
         <>
             <div className="app">
@@ -165,7 +187,14 @@ function App() {
                             unbindingEventsOverTime={unBindingEventsOverTime}
                         />
                         <CenterPanel />
-                        <RightPanel productOverTime={productOverTime} />
+                        <RightPanel
+                            productOverTime={productOverTime}
+                            handleRecordEquilibrium={handleRecordEquilibrium}
+                            equilibriumConcentrations={{
+                                inputEquilibriumConcentrations,
+                                productEquilibriumConcentrations,
+                            }}
+                        />
                     </div>
                 </SimulariumContext.Provider>
             </div>
