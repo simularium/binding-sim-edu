@@ -18,14 +18,14 @@ const PLOT_COLORS = [
     "#ff7f00",
     "#cab2d6",
 ];
-const LinePlot: React.FC<PlotProps> = ({ data }) => {
+const ProductConcentrationPlot: React.FC<PlotProps> = ({ data }) => {
     const traces = map(
         data,
         (yValues: number[], id: string): Partial<PlotData> => {
             if (yValues.length <= 1) {
-                // when the concentration is first changed it, 
+                // when the concentration is first changed it,
                 // plays one frame to update, so there is one value
-                // already but not necessarily data yet 
+                // already but not necessarily data yet
                 return {};
             }
             const colorNumber = Number(id) % PLOT_COLORS.length;
@@ -51,4 +51,4 @@ const LinePlot: React.FC<PlotProps> = ({ data }) => {
     return <Plot data={traces} layout={layout} />;
 };
 
-export default LinePlot;
+export default ProductConcentrationPlot;

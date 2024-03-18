@@ -1,6 +1,5 @@
 import React from 'react';
 import ViewSwitch from './ViewSwitch';
-import ProgressionControl from './ProgressionControl';
 import PlayButton from './PlayButton';
 
 interface CenterPanelProps {

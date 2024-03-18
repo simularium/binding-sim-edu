@@ -429,9 +429,11 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         for (let i = 0; i < this.instances.length; ++i) {
             this.instances[i].oneStep(this.timeFactor);
         }
-        // reset to zero for every time point
-        this.currentNumberOfBindingEvents = 0;
-        this.currentNumberOfUnbindingEvents = 0;
+        // reset to zero for every tenth time point
+        if (this.currentFrame % 10 === 0) {
+            this.currentNumberOfBindingEvents = 0;
+            this.currentNumberOfUnbindingEvents = 0;
+        }
         this.system.checkAll((response: Response) => {
             const { a, b, overlapV } = response;
 

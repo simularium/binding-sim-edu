@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import "./App.css";
-import { SimulariumController } from "@aics/simularium-viewer";
+import { SimulariumController, TimeData } from "@aics/simularium-viewer";
 import BindingSimulator from "./simulation/BindingSimulator2D";
 import {
     AVAILABLE_AGENTS,
@@ -38,7 +38,7 @@ const getActiveAgents = (reactionType: ReactionType) => {
 function App() {
     const [page, setPage] = useState(1);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [reactionType, setReactionType] = useState(ReactionType.A_B_AB);
+    const [reactionType] = useState(ReactionType.A_B_AB);
     const [isPlaying, setIsPlaying] = useState(false);
     const [inputConcentration, setInputConcentration] = useState(
         INITIAL_CONCENTRATIONS
@@ -48,7 +48,7 @@ function App() {
         [inputConcentration[AvailableAgentNames.B]]: [0],
     });
 
-    const [bindingEventsOverTime, setBindingEventsOverTime] = useState<number[]>([])
+    const [bindingEventsOverTime, setBindingEventsOverTime] = useState<number[]>([]);
     const [unBindingEventsOverTime, setUnBindingEventsOverTime] = useState<number[]>([]);
 
     const simulariumController = useMemo(() => {
@@ -64,10 +64,8 @@ function App() {
         return new BindingSimulator(trajectory);
     }, [reactionType]);
 
-    const handleTimeChange = () => {
+    const handleTimeChange = (timeData: TimeData) => {
         const newValue = clientSimulator.getCurrentConcentrationBound();
-        const { numberBindEvents, numberUnBindEvents } =
-            clientSimulator.getEvents();
         const currentConcentration = inputConcentration[AvailableAgentNames.B];
         const currentArray = productOverTime[currentConcentration];
         const newData = [...currentArray, newValue];
@@ -76,8 +74,19 @@ function App() {
             [currentConcentration]: newData,
         };
         setProductOverTime(newState);
-        setBindingEventsOverTime([...bindingEventsOverTime, numberBindEvents])
-        setUnBindingEventsOverTime([...unBindingEventsOverTime, numberUnBindEvents])
+
+        if (timeData.time % 10 === 0) {
+            const { numberBindEvents, numberUnBindEvents } =
+                clientSimulator.getEvents();
+            setBindingEventsOverTime([
+                ...bindingEventsOverTime,
+                numberBindEvents,
+            ]);
+            setUnBindingEventsOverTime([
+                ...unBindingEventsOverTime,
+                numberUnBindEvents,
+            ]);
+        }
     };
 
     useEffect(() => {
@@ -116,8 +125,9 @@ function App() {
         };
         setProductOverTime(newState);
         simulariumController.gotoTime(time + 1);
+        setBindingEventsOverTime([]);
+        setUnBindingEventsOverTime([]);
     };
-
     return (
         <>
             <div className="app">
@@ -151,6 +161,8 @@ function App() {
                         handleNewInputConcentration={
                             handleNewInputConcentration
                         }
+                        bindingEventsOverTime={bindingEventsOverTime}
+                        unbindingEventsOverTime={unBindingEventsOverTime}
                     />
                     <RightPanel productOverTime={productOverTime} />
                     <CenterPanel />
