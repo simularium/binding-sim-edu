@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@aics/simularium-viewer": "^3.7.0",
+    "@aics/simularium-viewer": "link:@aics/simularium-viewer",
     "@types/lodash": "^4.14.202",
     "detect-collisions": "^9.2.2",
     "lodash": "^4.17.21",
