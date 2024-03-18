@@ -9,6 +9,7 @@ interface SimulariumContextType {
     setPage: (value: number) => void;
     page: number;
 }
+
 export const SimulariumContext = createContext({
     isPlaying: false,
     setIsPlaying: () => {},

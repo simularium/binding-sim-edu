@@ -37,8 +37,8 @@ export default function Viewer({
         "#9f516c",
         "#00aabf",
     ];
-    const [size, setSize] = useState({ width: 500, height: 500 });
-    const [selectionStateInfo, setSelectionStateInfo] = useState({
+    const [size] = useState({ width: 500, height: 500 });
+    const [selectionStateInfo] = useState({
         highlightedAgents: [],
         hiddenAgents: [],
         colorChange: null,
@@ -48,7 +48,7 @@ export default function Viewer({
         <div className="viewer-container" key="viewer">
 
             <SimulariumViewer
-                lockedCamera={true}
+                // lockedCamera={true}
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}
                 height={size.height}
                 width={size.width}
@@ -67,7 +67,6 @@ export default function Viewer({
                 showPaths={true}
                 onError={console.log}
                 backgroundColor={[0, 0, 0]}
-                onRecordedMovie={() => {}}
             />
         </div>
     );

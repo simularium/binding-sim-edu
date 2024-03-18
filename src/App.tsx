@@ -37,18 +37,17 @@ const getActiveAgents = (reactionType: ReactionType) => {
 
 function App() {
     const [page, setPage] = useState(1);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [reactionType, setReactionType] = useState(ReactionType.A_B_AB);
+    const [reactionType] = useState(ReactionType.A_B_AB);
     const [isPlaying, setIsPlaying] = useState(false);
     const [inputConcentration, setInputConcentration] = useState(
         INITIAL_CONCENTRATIONS
     );
-    const [timeFactor, setTimeFactor] = useState(30);
+    const [timeFactor] = useState(30);
     const [productOverTime, setProductOverTime] = useState({
         [inputConcentration[AvailableAgentNames.B]]: [0],
     });
 
-    const [bindingEventsOverTime, setBindingEventsOverTime] = useState<number[]>([])
+    const [bindingEventsOverTime, setBindingEventsOverTime] = useState<number[]>([]);
     const [unBindingEventsOverTime, setUnBindingEventsOverTime] = useState<number[]>([]);
 
     const simulariumController = useMemo(() => {
@@ -125,6 +124,8 @@ function App() {
         };
         setProductOverTime(newState);
         simulariumController.gotoTime(time + 1);
+        setBindingEventsOverTime([]);
+        setUnBindingEventsOverTime([]);
     };
     return (
         <>
