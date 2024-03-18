@@ -10,7 +10,7 @@ type ProgressionControlChild =
     React.ReactElement<ProgressionControlChildProps>;
 interface ProgressionControlProps {
     children: ProgressionControlChild;
-    onPage: number;
+    onPage: number | number[];
 }
 
 /**
@@ -24,6 +24,12 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
 }) => {
     const { page, setPage } = useContext(SimulariumContext);
     const progress = () => {
+        if (Array.isArray(onPage)) {
+            if (onPage.includes(page)) {
+                setPage(page + 1);
+            }
+            return;
+        }
         if (page === onPage) {
             setPage(page + 1);
         }

@@ -64,6 +64,12 @@ export const highAffinityContentArray: ContentPanelProps[] = [
     },
 ];
 
+export const moduleNames = {
+    [ReactionType.A_B_AB] : "High Affinity",
+    [ReactionType.A_C_AC] : "Low Affinity",
+    [ReactionType.A_B_C_AB_AC] : "Competitive Binding",
+}
+
 export default {
     [ReactionType.A_B_AB]: highAffinityContentArray
 } as {[key in ReactionType]: ContentPanelProps[]};

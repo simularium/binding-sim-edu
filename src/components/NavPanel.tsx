@@ -1,30 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface NavPanelProps {
-    steps: string[];
+    title: number;
+    page: number;
+    total: number;
 }
 
-const NavPanel: React.FC<NavPanelProps> = ({ steps }) => {
-    const [currentStep, setCurrentStep] = useState(0);
+const NavPanel: React.FC<NavPanelProps> = ({ title, page, total }) => {
 
-    const handleStepChange = (stepIndex: number) => {
-        setCurrentStep(stepIndex);
-    };
 
     return (
         <div>
-            <ul>
-                {steps.map((step, index) => (
-                    <li
-                        key={index}
-                        onClick={() => handleStepChange(index)}
-                        style={{ fontWeight: currentStep === index ? 'bold' : 'normal' }}
-                    >
-                        {step}
-                    </li>
-                ))}
-            </ul>
-            <p>Current Step: {steps[currentStep]}</p>
+                {title} {page} / {total}
         </div>
     );
 };

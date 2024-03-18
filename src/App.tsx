@@ -13,10 +13,11 @@ import LeftPanel from "./components/LeftPanel";
 import RightPanel from "./components/RightPanel";
 import ReactionDisplay from "./components/ReactionDisplay";
 import ContentPanel from "./components/ContentPanel";
-import content from "./content";
+import content, { moduleNames } from "./content";
 import { ReactionType } from "./constants";
 import CenterPanel from "./components/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
+import NavPanel from "./components/NavPanel";
 
 const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
@@ -175,6 +176,11 @@ function App() {
                         setPage,
                     }}
                 >
+                    <NavPanel
+                        page={page}
+                        title={moduleNames[reactionType]}
+                        total={content[reactionType].length}
+                    />
                     <ContentPanel {...content[reactionType][page]} />
                     <ReactionDisplay reactionType={reactionType} />
                     <div style={{ display: "flex" }}>
