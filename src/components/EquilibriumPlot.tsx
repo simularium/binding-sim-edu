@@ -19,7 +19,6 @@ const PLOT_COLORS = [
     "#cab2d6",
 ];
 const EquilibriumPlot: React.FC<PlotProps> = ({ x, y }) => {
-    const colorNumber = 0;
     const trace = [
         {
             x,
@@ -27,7 +26,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y }) => {
             type: "scatter" as const,
             mode: "markers" as const,
             name: "equilibrium",
-            marker: { color: PLOT_COLORS[colorNumber] },
+            marker: { color: PLOT_COLORS.slice(0, x.length)},
         },
     ];
 
