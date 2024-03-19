@@ -143,6 +143,13 @@ function App() {
         resetState();
     };
 
+    const setEquilibriumFeedbackTimeout = (message: string) => {
+        setEquilibriumFeedback(message);
+        setTimeout(() => {
+            setEquilibriumFeedback("");
+        }, 3000);
+    };
+
     const handleRecordEquilibrium = () => {
         const productConcentration =
             clientSimulator.getCurrentConcentrationBound();
@@ -156,10 +163,7 @@ function App() {
         const currentArray = productOverTime[currentConcentration];
         const currentTime = currentArray.length;
         if (currentTime < 600) {
-            setEquilibriumFeedback("Not yet!");
-            setTimeout(() => {
-                setEquilibriumFeedback("");
-            }, 3000);
+            setEquilibriumFeedbackTimeout("Not yet!");
             return false;
         }
         setInputEquilibriumConcentrations([
@@ -170,11 +174,7 @@ function App() {
             ...productEquilibriumConcentrations,
             productConcentration,
         ]);
-        setEquilibriumFeedback("Great!");
-        setTimeout(() => {
-            setEquilibriumFeedback("");
-        }, 3000);
-                
+        setEquilibriumFeedbackTimeout("Great!");          
     };
 
     return (
