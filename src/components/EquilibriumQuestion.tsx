@@ -3,25 +3,33 @@ import QuizForm from "./QuizForm";
 import VisibilityControl from "./VisibilityControl";
 import SuccessFeedback from "./SuccessFeedback";
 
+enum FormState {
+    Correct = "Correct",
+    Incorrect = "Incorrect",
+    Clear = "Clear",
+}
+
 const EquilibriumQuestion: React.FC = () => {
     const [selectedAnswer, setSelectedAnswer] = useState("");
-    const [submitButtonLabel, setSubmitButtonLabel] = useState("Submit");
-    const [success, setSuccess] = useState(false);
+    const [formState, setFormState] = useState(FormState.Clear);
 
     const handleAnswerSelection = (answer: string) => {
         setSelectedAnswer(answer);
     };
 
     const handleSubmit = () => {
-        if (submitButtonLabel === "Try Again") {
-            setSubmitButtonLabel("Submit");
+        // If they already submitted an incorrect answer
+        // hitting the submit button again will reset the form
+        if (formState === FormState.Incorrect) {
             setSelectedAnswer("");
+            setFormState(FormState.Clear);
             return;
         }
+        // Otherwise, check the answer
         if (selectedAnswer === "C") {
-            setSuccess(true);
+            setFormState(FormState.Correct);
         } else {
-            setSubmitButtonLabel("Try Again");
+            setFormState(FormState.Incorrect);
         }
     };
 
@@ -54,14 +62,14 @@ const EquilibriumQuestion: React.FC = () => {
                     </li>
                 ))}
             </ul>
-            {submitButtonLabel === "Try Again" && <p>Sorry that's incorrect</p>}
+            {formState === FormState.Incorrect && <p>Sorry that's incorrect</p>}
         </>
     );
     // TODO: this should only be shown at 4, but need to merge other changes before we can 
     // get to page 4 
     return (
         <VisibilityControl includedPages={[2, 4]}>
-            {success ? (
+            {formState === FormState.Correct ? (
                 <SuccessFeedback
                     message={
                         "It’s the forward and reverse reaction rates that are equal at equilibrium, not the concentrations of reactants and products. And binding and unbinding events don’t stop happening."
@@ -72,7 +80,7 @@ const EquilibriumQuestion: React.FC = () => {
                     title="Which of the following is true about equilibrium?"
                     formContent={formContent}
                     onSubmit={handleSubmit}
-                    submitButtonLabel={submitButtonLabel}
+                    submitButtonLabel={formState === FormState.Incorrect ? "Try Again" : "Submit"}
                 />
             )}
         </VisibilityControl>
