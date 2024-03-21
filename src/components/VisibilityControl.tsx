@@ -1,17 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { SimulariumContext } from '../simulation/context';
 
 interface VisibilityControlProps {
-    excludedPages: number[];
-    currentPage: number;
+    excludedPages?: number[];
     children: React.ReactNode;
+    includedPages?: number[];
 }
 
 const VisibilityControl: React.FC<VisibilityControlProps> = ({
     excludedPages,
-    currentPage,
     children,
+    includedPages,
 }) => {
-    const shouldRender = !excludedPages.includes(currentPage);
+    const { page } = useContext(SimulariumContext);
+
+    let shouldRender = true;
+    if (includedPages) {
+        shouldRender = includedPages.includes(page);
+        return shouldRender ? <>{children}</> : null;
+    } else if (excludedPages) {
+
+        shouldRender = !excludedPages.includes(page);
+    }
     return shouldRender ? <>{children}</> : null;
 };
 
