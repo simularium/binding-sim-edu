@@ -68,7 +68,7 @@ const EquilibriumQuestion: React.FC = () => {
     // TODO: this should only be shown at 4, but need to merge other changes before we can 
     // get to page 4 
     return (
-        <VisibilityControl includedPages={[2, 4]}>
+        <VisibilityControl includedPages={[4]}>
             {formState === FormState.Correct ? (
                 <SuccessFeedback
                     message={
