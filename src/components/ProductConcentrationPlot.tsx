@@ -2,6 +2,7 @@ import { map } from "lodash";
 import { PlotData } from "plotly.js";
 import React from "react";
 import Plot from "react-plotly.js";
+import { BASE_PLOT_LAYOUT } from "../constants";
 
 interface PlotProps {
     data: { [key: string]: number[] };
@@ -41,11 +42,10 @@ const ProductConcentrationPlot: React.FC<PlotProps> = ({ data }) => {
     );
 
     const layout = {
+        ...BASE_PLOT_LAYOUT,
         title: "Concentration over Time",
-        xaxis: { title: "time (ns)", range: [0, "auto"], color: "#D3D3D3" },
-        yaxis: { title: "[AB]", color: "#D3D3D3" },
-        paper_bgcolor: "#141219",
-        plot_bgcolor: "#141219",
+        xaxis: { ...BASE_PLOT_LAYOUT.xaxis, title: "time (ns)"},
+        yaxis: { ...BASE_PLOT_LAYOUT.yaxis, title: "[AB]"},
     };
 
     return <Plot data={traces} layout={layout} />;

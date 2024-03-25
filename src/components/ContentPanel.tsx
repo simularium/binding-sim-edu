@@ -1,4 +1,5 @@
 import React from 'react';
+import NextButton from './NextButton';
 
 export interface ContentPanelProps {
     content: string;
@@ -12,12 +13,14 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
     content,
     title,
     callToAction,
+    nextButton,
 }) => {
     return (
         <div>
             {title && <h1>{title}</h1>}
             <p>{content}</p>
             {callToAction && <p>{callToAction}</p>}
+            {nextButton && <NextButton />}
         </div>
     );
 };
