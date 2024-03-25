@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import ProductConcentrationPlot from "./ProductConcentrationPlot";
 import VisibilityControl from "./VisibilityControl";
-import { SimulariumContext } from "../simulation/context";
 import RecordEquilibriumButton from "./RecordEquilibriumButton";
 import EquilibriumPlot from "./EquilibriumPlot";
 
