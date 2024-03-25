@@ -1,4 +1,11 @@
-import { FormEventHandler } from "react";
+import {
+    ChangeEvent,
+    ChangeEventHandler,
+    FormEvent,
+    FormEventHandler,
+    MouseEvent as ReactMouseEvent,
+    MouseEventHandler,
+} from "react";
 
 export enum AvailableAgentNames {
     A = "A",
@@ -15,22 +22,23 @@ export interface InputAgent {
     kOff?: number;
     count?: number;
 }
-export type ProgressionInputEvent = 
-    React.ChangeEvent<HTMLInputElement> &
-    React.FormEvent<HTMLButtonElement>;
+export type ProgressionInputEvent = ChangeEvent<HTMLInputElement> &
+    FormEvent<HTMLButtonElement>;
 
 export type ProgressionMouseEvent =
-    | React.MouseEvent<HTMLButtonElement>
-    | React.MouseEvent<HTMLInputElement>
-    | React.MouseEvent<HTMLInputElement, MouseEvent>;
+    | ReactMouseEvent<HTMLButtonElement>
+    | ReactMouseEvent<HTMLInputElement>
+    | ReactMouseEvent<HTMLInputElement, MouseEvent>;
 
 export type BaseHandler =
     | FormEventHandler<HTMLButtonElement>
-    | React.MouseEventHandler<HTMLButtonElement>
-    | React.ChangeEventHandler<HTMLInputElement>
+    | MouseEventHandler<HTMLButtonElement>
+    | ChangeEventHandler<HTMLInputElement>
     | ((
           event: unknown,
           optionalValue?: string | number | string[] | number[]
-      ) => void); // case where we intercept the handler  
-      
-export type ProgressionControlEvent = React.FormEvent<HTMLButtonElement> & React.MouseEvent<HTMLButtonElement, MouseEvent> & React.ChangeEvent<HTMLInputElement>;
+      ) => undefined | boolean); // case where we intercept the handler
+
+export type ProgressionControlEvent = FormEvent<HTMLButtonElement> &
+    ReactMouseEvent<HTMLButtonElement, MouseEvent> &
+    ChangeEvent<HTMLInputElement>;

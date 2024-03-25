@@ -28,9 +28,7 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
             if (onPage.includes(page)) {
                 setPage(page + 1);
             }
-            return;
-        }
-        if (page === onPage) {
+        } else if (page === onPage) {
             setPage(page + 1);
         }
     };
