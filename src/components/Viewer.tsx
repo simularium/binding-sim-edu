@@ -46,9 +46,8 @@ export default function Viewer({
 
     return (
         <div className="viewer-container" key="viewer">
-
             <SimulariumViewer
-                // lockedCamera={true}
+                lockedCamera={true}
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}
                 height={size.height}
                 width={size.width}

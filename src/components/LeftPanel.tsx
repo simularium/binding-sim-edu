@@ -22,7 +22,14 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
 }) => {
     const { isPlaying } = useContext(SimulariumContext);
     return (
-        <div>
+        <div
+            style={{
+                minWidth: 260,
+                display: "flex",
+                flexFlow: "column",
+                flex: "1 1 30%",
+            }}
+        >
             <VisibilityControl excludedPages={[0, 1]}>
                 <Concentration
                     activeAgents={activeAgents}
