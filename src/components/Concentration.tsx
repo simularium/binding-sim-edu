@@ -2,7 +2,6 @@ import React from "react";
 import Slider from "./Slider";
 import { map } from "lodash";
 import { AvailableAgentNames } from "../types";
-import ProgressionControl from "./ProgressionControl";
 
 interface AgentProps {
     activeAgents: AvailableAgentNames[];
@@ -22,7 +21,6 @@ const Concentration: React.FC<AgentProps> = ({
             return null;
         }
         return (
-            <ProgressionControl onPage={5}>
                 <Slider
                     min={1}
                     max={20}
@@ -32,7 +30,6 @@ const Concentration: React.FC<AgentProps> = ({
                     key={agent}
                     disabled={disabled}
                 />
-            </ProgressionControl>
         );
     });
 };

@@ -46,9 +46,8 @@ export default function Viewer({
 
     return (
         <div className="viewer-container" key="viewer">
-
             <SimulariumViewer
-                // lockedCamera={true}
+                lockedCamera={true}
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}
                 height={size.height}
                 width={size.width}
@@ -67,6 +66,7 @@ export default function Viewer({
                 showPaths={true}
                 onError={console.log}
                 backgroundColor={[0, 0, 0]}
+                onRecordedMovie={() => {}}
             />
         </div>
     );

@@ -8,15 +8,16 @@ import {
     createAgentsFromConcentrations,
 } from "./constants/trajectories";
 import { AvailableAgentNames } from "./types";
-import Slider from "./components/Slider";
+// import Slider from "./components/Slider";
 import LeftPanel from "./components/LeftPanel";
 import RightPanel from "./components/RightPanel";
 import ReactionDisplay from "./components/ReactionDisplay";
 import ContentPanel from "./components/ContentPanel";
-import content from "./content";
+import content, { moduleNames } from "./content";
 import { ReactionType } from "./constants";
 import CenterPanel from "./components/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
+import NavPanel from "./components/NavPanel";
 
 const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
@@ -37,19 +38,28 @@ const getActiveAgents = (reactionType: ReactionType) => {
 
 function App() {
     const [page, setPage] = useState(1);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [reactionType] = useState(ReactionType.A_B_AB);
     const [isPlaying, setIsPlaying] = useState(false);
     const [inputConcentration, setInputConcentration] = useState(
         INITIAL_CONCENTRATIONS
     );
-    const [timeFactor, setTimeFactor] = useState(30);
+    const [timeFactor] = useState(30);
     const [productOverTime, setProductOverTime] = useState({
         [inputConcentration[AvailableAgentNames.B]]: [0],
     });
-
-    const [bindingEventsOverTime, setBindingEventsOverTime] = useState<number[]>([]);
-    const [unBindingEventsOverTime, setUnBindingEventsOverTime] = useState<number[]>([]);
+    const [bindingEventsOverTime, setBindingEventsOverTime] = useState<
+        number[]
+    >([]);
+    const [unBindingEventsOverTime, setUnBindingEventsOverTime] = useState<
+        number[]
+    >([]);
+    const [inputEquilibriumConcentrations, setInputEquilibriumConcentrations] =
+        useState<number[]>([]);
+    const [
+        productEquilibriumConcentrations,
+        setProductEquilibriumConcentrations,
+    ] = useState<number[]>([]);
+    const [equilibriumFeedback, setEquilibriumFeedback] = useState<string>("");
 
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
@@ -112,6 +122,11 @@ function App() {
         clientSimulator.setTimeScale(timeFactor);
     }, [timeFactor, clientSimulator]);
 
+    const resetState = () => {
+        setBindingEventsOverTime([]);
+        setUnBindingEventsOverTime([]);
+    };
+
     const handleNewInputConcentration = (name: string, value: number) => {
         const agentName = name as AvailableAgentNames;
         const agentId = AVAILABLE_AGENTS[agentName].id;
@@ -125,9 +140,43 @@ function App() {
         };
         setProductOverTime(newState);
         simulariumController.gotoTime(time + 1);
-        setBindingEventsOverTime([]);
-        setUnBindingEventsOverTime([]);
+        resetState();
     };
+
+    const setEquilibriumFeedbackTimeout = (message: string) => {
+        setEquilibriumFeedback(message);
+        setTimeout(() => {
+            setEquilibriumFeedback("");
+        }, 3000);
+    };
+
+    const handleRecordEquilibrium = () => {
+        const productConcentration =
+            clientSimulator.getCurrentConcentrationBound();
+        const reactantConcentration = inputConcentration[AvailableAgentNames.B];
+
+        // TODO: do a better job of determining if we've reached equilibrium
+        // for now we're using how long the simulation has been running
+        // as a proxy for reaching equilibrium
+        const currentConcentration =
+            inputConcentration[AvailableAgentNames.B];
+        const currentArray = productOverTime[currentConcentration];
+        const currentTime = currentArray.length;
+        if (currentTime < 600) {
+            setEquilibriumFeedbackTimeout("Not yet!");
+            return false;
+        }
+        setInputEquilibriumConcentrations([
+            ...inputEquilibriumConcentrations,
+            reactantConcentration,
+        ]);
+        setProductEquilibriumConcentrations([
+            ...productEquilibriumConcentrations,
+            productConcentration,
+        ]);
+        setEquilibriumFeedbackTimeout("Great!");          
+    };
+
     return (
         <>
             <div className="app">
@@ -141,31 +190,48 @@ function App() {
                         setPage,
                     }}
                 >
+                    <NavPanel
+                        page={page}
+                        title={moduleNames[reactionType]}
+                        total={content[reactionType].length}
+                    />
                     <ContentPanel {...content[reactionType][page]} />
                     <ReactionDisplay reactionType={reactionType} />
-                    <Slider
-                        // This is a debugging feature but wont
-                        // be present in the app
-                        min={0}
-                        max={100}
-                        initialValue={timeFactor}
-                        onChange={(_, value) => {
-                            setTimeFactor(value);
-                        }}
-                        disabled={false}
-                        name="time factor (ns)"
-                    />
-                    <LeftPanel
-                        activeAgents={getActiveAgents(reactionType)}
-                        inputConcentration={inputConcentration}
-                        handleNewInputConcentration={
-                            handleNewInputConcentration
-                        }
-                        bindingEventsOverTime={bindingEventsOverTime}
-                        unbindingEventsOverTime={unBindingEventsOverTime}
-                    />
-                    <RightPanel productOverTime={productOverTime} />
-                    <CenterPanel />
+                    <div style={{ display: "flex" }}>
+                        {/* <Slider
+                            // This is a debugging feature but wont
+                            // be present in the app
+                            min={0}
+                            max={100}
+                            initialValue={timeFactor}
+                            onChange={(_, value) => {
+                                setTimeFactor(value);
+                            }}
+                            disabled={false}
+                            name="time factor (ns)"
+                        /> */}
+                        <LeftPanel
+                            activeAgents={getActiveAgents(reactionType)}
+                            inputConcentration={inputConcentration}
+                            handleNewInputConcentration={
+                                handleNewInputConcentration
+                            }
+                            bindingEventsOverTime={bindingEventsOverTime}
+                            unbindingEventsOverTime={unBindingEventsOverTime}
+                        />
+                        <CenterPanel />
+                        <RightPanel
+                            productOverTime={productOverTime}
+                            handleRecordEquilibrium={handleRecordEquilibrium}
+                            equilibriumConcentrations={{
+                                inputConcentrations:
+                                    inputEquilibriumConcentrations,
+                                productConcentrations:
+                                    productEquilibriumConcentrations,
+                            }}
+                            equilibriumFeedback={equilibriumFeedback}
+                        />
+                    </div>
                 </SimulariumContext.Provider>
             </div>
         </>
