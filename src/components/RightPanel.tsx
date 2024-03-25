@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import ProductConcentrationPlot from "./ProductConcentrationPlot";
 import VisibilityControl from "./VisibilityControl";
 import { SimulariumContext } from "../simulation/context";
@@ -21,13 +21,12 @@ const RightPanel: React.FC<RightPanelProps> = ({
     equilibriumConcentrations,
     equilibriumFeedback,
 }) => {
-    const { page } = useContext(SimulariumContext);
     return (
         <div style={{ minWidth: 260, flex: "1 1 30%" }}>
-            <VisibilityControl excludedPages={[0, 1, 2]} currentPage={page}>
+            <VisibilityControl excludedPages={[0, 1, 2]}>
                 <ProductConcentrationPlot data={productOverTime} />
             </VisibilityControl>
-            <VisibilityControl excludedPages={[0, 1, 2]} currentPage={page}>
+            <VisibilityControl excludedPages={[0, 1, 2]}>
                 <EquilibriumPlot
                     x={equilibriumConcentrations.inputConcentrations}
                     y={equilibriumConcentrations.productConcentrations}
