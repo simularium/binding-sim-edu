@@ -8,7 +8,7 @@ const RecordEquilibriumButton = ({
     handleRecordEquilibrium,
 }: RecordEquilibriumButtonProps) => {
     return (
-        <ProgressionControl onPage={3}>
+        <ProgressionControl onPage={[3, 6]}>
             <button onClick={handleRecordEquilibrium}>Record</button>
         </ProgressionControl>
     );
