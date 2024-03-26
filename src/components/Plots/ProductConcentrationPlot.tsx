@@ -2,23 +2,12 @@ import { map } from "lodash";
 import { PlotData } from "plotly.js";
 import React from "react";
 import Plot from "react-plotly.js";
-import { BASE_PLOT_LAYOUT } from "./constants";
+import { BASE_PLOT_LAYOUT, PLOT_COLORS } from "./constants";
 
 interface PlotProps {
     data: { [key: string]: number[] };
 }
 
-const PLOT_COLORS = [
-    "#a6cee3",
-    "#b2df8a",
-    "#33a02c",
-    "#fb9a99",
-    "#1f78b4",
-    "#e31a1c",
-    "#fdbf6f",
-    "#ff7f00",
-    "#cab2d6",
-];
 const ProductConcentrationPlot: React.FC<PlotProps> = ({ data }) => {
     const traces = map(
         data,
