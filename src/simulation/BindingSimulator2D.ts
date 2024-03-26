@@ -314,19 +314,19 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         }
     }
 
-    private countAgentsOnEachSide(agent: BindingInstance) {
+    private countNumberOfInstancesOnEachSide(agentInstance: BindingInstance) {
         if (this._isMixed) {
             return;
         }
-        if (agent.id !== this.mixCheckAgent) {
+        if (agentInstance.id !== this.mixCheckAgent) {
             return;
         }
 
         // checking the rightmost quadrant
         // and the left most quadrant
-        if (agent.pos.x < - size / 4) {
+        if (agentInstance.pos.x < - size / 4) {
             this.numberAgentOnLeft++;
-        } else if (agent.pos.x > size / 4){
+        } else if (agentInstance.pos.x > size / 4){
             this.numberAgentOnRight++;
         }
     }
@@ -485,7 +485,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
         for (let i = 0; i < this.instances.length; ++i) {
             this.instances[i].oneStep(this.timeFactor);
-            this.countAgentsOnEachSide(this.instances[i]);
+            this.countNumberOfInstancesOnEachSide(this.instances[i]);
         }
         // reset to zero for every tenth time point
         if (this.currentFrame % 10 === 0) {
