@@ -71,6 +71,7 @@ const EquilibriumQuestion: React.FC = () => {
                 submitButtonLabel={
                     formState === FormState.Incorrect ? "Try Again" : "Submit"
                 }
+                minimizedTitle="Q:Equilibrium"
             />
         </VisibilityControl>
     );

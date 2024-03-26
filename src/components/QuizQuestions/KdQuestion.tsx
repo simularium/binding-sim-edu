@@ -44,6 +44,7 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
                 successMessage="A and B have a high affinity for one another."
                 failureMessage="Sorry, that's incorrect."
                 formState={formState}
+                minimizedTitle="Q:Kd Value"
             />
         </VisibilityControl>
     );

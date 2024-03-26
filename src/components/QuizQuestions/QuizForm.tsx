@@ -10,10 +10,12 @@ interface QuizFormProps {
     formState: FormState;
     successMessage: string;
     failureMessage: string;
+    minimizedTitle: string;
 }
 
 const QuizForm: React.FC<QuizFormProps> = ({
     title,
+    minimizedTitle,
     formContent,
     onSubmit,
     formState,
@@ -31,7 +33,7 @@ const QuizForm: React.FC<QuizFormProps> = ({
         <SuccessFeedback message={successMessage} />
     ) : (
         <div>
-            <h2>{title}</h2>
+            <h2>{isFormVisible ? title : minimizedTitle}</h2>
             {isFormVisible && formContent}
             <button onClick={toggleFormVisibility}>
                 {isFormVisible ? "Hide Form" : "Show Form"}
