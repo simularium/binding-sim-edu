@@ -6,7 +6,6 @@ import SimulariumViewer, {
     TimeData,
 } from "@aics/simularium-viewer";
 import "@aics/simularium-viewer/style/style.css";
-import { AGENT_A_COLOR, AGENT_B_COLOR, AGENT_C_COLOR } from "../constants/colors";
 
 interface ViewerProps {
     controller: SimulariumController;
