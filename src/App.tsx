@@ -18,6 +18,7 @@ import CenterPanel from "./components/MainLayout/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
 import NavPanel from "./components/MainLayout/NavPanel";
 import AdminUI from "./components/AdminUi";
+import { uniq } from "lodash";
 
 const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
@@ -125,10 +126,20 @@ function App() {
     }, [timeFactor, clientSimulator]);
 
     useEffect(() => {
+        // we pause the simulation to show them how to adjust 
+        // the concentration of the reactant
+        // this happens on page 5. 
         if (page === 5) {
             setIsPlaying(false);
         }
-    }, [page]);
+        // they have finished recording equilibrium concentrations
+        // I don't love that this breaks the progression control handling all
+        // progress through the content, but I can't think of a way to include this
+        // in the progression control without making it more complicated
+        if (uniq(inputEquilibriumConcentrations).length >= 6) {
+            setPage(8);
+        }
+    }, [page, inputEquilibriumConcentrations]);
 
     const resetState = () => {
         setBindingEventsOverTime([]);
@@ -183,13 +194,7 @@ function App() {
         ]);
         setEquilibriumFeedbackTimeout("Great!");
 
-        // they have finished recording equilibrium concentrations
-        // I don't love that this breaks the progression control handling all 
-        // progress through the content, but I can't think of a way to include this 
-        // in the progression control without making it more complicated
-        if (inputEquilibriumConcentrations.length >= 6 ) {
-            setPage(8);
-        }
+
     };
 
     return (
