@@ -3,6 +3,7 @@ import { PlotData } from "plotly.js";
 import React from "react";
 import Plot from "react-plotly.js";
 import { BASE_PLOT_LAYOUT, PLOT_COLORS } from "./constants";
+import { getColorIndex } from "./utils";
 
 interface PlotProps {
     data: { [key: string]: number[] };
@@ -18,14 +19,13 @@ const ProductConcentrationPlot: React.FC<PlotProps> = ({ data }) => {
                 // already but not necessarily data yet
                 return {};
             }
-            const colorNumber = Number(id) % PLOT_COLORS.length;
             return {
                 x: yValues.map((_, i) => i),
                 y: yValues,
                 type: "scatter" as const,
                 mode: "lines" as const,
                 name: id,
-                line: { color: PLOT_COLORS[colorNumber] },
+                line: { color: PLOT_COLORS[getColorIndex(id)] },
             };
         }
     );
