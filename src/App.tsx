@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import { uniq } from "lodash";
+import { SimulariumController, TimeData } from "@aics/simularium-viewer";
 
 import "./App.css";
-import { SimulariumController, TimeData } from "@aics/simularium-viewer";
 import BindingSimulator from "./simulation/BindingSimulator2D";
 import {
     AVAILABLE_AGENTS,
@@ -126,7 +127,14 @@ function App() {
         if (page === 5) {
             setIsPlaying(false);
         }
-    }, [page]);
+        // they have finished recording equilibrium concentrations
+        // I don't love that this breaks the progression control handling all
+        // progress through the content, but I can't think of a way to include this
+        // in the progression control without making it more complicated
+        if (uniq(inputEquilibriumConcentrations).length >= 6) {
+            setPage(8);
+        }
+    }, [page, inputEquilibriumConcentrations]);
 
     const resetState = () => {
         setBindingEventsOverTime([]);
@@ -180,14 +188,6 @@ function App() {
             productConcentration,
         ]);
         setEquilibriumFeedbackTimeout("Great!");
-
-        // they have finished recording equilibrium concentrations
-        // I don't love that this breaks the progression control handling all 
-        // progress through the content, but I can't think of a way to include this 
-        // in the progression control without making it more complicated
-        if (inputEquilibriumConcentrations.length >= 6 ) {
-            setPage(8);
-        }
     };
 
     return (
