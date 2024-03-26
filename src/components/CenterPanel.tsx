@@ -1,8 +1,8 @@
 import React from 'react';
 import ViewSwitch from './ViewSwitch';
 import PlayButton from './PlayButton';
-import EquilibriumQuestion from './EquilibriumQuestion';
-import KdQuestion from './KdQuestion';
+import EquilibriumQuestion from './QuizQuestions/EquilibriumQuestion';
+import KdQuestion from './QuizQuestions/KdQuestion';
 import { ReactionType } from '../constants';
 
 interface CenterPanelProps {

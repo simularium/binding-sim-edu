@@ -1,16 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { FormState } from "./types";
+import SuccessFeedback from "./SuccessFeedback";
 
 interface QuizFormProps {
     title: string;
     formContent: JSX.Element | JSX.Element[];
     onSubmit: () => void;
     submitButtonLabel?: string;
+    formState: FormState;
+    successMessage: string;
+    failureMessage: string;
 }
 
 const QuizForm: React.FC<QuizFormProps> = ({
     title,
     formContent,
     onSubmit,
+    formState,
+    successMessage,
+    failureMessage,
     submitButtonLabel = "Submit",
 }) => {
     const [isFormVisible, setIsFormVisible] = useState(true);
@@ -19,18 +27,17 @@ const QuizForm: React.FC<QuizFormProps> = ({
         setIsFormVisible(!isFormVisible);
     };
 
-    const handleSubmit = () => {
-        onSubmit();
-    };
-
-    return (
+    return formState === FormState.Correct ? (
+        <SuccessFeedback message={successMessage} />
+    ) : (
         <div>
             <h2>{title}</h2>
             {isFormVisible && formContent}
             <button onClick={toggleFormVisibility}>
                 {isFormVisible ? "Hide Form" : "Show Form"}
             </button>
-            <button onClick={() => handleSubmit()}>{submitButtonLabel}</button>
+            {formState === FormState.Incorrect && <p>{failureMessage}</p>}
+            <button onClick={onSubmit}>{submitButtonLabel}</button>
         </div>
     );
 };

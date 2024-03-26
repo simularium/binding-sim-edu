@@ -43,9 +43,3 @@ export type BaseHandler =
 export type ProgressionControlEvent = FormEvent<HTMLButtonElement> &
     ReactMouseEvent<HTMLButtonElement, MouseEvent> &
     ChangeEvent<HTMLInputElement>;
-
-export enum FormState {
-    Correct = "Correct",
-    Incorrect = "Incorrect",
-    Clear = "Clear",
-}

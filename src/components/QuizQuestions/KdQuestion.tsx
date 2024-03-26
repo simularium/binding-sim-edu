@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import QuizForm from "./QuizForm";
-import VisibilityControl from "./VisibilityControl";
-import { ReactionType, kds } from "../constants";
-import { FormState } from "../types";
-import SuccessFeedback from "./SuccessFeedback";
+import VisibilityControl from "../VisibilityControl";
+import { ReactionType, kds } from "../../constants";
+import { FormState } from "./types";
 
 interface KdQuestionProps {
     reactionType: ReactionType;
@@ -34,24 +33,18 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
                 value={selectedAnswer || ""}
                 onChange={(e) => setSelectedAnswer(Number(e.target.value))}
             />
-            {formState === FormState.Incorrect && <p>Sorry that's incorrect</p>}
         </>
     );
     return (
         <VisibilityControl includedPages={[1, 2, 8]}>
-            {formState === FormState.Correct ? (
-                <SuccessFeedback
-                    message={
-                        "A and B have a high affinity for one another."
-                    }
-                />
-            ) : (
             <QuizForm
                 title="You reached the point where half of the binding sites of A are occupied."
                 formContent={formContent}
                 onSubmit={handleSubmit}
+                successMessage="A and B have a high affinity for one another."
+                failureMessage="Sorry, that's incorrect."
+                formState={formState}
             />
-            )}
         </VisibilityControl>
     );
 };

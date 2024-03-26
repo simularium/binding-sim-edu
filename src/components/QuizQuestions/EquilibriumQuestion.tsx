@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import QuizForm from "./QuizForm";
-import VisibilityControl from "./VisibilityControl";
-import SuccessFeedback from "./SuccessFeedback";
-import { FormState } from "../types";
-
-
+import VisibilityControl from "../VisibilityControl";
+import { FormState } from "./types";
 
 const EquilibriumQuestion: React.FC = () => {
     const [selectedAnswer, setSelectedAnswer] = useState("");
@@ -59,27 +56,22 @@ const EquilibriumQuestion: React.FC = () => {
                     </li>
                 ))}
             </ul>
-            {formState === FormState.Incorrect && <p>Sorry that's incorrect</p>}
         </>
     );
-    // TODO: this should only be shown at 4, but need to merge other changes before we can 
-    // get to page 4 
+
     return (
         <VisibilityControl includedPages={[4]}>
-            {formState === FormState.Correct ? (
-                <SuccessFeedback
-                    message={
-                        "It’s the forward and reverse reaction rates that are equal at equilibrium, not the concentrations of reactants and products. And binding and unbinding events don’t stop happening."
-                    }
-                />
-            ) : (
-                <QuizForm
-                    title="Which of the following is true about equilibrium?"
-                    formContent={formContent}
-                    onSubmit={handleSubmit}
-                    submitButtonLabel={formState === FormState.Incorrect ? "Try Again" : "Submit"}
-                />
-            )}
+            <QuizForm
+                title="Which of the following is true about equilibrium?"
+                formContent={formContent}
+                onSubmit={handleSubmit}
+                formState={formState}
+                successMessage="It’s the forward and reverse reaction rates that are equal at equilibrium, not the concentrations of reactants and products. And binding and unbinding events don’t stop happening."
+                failureMessage="Sorry, that's incorrect."
+                submitButtonLabel={
+                    formState === FormState.Incorrect ? "Try Again" : "Submit"
+                }
+            />
         </VisibilityControl>
     );
 };
