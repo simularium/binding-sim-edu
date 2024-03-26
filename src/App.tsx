@@ -20,6 +20,7 @@ import CenterPanel from "./components/MainLayout/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
 import NavPanel from "./components/MainLayout/NavPanel";
 import AdminUI from "./components/AdminUi";
+import { ProductOverTimeTrace } from "./components/Plots/types";
 
 const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
@@ -42,15 +43,24 @@ const ADJUSTABLE_AGENT = AvailableAgentNames.B;
 
 function App() {
     const [page, setPage] = useState(1);
-    const [reactionType] = useState(ReactionType.A_B_AB);
     const [isPlaying, setIsPlaying] = useState(false);
+
+    /**
+     * Simulation state
+     * input values for the simulation
+     */
+    const [reactionType] = useState(ReactionType.A_B_AB);
     const [inputConcentration, setInputConcentration] = useState(
         INITIAL_CONCENTRATIONS
     );
     const [timeFactor, setTimeFactor] = useState(DEFAULT_TIME_FACTOR);
-    const [productOverTime, setProductOverTime] = useState({
-        [inputConcentration[ADJUSTABLE_AGENT]]: [0],
-    });
+
+
+    /**
+     * Analysis state
+     * used to create plots and feedback
+     */
+    const [productOverTimeTraces, setProductOverTimeTraces] = useState<ProductOverTimeTrace[]>([]);
     const [bindingEventsOverTime, setBindingEventsOverTime] = useState<
         number[]
     >([]);
@@ -64,6 +74,8 @@ function App() {
         setProductEquilibriumConcentrations,
     ] = useState<number[]>([]);
     const [equilibriumFeedback, setEquilibriumFeedback] = useState<string>("");
+    const [currentProductConcentrationArray, setCurrentProductConcentrationArray] = useState<number[]>([]);
+
 
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
@@ -80,14 +92,8 @@ function App() {
 
     const handleTimeChange = (timeData: TimeData) => {
         const newValue = clientSimulator.getCurrentConcentrationBound();
-        const currentConcentration = inputConcentration[ADJUSTABLE_AGENT];
-        const currentArray = productOverTime[currentConcentration];
-        const newData = [...currentArray, newValue];
-        const newState = {
-            ...productOverTime,
-            [currentConcentration]: newData,
-        };
-        setProductOverTime(newState);
+        const newData = [...currentProductConcentrationArray, newValue];
+        setCurrentProductConcentrationArray(newData)
 
         if (timeData.time % 10 === 0) {
             const { numberBindEvents, numberUnBindEvents } =
@@ -127,9 +133,9 @@ function App() {
     }, [timeFactor, clientSimulator]);
 
     useEffect(() => {
-        // we pause the simulation to show them how to adjust 
+        // we pause the simulation to show them how to adjust
         // the concentration of the reactant
-        // this happens on page 5. 
+        // this happens on page 5.
         if (page === 5) {
             setIsPlaying(false);
         }
@@ -145,20 +151,28 @@ function App() {
     const resetState = () => {
         setBindingEventsOverTime([]);
         setUnBindingEventsOverTime([]);
+        setCurrentProductConcentrationArray([]);
     };
 
+    const addProductionTrace = (previousConcentration: number) => {
+        const traces = productOverTimeTraces;
+        if (currentProductConcentrationArray.length > 0) {
+            const newTrace = {
+                inputConcentration: previousConcentration,
+                productConcentrations: currentProductConcentrationArray,
+            };
+            setProductOverTimeTraces([...traces, newTrace]);
+        }
+    }
+    
     const handleNewInputConcentration = (name: string, value: number) => {
         const agentName = name as AvailableAgentNames;
         const agentId = AVAILABLE_AGENTS[agentName].id;
         clientSimulator.changeConcentration(agentId, value);
-
+        const previousConcentration = inputConcentration[agentName];
+        addProductionTrace(previousConcentration);
         setInputConcentration({ ...inputConcentration, [name]: value });
         const time = simulariumController.time();
-        const newState = {
-            ...productOverTime,
-            [value]: [],
-        };
-        setProductOverTime(newState);
         simulariumController.gotoTime(time + 1);
         resetState();
     };
@@ -188,7 +202,6 @@ function App() {
             productConcentration,
         ]);
         setEquilibriumFeedbackTimeout("Great!");
-
     };
 
     return (
@@ -202,7 +215,7 @@ function App() {
                         handleTimeChange,
                         page,
                         setPage,
-                        timeFactor
+                        timeFactor,
                     }}
                 >
                     <NavPanel
@@ -226,8 +239,14 @@ function App() {
                         />
                         <CenterPanel reactionType={reactionType} />
                         <RightPanel
-                            productOverTime={productOverTime}
+                            productOverTimeTraces={productOverTimeTraces}
+                            currentProductConcentrationArray={
+                                currentProductConcentrationArray
+                            }
                             handleRecordEquilibrium={handleRecordEquilibrium}
+                            currentAdjustableAgentConcentration={
+                                inputConcentration[ADJUSTABLE_AGENT]
+                            }
                             equilibriumConcentrations={{
                                 inputConcentrations:
                                     inputEquilibriumConcentrations,
@@ -237,7 +256,10 @@ function App() {
                             equilibriumFeedback={equilibriumFeedback}
                         />
                     </div>
-                    <AdminUI timeFactor={timeFactor} setTimeFactor={setTimeFactor}/>
+                    <AdminUI
+                        timeFactor={timeFactor}
+                        setTimeFactor={setTimeFactor}
+                    />
                 </SimulariumContext.Provider>
             </div>
         </>
