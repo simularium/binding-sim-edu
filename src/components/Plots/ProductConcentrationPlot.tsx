@@ -2,7 +2,7 @@ import { map } from "lodash";
 import { PlotData } from "plotly.js";
 import React from "react";
 import Plot from "react-plotly.js";
-import { BASE_PLOT_LAYOUT } from "../constants";
+import { BASE_PLOT_LAYOUT } from "./constants";
 
 interface PlotProps {
     data: { [key: string]: number[] };

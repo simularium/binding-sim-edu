@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import QuizForm from "./QuizForm";
-import VisibilityControl from "../VisibilityControl";
+import VisibilityControl from "../Shared/VisibilityControl";
 import { ReactionType, kds } from "../../constants";
 import { FormState } from "./types";
 

@@ -1,10 +1,12 @@
 import { AvailableAgentNames, InputAgent } from "../types";
+import { AGENT_A_COLOR, AGENT_B_COLOR, AGENT_C_COLOR } from "./colors";
 
 const agentA = {
     id: 0,
     concentration: 10,
     radius: 3,
     partners: [1, 2],
+    color: AGENT_A_COLOR
 };
 const agentB = {
     id: 1,
@@ -13,6 +15,7 @@ const agentB = {
     partners: [0],
     kOn: 0.6,
     kOff: 0.2,
+    color: AGENT_B_COLOR
 };
 
 const agentC = {
@@ -22,6 +25,7 @@ const agentC = {
     partners: [0],
     kOn: 0.5,
     kOff: 0.8,
+    color: AGENT_C_COLOR
 };
 
 export const AVAILABLE_AGENTS = {

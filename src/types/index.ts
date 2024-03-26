@@ -21,6 +21,7 @@ export interface InputAgent {
     kOn?: number;
     kOff?: number;
     count?: number;
+    color: string;
 }
 
 export type ProgressionInputEvent = ChangeEvent<HTMLInputElement> &

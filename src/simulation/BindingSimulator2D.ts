@@ -13,6 +13,7 @@ import {
     VisTypes,
 } from "@aics/simularium-viewer";
 import { InputAgent } from "../types";
+import { AGENT_AB_COLOR } from "../constants/colors";
 
 class BindingInstance extends Circle {
     id: number;
@@ -523,16 +524,16 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         for (let i = 0; i < this.agents.length; ++i) {
             typeMapping[this.agents[i].id] = {
                 name: `${this.agents[i].id}`,
-                // geometry: {
-
-                //     displayType: GeometryDisplayType.SPHERE,
-                //     url: "",
-                // }
+                geometry: {
+                    color: this.agents[i].color,
+                    displayType: GeometryDisplayType.SPHERE,
+                    url: "",
+                }
             };
             typeMapping[this.agents[i].id + 100] = {
                 name: `${this.agents[i].id}#bound`,
                 geometry: {
-                    color: "#81dbe6",
+                    color: AGENT_AB_COLOR,
                     displayType: GeometryDisplayType.SPHERE,
                     url: "",
                 },

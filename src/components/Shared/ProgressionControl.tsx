@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { SimulariumContext } from "../simulation/context";
-import { BaseHandler, ProgressionControlEvent } from "../types";
+import { SimulariumContext } from "../../simulation/context";
+import { BaseHandler, ProgressionControlEvent } from "../../types";
 
 type ProgressionControlChildProps =
 | React.InputHTMLAttributes<HTMLInputElement>

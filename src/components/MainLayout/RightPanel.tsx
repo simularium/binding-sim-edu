@@ -1,8 +1,8 @@
 import React from "react";
-import ProductConcentrationPlot from "./ProductConcentrationPlot";
-import VisibilityControl from "./VisibilityControl";
-import RecordEquilibriumButton from "./RecordEquilibriumButton";
-import EquilibriumPlot from "./EquilibriumPlot";
+import ProductConcentrationPlot from "../Plots/ProductConcentrationPlot";
+import VisibilityControl from "../Shared/VisibilityControl";
+import RecordEquilibriumButton from "../RecordEquilibriumButton";
+import EquilibriumPlot from "../Plots/EquilibriumPlot";
 
 interface RightPanelProps {
     productOverTime: { [key: number]: number[] };

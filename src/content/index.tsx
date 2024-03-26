@@ -1,4 +1,4 @@
-import { ContentPanelProps } from "../components/ContentPanel";
+import { ContentPanelProps } from "../components/MainLayout/ContentPanel";
 import { ReactionType } from "../constants";
 
 export const highAffinityContentArray: ContentPanelProps[] = [

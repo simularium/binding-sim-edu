@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { SimulariumContext } from '../simulation/context';
+import { SimulariumContext } from '../../simulation/context';
 
 interface VisibilityControlProps {
     excludedPages?: number[];
