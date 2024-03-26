@@ -222,14 +222,13 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     private initializeAgents(agents: InputAgent[]) {
-        let largerCount = 0;
+        let smallerAgent = 1000;
         for (let i = 0; i < agents.length; ++i) {
             const agent = agents[i];
             agent.count = this.convertConcentrationToCount(agent.concentration);
-            if (agent.count > largerCount) {
-                // whichever agent has more instances
-                // we will use it check if the system is mixed
-                largerCount = agent.count;
+            if (agent.radius < smallerAgent) {
+                // use the smallest agent to check if the system is mixed
+                smallerAgent = agent.radius;
                 this.mixCheckAgent = agent.id;
             }
             for (let j = 0; j < agent.count; ++j) {
@@ -315,22 +314,24 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         }
     }
 
-    private sortAgent(agent: BindingInstance) {
-        // no need to check if the system is mixed
+    private countAgentsOnEachSide(agent: BindingInstance) {
         if (this._isMixed) {
             return;
         }
         if (agent.id !== this.mixCheckAgent) {
             return;
         }
-        if (agent.pos.x > 0) {
-            this.numberAgentOnRight++;
-        } else {
+
+        // checking the rightmost quadrant
+        // and the left most quadrant
+        if (agent.pos.x < - size / 4) {
             this.numberAgentOnLeft++;
+        } else if (agent.pos.x > size / 4){
+            this.numberAgentOnRight++;
         }
     }
 
-    private checkSort() {
+    private compareAgentsOnEachSide() {
         // once the simulation is mixed, if it dips momentarily
         // that's not a sign that equilibrium has been reversed
         if (this._isMixed) {
@@ -344,7 +345,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         }
     }
 
-    private clearSort() {
+    private clearMixCounts() {
         this.numberAgentOnLeft = 0;
         this.numberAgentOnRight = 0;
     }
@@ -480,17 +481,17 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         if (this.static || this.initialState) {
             return this.staticUpdate();
         }
-        this.clearSort();
+        this.clearMixCounts();
 
         for (let i = 0; i < this.instances.length; ++i) {
             this.instances[i].oneStep(this.timeFactor);
-            this.sortAgent(this.instances[i]);
+            this.countAgentsOnEachSide(this.instances[i]);
         }
         // reset to zero for every tenth time point
         if (this.currentFrame % 10 === 0) {
             this.currentNumberOfBindingEvents = 0;
             this.currentNumberOfUnbindingEvents = 0;
-            this.checkSort();
+            this.compareAgentsOnEachSide();
         }
         this.system.checkAll((response: Response) => {
             const { a, b, overlapV } = response;
