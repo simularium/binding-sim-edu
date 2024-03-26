@@ -131,8 +131,8 @@ function App() {
         // I don't love that this breaks the progression control handling all
         // progress through the content, but I can't think of a way to include this
         // in the progression control without making it more complicated
-        if (uniq(inputEquilibriumConcentrations).length >= 6) {
-            setPage(8);
+        if (uniq(inputEquilibriumConcentrations).length >= 6 && page === 7) {
+            setPage(page + 1);
         }
     }, [page, inputEquilibriumConcentrations]);
 
