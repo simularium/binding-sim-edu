@@ -18,5 +18,5 @@ export const SimulariumContext = createContext({
     handleTimeChange: () => {},
     setPage: () => {},
     page: 0,
-    timeFactor: 25,
+    timeFactor: 30,
 } as SimulariumContextType);

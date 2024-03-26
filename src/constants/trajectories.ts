@@ -53,3 +53,5 @@ export const createAgentsFromConcentrations = (
         return agent;
     });
 };
+
+export const DEFAULT_TIME_FACTOR = 30;

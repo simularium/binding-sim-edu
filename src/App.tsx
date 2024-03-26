@@ -6,6 +6,7 @@ import "./App.css";
 import BindingSimulator from "./simulation/BindingSimulator2D";
 import {
     AVAILABLE_AGENTS,
+    DEFAULT_TIME_FACTOR,
     createAgentsFromConcentrations,
 } from "./constants/trajectories";
 import { AvailableAgentNames } from "./types";
@@ -19,7 +20,6 @@ import CenterPanel from "./components/MainLayout/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
 import NavPanel from "./components/MainLayout/NavPanel";
 import AdminUI from "./components/AdminUi";
-import { uniq } from "lodash";
 
 const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
@@ -47,7 +47,7 @@ function App() {
     const [inputConcentration, setInputConcentration] = useState(
         INITIAL_CONCENTRATIONS
     );
-    const [timeFactor, setTimeFactor] = useState(30);
+    const [timeFactor, setTimeFactor] = useState(DEFAULT_TIME_FACTOR);
     const [productOverTime, setProductOverTime] = useState({
         [inputConcentration[ADJUSTABLE_AGENT]]: [0],
     });
