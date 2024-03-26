@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import QuizForm from "./QuizForm";
 import VisibilityControl from "./VisibilityControl";
 import SuccessFeedback from "./SuccessFeedback";
+import { FormState } from "../types";
 
-enum FormState {
-    Correct = "Correct",
-    Incorrect = "Incorrect",
-    Clear = "Clear",
-}
+
 
 const EquilibriumQuestion: React.FC = () => {
     const [selectedAnswer, setSelectedAnswer] = useState("");
