@@ -7,10 +7,11 @@ import EventsOverTimePlot from '../Plots/EventsOverTimePlot';
 
 interface LeftPanelProps {
     activeAgents: AvailableAgentNames[];
+    adjustableAgent: AvailableAgentNames;
     inputConcentration: { [key in AvailableAgentNames]: number };
     handleNewInputConcentration: (name: string, value: number) => void;
-    bindingEventsOverTime:number[];
-    unbindingEventsOverTime:number[];
+    bindingEventsOverTime: number[];
+    unbindingEventsOverTime: number[];
 }
 
 const LeftPanel: React.FC<LeftPanelProps> = ({
@@ -19,6 +20,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
     handleNewInputConcentration,
     bindingEventsOverTime,
     unbindingEventsOverTime,
+    adjustableAgent,
 }) => {
     const { isPlaying } = useContext(SimulariumContext);
     return (
@@ -36,9 +38,10 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
                     concentration={inputConcentration}
                     onChange={handleNewInputConcentration}
                     disabled={isPlaying}
+                    adjustableAgent={adjustableAgent}
                 />
             </VisibilityControl>
-            <VisibilityControl excludedPages={[0, 1, 2]} >
+            <VisibilityControl excludedPages={[0, 1, 2]}>
                 <EventsOverTimePlot
                     bindingEventsOverTime={bindingEventsOverTime}
                     unbindingEventsOverTime={unbindingEventsOverTime}

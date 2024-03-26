@@ -36,6 +36,8 @@ const getActiveAgents = (reactionType: ReactionType) => {
     }
 };
 
+const ADJUSTABLE_AGENT = AvailableAgentNames.B;
+
 function App() {
     const [page, setPage] = useState(1);
     const [reactionType] = useState(ReactionType.A_B_AB);
@@ -45,7 +47,7 @@ function App() {
     );
     const [timeFactor, setTimeFactor] = useState(30);
     const [productOverTime, setProductOverTime] = useState({
-        [inputConcentration[AvailableAgentNames.B]]: [0],
+        [inputConcentration[ADJUSTABLE_AGENT]]: [0],
     });
     const [bindingEventsOverTime, setBindingEventsOverTime] = useState<
         number[]
@@ -76,7 +78,7 @@ function App() {
 
     const handleTimeChange = (timeData: TimeData) => {
         const newValue = clientSimulator.getCurrentConcentrationBound();
-        const currentConcentration = inputConcentration[AvailableAgentNames.B];
+        const currentConcentration = inputConcentration[ADJUSTABLE_AGENT];
         const currentArray = productOverTime[currentConcentration];
         const newData = [...currentArray, newValue];
         const newState = {
@@ -159,12 +161,12 @@ function App() {
     const handleRecordEquilibrium = () => {
         const productConcentration =
             clientSimulator.getCurrentConcentrationBound();
-        const reactantConcentration = inputConcentration[AvailableAgentNames.B];
+        const reactantConcentration = inputConcentration[ADJUSTABLE_AGENT];
 
         // TODO: do a better job of determining if we've reached equilibrium
         // for now we're using how long the simulation has been running
         // as a proxy for reaching equilibrium
-        const currentConcentration = inputConcentration[AvailableAgentNames.B];
+        const currentConcentration = inputConcentration[ADJUSTABLE_AGENT];
         const currentArray = productOverTime[currentConcentration];
         const currentTime = currentArray.length;
         if (currentTime < 200) {
@@ -220,6 +222,7 @@ function App() {
                             }
                             bindingEventsOverTime={bindingEventsOverTime}
                             unbindingEventsOverTime={unBindingEventsOverTime}
+                            adjustableAgent={ADJUSTABLE_AGENT}
                         />
                         <CenterPanel reactionType={reactionType} />
                         <RightPanel
