@@ -18,7 +18,7 @@ export const BASE_PLOT_LAYOUT = {
 };
 
 export const kds = {
-    [ReactionType.A_B_AB]: 1,
-    [ReactionType.A_C_AC]: 10,
+    [ReactionType.A_B_AB]: 10, // TODO: get actual values
+    [ReactionType.A_C_AC]: 10, 
     [ReactionType.A_B_C_AB_AC]: 5,
 };
