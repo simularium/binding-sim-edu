@@ -36,7 +36,7 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
         </>
     );
     return (
-        <VisibilityControl includedPages={[1, 2, 8]}>
+        <VisibilityControl includedPages={[8]}>
             <QuizForm
                 title="You reached the point where half of the binding sites of A are occupied."
                 formContent={formContent}
