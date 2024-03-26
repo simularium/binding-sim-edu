@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FeedbackProps } from "./types";
 
 const SuccessFeedback: React.FC<FeedbackProps> = ({
@@ -6,6 +6,14 @@ const SuccessFeedback: React.FC<FeedbackProps> = ({
     message,
 }) => {
     const [isVisible, setIsVisible] = React.useState(true);
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setIsVisible(false);
+        }, 3000);
+        return () => {
+            clearTimeout(timeout);
+        };
+    }, [])
 
     return (
         isVisible && (
