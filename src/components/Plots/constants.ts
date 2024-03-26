@@ -1,5 +1,5 @@
 import { AXIS_COLOR, BACKGROUND_COLOR } from "../../constants/colors";
-
+export const GRAY_COLOR = "#979797";
 export const PLOT_COLORS = [
     "#a6cee3",
     "#b2df8a",

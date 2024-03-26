@@ -7,9 +7,13 @@ import { getColorIndex } from "./utils";
 
 interface PlotProps {
     data: { [key: string]: number[] };
+    timeFactor: number;
 }
 
-const ProductConcentrationPlot: React.FC<PlotProps> = ({ data }) => {
+const ProductConcentrationPlot: React.FC<PlotProps> = ({
+    data,
+    timeFactor,
+}) => {
     const traces = map(
         data,
         (yValues: number[], id: string): Partial<PlotData> => {
@@ -20,7 +24,7 @@ const ProductConcentrationPlot: React.FC<PlotProps> = ({ data }) => {
                 return {};
             }
             return {
-                x: yValues.map((_, i) => i),
+                x: yValues.map((_, i) => i * timeFactor/ 1000),
                 y: yValues,
                 type: "scatter" as const,
                 mode: "lines" as const,
@@ -33,8 +37,8 @@ const ProductConcentrationPlot: React.FC<PlotProps> = ({ data }) => {
     const layout = {
         ...BASE_PLOT_LAYOUT,
         title: "Concentration over Time",
-        xaxis: { ...BASE_PLOT_LAYOUT.xaxis, title: "time (ns)"},
-        yaxis: { ...BASE_PLOT_LAYOUT.yaxis, title: "[AB]"},
+        xaxis: { ...BASE_PLOT_LAYOUT.xaxis, title: "time (us)" },
+        yaxis: { ...BASE_PLOT_LAYOUT.yaxis, title: "[AB]" },
     };
 
     return <Plot data={traces} layout={layout} />;

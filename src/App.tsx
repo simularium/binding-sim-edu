@@ -208,6 +208,7 @@ function App() {
                         handleTimeChange,
                         page,
                         setPage,
+                        timeFactor
                     }}
                 >
                     <NavPanel
