@@ -1,11 +1,7 @@
 import React from "react";
+import { FeedbackProps } from "./types";
 
-interface SuccessFeedbackProps {
-    title?: string;
-    message: string;
-}
-
-const SuccessFeedback: React.FC<SuccessFeedbackProps> = ({
+const SuccessFeedback: React.FC<FeedbackProps> = ({
     title = "That's correct!",
     message,
 }) => {

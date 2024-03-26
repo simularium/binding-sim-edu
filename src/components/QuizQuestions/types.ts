@@ -3,3 +3,8 @@ export enum FormState {
     Incorrect = "Incorrect",
     Clear = "Clear",
 }
+
+export interface FeedbackProps {
+    title?: string;
+    message?: string;
+}

@@ -67,7 +67,7 @@ const EquilibriumQuestion: React.FC = () => {
                 onSubmit={handleSubmit}
                 formState={formState}
                 successMessage="It’s the forward and reverse reaction rates that are equal at equilibrium, not the concentrations of reactants and products. And binding and unbinding events don’t stop happening."
-                failureMessage="Sorry, that's incorrect."
+                failureMessage="Please try again. Helpful text?" // TODO: Add helpful text (this matches the current design)
                 submitButtonLabel={
                     formState === FormState.Incorrect ? "Try Again" : "Submit"
                 }

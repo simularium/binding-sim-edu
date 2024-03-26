@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FormState } from "./types";
 import SuccessFeedback from "./SuccessFeedback";
+import FailureFeedback from "./FailureText";
 
 interface QuizFormProps {
     title: string;
@@ -38,7 +39,7 @@ const QuizForm: React.FC<QuizFormProps> = ({
             <button onClick={toggleFormVisibility}>
                 {isFormVisible ? "Hide Form" : "Show Form"}
             </button>
-            {formState === FormState.Incorrect && <p>{failureMessage}</p>}
+            {formState === FormState.Incorrect && <FailureFeedback message={failureMessage} />}
             <button onClick={onSubmit}>{submitButtonLabel}</button>
         </div>
     );
