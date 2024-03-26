@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FormState } from "./types";
 import SuccessFeedback from "./SuccessFeedback";
-import FailureFeedback from "./FailureText";
+import FailureFeedback from "./FailureFeedback";
 
 interface QuizFormProps {
     title: string;
