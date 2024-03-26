@@ -20,7 +20,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
     bindingEventsOverTime,
     unbindingEventsOverTime,
 }) => {
-    const { isPlaying, page } = useContext(SimulariumContext);
+    const { isPlaying } = useContext(SimulariumContext);
     return (
         <div
             style={{
@@ -30,7 +30,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
                 flex: "1 1 30%",
             }}
         >
-            <VisibilityControl excludedPages={[0, 1]} currentPage={page}>
+            <VisibilityControl excludedPages={[0, 1]}>
                 <Concentration
                     activeAgents={activeAgents}
                     concentration={inputConcentration}
@@ -38,7 +38,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
                     disabled={isPlaying}
                 />
             </VisibilityControl>
-            <VisibilityControl excludedPages={[0, 1, 2]} currentPage={page}>
+            <VisibilityControl excludedPages={[0, 1, 2]} >
                 <EventsOverTimePlot
                     bindingEventsOverTime={bindingEventsOverTime}
                     unbindingEventsOverTime={unbindingEventsOverTime}
