@@ -14,7 +14,16 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
 
     const handleSubmit = () => {
         const correctAnswer = kds[reactionType];
-        if (selectedAnswer === correctAnswer) {
+        const tolerance = 5;
+        if (selectedAnswer === null) {
+            // No answer selected
+            return;
+        }
+        
+        if (
+            selectedAnswer <= correctAnswer + tolerance &&
+            selectedAnswer >= correctAnswer - tolerance
+        ) {
             setFormState(FormState.Correct);
         } else {
             setFormState(FormState.Incorrect);
