@@ -43,7 +43,6 @@ export default function Viewer({
                     return undefined;
                 }}
                 loadInitialData={true}
-                // agentColors={agentColors}
                 showPaths={true}
                 onError={console.log}
                 backgroundColor={[0, 0, 0]}
