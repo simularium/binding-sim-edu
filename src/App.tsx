@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import { uniq } from "lodash";
+import { SimulariumController, TimeData } from "@aics/simularium-viewer";
 
 import "./App.css";
-import { SimulariumController, TimeData } from "@aics/simularium-viewer";
 import BindingSimulator from "./simulation/BindingSimulator2D";
 import {
     AVAILABLE_AGENTS,
@@ -193,7 +194,6 @@ function App() {
             productConcentration,
         ]);
         setEquilibriumFeedbackTimeout("Great!");
-
 
     };
 
