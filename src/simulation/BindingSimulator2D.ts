@@ -231,7 +231,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 // we will use it check if the system is mixed
                 largerCount = agent.count;
                 this.mixCheckAgent = agent.id;
-                console.log("count" , largerCount)
             }
             for (let j = 0; j < agent.count; ++j) {
                 const position: number[] = this.getRandomPointOnSide(
@@ -340,7 +339,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         const diff = Math.abs(this.numberAgentOnLeft - this.numberAgentOnRight);
         const total = this.numberAgentOnLeft + this.numberAgentOnRight;
         const percentUnmixed = (diff / total) * 100;
-        console.log("percent unmixed", percentUnmixed);
         if (percentUnmixed < 10) {
             this._isMixed = true;
         }
@@ -492,7 +490,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         if (this.currentFrame % 10 === 0) {
             this.currentNumberOfBindingEvents = 0;
             this.currentNumberOfUnbindingEvents = 0;
-            this.checkSort()
+            this.checkSort();
         }
         this.system.checkAll((response: Response) => {
             const { a, b, overlapV } = response;
