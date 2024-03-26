@@ -219,7 +219,7 @@ function App() {
                             bindingEventsOverTime={bindingEventsOverTime}
                             unbindingEventsOverTime={unBindingEventsOverTime}
                         />
-                        <CenterPanel />
+                        <CenterPanel reactionType={reactionType}/>
                         <RightPanel
                             productOverTime={productOverTime}
                             handleRecordEquilibrium={handleRecordEquilibrium}
