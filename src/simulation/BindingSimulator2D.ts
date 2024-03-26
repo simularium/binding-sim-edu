@@ -194,6 +194,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     currentNumberOfBindingEvents: number = 0;
     currentNumberOfUnbindingEvents: number = 0;
     onUpdate: (data: number) => void = () => {};
+    mixCheckAgent: number = 0;
+    numberAgentOnLeft: number = 0;
+    numberAgentOnRight: number = 0;
+    _isMixed: boolean = false;
     constructor(
         agents: InputAgent[],
         timeFactor: number = DEFAULT_TIME_FACTOR
@@ -214,12 +218,21 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.currentNumberOfUnbindingEvents = 0;
         this.system = new System();
         this.instances = [];
+        this._isMixed = false;
     }
 
     private initializeAgents(agents: InputAgent[]) {
+        let largerCount = 0;
         for (let i = 0; i < agents.length; ++i) {
             const agent = agents[i];
             agent.count = this.convertConcentrationToCount(agent.concentration);
+            if (agent.count > largerCount) {
+                // whichever agent has more instances
+                // we will use it check if the system is mixed
+                largerCount = agent.count;
+                this.mixCheckAgent = agent.id;
+                console.log("count" , largerCount)
+            }
             for (let j = 0; j < agent.count; ++j) {
                 const position: number[] = this.getRandomPointOnSide(
                     agent.id,
@@ -240,6 +253,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 this.instances.push(instance);
             }
         }
+    }
+
+    public isMixed() {
+        return this._isMixed;
     }
 
     public getEvents() {
@@ -297,6 +314,41 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 this.instances.splice(this.instances.indexOf(instance), 1);
             }
         }
+    }
+
+    private sortAgent(agent: BindingInstance) {
+        // no need to check if the system is mixed
+        if (this._isMixed) {
+            return;
+        }
+        if (agent.id !== this.mixCheckAgent) {
+            return;
+        }
+        if (agent.pos.x > 0) {
+            this.numberAgentOnRight++;
+        } else {
+            this.numberAgentOnLeft++;
+        }
+    }
+
+    private checkSort() {
+        // once the simulation is mixed, if it dips momentarily
+        // that's not a sign that equilibrium has been reversed
+        if (this._isMixed) {
+            return;
+        }
+        const diff = Math.abs(this.numberAgentOnLeft - this.numberAgentOnRight);
+        const total = this.numberAgentOnLeft + this.numberAgentOnRight;
+        const percentUnmixed = (diff / total) * 100;
+        console.log("percent unmixed", percentUnmixed);
+        if (percentUnmixed < 10) {
+            this._isMixed = true;
+        }
+    }
+
+    private clearSort() {
+        this.numberAgentOnLeft = 0;
+        this.numberAgentOnRight = 0;
     }
 
     private createBoundingLines() {
@@ -430,14 +482,17 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         if (this.static || this.initialState) {
             return this.staticUpdate();
         }
+        this.clearSort();
 
         for (let i = 0; i < this.instances.length; ++i) {
             this.instances[i].oneStep(this.timeFactor);
+            this.sortAgent(this.instances[i]);
         }
         // reset to zero for every tenth time point
         if (this.currentFrame % 10 === 0) {
             this.currentNumberOfBindingEvents = 0;
             this.currentNumberOfUnbindingEvents = 0;
+            this.checkSort()
         }
         this.system.checkAll((response: Response) => {
             const { a, b, overlapV } = response;
