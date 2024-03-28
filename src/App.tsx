@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
+import { uniq } from "lodash";
+import { SimulariumController, TimeData } from "@aics/simularium-viewer";
 
 import "./App.css";
-import { SimulariumController, TimeData } from "@aics/simularium-viewer";
 import BindingSimulator from "./simulation/BindingSimulator2D";
 import {
     AVAILABLE_AGENTS,
     createAgentsFromConcentrations,
 } from "./constants/trajectories";
 import { AvailableAgentNames } from "./types";
-// import Slider from "./components/Slider";
 import LeftPanel from "./components/LeftPanel";
 import RightPanel from "./components/RightPanel";
 import ReactionDisplay from "./components/ReactionDisplay";
@@ -18,6 +18,7 @@ import { ReactionType } from "./constants";
 import CenterPanel from "./components/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
 import NavPanel from "./components/NavPanel";
+import AdminUI from "./components/AdminUi";
 
 const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
@@ -43,7 +44,7 @@ function App() {
     const [inputConcentration, setInputConcentration] = useState(
         INITIAL_CONCENTRATIONS
     );
-    const [timeFactor] = useState(30);
+    const [timeFactor, setTimeFactor] = useState(30);
     const [productOverTime, setProductOverTime] = useState({
         [inputConcentration[AvailableAgentNames.B]]: [0],
     });
@@ -122,6 +123,19 @@ function App() {
         clientSimulator.setTimeScale(timeFactor);
     }, [timeFactor, clientSimulator]);
 
+    useEffect(() => {
+        if (page === 5) {
+            setIsPlaying(false);
+        }
+        // they have finished recording equilibrium concentrations
+        // I don't love that this breaks the progression control handling all
+        // progress through the content, but I can't think of a way to include this
+        // in the progression control without making it more complicated
+        if (uniq(inputEquilibriumConcentrations).length >= 6 && page === 7) {
+            setPage(page + 1);
+        }
+    }, [page, inputEquilibriumConcentrations]);
+
     const resetState = () => {
         setBindingEventsOverTime([]);
         setUnBindingEventsOverTime([]);
@@ -158,11 +172,10 @@ function App() {
         // TODO: do a better job of determining if we've reached equilibrium
         // for now we're using how long the simulation has been running
         // as a proxy for reaching equilibrium
-        const currentConcentration =
-            inputConcentration[AvailableAgentNames.B];
+        const currentConcentration = inputConcentration[AvailableAgentNames.B];
         const currentArray = productOverTime[currentConcentration];
         const currentTime = currentArray.length;
-        if (currentTime < 600) {
+        if (currentTime < 200) {
             setEquilibriumFeedbackTimeout("Not yet!");
             return false;
         }
@@ -174,7 +187,7 @@ function App() {
             ...productEquilibriumConcentrations,
             productConcentration,
         ]);
-        setEquilibriumFeedbackTimeout("Great!");          
+        setEquilibriumFeedbackTimeout("Great!");
     };
 
     return (
@@ -197,19 +210,8 @@ function App() {
                     />
                     <ContentPanel {...content[reactionType][page]} />
                     <ReactionDisplay reactionType={reactionType} />
+
                     <div style={{ display: "flex" }}>
-                        {/* <Slider
-                            // This is a debugging feature but wont
-                            // be present in the app
-                            min={0}
-                            max={100}
-                            initialValue={timeFactor}
-                            onChange={(_, value) => {
-                                setTimeFactor(value);
-                            }}
-                            disabled={false}
-                            name="time factor (ns)"
-                        /> */}
                         <LeftPanel
                             activeAgents={getActiveAgents(reactionType)}
                             inputConcentration={inputConcentration}
@@ -219,7 +221,7 @@ function App() {
                             bindingEventsOverTime={bindingEventsOverTime}
                             unbindingEventsOverTime={unBindingEventsOverTime}
                         />
-                        <CenterPanel />
+                        <CenterPanel reactionType={reactionType} />
                         <RightPanel
                             productOverTime={productOverTime}
                             handleRecordEquilibrium={handleRecordEquilibrium}
@@ -232,6 +234,7 @@ function App() {
                             equilibriumFeedback={equilibriumFeedback}
                         />
                     </div>
+                    <AdminUI timeFactor={timeFactor} setTimeFactor={setTimeFactor}/>
                 </SimulariumContext.Provider>
             </div>
         </>

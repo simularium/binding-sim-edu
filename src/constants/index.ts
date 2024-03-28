@@ -16,3 +16,9 @@ export const BASE_PLOT_LAYOUT = {
     height: 200,
     margin: { l: 40, r: 10, b: 40, t: 20 },
 };
+
+export const kds = {
+    [ReactionType.A_B_AB]: 10, // TODO: get actual values
+    [ReactionType.A_C_AC]: 10, 
+    [ReactionType.A_B_C_AB_AC]: 5,
+};
