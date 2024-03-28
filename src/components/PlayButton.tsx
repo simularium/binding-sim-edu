@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { SimulariumContext } from "../simulation/context";
-import ProgressionControl from "./shared/ProgressionControl";
-import VisibilityControl from "./shared/VisibilityControl";
+import ProgressionControl from "./shared-components/ProgressionControl";
+import VisibilityControl from "./shared-components/VisibilityControl";
 
 const PlayButton: React.FC = () => {
     const { isPlaying, setIsPlaying } = useContext(SimulariumContext);

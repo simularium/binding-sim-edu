@@ -1,5 +1,5 @@
 import React from 'react';
-import NextButton from '../shared/NextButton';
+import NextButton from '../shared-components/NextButton';
 
 export interface ContentPanelProps {
     content: string;

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import Viewer from "./Viewer";
 import { SimulariumContext } from "../simulation/context";
-import ProgressionControl from "./shared/ProgressionControl";
+import ProgressionControl from "./shared-components/ProgressionControl";
 
 enum View {
     Lab = "lab",

@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import Concentration from '../Concentration';
 import { AvailableAgentNames } from '../../types';
-import VisibilityControl from '../shared/VisibilityControl';
+import VisibilityControl from '../shared-components/VisibilityControl';
 import { SimulariumContext } from '../../simulation/context';
-import EventsOverTimePlot from '../plots/EventsOverTimePlot';
+import EventsOverTimePlot from '../all-plots/EventsOverTimePlot';
 
 interface LeftPanelProps {
     activeAgents: AvailableAgentNames[];
