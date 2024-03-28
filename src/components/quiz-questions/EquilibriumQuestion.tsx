@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import QuizForm from "./QuizForm";
-import VisibilityControl from "../Shared/VisibilityControl";
+import VisibilityControl from "../shared/VisibilityControl";
 import { FormState } from "./types";
 
 const EquilibriumQuestion: React.FC = () => {
