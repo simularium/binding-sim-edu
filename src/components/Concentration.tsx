@@ -1,5 +1,5 @@
 import React from "react";
-import Slider from "./shared-components/Slider";
+import Slider from "./shared/Slider";
 import { map } from "lodash";
 import { AvailableAgentNames } from "../types";
 
