@@ -20,7 +20,7 @@ import CenterPanel from "./components/main-layout/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
 import NavPanel from "./components/main-layout/NavPanel";
 import AdminUI from "./components/AdminUi";
-import { ProductOverTimeTrace } from "./components/Plots/types";
+import { ProductOverTimeTrace } from "./components/plots/types";
 
 const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
