@@ -2,6 +2,7 @@ import { map } from "lodash";
 import { PlotData } from "plotly.js";
 import React, { useContext } from "react";
 import Plot from "react-plotly.js";
+
 import { BASE_PLOT_LAYOUT, PLOT_COLORS } from "./constants";
 import { getColorIndex } from "./utils";
 import { SimulariumContext } from "../../simulation/context";
