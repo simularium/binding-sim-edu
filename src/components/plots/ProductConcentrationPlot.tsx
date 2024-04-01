@@ -1,37 +1,41 @@
-import { map } from "lodash";
 import { PlotData } from "plotly.js";
 import React, { useContext } from "react";
 import Plot from "react-plotly.js";
 
 import { BASE_PLOT_LAYOUT, PLOT_COLORS } from "./constants";
 import { getColorIndex } from "./utils";
+import { ProductOverTimeTrace } from "./types";
 import { SimulariumContext } from "../../simulation/context";
 
-interface PlotProps {
-    data: { [key: string]: number[] };
+interface ProductConcentrationPlotProps {
+    data: ProductOverTimeTrace[];
 }
 
-const ProductConcentrationPlot: React.FC<PlotProps> = ({ data }) => {
+const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
+    data,
+}) => {
     const { timeFactor } = useContext(SimulariumContext);
-    const traces = map(
-        data,
-        (yValues: number[], id: string): Partial<PlotData> => {
-            if (yValues.length <= 1) {
-                // when the concentration is first changed it,
-                // plays one frame to update, so there is one value
-                // already but not necessarily data yet
-                return {};
-            }
-            return {
-                x: yValues.map((_, i) => (i * timeFactor) / 1000),
-                y: yValues,
-                type: "scatter" as const,
-                mode: "lines" as const,
-                name: id,
-                line: { color: PLOT_COLORS[getColorIndex(id)] },
-            };
+    const traces = data.map((trace): Partial<PlotData> => {
+        const { inputConcentration, productConcentrations } = trace;
+        if (!productConcentrations) {
+            return {};
         }
-    );
+
+        if (productConcentrations.length <= 1) {
+            // when the concentration is first changed it,
+            // plays one frame to update, so there is one value
+            // already but not necessarily data yet
+            return {};
+        }
+        return {
+            x: productConcentrations.map((_, i) => (i * timeFactor) / 1000),
+            y: productConcentrations,
+            type: "scatter" as const,
+            mode: "lines" as const,
+            name: inputConcentration.toString(),
+            line: { color: PLOT_COLORS[getColorIndex(inputConcentration)] },
+        };
+    });
 
     const layout = {
         ...BASE_PLOT_LAYOUT,

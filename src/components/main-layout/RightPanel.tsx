@@ -4,9 +4,12 @@ import VisibilityControl from "../shared/VisibilityControl";
 import ProductConcentrationPlot from "../plots/ProductConcentrationPlot";
 import EquilibriumPlot from "../plots/EquilibriumPlot";
 import RecordEquilibriumButton from "../RecordEquilibriumButton";
+import { ProductOverTimeTrace } from "../plots/types";
 
 interface RightPanelProps {
-    productOverTime: { [key: number]: number[] };
+    productOverTimeTraces: ProductOverTimeTrace[];
+    currentProductConcentrationArray: number[];
+    currentAdjustableAgentConcentration: number;
     handleRecordEquilibrium: () => void;
     equilibriumConcentrations: {
         inputConcentrations: number[];
@@ -16,17 +19,27 @@ interface RightPanelProps {
 }
 
 const RightPanel: React.FC<RightPanelProps> = ({
-    productOverTime,
+    productOverTimeTraces,
     handleRecordEquilibrium,
     equilibriumConcentrations,
     equilibriumFeedback,
+    currentProductConcentrationArray,
+    currentAdjustableAgentConcentration,
 }) => {
+    let data = productOverTimeTraces;
+    if (currentProductConcentrationArray.length > 1) {
+        data = [
+            ...productOverTimeTraces,
+            {
+                inputConcentration: currentAdjustableAgentConcentration,
+                productConcentrations: currentProductConcentrationArray,
+            },
+        ];
+    }
     return (
         <div style={{ minWidth: 260, flex: "1 1 30%" }}>
             <VisibilityControl excludedPages={[0, 1, 2]}>
-                <ProductConcentrationPlot
-                    data={productOverTime}
-                />
+                <ProductConcentrationPlot data={data} />
                 <EquilibriumPlot
                     x={equilibriumConcentrations.inputConcentrations}
                     y={equilibriumConcentrations.productConcentrations}
