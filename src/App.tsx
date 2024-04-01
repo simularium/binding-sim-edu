@@ -175,13 +175,7 @@ function App() {
             clientSimulator.getCurrentConcentrationBound();
         const reactantConcentration = inputConcentration[ADJUSTABLE_AGENT];
 
-        // TODO: do a better job of determining if we've reached equilibrium
-        // for now we're using how long the simulation has been running
-        // as a proxy for reaching equilibrium
-        const currentConcentration = inputConcentration[ADJUSTABLE_AGENT];
-        const currentArray = productOverTime[currentConcentration];
-        const currentTime = currentArray.length;
-        if (currentTime < 200) {
+        if (!clientSimulator.isMixed()) {
             setEquilibriumFeedbackTimeout("Not yet!");
             return false;
         }

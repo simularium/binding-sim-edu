@@ -1,4 +1,5 @@
 import React from 'react';
+
 import NextButton from '../shared/NextButton';
 
 export interface ContentPanelProps {
