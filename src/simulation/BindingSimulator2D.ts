@@ -13,6 +13,8 @@ import {
     VisTypes,
 } from "@aics/simularium-viewer";
 import { InputAgent } from "../types";
+import { AGENT_AB_COLOR } from "../constants/colors";
+import { DEFAULT_TIME_FACTOR } from "../constants/trajectories";
 
 class BindingInstance extends Circle {
     id: number;
@@ -87,7 +89,7 @@ class BindingInstance extends Circle {
         this.child.setPosition(childPosAndRotation[0], childPosAndRotation[1]);
     }
 
-    public oneStep(timeFactor: number = 1) {
+    public oneStep(timeFactor: number = DEFAULT_TIME_FACTOR) {
         if (this.bound) {
             return;
         }
@@ -192,7 +194,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     currentNumberOfBindingEvents: number = 0;
     currentNumberOfUnbindingEvents: number = 0;
     onUpdate: (data: number) => void = () => {};
-    constructor(agents: InputAgent[], timeFactor: number = 25) {
+    constructor(
+        agents: InputAgent[],
+        timeFactor: number = DEFAULT_TIME_FACTOR
+    ) {
         this.system = new System();
         this.agents = agents;
         this.createBoundingLines();
@@ -523,16 +528,16 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         for (let i = 0; i < this.agents.length; ++i) {
             typeMapping[this.agents[i].id] = {
                 name: `${this.agents[i].id}`,
-                // geometry: {
-
-                //     displayType: GeometryDisplayType.SPHERE,
-                //     url: "",
-                // }
+                geometry: {
+                    color: this.agents[i].color,
+                    displayType: GeometryDisplayType.SPHERE,
+                    url: "",
+                },
             };
             typeMapping[this.agents[i].id + 100] = {
                 name: `${this.agents[i].id}#bound`,
                 geometry: {
-                    color: "#81dbe6",
+                    color: AGENT_AB_COLOR,
                     displayType: GeometryDisplayType.SPHERE,
                     url: "",
                 },

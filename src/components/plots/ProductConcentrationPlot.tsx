@@ -1,25 +1,17 @@
 import { map } from "lodash";
 import { PlotData } from "plotly.js";
-import React from "react";
+import React, { useContext } from "react";
 import Plot from "react-plotly.js";
-import { BASE_PLOT_LAYOUT } from "../constants";
+import { BASE_PLOT_LAYOUT, PLOT_COLORS } from "./constants";
+import { getColorIndex } from "./utils";
+import { SimulariumContext } from "../../simulation/context";
 
 interface PlotProps {
     data: { [key: string]: number[] };
 }
 
-const PLOT_COLORS = [
-    "#a6cee3",
-    "#b2df8a",
-    "#33a02c",
-    "#fb9a99",
-    "#1f78b4",
-    "#e31a1c",
-    "#fdbf6f",
-    "#ff7f00",
-    "#cab2d6",
-];
 const ProductConcentrationPlot: React.FC<PlotProps> = ({ data }) => {
+    const { timeFactor } = useContext(SimulariumContext);
     const traces = map(
         data,
         (yValues: number[], id: string): Partial<PlotData> => {
@@ -29,14 +21,13 @@ const ProductConcentrationPlot: React.FC<PlotProps> = ({ data }) => {
                 // already but not necessarily data yet
                 return {};
             }
-            const colorNumber = Number(id) % PLOT_COLORS.length;
             return {
-                x: yValues.map((_, i) => i),
+                x: yValues.map((_, i) => (i * timeFactor) / 1000),
                 y: yValues,
                 type: "scatter" as const,
                 mode: "lines" as const,
                 name: id,
-                line: { color: PLOT_COLORS[colorNumber] },
+                line: { color: PLOT_COLORS[getColorIndex(id)] },
             };
         }
     );
@@ -44,8 +35,8 @@ const ProductConcentrationPlot: React.FC<PlotProps> = ({ data }) => {
     const layout = {
         ...BASE_PLOT_LAYOUT,
         title: "Concentration over Time",
-        xaxis: { ...BASE_PLOT_LAYOUT.xaxis, title: "time (ns)"},
-        yaxis: { ...BASE_PLOT_LAYOUT.yaxis, title: "[AB]"},
+        xaxis: { ...BASE_PLOT_LAYOUT.xaxis, title: "time (us)" },
+        yaxis: { ...BASE_PLOT_LAYOUT.yaxis, title: "[AB]" },
     };
 
     return <Plot data={traces} layout={layout} />;

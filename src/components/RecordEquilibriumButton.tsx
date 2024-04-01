@@ -1,4 +1,4 @@
-import ProgressionControl from "./ProgressionControl";
+import ProgressionControl from "./shared/ProgressionControl";
 
 interface RecordEquilibriumButtonProps {
     handleRecordEquilibrium: () => void;

@@ -8,6 +8,7 @@ interface SimulariumContextType {
     handleTimeChange: (timeData: TimeData) => void;
     setPage: (value: number) => void;
     page: number;
+    timeFactor: number;
 }
 
 export const SimulariumContext = createContext({
@@ -16,5 +17,6 @@ export const SimulariumContext = createContext({
     simulariumController: null,
     handleTimeChange: () => {},
     setPage: () => {},
-    page: 0
+    page: 0,
+    timeFactor: 30,
 } as SimulariumContextType);
