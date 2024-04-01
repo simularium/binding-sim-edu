@@ -1,4 +1,5 @@
 import React from "react";
+
 import VisibilityControl from "../shared/VisibilityControl";
 import ProductConcentrationPlot from "../plots/ProductConcentrationPlot";
 import EquilibriumPlot from "../plots/EquilibriumPlot";
