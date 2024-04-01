@@ -222,13 +222,13 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     private initializeAgents(agents: InputAgent[]) {
-        let smallerAgent = 1000;
+        let smallestAgentRadius = 1000;
         for (let i = 0; i < agents.length; ++i) {
             const agent = agents[i];
             agent.count = this.convertConcentrationToCount(agent.concentration);
-            if (agent.radius < smallerAgent) {
+            if (agent.radius < smallestAgentRadius) {
                 // use the smallest agent to check if the system is mixed
-                smallerAgent = agent.radius;
+                smallestAgentRadius = agent.radius;
                 this.mixCheckAgent = agent.id;
             }
             for (let j = 0; j < agent.count; ++j) {
