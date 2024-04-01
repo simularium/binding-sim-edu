@@ -1,6 +1,7 @@
 import React from "react";
-import Slider from "./Shared/Slider";
 import { map } from "lodash";
+
+import Slider from "./shared/Slider";
 import { AvailableAgentNames } from "../types";
 
 interface AgentProps {

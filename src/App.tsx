@@ -10,15 +10,15 @@ import {
     createAgentsFromConcentrations,
 } from "./constants/trajectories";
 import { AvailableAgentNames } from "./types";
-import LeftPanel from "./components/MainLayout/LeftPanel";
-import RightPanel from "./components/MainLayout/RightPanel";
-import ReactionDisplay from "./components/MainLayout/ReactionDisplay";
-import ContentPanel from "./components/MainLayout/ContentPanel";
+import LeftPanel from "./components/main-layout/LeftPanel";
+import RightPanel from "./components/main-layout/RightPanel";
+import ReactionDisplay from "./components/main-layout/ReactionDisplay";
+import ContentPanel from "./components/main-layout/ContentPanel";
 import content, { moduleNames } from "./content";
 import { ReactionType } from "./constants";
-import CenterPanel from "./components/MainLayout/CenterPanel";
+import CenterPanel from "./components/main-layout/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
-import NavPanel from "./components/MainLayout/NavPanel";
+import NavPanel from "./components/main-layout/NavPanel";
 import AdminUI from "./components/AdminUi";
 import { ProductOverTimeTrace } from "./components/Plots/types";
 
@@ -133,9 +133,9 @@ function App() {
     }, [timeFactor, clientSimulator]);
 
     useEffect(() => {
-        // we pause the simulation to show them how to adjust
+        // we pause the simulation to show them how to adjust 
         // the concentration of the reactant
-        // this happens on page 5.
+        // this happens on page 5. 
         if (page === 5) {
             setIsPlaying(false);
         }
@@ -143,8 +143,8 @@ function App() {
         // I don't love that this breaks the progression control handling all
         // progress through the content, but I can't think of a way to include this
         // in the progression control without making it more complicated
-        if (uniq(inputEquilibriumConcentrations).length >= 6) {
-            setPage(8);
+        if (uniq(inputEquilibriumConcentrations).length >= 6 && page === 7) {
+            setPage(page + 1);
         }
     }, [page, inputEquilibriumConcentrations]);
 
