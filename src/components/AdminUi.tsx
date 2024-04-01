@@ -1,5 +1,5 @@
 import React from "react";
-import Slider from "./Shared/Slider";
+import Slider from "./shared/Slider";
 
 interface AdminUIProps {
     timeFactor: number;

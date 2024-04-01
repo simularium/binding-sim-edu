@@ -1,5 +1,8 @@
 Problem
 =======
+Estimated review size: small/medium/large
+
+
 What is the problem this work solves, including
 [Link to story or ticket](https://my-tracking-system.url/ticket-number)
 

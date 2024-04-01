@@ -1,19 +1,17 @@
 import { map } from "lodash";
 import { PlotData } from "plotly.js";
-import React from "react";
+import React, { useContext } from "react";
 import Plot from "react-plotly.js";
 import { BASE_PLOT_LAYOUT, PLOT_COLORS } from "./constants";
 import { getColorIndex } from "./utils";
+import { SimulariumContext } from "../../simulation/context";
 
 interface PlotProps {
     data: { [key: string]: number[] };
-    timeFactor: number;
 }
 
-const ProductConcentrationPlot: React.FC<PlotProps> = ({
-    data,
-    timeFactor,
-}) => {
+const ProductConcentrationPlot: React.FC<PlotProps> = ({ data }) => {
+    const { timeFactor } = useContext(SimulariumContext);
     const traces = map(
         data,
         (yValues: number[], id: string): Partial<PlotData> => {
@@ -24,7 +22,7 @@ const ProductConcentrationPlot: React.FC<PlotProps> = ({
                 return {};
             }
             return {
-                x: yValues.map((_, i) => i * timeFactor/ 1000),
+                x: yValues.map((_, i) => (i * timeFactor) / 1000),
                 y: yValues,
                 type: "scatter" as const,
                 mode: "lines" as const,
