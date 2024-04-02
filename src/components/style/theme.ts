@@ -25,6 +25,16 @@ const theme = {
             headerBg: BG_DARK,
             contentBg: BG_DARK,
         },
+        Slider: {
+            trackBg: MID_GREY_DARKER,
+            railBg: MID_GREY_DARKER,
+            railHoverBg: MID_GREY_DARKER,
+            trackHoverBg: MID_GREY_DARKER,
+            handleColor: BRIGHT_PURPLE_DARKER,
+            handleActiveColor: BRIGHT_PURPLE_DARKER,
+            handleLineWidth: 0,
+            handleLineWidthHover: 0,
+        },
     },
 };
 
