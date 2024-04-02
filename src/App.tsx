@@ -169,6 +169,7 @@ function App() {
         }
     };
 
+    
     const handleNewInputConcentration = (name: string, value: number) => {
         const agentName = name as AvailableAgentNames;
         const agentId = AVAILABLE_AGENTS[agentName].id;
