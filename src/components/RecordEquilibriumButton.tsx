@@ -10,7 +10,7 @@ const RecordEquilibriumButton = ({
 }: RecordEquilibriumButtonProps) => {
     return (
         <ProgressionControl onPage={[3, 6]}>
-            <Button type="primary" ghost onClick={handleRecordEquilibrium}>
+            <Button ghost onClick={handleRecordEquilibrium}>
                 Record
             </Button>
         </ProgressionControl>

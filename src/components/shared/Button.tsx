@@ -6,7 +6,7 @@ interface ButtonProps extends React.ComponentProps<typeof AntdButton>{
 }
 
 const Button: React.FC<ButtonProps> = (props) => {
-    return <AntdButton {...props} />;
+    return <AntdButton type="primary" {...props} />;
 };
 
 export default Button;

@@ -44,7 +44,6 @@ const ViewSwitch: React.FC = () => {
         <div style={{ position: "relative" }}>
             <ProgressionControl onPage={1}>
                 <Button
-                    type="primary"
                     ghost
                     onClick={switchView}
                     style={{ position: "absolute", zIndex: 3001 }}
@@ -76,7 +75,5 @@ const ViewSwitch: React.FC = () => {
         </div>
     );
 };
-
-
 
 export default ViewSwitch;

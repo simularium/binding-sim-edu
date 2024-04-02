@@ -17,7 +17,6 @@ const PlayButton: React.FC = () => {
             <ProgressionControl onPage={[2, 5]}>
                 <Button
                     onClick={handleClick}
-                    type="primary"
                     ghost
                     style={{ position: "absolute", zIndex: 3001, bottom: 0}}
                 >
