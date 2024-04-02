@@ -4,7 +4,7 @@ import {
     LIGHT_GREY,
     BG_MEDIUM,
     MID_GREY_DARKER
-} from "../../constants/colors";
+} from "../constants/colors";
 
 const theme = {
     token: {

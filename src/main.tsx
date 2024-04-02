@@ -4,7 +4,7 @@ import { ConfigProvider } from "antd";
 import App from "./App.tsx";
 
 import "./index.css";
-import theme from "./components/style/theme.ts";
+import theme from "./style/theme.ts";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
