@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+
 import Viewer from "./Viewer";
 import { SimulariumContext } from "../simulation/context";
 import ProgressionControl from "./shared/ProgressionControl";

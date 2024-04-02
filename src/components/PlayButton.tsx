@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+
 import { SimulariumContext } from "../simulation/context";
 import ProgressionControl from "./shared/ProgressionControl";
 import VisibilityControl from "./shared/VisibilityControl";
