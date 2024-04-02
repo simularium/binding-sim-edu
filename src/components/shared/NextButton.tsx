@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { SimulariumContext } from '../../simulation/context';
-import  Button from '../shared/Button';
+import  Button from './OverlayButton';
 
 const NextButton = () => {
     const {

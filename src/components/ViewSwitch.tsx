@@ -3,8 +3,8 @@ import React, { useContext, useState } from "react";
 import Viewer from "./Viewer";
 import { SimulariumContext } from "../simulation/context";
 import ProgressionControl from "./shared/ProgressionControl";
-import Button from "./shared/Button";
 import PlayButton from "./PlayButton";
+import OverlayButton from "./shared/OverlayButton";
 
 enum View {
     Lab = "lab",
@@ -43,14 +43,10 @@ const ViewSwitch: React.FC = () => {
     return (
         <div style={{ position: "relative" }}>
             <ProgressionControl onPage={1}>
-                <Button
-                    ghost
-                    onClick={switchView}
-                    style={{ position: "absolute", zIndex: 3001 }}
-                >
+                <OverlayButton onClick={switchView}>
                     Switch to {currentView === View.Lab ? "Simulation" : "Lab"}{" "}
                     View
-                </Button>
+                </OverlayButton>
             </ProgressionControl>
             <PlayButton />
 
