@@ -37,7 +37,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
         ];
     }
     return (
-        <div style={{ minWidth: 260, flex: "1 1 30%" }}>
+        <>
             <VisibilityControl excludedPages={[0, 1, 2]}>
                 <ProductConcentrationPlot data={data} />
                 <EquilibriumPlot
@@ -49,7 +49,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
                 />
                 <div>{equilibriumFeedback}</div>
             </VisibilityControl>
-        </div>
+        </>
     );
 };
 

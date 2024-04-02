@@ -21,6 +21,7 @@ import { SimulariumContext } from "./simulation/context";
 import NavPanel from "./components/main-layout/NavPanel";
 import AdminUI from "./components/AdminUi";
 import { ProductOverTimeTrace } from "./components/plots/types";
+import MainLayout from "./components/main-layout/Layout";
 
 const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
@@ -55,12 +56,13 @@ function App() {
     );
     const [timeFactor, setTimeFactor] = useState(DEFAULT_TIME_FACTOR);
 
-
     /**
      * Analysis state
      * used to create plots and feedback
      */
-    const [productOverTimeTraces, setProductOverTimeTraces] = useState<ProductOverTimeTrace[]>([]);
+    const [productOverTimeTraces, setProductOverTimeTraces] = useState<
+        ProductOverTimeTrace[]
+    >([]);
     const [bindingEventsOverTime, setBindingEventsOverTime] = useState<
         number[]
     >([]);
@@ -74,8 +76,10 @@ function App() {
         setProductEquilibriumConcentrations,
     ] = useState<number[]>([]);
     const [equilibriumFeedback, setEquilibriumFeedback] = useState<string>("");
-    const [currentProductConcentrationArray, setCurrentProductConcentrationArray] = useState<number[]>([]);
-
+    const [
+        currentProductConcentrationArray,
+        setCurrentProductConcentrationArray,
+    ] = useState<number[]>([]);
 
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
@@ -93,7 +97,7 @@ function App() {
     const handleTimeChange = (timeData: TimeData) => {
         const newValue = clientSimulator.getCurrentConcentrationBound();
         const newData = [...currentProductConcentrationArray, newValue];
-        setCurrentProductConcentrationArray(newData)
+        setCurrentProductConcentrationArray(newData);
 
         if (timeData.time % 10 === 0) {
             const { numberBindEvents, numberUnBindEvents } =
@@ -133,9 +137,9 @@ function App() {
     }, [timeFactor, clientSimulator]);
 
     useEffect(() => {
-        // we pause the simulation to show them how to adjust 
+        // we pause the simulation to show them how to adjust
         // the concentration of the reactant
-        // this happens on page 5. 
+        // this happens on page 5.
         if (page === 5) {
             setIsPlaying(false);
         }
@@ -163,8 +167,8 @@ function App() {
             };
             setProductOverTimeTraces([...traces, newTrace]);
         }
-    }
-    
+    };
+
     const handleNewInputConcentration = (name: string, value: number) => {
         const agentName = name as AvailableAgentNames;
         const agentId = AVAILABLE_AGENTS[agentName].id;
@@ -218,44 +222,60 @@ function App() {
                         timeFactor,
                     }}
                 >
-                    <NavPanel
-                        page={page}
-                        title={moduleNames[reactionType]}
-                        total={content[reactionType].length}
+                    <MainLayout
+                        header={
+                            <NavPanel
+                                page={page}
+                                title={moduleNames[reactionType]}
+                                total={content[reactionType].length}
+                            />
+                        }
+                        content={
+                                <ContentPanel
+                                    {...content[reactionType][page]}
+                                />
+                                
+                        }
+                        reactionPanel={<ReactionDisplay reactionType={reactionType} />}
+                        leftPanel={
+                            <LeftPanel
+                                activeAgents={getActiveAgents(reactionType)}
+                                inputConcentration={inputConcentration}
+                                handleNewInputConcentration={
+                                    handleNewInputConcentration
+                                }
+                                bindingEventsOverTime={bindingEventsOverTime}
+                                unbindingEventsOverTime={
+                                    unBindingEventsOverTime
+                                }
+                                adjustableAgent={ADJUSTABLE_AGENT}
+                            />
+                        }
+                        centerPanel={
+                            <CenterPanel reactionType={reactionType} />
+                        }
+                        rightPanel={
+                            <RightPanel
+                                productOverTimeTraces={productOverTimeTraces}
+                                currentProductConcentrationArray={
+                                    currentProductConcentrationArray
+                                }
+                                handleRecordEquilibrium={
+                                    handleRecordEquilibrium
+                                }
+                                currentAdjustableAgentConcentration={
+                                    inputConcentration[ADJUSTABLE_AGENT]
+                                }
+                                equilibriumConcentrations={{
+                                    inputConcentrations:
+                                        inputEquilibriumConcentrations,
+                                    productConcentrations:
+                                        productEquilibriumConcentrations,
+                                }}
+                                equilibriumFeedback={equilibriumFeedback}
+                            />
+                        }
                     />
-                    <ContentPanel {...content[reactionType][page]} />
-                    <ReactionDisplay reactionType={reactionType} />
-
-                    <div style={{ display: "flex" }}>
-                        <LeftPanel
-                            activeAgents={getActiveAgents(reactionType)}
-                            inputConcentration={inputConcentration}
-                            handleNewInputConcentration={
-                                handleNewInputConcentration
-                            }
-                            bindingEventsOverTime={bindingEventsOverTime}
-                            unbindingEventsOverTime={unBindingEventsOverTime}
-                            adjustableAgent={ADJUSTABLE_AGENT}
-                        />
-                        <CenterPanel reactionType={reactionType} />
-                        <RightPanel
-                            productOverTimeTraces={productOverTimeTraces}
-                            currentProductConcentrationArray={
-                                currentProductConcentrationArray
-                            }
-                            handleRecordEquilibrium={handleRecordEquilibrium}
-                            currentAdjustableAgentConcentration={
-                                inputConcentration[ADJUSTABLE_AGENT]
-                            }
-                            equilibriumConcentrations={{
-                                inputConcentrations:
-                                    inputEquilibriumConcentrations,
-                                productConcentrations:
-                                    productEquilibriumConcentrations,
-                            }}
-                            equilibriumFeedback={equilibriumFeedback}
-                        />
-                    </div>
                     <AdminUI
                         timeFactor={timeFactor}
                         setTimeFactor={setTimeFactor}

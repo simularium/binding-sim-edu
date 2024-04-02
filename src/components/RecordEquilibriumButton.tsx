@@ -1,3 +1,4 @@
+import Button from "./shared/Button";
 import ProgressionControl from "./shared/ProgressionControl";
 
 interface RecordEquilibriumButtonProps {
@@ -9,7 +10,9 @@ const RecordEquilibriumButton = ({
 }: RecordEquilibriumButtonProps) => {
     return (
         <ProgressionControl onPage={[3, 6]}>
-            <button onClick={handleRecordEquilibrium}>Record</button>
+            <Button type="primary" ghost onClick={handleRecordEquilibrium}>
+                Record
+            </Button>
         </ProgressionControl>
     );
 };

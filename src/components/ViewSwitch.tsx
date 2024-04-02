@@ -3,11 +3,29 @@ import React, { useContext, useState } from "react";
 import Viewer from "./Viewer";
 import { SimulariumContext } from "../simulation/context";
 import ProgressionControl from "./shared/ProgressionControl";
+import Button from "./shared/Button";
+import PlayButton from "./PlayButton";
 
 enum View {
     Lab = "lab",
     Simulation = "simulation",
 }
+
+const LabView: React.FC = () => {
+    return (
+        <div
+            style={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                background: "black",
+                zIndex: 300,
+            }}
+        >
+            <h1>Lab View</h1>
+        </div>
+    );
+};
 
 const ViewSwitch: React.FC = () => {
     const [currentView, setCurrentView] = useState<View>(View.Lab);
@@ -23,20 +41,26 @@ const ViewSwitch: React.FC = () => {
         return null;
     }
     return (
-        <>
+        <div style={{ position: "relative" }}>
             <ProgressionControl onPage={1}>
-                <button onClick={switchView}>
+                <Button
+                    type="primary"
+                    ghost
+                    onClick={switchView}
+                    style={{ position: "absolute", zIndex: 3001 }}
+                >
                     Switch to {currentView === View.Lab ? "Simulation" : "Lab"}{" "}
                     View
-                </button>
+                </Button>
             </ProgressionControl>
+            <PlayButton />
+
             <div
                 className="viewer-wrapper"
                 style={{
                     position: "relative",
                     height: "500",
                     width: "500",
-                    background: "black",
                     zIndex: 300,
                 }}
             >
@@ -49,24 +73,10 @@ const ViewSwitch: React.FC = () => {
                     handleTimeChange={handleTimeChange}
                 />
             </div>
-        </>
-    );
-};
-
-const LabView: React.FC = () => {
-    return (
-        <div
-            style={{
-                position: "absolute",
-                height: "100%",
-                width: "100%",
-                background: "black",
-                zIndex: 300,
-            }}
-        >
-            <h1>Lab View</h1>
         </div>
     );
 };
+
+
 
 export default ViewSwitch;

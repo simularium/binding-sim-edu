@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import SimulariumViewer, {
     RenderStyle,
     SimulariumController,
@@ -18,15 +18,34 @@ export default function Viewer({
     controller,
     handleTimeChange,
 }: ViewerProps): ReactNode {
-    const [size] = useState({ width: 500, height: 500 });
+    const [size, setSize] = useState({ width: 500, height: 500 });
     const [selectionStateInfo] = useState({
         highlightedAgents: [],
         hiddenAgents: [],
         colorChange: null,
     });
+    const container = useRef<HTMLDivElement>(null);
+
+    const resize = (current: HTMLDivElement) => {
+        const width = current.offsetWidth;
+        const height = current.offsetHeight;
+        setSize({ height, width });
+    }
+
+    useEffect(() => { 
+        if (container.current) {
+        resize(container.current);
+    } }, [])
+
+    window.addEventListener("resize", () => {
+        if (container.current) {
+            resize(container.current);
+        }
+    });
+    
 
     return (
-        <div className="viewer-container" key="viewer">
+        <div className="viewer-container" key="viewer" ref={container}>
             <SimulariumViewer
                 lockedCamera={true}
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}

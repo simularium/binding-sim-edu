@@ -1,6 +1,5 @@
 import React from 'react';
 import ViewSwitch from '../ViewSwitch';
-import PlayButton from '../PlayButton';
 import EquilibriumQuestion from '../quiz-questions/EquilibriumQuestion';
 import KdQuestion from '../quiz-questions/KdQuestion';
 import { ReactionType } from '../../constants';
@@ -11,9 +10,8 @@ interface CenterPanelProps {
 
 const CenterPanel: React.FC<CenterPanelProps> = ({ reactionType }) => {
     return (
-        <div>
+        <div style={{position: "relative"}}>
             <ViewSwitch />
-            <PlayButton />
             <EquilibriumQuestion />
             <KdQuestion reactionType={reactionType} />
         </div>
