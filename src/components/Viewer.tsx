@@ -6,6 +6,7 @@ import SimulariumViewer, {
 } from "@aics/simularium-viewer";
 import "@aics/simularium-viewer/style/style.css";
 import { SimulariumContext } from "../simulation/context";
+import styles from "./viewer.module.css";
 
 interface ViewerProps {
     controller: SimulariumController;
@@ -23,7 +24,7 @@ export default function Viewer({
         hiddenAgents: [],
         colorChange: null,
     });
-    const container = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
     const { viewportSize, setViewportSize } = useContext(SimulariumContext);
 
     const resize = useCallback((current: HTMLDivElement) => {
@@ -33,8 +34,8 @@ export default function Viewer({
     }, [setViewportSize]);
 
     useEffect(() => {
-        if (container.current) {
-            resize(container.current);
+        if (containerRef.current) {
+            resize(containerRef.current);
         }
     }, [resize]);
 
@@ -42,8 +43,8 @@ export default function Viewer({
     window.addEventListener("resize", () => {
         clearTimeout(resizeEvent);
         resizeEvent = setTimeout(() => {
-            if (container.current) {
-                resize(container.current);
+            if (containerRef.current) {
+                resize(containerRef.current);
             }
             // resizing resets the simulation so we don't
             // want to trigger this too often
@@ -52,11 +53,7 @@ export default function Viewer({
     });
 
     return (
-        <div
-            className="viewer-container"
-            key="viewer"
-            ref={container}
-        >
+        <div className={styles.container} key="viewer" ref={containerRef}>
             <SimulariumViewer
                 lockedCamera={true}
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}
