@@ -55,7 +55,7 @@ function App() {
         INITIAL_CONCENTRATIONS
     );
     const [timeFactor, setTimeFactor] = useState(DEFAULT_TIME_FACTOR);
-
+    const [viewportSize, setViewportSize] = useState({ width: 500, height: 500 });
     /**
      * Analysis state
      * used to create plots and feedback
@@ -91,8 +91,8 @@ function App() {
             activeAgents,
             INITIAL_CONCENTRATIONS
         );
-        return new BindingSimulator(trajectory);
-    }, [reactionType]);
+        return new BindingSimulator(trajectory, viewportSize.width/5);
+    }, [reactionType, viewportSize]);
 
     const handleTimeChange = (timeData: TimeData) => {
         const newValue = clientSimulator.getCurrentConcentrationBound();
@@ -221,6 +221,8 @@ function App() {
                         page,
                         setPage,
                         timeFactor,
+                        viewportSize,
+                        setViewportSize,
                     }}
                 >
                     <MainLayout

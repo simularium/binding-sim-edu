@@ -9,6 +9,8 @@ interface SimulariumContextType {
     setPage: (value: number) => void;
     page: number;
     timeFactor: number;
+    viewportSize: { width: number; height: number };
+    setViewportSize: (value: { width: number; height: number }) => void;
 }
 
 export const SimulariumContext = createContext({
@@ -19,4 +21,6 @@ export const SimulariumContext = createContext({
     setPage: () => {},
     page: 0,
     timeFactor: 30,
+    viewportSize: { width: 500, height: 500 },
+    setViewportSize: () => {},
 } as SimulariumContextType);

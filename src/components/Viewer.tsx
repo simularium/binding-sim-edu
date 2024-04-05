@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useContext, useEffect, useRef, useState } from "react";
 import SimulariumViewer, {
     RenderStyle,
     SimulariumController,
     TimeData,
 } from "@aics/simularium-viewer";
 import "@aics/simularium-viewer/style/style.css";
+import { SimulariumContext } from "../simulation/context";
 
 interface ViewerProps {
     controller: SimulariumController;
@@ -18,18 +19,18 @@ export default function Viewer({
     controller,
     handleTimeChange,
 }: ViewerProps): ReactNode {
-    const [size, setSize] = useState({ width: 500, height: 500 });
     const [selectionStateInfo] = useState({
         highlightedAgents: [],
         hiddenAgents: [],
         colorChange: null,
     });
     const container = useRef<HTMLDivElement>(null);
+    const { viewportSize, setViewportSize } = useContext(SimulariumContext);
 
     const resize = (current: HTMLDivElement) => {
         const width = current.offsetWidth;
         const height = current.offsetHeight;
-        setSize({ height, width });
+        setViewportSize({ height, width });
     };
 
     useEffect(() => {
@@ -38,10 +39,15 @@ export default function Viewer({
         }
     }, []);
 
+    let resizeEvent: number | undefined;
     window.addEventListener("resize", () => {
-        if (container.current) {
-            resize(container.current);
-        }
+
+        clearTimeout(resizeEvent);
+        resizeEvent = setTimeout(() => {
+            if (container.current) {
+                resize(container.current);
+            }
+        }, 2000)
     });
 
     return (
@@ -49,8 +55,8 @@ export default function Viewer({
             <SimulariumViewer
                 lockedCamera={true}
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}
-                height={size.height}
-                width={size.width}
+                height={viewportSize.height}
+                width={viewportSize.width}
                 loggerLevel=""
                 onTimeChange={handleTimeChange}
                 simulariumController={controller}

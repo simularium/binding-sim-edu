@@ -197,12 +197,13 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     numberAgentOnLeft: number = 0;
     numberAgentOnRight: number = 0;
     _isMixed: boolean = false;
-    size: number = 100;
+    size: number;
     constructor(
         agents: InputAgent[],
-        size: number = 100,
+        size: number,
         timeFactor: number = DEFAULT_TIME_FACTOR
     ) {
+        this.size = size;
         this.system = new System();
         this.agents = agents;
         this.createBoundingLines();
@@ -211,7 +212,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.initializeAgents(agents);
         this.currentFrame = 0;
         this.system.separate();
-        this.size = size;
     }
 
     private clearAgents() {
