@@ -7,6 +7,7 @@ import BindingSimulator from "./simulation/BindingSimulator2D";
 import {
     AVAILABLE_AGENTS,
     DEFAULT_TIME_FACTOR,
+    DEFAULT_VIEWPORT_SIZE,
     createAgentsFromConcentrations,
 } from "./constants/trajectories";
 import { AvailableAgentNames } from "./types";
@@ -55,7 +56,7 @@ function App() {
         INITIAL_CONCENTRATIONS
     );
     const [timeFactor, setTimeFactor] = useState(DEFAULT_TIME_FACTOR);
-    const [viewportSize, setViewportSize] = useState({ width: 500, height: 500 });
+    const [viewportSize, setViewportSize] = useState(DEFAULT_VIEWPORT_SIZE);
     /**
      * Analysis state
      * used to create plots and feedback

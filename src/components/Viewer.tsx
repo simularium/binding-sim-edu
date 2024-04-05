@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { ReactNode, useContext, useEffect, useRef, useState } from "react";
+import { ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
 import SimulariumViewer, {
     RenderStyle,
     SimulariumController,
@@ -27,31 +26,37 @@ export default function Viewer({
     const container = useRef<HTMLDivElement>(null);
     const { viewportSize, setViewportSize } = useContext(SimulariumContext);
 
-    const resize = (current: HTMLDivElement) => {
+    const resize = useCallback((current: HTMLDivElement) => {
         const width = current.offsetWidth;
         const height = current.offsetHeight;
         setViewportSize({ height, width });
-    };
+    }, [setViewportSize]);
 
     useEffect(() => {
         if (container.current) {
             resize(container.current);
         }
-    }, []);
+    }, [resize]);
 
     let resizeEvent: number | undefined;
     window.addEventListener("resize", () => {
-
         clearTimeout(resizeEvent);
         resizeEvent = setTimeout(() => {
             if (container.current) {
                 resize(container.current);
             }
-        }, 2000)
+            // resizing resets the simulation so we don't
+            // want to trigger this too often
+            // unfortunately, browsers don't have an end resize event
+        }, 2000);
     });
 
     return (
-        <div className="viewer-container" key="viewer" ref={container}>
+        <div
+            className="viewer-container"
+            key="viewer"
+            ref={container}
+        >
             <SimulariumViewer
                 lockedCamera={true}
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}

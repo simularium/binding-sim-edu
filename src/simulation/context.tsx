@@ -1,5 +1,6 @@
 import { SimulariumController, TimeData } from "@aics/simularium-viewer";
 import { createContext } from "react";
+import { DEFAULT_VIEWPORT_SIZE } from "../constants/trajectories";
 
 interface SimulariumContextType {
     isPlaying: boolean;
@@ -21,6 +22,6 @@ export const SimulariumContext = createContext({
     setPage: () => {},
     page: 0,
     timeFactor: 30,
-    viewportSize: { width: 500, height: 500 },
+    viewportSize: DEFAULT_VIEWPORT_SIZE,
     setViewportSize: () => {},
 } as SimulariumContextType);

@@ -41,7 +41,7 @@ const ViewSwitch: React.FC = () => {
         return null;
     }
     return (
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative", height: "100%" }}>
             <ProgressionControl onPage={1}>
                 <OverlayButton onClick={switchView}>
                     Switch to {currentView === View.Lab ? "Simulation" : "Lab"}{" "}
@@ -49,25 +49,15 @@ const ViewSwitch: React.FC = () => {
                 </OverlayButton>
             </ProgressionControl>
             <PlayButton />
-
-            <div
-                className="viewer-wrapper"
-                style={{
-                    position: "relative",
-                    height: "500",
-                    width: "500",
-                    zIndex: 300,
-                }}
-            >
+            <>
                 {currentView === View.Lab ? <LabView /> : null}
-
                 <Viewer
                     isPlaying={isPlaying}
                     setIsPlaying={setIsPlaying}
                     controller={simulariumController}
                     handleTimeChange={handleTimeChange}
                 />
-            </div>
+            </>
         </div>
     );
 };
