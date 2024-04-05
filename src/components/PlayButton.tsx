@@ -15,10 +15,7 @@ const PlayButton: React.FC = () => {
     return (
         <VisibilityControl excludedPages={[1]}>
             <ProgressionControl onPage={[2, 5]}>
-                <OverlayButton
-                    onClick={handleClick}
-                    style={{ bottom: 0 }}
-                >
+                <OverlayButton onClick={handleClick} style={{ bottom: 0 }}>
                     {isPlaying ? "Pause" : "Play"}
                 </OverlayButton>
             </ProgressionControl>

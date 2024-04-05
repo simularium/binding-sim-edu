@@ -1,4 +1,4 @@
-import Button from "./shared/OverlayButton";
+import Button from "./shared/Button";
 import ProgressionControl from "./shared/ProgressionControl";
 
 interface RecordEquilibriumButtonProps {

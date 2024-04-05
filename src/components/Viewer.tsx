@@ -30,19 +30,19 @@ export default function Viewer({
         const width = current.offsetWidth;
         const height = current.offsetHeight;
         setSize({ height, width });
-    }
+    };
 
-    useEffect(() => { 
+    useEffect(() => {
         if (container.current) {
-        resize(container.current);
-    } }, [])
+            resize(container.current);
+        }
+    }, []);
 
     window.addEventListener("resize", () => {
         if (container.current) {
             resize(container.current);
         }
     });
-    
 
     return (
         <div className="viewer-container" key="viewer" ref={container}>

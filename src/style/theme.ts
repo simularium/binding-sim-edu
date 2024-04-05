@@ -16,7 +16,8 @@ const theme = {
     },
     components: {
         Button: {
-            defaultColor: BG_DARK,
+            defaultColor: BRIGHT_PURPLE_DARKER,
+            defaultBorderColor: BRIGHT_PURPLE_DARKER,
             primaryColor: BG_DARK,
         },
         Layout: {

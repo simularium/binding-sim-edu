@@ -282,6 +282,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             return;
         }
         const diff = newCount - oldCount;
+        console.log("Diff", diff, newCount, oldCount);
         if (diff > 0) {
             for (let i = 0; i < diff; ++i) {
                 const position: number[] = this.getRandomPointOnSide(
