@@ -46,7 +46,7 @@ export default function Viewer({
         setViewportToContainerSize();
     }, [setViewportToContainerSize]);
 
-    const resizeEvent = useRef<number | undefined>(undefined);
+    const resizeEvent = useRef<NodeJS.Timeout | undefined>(undefined);
     window.addEventListener("resize", () => {
         clearTimeout(resizeEvent.current);
         // resizing resets the simulation so we don't
