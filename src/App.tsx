@@ -82,6 +82,12 @@ function App() {
         setCurrentProductConcentrationArray,
     ] = useState<number[]>([]);
 
+    const resetAnalysisState = () => {
+        setBindingEventsOverTime([]);
+        setUnBindingEventsOverTime([]);
+        setCurrentProductConcentrationArray([]);
+    };
+
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
     }, []);
@@ -92,6 +98,7 @@ function App() {
             activeAgents,
             INITIAL_CONCENTRATIONS
         );
+        resetAnalysisState();
         return new BindingSimulator(trajectory, viewportSize.width/5);
     }, [reactionType, viewportSize]);
 
@@ -153,11 +160,6 @@ function App() {
         }
     }, [page, inputEquilibriumConcentrations]);
 
-    const resetState = () => {
-        setBindingEventsOverTime([]);
-        setUnBindingEventsOverTime([]);
-        setCurrentProductConcentrationArray([]);
-    };
 
     const addProductionTrace = (previousConcentration: number) => {
         const traces = productOverTimeTraces;
@@ -180,7 +182,7 @@ function App() {
         setInputConcentration({ ...inputConcentration, [name]: value });
         const time = simulariumController.time();
         simulariumController.gotoTime(time + 1);
-        resetState();
+        resetAnalysisState();
     };
 
     const setEquilibriumFeedbackTimeout = (message: string) => {

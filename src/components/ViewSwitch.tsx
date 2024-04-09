@@ -49,15 +49,13 @@ const ViewSwitch: React.FC = () => {
                 </OverlayButton>
             </ProgressionControl>
             <PlayButton />
-            <>
-                {currentView === View.Lab ? <LabView /> : null}
-                <Viewer
-                    isPlaying={isPlaying}
-                    setIsPlaying={setIsPlaying}
-                    controller={simulariumController}
-                    handleTimeChange={handleTimeChange}
-                />
-            </>
+            {currentView === View.Lab ? <LabView /> : null}
+            <Viewer
+                isPlaying={isPlaying}
+                setIsPlaying={setIsPlaying}
+                controller={simulariumController}
+                handleTimeChange={handleTimeChange}
+            />
         </div>
     );
 };
