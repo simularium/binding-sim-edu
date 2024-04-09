@@ -10,11 +10,11 @@ interface CenterPanelProps {
 
 const CenterPanel: React.FC<CenterPanelProps> = ({ reactionType }) => {
     return (
-        <div>
+        <>
             <ViewSwitch />
             <EquilibriumQuestion />
             <KdQuestion reactionType={reactionType} />
-        </div>
+        </>
     );
 };
 

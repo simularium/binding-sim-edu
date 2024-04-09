@@ -7,6 +7,7 @@ import BindingSimulator from "./simulation/BindingSimulator2D";
 import {
     AVAILABLE_AGENTS,
     DEFAULT_TIME_FACTOR,
+    DEFAULT_VIEWPORT_SIZE,
     createAgentsFromConcentrations,
 } from "./constants/trajectories";
 import { AvailableAgentNames } from "./types";
@@ -55,7 +56,7 @@ function App() {
         INITIAL_CONCENTRATIONS
     );
     const [timeFactor, setTimeFactor] = useState(DEFAULT_TIME_FACTOR);
-
+    const [viewportSize, setViewportSize] = useState(DEFAULT_VIEWPORT_SIZE);
     /**
      * Analysis state
      * used to create plots and feedback
@@ -81,6 +82,12 @@ function App() {
         setCurrentProductConcentrationArray,
     ] = useState<number[]>([]);
 
+    const resetAnalysisState = () => {
+        setBindingEventsOverTime([]);
+        setUnBindingEventsOverTime([]);
+        setCurrentProductConcentrationArray([]);
+    };
+
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
     }, []);
@@ -91,8 +98,9 @@ function App() {
             activeAgents,
             INITIAL_CONCENTRATIONS
         );
-        return new BindingSimulator(trajectory);
-    }, [reactionType]);
+        resetAnalysisState();
+        return new BindingSimulator(trajectory, viewportSize.width/5);
+    }, [reactionType, viewportSize]);
 
     const handleTimeChange = (timeData: TimeData) => {
         const newValue = clientSimulator.getCurrentConcentrationBound();
@@ -152,11 +160,6 @@ function App() {
         }
     }, [page, inputEquilibriumConcentrations]);
 
-    const resetState = () => {
-        setBindingEventsOverTime([]);
-        setUnBindingEventsOverTime([]);
-        setCurrentProductConcentrationArray([]);
-    };
 
     const addProductionTrace = (previousConcentration: number) => {
         const traces = productOverTimeTraces;
@@ -179,7 +182,7 @@ function App() {
         setInputConcentration({ ...inputConcentration, [name]: value });
         const time = simulariumController.time();
         simulariumController.gotoTime(time + 1);
-        resetState();
+        resetAnalysisState();
     };
 
     const setEquilibriumFeedbackTimeout = (message: string) => {
@@ -221,6 +224,8 @@ function App() {
                         page,
                         setPage,
                         timeFactor,
+                        viewportSize,
+                        setViewportSize,
                     }}
                 >
                     <MainLayout
