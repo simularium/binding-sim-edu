@@ -25,7 +25,7 @@ const Concentration: React.FC<AgentProps> = ({
         }
         return (
             <Slider
-                min={1}
+                min={2}
                 max={20}
                 name={agent}
                 initialValue={concentration}

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ReactNode, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import SimulariumViewer, {
     RenderStyle,
     SimulariumController,
@@ -24,9 +24,10 @@ export default function Viewer({
         hiddenAgents: [],
         colorChange: null,
     });
+    const container = useRef<HTMLDivElement>(null);
 
     return (
-        <div className="viewer-container" key="viewer">
+        <div className="viewer-container" key="viewer" ref={container}>
             <SimulariumViewer
                 lockedCamera={true}
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}

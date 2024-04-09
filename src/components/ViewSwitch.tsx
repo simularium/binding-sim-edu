@@ -3,11 +3,29 @@ import React, { useContext, useState } from "react";
 import Viewer from "./Viewer";
 import { SimulariumContext } from "../simulation/context";
 import ProgressionControl from "./shared/ProgressionControl";
+import PlayButton from "./PlayButton";
+import OverlayButton from "./shared/OverlayButton";
 
 enum View {
     Lab = "lab",
     Simulation = "simulation",
 }
+
+const LabView: React.FC = () => {
+    return (
+        <div
+            style={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                background: "black",
+                zIndex: 300,
+            }}
+        >
+            <h1>Lab View</h1>
+        </div>
+    );
+};
 
 const ViewSwitch: React.FC = () => {
     const [currentView, setCurrentView] = useState<View>(View.Lab);
@@ -23,20 +41,21 @@ const ViewSwitch: React.FC = () => {
         return null;
     }
     return (
-        <>
+        <div style={{ position: "relative" }}>
             <ProgressionControl onPage={1}>
-                <button onClick={switchView}>
+                <OverlayButton onClick={switchView}>
                     Switch to {currentView === View.Lab ? "Simulation" : "Lab"}{" "}
                     View
-                </button>
+                </OverlayButton>
             </ProgressionControl>
+            <PlayButton />
+
             <div
                 className="viewer-wrapper"
                 style={{
                     position: "relative",
                     height: "500",
                     width: "500",
-                    background: "black",
                     zIndex: 300,
                 }}
             >
@@ -49,22 +68,6 @@ const ViewSwitch: React.FC = () => {
                     handleTimeChange={handleTimeChange}
                 />
             </div>
-        </>
-    );
-};
-
-const LabView: React.FC = () => {
-    return (
-        <div
-            style={{
-                position: "absolute",
-                height: "100%",
-                width: "100%",
-                background: "black",
-                zIndex: 300,
-            }}
-        >
-            <h1>Lab View</h1>
         </div>
     );
 };
