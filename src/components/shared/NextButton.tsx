@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { SimulariumContext } from '../../simulation/context';
-import Button from "./Button";
+import PrimaryButton from "./PrimaryButton";
 
 const NextButton = () => {
     const {
@@ -8,7 +8,7 @@ const NextButton = () => {
         setPage
     } = useContext(SimulariumContext);
 
-    return <Button onClick={() => setPage(page + 1)}>Next</Button>;
+    return <PrimaryButton onClick={() => setPage(page + 1)}>Next</PrimaryButton>;
 };
 
 export default NextButton;
