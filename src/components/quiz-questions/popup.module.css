@@ -7,3 +7,9 @@
     width: 332px;
     padding: 16px;
 }
+
+.container .title {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    font-weight: 500;
+}

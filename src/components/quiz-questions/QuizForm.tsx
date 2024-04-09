@@ -36,7 +36,7 @@ const QuizForm: React.FC<QuizFormProps> = ({
         <SuccessFeedback message={successMessage} />
     ) : (
         <div className={styles.container}>
-            <h2>{isFormVisible ? title : minimizedTitle}</h2>
+            <h4 className={styles.title}>{isFormVisible ? title : minimizedTitle}</h4>
             {isFormVisible && formContent}
             <button onClick={toggleFormVisibility}>
                 {isFormVisible ? "Hide Form" : "Show Form"}

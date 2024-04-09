@@ -1,6 +1,7 @@
 :root {
   --primary-color: #B59FF6;
   --background-color: #141219;
+  --border-color: var(--background-color);
   --text-color: #D3D3D3;
   --popup-background-color: var(--primary-color);
   --popup-text-color: #141219;

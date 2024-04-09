@@ -32,13 +32,13 @@ const EquilibriumQuestion: React.FC = () => {
     };
 
     const answers = [
-        { value: "A", label: "binding reactions stop happening" },
-        { value: "B", label: "unbinding reactions stop happening" },
+        { value: "A", label: "A. binding reactions stop happening" },
+        { value: "B", label: "B. unbinding reactions stop happening" },
         {
             value: "C",
-            label: "the amount of products and reactants stays roughly the same over time",
+            label: "C. the amount of products and reactants stays roughly the same over time",
         },
-        { value: "D", label: "the amount of products and reactants are equal" },
+        { value: "D", label: "D. the amount of products and reactants are equal" },
     ];
 
     const formContent = (

@@ -1,0 +1,10 @@
+.container :global(.ant-radio-checked .ant-radio-inner),
+.container:hover :global(.ant-radio-inner),
+.container:active :global(.ant-radio-inner),
+.container:focus :global(.ant-radio-inner) {
+    border-color: var(--border-color);
+}
+
+.container :global(.ant-radio-inner)::after {
+    background-color: var(--border-color);
+}

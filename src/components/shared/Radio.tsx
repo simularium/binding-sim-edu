@@ -1,5 +1,6 @@
 import React from "react";
 import { Radio, RadioChangeEvent } from "antd";
+import styles from "./radio.module.css";
 
 interface RadioProps {
     options: { value: string; label: string }[];
@@ -14,6 +15,7 @@ const RadioComponent: React.FC<RadioProps> = ({
 }) => {
     return (
         <Radio.Group
+            className={styles.container}
             value={selectedAnswer}
             onChange={onChange}
             options={options}
