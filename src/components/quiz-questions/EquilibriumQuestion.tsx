@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import QuizForm from "./QuizForm";
 import VisibilityControl from "../shared/VisibilityControl";
 import { FormState } from "./types";
+import RadioComponent from "../shared/Radio";
 
 const EquilibriumQuestion: React.FC = () => {
     const [selectedAnswer, setSelectedAnswer] = useState("");
@@ -38,29 +39,15 @@ const EquilibriumQuestion: React.FC = () => {
     ];
 
     const formContent = (
-        <>
-            <ul>
-                {answers.map((answer, index) => (
-                    <li key={index}>
-                        <label>
-                            <input
-                                type="radio"
-                                value={answer.value}
-                                checked={selectedAnswer === answer.value}
-                                onChange={() =>
-                                    handleAnswerSelection(answer.value)
-                                }
-                            />
-                            {answer.label}
-                        </label>
-                    </li>
-                ))}
-            </ul>
-        </>
+        <RadioComponent
+            selectedAnswer={selectedAnswer}
+            options={answers}
+            onChange={(e) => handleAnswerSelection(e.target.value)}
+        />
     );
 
     return (
-        <VisibilityControl includedPages={[4]}>
+        <VisibilityControl includedPages={[2, 4]}>
             <QuizForm
                 title="Which of the following is true about equilibrium?"
                 formContent={formContent}
