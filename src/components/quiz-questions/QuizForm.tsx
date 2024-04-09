@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FormState } from "./types";
 import SuccessFeedback from "./SuccessFeedback";
 import FailureFeedback from "./FailureFeedback";
+import styles from "./popup.module.css";
+import TertiaryButton from "../shared/TertiaryButton";
 
 interface QuizFormProps {
     title: string;
@@ -33,14 +35,18 @@ const QuizForm: React.FC<QuizFormProps> = ({
     return formState === FormState.Correct ? (
         <SuccessFeedback message={successMessage} />
     ) : (
-        <div>
+        <div className={styles.container}>
             <h2>{isFormVisible ? title : minimizedTitle}</h2>
             {isFormVisible && formContent}
             <button onClick={toggleFormVisibility}>
                 {isFormVisible ? "Hide Form" : "Show Form"}
             </button>
-            {formState === FormState.Incorrect && <FailureFeedback message={failureMessage} />}
-            <button onClick={onSubmit}>{submitButtonLabel}</button>
+            {formState === FormState.Incorrect && (
+                <FailureFeedback message={failureMessage} />
+            )}
+            <TertiaryButton onClick={onSubmit}>
+                {submitButtonLabel}
+            </TertiaryButton>
         </div>
     );
 };

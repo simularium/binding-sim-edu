@@ -1,0 +1,9 @@
+.container {
+    background-color: var(--popup-background-color);
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+    color: var(--popup-text-color);
+    width: 332px;
+    padding: 16px;
+}
