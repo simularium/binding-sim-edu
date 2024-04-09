@@ -13,6 +13,9 @@ const EquilibriumQuestion: React.FC = () => {
     };
 
     const handleSubmit = () => {
+        if (formState === FormState.Clear) {
+            return;
+        }
         // If they already submitted an incorrect answer
         // hitting the submit button again will reset the form
         if (formState === FormState.Incorrect) {
