@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 import { Layout } from 'antd';
-
 const { Header, Sider, Content } = Layout;
 
+import styles from './layout.module.css';
 interface MainLayoutProps {
     header: ReactNode;
     leftPanel: ReactNode;
@@ -22,9 +22,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({
 }) => {
     return (
         <Layout>
-            <Header>{header}</Header>
-            <Content>{content}</Content>
-            <Header>{reactionPanel}</Header>
+            <Header className={styles.navBar}>{header}</Header>
+            <Content className={styles.contentPanel}>{content}</Content>
+            <Header className={styles.reactionPanel}>{reactionPanel}</Header>
             <Layout>
                 <Sider width={"25%"}>{leftPanel}</Sider>
                 <Content>{centerPanel}</Content>

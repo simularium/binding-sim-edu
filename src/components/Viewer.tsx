@@ -13,6 +13,7 @@ import SimulariumViewer, {
 } from "@aics/simularium-viewer";
 import "@aics/simularium-viewer/style/style.css";
 import { SimulariumContext } from "../simulation/context";
+import styles from "./viewer.module.css";
 
 interface ViewerProps {
     controller: SimulariumController;
@@ -58,7 +59,7 @@ export default function Viewer({
     });
 
     return (
-        <div className="viewer-container" key="viewer" ref={container}>
+        <div className={styles.container} key="viewer" ref={container}>
             <SimulariumViewer
                 lockedCamera={true}
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}

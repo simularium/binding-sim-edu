@@ -1,0 +1,5 @@
+.container {
+    height: calc(
+        100vh - var(--nav-bar-height) - var(--reaction-panel-height) - var(--content-height)
+    );
+}
