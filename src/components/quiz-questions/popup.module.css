@@ -13,3 +13,20 @@
     font-size: 16px;
     font-weight: 500;
 }
+
+.failure {
+    border: solid var(--border-color) 1px;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.failure h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.failure p {
+    margin: 0;
+}

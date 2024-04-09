@@ -13,7 +13,7 @@ const EquilibriumQuestion: React.FC = () => {
     };
 
     const handleSubmit = () => {
-        if (formState === FormState.Clear) {
+        if (!selectedAnswer) {
             return;
         }
         // If they already submitted an incorrect answer
@@ -36,7 +36,7 @@ const EquilibriumQuestion: React.FC = () => {
         { value: "B", label: "B. unbinding reactions stop happening" },
         {
             value: "C",
-            label: "C. the amount of products and reactants stays roughly the same over time",
+            label: "C. the amount of product stays roughly the same over time",
         },
         { value: "D", label: "D. the amount of products and reactants are equal" },
     ];
