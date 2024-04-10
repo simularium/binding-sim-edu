@@ -4,6 +4,7 @@
 
 .content-panel {
     height: var(--content-height);
+    padding: 16px 20px;
 }
 
 .reaction-panel {

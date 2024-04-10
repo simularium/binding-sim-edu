@@ -18,7 +18,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
 }) => {
     return (
         <div>
-            {title && <h1>{title}</h1>}
+            {title && <h3>{title}</h3>}
             <p>{content}</p>
             {callToAction && <p>{callToAction}</p>}
             {nextButton && <NextButton />}
