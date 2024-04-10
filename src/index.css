@@ -1,6 +1,8 @@
 :root {
   --background-color: #141219;
   --text-color: #D3D3D3;
+  --mid-gray-dark: #4B4B4B;
+  --app-border-color: var(--mid-gray-dark);
   --nav-bar-height: 67px;
   --content-height: 168px;
   --reaction-panel-height: 46px;
