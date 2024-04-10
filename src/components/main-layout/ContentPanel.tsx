@@ -1,7 +1,7 @@
-import React from 'react';
-
-import NextButton from '../shared/NextButton';
-
+import React from "react";
+import PointerIcon from "../icons/PointerIcon";
+import NextButton from "../shared/NextButton";
+import styles from "./layout.module.css"
 export interface ContentPanelProps {
     content: string;
     title?: string;
@@ -17,12 +17,18 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
     nextButton,
 }) => {
     return (
-        <div>
-            {title && <h3>{title}</h3>}
-            <p>{content}</p>
-            {callToAction && <p>{callToAction}</p>}
+        <>
+            <div className={styles.contentPanelText}>
+                {title && <h3>{title}</h3>}
+                <p>{content}</p>
+                {callToAction && (
+                    <p className={styles.callToActionP}>
+                        <PointerIcon /> {callToAction}
+                    </p>
+                )}
+            </div>
             {nextButton && <NextButton />}
-        </div>
+        </>
     );
 };
 
