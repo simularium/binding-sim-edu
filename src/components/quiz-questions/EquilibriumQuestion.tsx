@@ -57,7 +57,7 @@ const EquilibriumQuestion: React.FC = () => {
     );
 
     return (
-        <VisibilityControl includedPages={[2, 4]}>
+        <VisibilityControl includedPages={[4]}>
             <QuizForm
                 title="Which of the following is true about equilibrium?"
                 formContent={formContent}

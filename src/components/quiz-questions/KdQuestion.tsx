@@ -50,12 +50,12 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
     };
 
     const formContent = (
-        <div className={styles.formContent}>
+        <div className={styles.inputFormContent}>
             <p>
                 Referencing the Equilibrium Concentration plot, what is the
                 binding affinity?
             </p>
-            <em>Kd = ?</em>
+            <b>Kd = ?</b>
             <InputNumber
                 value={selectedAnswer || ""}
                 onChange={handleAnswerSelection}
@@ -63,7 +63,7 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
         </div>
     );
     return (
-        <VisibilityControl includedPages={[3,8]}>
+        <VisibilityControl includedPages={[8]}>
             <QuizForm
                 title="You reached the point where half of the binding sites of A are occupied."
                 formContent={formContent}

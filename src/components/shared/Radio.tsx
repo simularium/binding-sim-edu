@@ -19,7 +19,6 @@ const RadioComponent: React.FC<RadioProps> = ({
             value={selectedAnswer}
             onChange={onChange}
             options={options}
-            buttonStyle="solid"
         />
     );
 };

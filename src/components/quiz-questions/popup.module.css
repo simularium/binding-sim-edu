@@ -34,7 +34,7 @@
     border: solid var(--border-color) 1px;
     padding: 12px;
     border-radius: 4px;
-    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .failure h3 {
@@ -48,16 +48,19 @@
     font-size: 14px;
 }
 
-.form-content {
+.input-form-content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-bottom: 10px;
     gap: 10px;
 }
 
-.form-content :global(.ant-input-number) {
+.input-form-content :global(.ant-input-number) {
     width: 100%;
     border: solid var(--border-color) 1px;
     border-radius: 4px;
+}
+
+.submit {
+    margin-top: 10px;
 }
