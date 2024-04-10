@@ -6,7 +6,7 @@ import { FormState } from "./types";
 import SuccessFeedback from "./SuccessFeedback";
 import FailureFeedback from "./FailureFeedback";
 import styles from "./popup.module.css";
-import { TertiaryButton, IconButton } from "../shared/Buttons";
+import { TertiaryButton, IconButton } from "../shared/ButtonLibrary";
 
 interface QuizFormProps {
     title: string;
