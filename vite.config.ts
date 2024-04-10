@@ -6,6 +6,12 @@ export default defineConfig({
     plugins: [
         react(), 
     ],
+    css: {
+      modules: {
+        localsConvention: "camelCaseOnly",
+      }
+    },
+    
     server: {
         fs: {
           // Allow serving files from one level up to the project root

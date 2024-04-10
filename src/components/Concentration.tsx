@@ -1,11 +1,12 @@
 import React from "react";
-import Slider from "./Slider";
 import { map } from "lodash";
+
+import Slider from "./shared/Slider";
 import { AvailableAgentNames } from "../types";
-import ProgressionControl from "./ProgressionControl";
 
 interface AgentProps {
     activeAgents: AvailableAgentNames[];
+    adjustableAgent: AvailableAgentNames;
     concentration: { [key in AvailableAgentNames]: number };
     onChange: (name: string, value: number) => void;
     disabled: boolean;
@@ -16,23 +17,22 @@ const Concentration: React.FC<AgentProps> = ({
     onChange,
     activeAgents,
     disabled,
+    adjustableAgent,
 }) => {
     return map(concentration, (concentration, agent: AvailableAgentNames) => {
         if (!activeAgents.includes(agent)) {
             return null;
         }
         return (
-            <ProgressionControl onPage={5}>
-                <Slider
-                    min={1}
-                    max={20}
-                    name={agent}
-                    initialValue={concentration}
-                    onChange={onChange}
-                    key={agent}
-                    disabled={disabled}
-                />
-            </ProgressionControl>
+            <Slider
+                min={2}
+                max={20}
+                name={agent}
+                initialValue={concentration}
+                onChange={onChange}
+                key={agent}
+                disabled={disabled || agent !== adjustableAgent}
+            />
         );
     });
 };

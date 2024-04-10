@@ -13,6 +13,8 @@ import {
     VisTypes,
 } from "@aics/simularium-viewer";
 import { InputAgent } from "../types";
+import { AGENT_AB_COLOR } from "../constants/colors";
+import { DEFAULT_TIME_FACTOR } from "../constants/trajectories";
 
 class BindingInstance extends Circle {
     id: number;
@@ -87,7 +89,7 @@ class BindingInstance extends Circle {
         this.child.setPosition(childPosAndRotation[0], childPosAndRotation[1]);
     }
 
-    public oneStep(timeFactor: number = 1) {
+    public oneStep(size: number, timeFactor: number = DEFAULT_TIME_FACTOR) {
         if (this.bound) {
             return;
         }
@@ -177,7 +179,6 @@ class BindingInstance extends Circle {
     }
 }
 
-const size = 100;
 
 export default class BindingSimulator implements IClientSimulatorImpl {
     instances: BindingInstance[] = [];
@@ -192,7 +193,17 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     currentNumberOfBindingEvents: number = 0;
     currentNumberOfUnbindingEvents: number = 0;
     onUpdate: (data: number) => void = () => {};
-    constructor(agents: InputAgent[], timeFactor: number = 25) {
+    mixCheckAgent: number = 0;
+    numberAgentOnLeft: number = 0;
+    numberAgentOnRight: number = 0;
+    _isMixed: boolean = false;
+    size: number;
+    constructor(
+        agents: InputAgent[],
+        size: number,
+        timeFactor: number = DEFAULT_TIME_FACTOR
+    ) {
+        this.size = size;
         this.system = new System();
         this.agents = agents;
         this.createBoundingLines();
@@ -209,12 +220,19 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.currentNumberOfUnbindingEvents = 0;
         this.system = new System();
         this.instances = [];
+        this._isMixed = false;
     }
 
     private initializeAgents(agents: InputAgent[]) {
+        let smallestAgentRadius = 1000;
         for (let i = 0; i < agents.length; ++i) {
             const agent = agents[i];
             agent.count = this.convertConcentrationToCount(agent.concentration);
+            if (agent.radius < smallestAgentRadius) {
+                // use the smallest agent to check if the system is mixed
+                smallestAgentRadius = agent.radius;
+                this.mixCheckAgent = agent.id;
+            }
             for (let j = 0; j < agent.count; ++j) {
                 const position: number[] = this.getRandomPointOnSide(
                     agent.id,
@@ -235,6 +253,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 this.instances.push(instance);
             }
         }
+    }
+
+    public isMixed() {
+        return this._isMixed;
     }
 
     public getEvents() {
@@ -294,7 +316,44 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         }
     }
 
+    private countNumberOfInstancesOnEachSide(agentInstance: BindingInstance) {
+        if (this._isMixed) {
+            return;
+        }
+        if (agentInstance.id !== this.mixCheckAgent) {
+            return;
+        }
+
+        // checking the rightmost quadrant
+        // and the left most quadrant
+        if (agentInstance.pos.x < - this.size / 4) {
+            this.numberAgentOnLeft++;
+        } else if (agentInstance.pos.x > this.size / 4){
+            this.numberAgentOnRight++;
+        }
+    }
+
+    private compareAgentsOnEachSide() {
+        // once the simulation is mixed, if it dips momentarily
+        // that's not a sign that equilibrium has been reversed
+        if (this._isMixed) {
+            return;
+        }
+        const diff = Math.abs(this.numberAgentOnLeft - this.numberAgentOnRight);
+        const total = this.numberAgentOnLeft + this.numberAgentOnRight;
+        const percentUnmixed = (diff / total) * 100;
+        if (percentUnmixed < 10) {
+            this._isMixed = true;
+        }
+    }
+
+    private clearMixCounts() {
+        this.numberAgentOnLeft = 0;
+        this.numberAgentOnRight = 0;
+    }
+
     private createBoundingLines() {
+        const size = this.size;
         const points = [
             [-size / 2, -size / 2],
             [-size / 2, size / 2],
@@ -319,6 +378,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         // 1 mole = 10^6 micromoles
         // 10 ^(-24 - 6 + 23) = 10^-7
         const depth = 1.0;
+        const size = this.size;
         const volume =
             size * this.distanceFactor * (size * this.distanceFactor) * depth;
         const count = concentration * volume * 10 ** -7 * 6.022;
@@ -331,6 +391,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         // 1 nm^3 = 10^-24 L
         // 1 mole = 6.022 x 10^23 particles (count)
         const depth = 1.0;
+        const size = this.size;
         const volume =
             size * this.distanceFactor * (size * this.distanceFactor) * depth;
         const concentration = count / (volume * 10 ** -7 * 6.022);
@@ -338,6 +399,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     private getRandomPointOnSide(side: number, total: number) {
+        const size = this.size;
         const buffer = size / 5;
         const dFromSide = random(0 + buffer, size / 2, true);
         let dAlongSide = random(-size / 2, size / 2, true);
@@ -425,14 +487,17 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         if (this.static || this.initialState) {
             return this.staticUpdate();
         }
+        this.clearMixCounts();
 
         for (let i = 0; i < this.instances.length; ++i) {
-            this.instances[i].oneStep(this.timeFactor);
+            this.instances[i].oneStep(this.size, this.timeFactor);
+            this.countNumberOfInstancesOnEachSide(this.instances[i]);
         }
         // reset to zero for every tenth time point
         if (this.currentFrame % 10 === 0) {
             this.currentNumberOfBindingEvents = 0;
             this.currentNumberOfUnbindingEvents = 0;
+            this.compareAgentsOnEachSide();
         }
         this.system.checkAll((response: Response) => {
             const { a, b, overlapV } = response;
@@ -520,19 +585,20 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
     public getInfo(): TrajectoryFileInfo {
         const typeMapping: EncodedTypeMapping = {};
+        const size = this.size;
         for (let i = 0; i < this.agents.length; ++i) {
             typeMapping[this.agents[i].id] = {
                 name: `${this.agents[i].id}`,
-                // geometry: {
-
-                //     displayType: GeometryDisplayType.SPHERE,
-                //     url: "",
-                // }
+                geometry: {
+                    color: this.agents[i].color,
+                    displayType: GeometryDisplayType.SPHERE,
+                    url: "",
+                },
             };
             typeMapping[this.agents[i].id + 100] = {
                 name: `${this.agents[i].id}#bound`,
                 geometry: {
-                    color: "#81dbe6",
+                    color: AGENT_AB_COLOR,
                     displayType: GeometryDisplayType.SPHERE,
                     url: "",
                 },

@@ -1,12 +1,31 @@
-import React, { useContext, useState } from 'react';
-import Viewer from './Viewer';
-import { SimulariumContext } from '../simulation/context';
-import ProgressionControl from './ProgressionControl';
+import React, { useContext, useState } from "react";
+
+import Viewer from "./Viewer";
+import { SimulariumContext } from "../simulation/context";
+import ProgressionControl from "./shared/ProgressionControl";
+import PlayButton from "./PlayButton";
+import OverlayButton from "./shared/OverlayButton";
 
 enum View {
-    Lab = 'lab',
-    Simulation = 'simulation',
+    Lab = "lab",
+    Simulation = "simulation",
 }
+
+const LabView: React.FC = () => {
+    return (
+        <div
+            style={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                background: "black",
+                zIndex: 300,
+            }}
+        >
+            <h1>Lab View</h1>
+        </div>
+    );
+};
 
 const ViewSwitch: React.FC = () => {
     const [currentView, setCurrentView] = useState<View>(View.Lab);
@@ -16,42 +35,29 @@ const ViewSwitch: React.FC = () => {
             prevView === View.Lab ? View.Simulation : View.Lab
         );
     };
-    const {
-        isPlaying,
-        setIsPlaying,
-        simulariumController,
-        handleTimeChange,
-    } = useContext(SimulariumContext);
+    const { isPlaying, setIsPlaying, simulariumController, handleTimeChange } =
+        useContext(SimulariumContext);
     if (!simulariumController) {
         return null;
     }
     return (
-        <>
+        <div style={{ position: "relative", height: "100%" }}>
             <ProgressionControl onPage={1}>
-
-                <button onClick={switchView}>
-                    Switch to {currentView === View.Lab ? "Simulation" : "Lab"} View
-                </button>
+                <OverlayButton onClick={switchView}>
+                    Switch to {currentView === View.Lab ? "Simulation" : "Lab"}{" "}
+                    View
+                </OverlayButton>
             </ProgressionControl>
-            {currentView === View.Lab ? (
-                <LabView />
-            ) : null}
-
+            <PlayButton />
+            {currentView === View.Lab ? <LabView /> : null}
             <Viewer
                 isPlaying={isPlaying}
                 setIsPlaying={setIsPlaying}
                 controller={simulariumController}
                 handleTimeChange={handleTimeChange}
             />
-            
-        </>
+        </div>
     );
-};
-
-const LabView: React.FC = () => {
-    return <div style={{position: "absolute", height: "100%", width: "100%", background: "black", zIndex:300}}>
-        <h1>Lab View</h1>
-    </div>;
 };
 
 export default ViewSwitch;

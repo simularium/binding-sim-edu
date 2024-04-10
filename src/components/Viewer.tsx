@@ -1,11 +1,19 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { ReactNode, useState } from "react";
+import {
+    ReactNode,
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import SimulariumViewer, {
     RenderStyle,
     SimulariumController,
     TimeData,
 } from "@aics/simularium-viewer";
 import "@aics/simularium-viewer/style/style.css";
+import { SimulariumContext } from "../simulation/context";
+import styles from "./viewer.module.css";
 
 interface ViewerProps {
     controller: SimulariumController;
@@ -18,40 +26,45 @@ export default function Viewer({
     controller,
     handleTimeChange,
 }: ViewerProps): ReactNode {
-    const agentColors = [
-        "#fee34d",
-        "#f7b232",
-        "#bf5736",
-        "#94a7fc",
-        "#ce8ec9",
-        "#58606c",
-        "#0ba345",
-        "#9267cb",
-        "#81dbe6",
-        "#bd7800",
-        "#bbbb99",
-        "#5b79f0",
-        "#89a500",
-        "#da8692",
-        "#418463",
-        "#9f516c",
-        "#00aabf",
-    ];
-    const [size] = useState({ width: 500, height: 500 });
     const [selectionStateInfo] = useState({
         highlightedAgents: [],
         hiddenAgents: [],
         colorChange: null,
     });
+    const container = useRef<HTMLDivElement>(null);
+    const { viewportSize, setViewportSize } = useContext(SimulariumContext);
+
+    const setViewportToContainerSize = useCallback(() => {
+        if (container.current) {
+            const width = container.current.offsetWidth;
+            const height = container.current.offsetHeight;
+            setViewportSize({ height, width });
+        }
+    }, [setViewportSize]);
+
+    // resize on mount
+    useEffect(() => {
+        setViewportToContainerSize();
+    }, [setViewportToContainerSize]);
+
+    const resizeEvent = useRef<NodeJS.Timeout | undefined>(undefined);
+    window.addEventListener("resize", () => {
+        clearTimeout(resizeEvent.current);
+        // resizing resets the simulation so we don't
+        // want to trigger this too often
+        resizeEvent.current = setTimeout(() => {
+            clearTimeout(resizeEvent.current);
+            setViewportToContainerSize()
+        }, 200);
+    });
 
     return (
-        <div className="viewer-container" key="viewer">
-
+        <div className={styles.container} key="viewer" ref={container}>
             <SimulariumViewer
-                // lockedCamera={true}
+                lockedCamera={true}
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}
-                height={size.height}
-                width={size.width}
+                height={viewportSize.height}
+                width={viewportSize.width}
                 loggerLevel=""
                 onTimeChange={handleTimeChange}
                 simulariumController={controller}
@@ -63,10 +76,10 @@ export default function Viewer({
                     return undefined;
                 }}
                 loadInitialData={true}
-                agentColors={agentColors}
                 showPaths={true}
                 onError={console.log}
                 backgroundColor={[0, 0, 0]}
+                onRecordedMovie={() => {}}
             />
         </div>
     );

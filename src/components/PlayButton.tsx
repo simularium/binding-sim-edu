@@ -1,6 +1,9 @@
-import React, { useContext } from 'react';
-import { SimulariumContext } from '../simulation/context';
-import ProgressionControl from './ProgressionControl';
+import React, { useContext } from "react";
+
+import { SimulariumContext } from "../simulation/context";
+import ProgressionControl from "./shared/ProgressionControl";
+import VisibilityControl from "./shared/VisibilityControl";
+import OverlayButton from "./shared/OverlayButton";
 
 const PlayButton: React.FC = () => {
     const { isPlaying, setIsPlaying } = useContext(SimulariumContext);
@@ -10,11 +13,14 @@ const PlayButton: React.FC = () => {
     };
 
     return (
-        <ProgressionControl onPage={2}>
-            <button onClick={handleClick}>
-                {isPlaying ? 'Pause' : 'Play'}
-            </button>
-        </ProgressionControl>)
+        <VisibilityControl excludedPages={[1]}>
+            <ProgressionControl onPage={[2, 5]}>
+                <OverlayButton onClick={handleClick} style={{ bottom: 0 }}>
+                    {isPlaying ? "Pause" : "Play"}
+                </OverlayButton>
+            </ProgressionControl>
+        </VisibilityControl>
+    );
 };
 
 export default PlayButton;

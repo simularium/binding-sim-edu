@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { Slider as SliderAntd } from "antd";
 
 interface SliderProps {
     min: number;
@@ -15,22 +16,21 @@ const Slider: React.FC<SliderProps> = ({
     initialValue,
     onChange,
     name,
-    disabled
+    disabled,
 }) => {
     const [value, setValue] = useState(initialValue);
 
-    const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = parseInt(event.target.value);
-        setValue(newValue);
-        onChange(name, newValue);
+    const handleSliderChange = (value: number) => {
+        setValue(value);
+        onChange(name, value);
     };
 
     return (
-        <div>
-            <input
-                type="range"
+        <>
+            <SliderAntd
                 min={min}
                 max={max}
+                step={2}
                 value={value}
                 onChange={handleSliderChange}
                 disabled={disabled}
@@ -38,7 +38,7 @@ const Slider: React.FC<SliderProps> = ({
             <span>
                 {name}: {value}
             </span>
-        </div>
+        </>
     );
 };
 

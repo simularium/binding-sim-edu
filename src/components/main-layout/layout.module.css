@@ -1,0 +1,11 @@
+.nav-bar {
+    height: var(--nav-bar-height);
+}
+
+.content-panel {
+    height: var(--content-height);
+}
+
+.reaction-panel {
+    height: var(--reaction-panel-height);
+}
