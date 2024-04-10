@@ -4,7 +4,7 @@ import Viewer from "./Viewer";
 import { SimulariumContext } from "../simulation/context";
 import ProgressionControl from "./shared/ProgressionControl";
 import PlayButton from "./PlayButton";
-import OverlayButton from "./shared/OverlayButton";
+import { OverlayButton } from "./shared/Buttons";
 
 enum View {
     Lab = "lab",
