@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import classNames from "classnames";
+import { DownOutlined, UpOutlined } from "@ant-design/icons";
 
 import { FormState } from "./types";
 import SuccessFeedback from "./SuccessFeedback";
 import FailureFeedback from "./FailureFeedback";
 import styles from "./popup.module.css";
-import TertiaryButton from "../shared/TertiaryButton";
-import { DownOutlined, UpOutlined } from "@ant-design/icons";
-import IconButton from "../shared/IconButton";
+import { TertiaryButton, IconButton } from "../shared/Buttons";
 
 interface QuizFormProps {
     title: string;

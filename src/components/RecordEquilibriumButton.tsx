@@ -1,4 +1,4 @@
-import PrimaryButton from "./shared/PrimaryButton";
+import { PrimaryButton } from "./shared/Buttons";
 import ProgressionControl from "./shared/ProgressionControl";
 
 interface RecordEquilibriumButtonProps {

@@ -3,7 +3,7 @@ import { CheckCircleOutlined, CloseOutlined } from "@ant-design/icons";
 
 import { FeedbackProps } from "./types";
 import styles from "./popup.module.css";
-import IconButton from "../shared/IconButton";
+import { IconButton } from "../shared/Buttons";
 
 const SuccessFeedback: React.FC<FeedbackProps> = ({
     title = "That's correct!",
@@ -17,7 +17,7 @@ const SuccessFeedback: React.FC<FeedbackProps> = ({
         return () => {
             clearTimeout(timeout);
         };
-    }, [])
+    }, []);
 
     return (
         isVisible && (
