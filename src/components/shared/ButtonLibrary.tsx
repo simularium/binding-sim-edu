@@ -1,6 +1,42 @@
 import React from "react";
-import { Button as AntdButton, ButtonProps } from "antd";
+import { Button as AntdButton } from "antd";
+import classNames from "classnames";
+
 import styles from "./button.module.css";
+
+interface ButtonProps extends React.ComponentProps<typeof AntdButton> {
+    rounded?: boolean;
+}
+
+export const PrimaryButton: React.FC<ButtonProps> = (props) => {
+    return (
+        <AntdButton
+            type="primary"
+            className={classNames(styles.primary, {
+                [styles.rounded]: props.rounded,
+            })}
+            {...props}
+        />
+    );
+};
+
+export const SecondaryButton: React.FC<ButtonProps> = (props) => {
+    return (
+        <AntdButton
+            type="default"
+            ghost
+            className={classNames(styles.secondary, {
+                [styles.rounded]: props.rounded,
+            })}
+            {...props}
+        />
+    );
+};
+
+export const TertiaryButton: React.FC<ButtonProps> = (props) => {
+    return <AntdButton className={styles.tertiary} {...props} />;
+};
+
 
 interface IconButtonProps extends React.ComponentProps<typeof AntdButton> {
     icon: React.ReactNode;
@@ -33,13 +69,5 @@ export const OverlayButton: React.FC<OverlayButtonProps> = (props) => {
     if (style) {
         buttonStyle = { ...buttonStyle, ...style };
     }
-    return <AntdButton type="default" {...props} style={buttonStyle} />;
-};
-
-export const PrimaryButton: React.FC<ButtonProps> = (props) => {
-    return <AntdButton type="primary" {...props} />;
-};
-
-export const TertiaryButton: React.FC<ButtonProps> = (props) => {
-    return <AntdButton className={styles.tertiary} {...props} />;
+    return <TertiaryButton {...props} style={buttonStyle} />;
 };

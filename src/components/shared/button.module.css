@@ -1,9 +1,31 @@
+.primary {
+    background-color: var(--primary-color) !important;
+}
+
 .tertiary {
-  background-color: #000000;
-  color: var(--primary-color);
-  border-color: var(--primary-color);
+    background-color: #000000;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.primary:hover,
+.primary:active,
+.primary:focus,
+.secondary:hover,
+.secondary:active,
+.secondary:focus,
+.tertiary:hover,
+.tertiary:active,
+.tertiary:focus {
+    color: var(--background-color)!important;
+    background: var(--light-purple)!important;
+    border-color: var(--light-purple)!important;
 }
 
 .icon {
-  border: none
+    border: none;
+}
+
+.rounded {
+    border-radius: 20px;
 }

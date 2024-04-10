@@ -5,7 +5,7 @@ import {
     BRIGHT_PURPLE_DARKER,
     LIGHT_GREY,
     BG_MEDIUM,
-    MID_GREY_DARKER
+    MID_GREY_DARKER,
 } from "../constants/colors";
 
 const customTheme = {
@@ -32,6 +32,8 @@ const customTheme = {
             defaultColor: BRIGHT_PURPLE_DARKER,
             defaultBorderColor: BRIGHT_PURPLE_DARKER,
             primaryColor: BG_DARK,
+            defaultGhostColor: BRIGHT_PURPLE_DARKER,
+            defaultGhostBorderColor: BRIGHT_PURPLE_DARKER,
         },
         Layout: {
             siderBg: BG_DARK,
