@@ -1,5 +1,9 @@
 import React, { useEffect } from "react";
+import { CheckCircleOutlined, CloseOutlined } from "@ant-design/icons";
+
 import { FeedbackProps } from "./types";
+import styles from "./popup.module.css";
+import IconButton from "../shared/IconButton";
 
 const SuccessFeedback: React.FC<FeedbackProps> = ({
     title = "That's correct!",
@@ -17,10 +21,17 @@ const SuccessFeedback: React.FC<FeedbackProps> = ({
 
     return (
         isVisible && (
-            <div>
-                <h2>{title}</h2>
+            <div className={styles.container}>
+                <div className={styles.header}>
+                    <h2 className={styles.title}>
+                        {title} <CheckCircleOutlined />
+                    </h2>
+                    <IconButton
+                        onClick={() => setIsVisible(false)}
+                        icon={<CloseOutlined />}
+                    />
+                </div>
                 <p>{message}</p>
-                <button onClick={() => setIsVisible(false)}>Close</button>
             </div>
         )
     );

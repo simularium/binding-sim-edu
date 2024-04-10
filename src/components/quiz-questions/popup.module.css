@@ -6,10 +6,26 @@
     color: var(--popup-text-color);
     width: 332px;
     padding: 16px;
+    border-radius: 4px 4px 0 0;
 }
 
-.container .title {
-    margin: 0 0 10px 0;
+.container.collapsed {
+    width: 160px;
+}
+
+.container.collapsed .header {
+    margin-bottom: 0px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+}
+
+.title {
+    margin: 0;
     font-size: 16px;
     font-weight: 500;
 }
@@ -27,6 +43,21 @@
     font-weight: 700;
 }
 
-.failure p {
+.container p {
     margin: 0;
+    font-size: 14px;
+}
+
+.form-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.form-content :global(.ant-input-number) {
+    width: 100%;
+    border: solid var(--border-color) 1px;
+    border-radius: 4px;
 }

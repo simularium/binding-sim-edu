@@ -10,6 +10,13 @@ const EquilibriumQuestion: React.FC = () => {
 
     const handleAnswerSelection = (answer: string) => {
         setSelectedAnswer(answer);
+
+        // instead of clicking the "try again" button they 
+        // can just select a different answer, in that case
+        // we should reset the form state
+        if (formState === FormState.Incorrect) {
+            setFormState(FormState.Clear);
+        }
     };
 
     const handleSubmit = () => {
@@ -58,9 +65,6 @@ const EquilibriumQuestion: React.FC = () => {
                 formState={formState}
                 successMessage="It’s the forward and reverse reaction rates that are equal at equilibrium, not the concentrations of reactants and products. And binding and unbinding events don’t stop happening."
                 failureMessage="Please try again. Helpful text?" // TODO: Add helpful text (this matches the current design)
-                submitButtonLabel={
-                    formState === FormState.Incorrect ? "Try Again" : "Submit"
-                }
                 minimizedTitle="Q:Equilibrium"
             />
         </VisibilityControl>

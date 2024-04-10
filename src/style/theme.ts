@@ -21,6 +21,9 @@ const theme = {
             buttonBg: BRIGHT_PURPLE_DARKER,
             buttonCheckedBg: BG_DARK,
         },
+        InputNumber: {
+            colorBgContainer: BRIGHT_PURPLE_DARKER,
+        },
         Button: {
             defaultColor: BRIGHT_PURPLE_DARKER,
             defaultBorderColor: BRIGHT_PURPLE_DARKER,

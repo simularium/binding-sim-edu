@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import classNames from "classnames";
+
 import { FormState } from "./types";
 import SuccessFeedback from "./SuccessFeedback";
 import FailureFeedback from "./FailureFeedback";
 import styles from "./popup.module.css";
 import TertiaryButton from "../shared/TertiaryButton";
+import { DownOutlined, UpOutlined } from "@ant-design/icons";
+import IconButton from "../shared/IconButton";
 
 interface QuizFormProps {
     title: string;
@@ -24,7 +28,6 @@ const QuizForm: React.FC<QuizFormProps> = ({
     formState,
     successMessage,
     failureMessage,
-    submitButtonLabel = "Submit",
 }) => {
     const [isFormVisible, setIsFormVisible] = useState(true);
 
@@ -35,18 +38,33 @@ const QuizForm: React.FC<QuizFormProps> = ({
     return formState === FormState.Correct ? (
         <SuccessFeedback message={successMessage} />
     ) : (
-        <div className={styles.container}>
-            <h4 className={styles.title}>{isFormVisible ? title : minimizedTitle}</h4>
-            {isFormVisible && formContent}
-            <button onClick={toggleFormVisibility}>
-                {isFormVisible ? "Hide Form" : "Show Form"}
-            </button>
-            {formState === FormState.Incorrect && (
-                <FailureFeedback message={failureMessage} />
+        <div
+            className={classNames(styles.container, {
+                [styles.collapsed]: !isFormVisible,
+            })}
+        >
+            <div className={styles.header}>
+                <h4 className={styles.title}>
+                    {isFormVisible ? title : minimizedTitle}
+                </h4>
+                <IconButton
+                    onClick={toggleFormVisibility}
+                    icon={isFormVisible ? <DownOutlined /> : <UpOutlined />}
+                />
+            </div>
+            {isFormVisible && (
+                <>
+                    {formContent}
+                    {formState === FormState.Incorrect && (
+                        <FailureFeedback message={failureMessage} />
+                    )}
+                    <TertiaryButton onClick={onSubmit}>
+                        {formState === FormState.Incorrect
+                            ? "Try Again"
+                            : "Submit"}
+                    </TertiaryButton>
+                </>
             )}
-            <TertiaryButton onClick={onSubmit}>
-                {submitButtonLabel}
-            </TertiaryButton>
         </div>
     );
 };
