@@ -1,0 +1,9 @@
+.tertiary {
+  background-color: #000000;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.icon {
+  border: none
+}
