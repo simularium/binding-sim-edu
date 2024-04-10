@@ -9,7 +9,7 @@
     justify-content: space-between;
 }
 
-.content-panel p {
+.content-panel p, .content-panel h3 {
     margin: 0;
 }
 
@@ -22,6 +22,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    max-width: 982px;
 }
 
 .reaction-panel {
