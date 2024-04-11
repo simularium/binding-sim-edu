@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import QuizForm from "./QuizForm";
 import VisibilityControl from "../shared/VisibilityControl";
 import { FormState } from "./types";
+import RadioComponent from "../shared/Radio";
 
 const EquilibriumQuestion: React.FC = () => {
     const [selectedAnswer, setSelectedAnswer] = useState("");
@@ -9,9 +10,19 @@ const EquilibriumQuestion: React.FC = () => {
 
     const handleAnswerSelection = (answer: string) => {
         setSelectedAnswer(answer);
+
+        // instead of clicking the "try again" button they 
+        // can just select a different answer, in that case
+        // we should reset the form state
+        if (formState === FormState.Incorrect) {
+            setFormState(FormState.Clear);
+        }
     };
 
     const handleSubmit = () => {
+        if (!selectedAnswer) {
+            return;
+        }
         // If they already submitted an incorrect answer
         // hitting the submit button again will reset the form
         if (formState === FormState.Incorrect) {
@@ -28,35 +39,21 @@ const EquilibriumQuestion: React.FC = () => {
     };
 
     const answers = [
-        { value: "A", label: "binding reactions stop happening" },
-        { value: "B", label: "unbinding reactions stop happening" },
+        { value: "A", label: "A. binding reactions stop happening" },
+        { value: "B", label: "B. unbinding reactions stop happening" },
         {
             value: "C",
-            label: "the amount of products and reactants stays roughly the same over time",
+            label: "C. the amount of product stays roughly the same over time",
         },
-        { value: "D", label: "the amount of products and reactants are equal" },
+        { value: "D", label: "D. the amount of products and reactants are equal" },
     ];
 
     const formContent = (
-        <>
-            <ul>
-                {answers.map((answer, index) => (
-                    <li key={index}>
-                        <label>
-                            <input
-                                type="radio"
-                                value={answer.value}
-                                checked={selectedAnswer === answer.value}
-                                onChange={() =>
-                                    handleAnswerSelection(answer.value)
-                                }
-                            />
-                            {answer.label}
-                        </label>
-                    </li>
-                ))}
-            </ul>
-        </>
+        <RadioComponent
+            selectedAnswer={selectedAnswer}
+            options={answers}
+            onChange={(e) => handleAnswerSelection(e.target.value)}
+        />
     );
 
     return (
@@ -68,9 +65,6 @@ const EquilibriumQuestion: React.FC = () => {
                 formState={formState}
                 successMessage="It’s the forward and reverse reaction rates that are equal at equilibrium, not the concentrations of reactants and products. And binding and unbinding events don’t stop happening."
                 failureMessage="Please try again. Helpful text?" // TODO: Add helpful text (this matches the current design)
-                submitButtonLabel={
-                    formState === FormState.Incorrect ? "Try Again" : "Submit"
-                }
                 minimizedTitle="Q:Equilibrium"
             />
         </VisibilityControl>

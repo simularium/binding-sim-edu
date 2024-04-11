@@ -1,4 +1,5 @@
 import { theme } from "antd";
+
 import {
     BG_DARK,
     BRIGHT_PURPLE_DARKER,
@@ -8,16 +9,25 @@ import {
 } from "../constants/colors";
 
 const customTheme = {
-    // 1. Use dark algorithm
     algorithm: theme.darkAlgorithm,
     token: {
         colorPrimary: BRIGHT_PURPLE_DARKER,
         colorBgContainer: BG_DARK,
-        colorTextBase: LIGHT_GREY,
         colorBgLayout: BG_MEDIUM,
         colorBorder: MID_GREY_DARKER,
     },
     components: {
+        Radio: {
+            colorBorder: BG_DARK,
+            colorBgContainer: BRIGHT_PURPLE_DARKER,
+            colorText: BG_DARK,
+            buttonBg: BRIGHT_PURPLE_DARKER,
+            buttonCheckedBg: BG_DARK,
+            dotSize: 9,
+        },
+        InputNumber: {
+            colorBgContainer: BRIGHT_PURPLE_DARKER,
+        },
         Button: {
             defaultColor: BRIGHT_PURPLE_DARKER,
             defaultBorderColor: BRIGHT_PURPLE_DARKER,
@@ -28,6 +38,7 @@ const customTheme = {
             headerColor: LIGHT_GREY,
             headerBg: BG_DARK,
             contentBg: BG_DARK,
+            colorText: LIGHT_GREY,
         },
         Slider: {
             trackBg: MID_GREY_DARKER,

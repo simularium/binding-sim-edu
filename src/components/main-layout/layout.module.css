@@ -29,3 +29,7 @@
 .reaction-panel {
     height: var(--reaction-panel-height);
 }
+
+.center-panel {
+    position: relative;
+}

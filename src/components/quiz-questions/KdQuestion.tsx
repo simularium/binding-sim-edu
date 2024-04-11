@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import { valueType } from "antd/es/statistic/utils";
+
 import QuizForm from "./QuizForm";
 import VisibilityControl from "../shared/VisibilityControl";
+import InputNumber from "../shared/InputNumber";
 import { ReactionType, kds } from "../../constants";
 import { FormState } from "./types";
-
+import styles from "./popup.module.css";
 interface KdQuestionProps {
     reactionType: ReactionType;
 }
@@ -11,7 +14,16 @@ interface KdQuestionProps {
 const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [formState, setFormState] = useState(FormState.Clear);
+    const handleAnswerSelection = (answer: valueType | null) => {
+        setSelectedAnswer(Number(answer));
 
+        // instead of clicking the "try again" button they
+        // can just select a different answer, in that case
+        // we should reset the form state
+        if (formState === FormState.Incorrect) {
+            setFormState(FormState.Clear);
+        }
+    };
     const handleSubmit = () => {
         const correctAnswer = kds[reactionType];
         const tolerance = 5;
@@ -19,7 +31,14 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
             // No answer selected
             return;
         }
-        
+        // If they already submitted an incorrect answer
+        // hitting the submit button again will reset the form
+        if (formState === FormState.Incorrect) {
+            setSelectedAnswer(null);
+            setFormState(FormState.Clear);
+            return;
+        }
+
         if (
             selectedAnswer <= correctAnswer + tolerance &&
             selectedAnswer >= correctAnswer - tolerance
@@ -31,18 +50,17 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
     };
 
     const formContent = (
-        <>
+        <div className={styles.inputFormContent}>
             <p>
                 Referencing the Equilibrium Concentration plot, what is the
                 binding affinity?
             </p>
-            <p>Kd = ?</p>
-            <input
-                type="number"
+            <b>Kd = ?</b>
+            <InputNumber
                 value={selectedAnswer || ""}
-                onChange={(e) => setSelectedAnswer(Number(e.target.value))}
+                onChange={handleAnswerSelection}
             />
-        </>
+        </div>
     );
     return (
         <VisibilityControl includedPages={[8]}>
