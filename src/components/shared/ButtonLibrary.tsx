@@ -2,7 +2,7 @@ import React from "react";
 import { Button as AntdButton } from "antd";
 import classNames from "classnames";
 
-import styles from "./button.module.css";
+import styles from "./button-library.module.css";
 
 interface ButtonProps extends React.ComponentProps<typeof AntdButton> {
     rounded?: boolean;
