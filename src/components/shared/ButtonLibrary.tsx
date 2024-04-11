@@ -37,7 +37,6 @@ export const TertiaryButton: React.FC<ButtonProps> = (props) => {
     return <AntdButton className={styles.tertiary} {...props} />;
 };
 
-
 interface IconButtonProps extends React.ComponentProps<typeof AntdButton> {
     icon: React.ReactNode;
 }

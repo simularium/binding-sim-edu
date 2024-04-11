@@ -20,7 +20,7 @@ const PlayButton: React.FC = () => {
                     onClick={handleClick}
                     style={{ bottom: 14, left: 16}}
                     icon={
-                        isPlaying ? <CaretRightOutlined /> : <PauseOutlined />
+                        isPlaying ? <PauseOutlined /> : <CaretRightOutlined /> 
                     }
                 />
             </ProgressionControl>

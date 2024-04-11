@@ -5,7 +5,7 @@ import ProductConcentrationPlot from "../plots/ProductConcentrationPlot";
 import EquilibriumPlot from "../plots/EquilibriumPlot";
 import RecordEquilibriumButton from "../RecordEquilibriumButton";
 import { ProductOverTimeTrace } from "../plots/types";
-
+import styles from "./layout.module.css";
 interface RightPanelProps {
     productOverTimeTraces: ProductOverTimeTrace[];
     currentProductConcentrationArray: number[];
@@ -47,7 +47,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
                 <RecordEquilibriumButton
                     handleRecordEquilibrium={handleRecordEquilibrium}
                 />
-                <div>{equilibriumFeedback}</div>
+                <div className={styles.feedback}>{equilibriumFeedback}</div>
             </VisibilityControl>
         </>
     );

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { uniq } from "lodash";
 import { SimulariumController, TimeData } from "@aics/simularium-viewer";
+import { CheckCircleOutlined } from "@ant-design/icons";
 
 import "./App.css";
 import BindingSimulator from "./simulation/BindingSimulator2D";
@@ -76,7 +77,7 @@ function App() {
         productEquilibriumConcentrations,
         setProductEquilibriumConcentrations,
     ] = useState<number[]>([]);
-    const [equilibriumFeedback, setEquilibriumFeedback] = useState<string>("");
+    const [equilibriumFeedback, setEquilibriumFeedback] = useState<Element | null>(null);
     const [
         currentProductConcentrationArray,
         setCurrentProductConcentrationArray,
@@ -209,7 +210,7 @@ function App() {
             ...productEquilibriumConcentrations,
             productConcentration,
         ]);
-        setEquilibriumFeedbackTimeout("Great!");
+        setEquilibriumFeedbackTimeout(<>Great! <CheckCircleOutlined /></>);
     };
 
     return (

@@ -57,7 +57,7 @@ const QuizForm: React.FC<QuizFormProps> = ({
                     {formState === FormState.Incorrect && (
                         <FailureFeedback message={failureMessage} />
                     )}
-                    <TertiaryButton onClick={onSubmit} className={styles.submit}>
+                    <TertiaryButton onClick={onSubmit} style={{ marginTop: 10}}>
                         {formState === FormState.Incorrect
                             ? "Try Again"
                             : "Submit"}
