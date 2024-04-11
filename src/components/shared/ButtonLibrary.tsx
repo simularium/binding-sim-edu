@@ -56,7 +56,7 @@ export const IconButton: React.FC<IconButtonProps> = (props) => {
 };
 
 interface OverlayButtonProps extends React.ComponentProps<typeof AntdButton> {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     style?: React.CSSProperties;
 }
 
@@ -65,6 +65,7 @@ export const OverlayButton: React.FC<OverlayButtonProps> = (props) => {
     let buttonStyle: React.CSSProperties = {
         position: "absolute",
         zIndex: 3001,
+        display: "flex",
     };
     if (style) {
         buttonStyle = { ...buttonStyle, ...style };

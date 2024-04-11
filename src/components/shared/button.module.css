@@ -1,8 +1,20 @@
+.base-button {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+}
+
 .primary {
+    composes: base-button;
     background-color: var(--primary-color) !important;
 }
 
+.secondary {
+    composes: base-button;
+}
+
 .tertiary {
+    composes: base-button;
     background-color: #000000;
     color: var(--primary-color);
     border-color: var(--primary-color);
@@ -10,16 +22,35 @@
 
 .primary:hover,
 .primary:active,
-.primary:focus,
 .secondary:hover,
 .secondary:active,
-.secondary:focus,
 .tertiary:hover,
-.tertiary:active,
-.tertiary:focus {
-    color: var(--background-color)!important;
-    background: var(--light-purple)!important;
-    border-color: var(--light-purple)!important;
+.tertiary:active {
+    color: var(--background-color) !important;
+    background: var(--light-purple) !important;
+    border-color: var(--light-purple) !important;
+}
+
+.tertiary :global(.custom-icon) circle,
+.tertiary :global(.custom-icon) ellipse {
+    fill: var(--primary-color);
+    transition: fill 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.tertiary :global(.custom-icon) path {
+    stroke: var(--primary-color);
+    transition: stroke 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.tertiary:hover :global(.custom-icon) circle,
+.tertiary:hover :global(.custom-icon) ellipse {
+    fill: var(--background-color);
+    transition: fill 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.tertiary:hover :global(.custom-icon) path {
+    stroke: var(--background-color);
+    transition: stroke 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 .icon {
@@ -28,4 +59,9 @@
 
 .rounded {
     border-radius: 20px;
+}
+
+.overlay {
+    display: flex;
+    align-items: center;
 }

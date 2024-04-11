@@ -11,6 +11,7 @@ import {
 const customTheme = {
     algorithm: theme.darkAlgorithm,
     token: {
+        borderRadius: 4,
         colorPrimary: BRIGHT_PURPLE_DARKER,
         colorBgContainer: BG_DARK,
         colorBgLayout: BG_MEDIUM,
