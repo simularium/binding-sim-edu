@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { uniq } from "lodash";
 import { SimulariumController, TimeData } from "@aics/simularium-viewer";
 import { CheckCircleOutlined } from "@ant-design/icons";
@@ -77,7 +77,7 @@ function App() {
         productEquilibriumConcentrations,
         setProductEquilibriumConcentrations,
     ] = useState<number[]>([]);
-    const [equilibriumFeedback, setEquilibriumFeedback] = useState<Element | null>(null);
+    const [equilibriumFeedback, setEquilibriumFeedback] = useState<ReactNode | string>("");
     const [
         currentProductConcentrationArray,
         setCurrentProductConcentrationArray,
@@ -186,7 +186,7 @@ function App() {
         resetAnalysisState();
     };
 
-    const setEquilibriumFeedbackTimeout = (message: string) => {
+    const setEquilibriumFeedbackTimeout = (message: ReactNode | string) => {
         setEquilibriumFeedback(message);
         setTimeout(() => {
             setEquilibriumFeedback("");

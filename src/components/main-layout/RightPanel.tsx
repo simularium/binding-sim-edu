@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 import VisibilityControl from "../shared/VisibilityControl";
 import ProductConcentrationPlot from "../plots/ProductConcentrationPlot";
@@ -15,7 +15,7 @@ interface RightPanelProps {
         inputConcentrations: number[];
         productConcentrations: number[];
     };
-    equilibriumFeedback: string;
+    equilibriumFeedback: ReactNode | string;
 }
 
 const RightPanel: React.FC<RightPanelProps> = ({
