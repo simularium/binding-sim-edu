@@ -1,0 +1,66 @@
+.container {
+    background-color: var(--popup-background-color);
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+    color: var(--popup-text-color);
+    width: 332px;
+    padding: 16px;
+    border-radius: 4px 4px 0 0;
+}
+
+.container.collapsed {
+    width: 160px;
+}
+
+.container.collapsed .header {
+    margin-bottom: 0px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+}
+
+.title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.failure {
+    border: solid var(--border-color) 1px;
+    padding: 12px;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.failure h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.container p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.input-form-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.input-form-content :global(.ant-input-number) {
+    width: 100%;
+    border: solid var(--border-color) 1px;
+    border-radius: 4px;
+}
+
+.submit {
+    margin-top: 10px;
+}
