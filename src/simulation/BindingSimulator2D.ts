@@ -380,15 +380,15 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     ) {
         let toCheck = null;
         const { x, y } = overlapV;
-        // if neither is a trigger, then they 
+        // if neither is a trigger, then they
         // will both get moved by system.separate()
         if (!a.isTrigger && !b.isTrigger) {
             return;
         }
         if (numberOfPasses > 5) {
-            return 
+            return;
         }
-        
+
         // prefer to move an instance that is not bound, ie, not isTrigger
         // because after it's moved any additional overlaps will be resolved by the system
         if (!a.isTrigger) {
