@@ -54,5 +54,5 @@ export const createAgentsFromConcentrations = (
     });
 };
 
-export const DEFAULT_TIME_FACTOR = 30;
+export const DEFAULT_TIME_FACTOR = 40;
 export const DEFAULT_VIEWPORT_SIZE = { width: 500, height: 500 };
