@@ -19,6 +19,7 @@ import { DEFAULT_TIME_FACTOR } from "../constants/trajectories";
 class BindingInstance extends Circle {
     id: number;
     child: BindingInstance | null;
+    parent: BindingInstance | null;
     bound: boolean;
     partners: number[];
     kOn?: number;
@@ -35,34 +36,67 @@ class BindingInstance extends Circle {
         this.partners = partners;
         this.bound = false;
         this.child = null;
+        this.parent = null;
         this.kOn = kOn;
         this.kOff = kOff;
     }
 
-    public resolveCollision(other: BindingInstance, overlapV: Vector) {
-        this.adjust(other, overlapV);
+    private rotate(x: number, y: number, angle: number, center: number[]) {
+        // center of rotation is (𝛼,𝛽) and the rotation angle is 𝜃
+        //(𝑥,𝑦)↦(𝑥′,𝑦′)=(𝛼+(𝑥−𝛼)cos𝜃−(𝑦−𝛽)sin𝜃, 𝛽+(𝑥−𝛼)sin𝜃+(𝑦−𝛽)cos𝜃).
+        const cos = Math.cos(angle);
+        const sin = Math.sin(angle);
+        const newX = center[0] + (x - center[0]) * cos - (y - center[1]) * sin;
+        const newY = center[1] + (x - center[0]) * sin + (y - center[1]) * cos;
+        return [newX, newY];
+    }
+
+    private findCenter(agent: BindingInstance, ligand: BindingInstance) {
+        const dx = ligand.pos.x - agent.pos.x;
+        const dy = ligand.pos.y - agent.pos.y;
+        const halfdx = dx / 2;
+        const halfdy = dy / 2;
+        const x = agent.pos.x + halfdx;
+        const y = agent.pos.y + halfdy;
+        return [x, y];
+    }
+
+    private resetLigandToInitialState() {
+        this.isTrigger = false;
+        this.bound = false;
+        this.parent = null;
+    }
+
+    private convertToLigand(
+        parent: BindingInstance,
+        overlapV: Vector
+    ): BindingInstance {
+        this.isTrigger = true;
+        this.parent = parent;
+        // adjust the ligand to the exact edge of the parent
+        this.move(-overlapV.x, -overlapV.y);
+        this.bound = true;
+        return this;
+    }
+
+    /** PUBLIC METHODS BELOW */
+
+    public move(x: number, y: number) {
+        if (this.parent) {
+            this.parent.move(x, y);
+        } else {
+            this.setPosition(this.pos.x + x, this.pos.y + y);
+            if (this.child) {
+                this.child.setPosition(
+                    this.child.pos.x + x,
+                    this.child.pos.y + y
+                );
+            }
+        }
     }
 
     public isBoundPair(other: BindingInstance) {
         return this.child == other || other.child == this;
-    }
-
-    private move(x: number, y: number) {
-        this.setPosition(this.pos.x + x, this.pos.y + y);
-        if (this.child) {
-            this.child.setPosition(this.child.pos.x + x, this.child.pos.y + y);
-        }
-    }
-
-    private adjust(other: BindingInstance, overlapV: Vector) {
-        const { x, y } = overlapV;
-        if (!this.bound) {
-            this.move(-x, -y);
-        } else if (!other.bound) {
-            other.move(-x, -y);
-        } else {
-            //TODO: find parent and move the parent
-        }
     }
 
     public rotateGroup(xStep: number, yStep: number) {
@@ -123,26 +157,6 @@ class BindingInstance extends Circle {
         }
     }
 
-    private rotate(x: number, y: number, angle: number, center: number[]) {
-        // center of rotation is (𝛼,𝛽) and the rotation angle is 𝜃
-        //(𝑥,𝑦)↦(𝑥′,𝑦′)=(𝛼+(𝑥−𝛼)cos𝜃−(𝑦−𝛽)sin𝜃, 𝛽+(𝑥−𝛼)sin𝜃+(𝑦−𝛽)cos𝜃).
-        const cos = Math.cos(angle);
-        const sin = Math.sin(angle);
-        const newX = center[0] + (x - center[0]) * cos - (y - center[1]) * sin;
-        const newY = center[1] + (x - center[0]) * sin + (y - center[1]) * cos;
-        return [newX, newY];
-    }
-
-    private findCenter(agent: BindingInstance, ligand: BindingInstance) {
-        const dx = ligand.pos.x - agent.pos.x;
-        const dy = ligand.pos.y - agent.pos.y;
-        const halfdx = dx / 2;
-        const halfdy = dy / 2;
-        const x = agent.pos.x + halfdx;
-        const y = agent.pos.y + halfdy;
-        return [x, y];
-    }
-
     public unBind(ligand: BindingInstance): boolean {
         if (ligand.kOff === undefined) {
             return false;
@@ -153,32 +167,30 @@ class BindingInstance extends Circle {
         }
         this.child = null;
         this.isTrigger = false;
-        ligand.bound = false;
-        ligand.isTrigger = false;
+        ligand.resetLigandToInitialState();
+        // QUESTION: should the ligand be moved to a random position?
         return true;
     }
 
-    public bind(ligand: BindingInstance): boolean {
-        if (ligand.bound || this.child) {
+    public bind(possibleLigand: BindingInstance, overlapV: Vector): boolean {
+        if (possibleLigand.bound || this.child) {
             // already have bound ligand or already bound
             // can't bind to another ligand
             return false;
         }
-        if (ligand.kOn === undefined) {
+        if (possibleLigand.kOn === undefined) {
             return false;
         }
-        const willBind = random(0, 1, true) < ligand.kOn;
+        const willBind = random(0, 1, true) < possibleLigand.kOn;
         if (!willBind) {
             return false;
         }
-        this.child = ligand;
         this.isTrigger = true;
-        ligand.bound = true;
-        ligand.isTrigger = true;
+        const ligand = possibleLigand.convertToLigand(this, overlapV);
+        this.child = ligand;
         return true;
     }
 }
-
 
 export default class BindingSimulator implements IClientSimulatorImpl {
     instances: BindingInstance[] = [];
@@ -255,67 +267,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         }
     }
 
-    public isMixed() {
-        return this._isMixed;
-    }
-
-    public getEvents() {
-        return {
-            numberBindEvents: this.currentNumberOfBindingEvents,
-            numberUnBindEvents: this.currentNumberOfUnbindingEvents,
-        };
-    }
-
-    public changeConcentration(agentId: number, newConcentration: number) {
-        const agent = this.agents.find((agent) => agent.id === agentId);
-        if (!agent) {
-            return;
-        }
-        const newCount = this.convertConcentrationToCount(newConcentration);
-        const oldCount = agent.count || 0;
-        agent.count = newCount;
-        this.static = true;
-        if (!this.initialState) {
-            // if the simulation has played, it needs to be reset to the
-            // initial state
-            this.clearAgents();
-            this.initialState = true;
-            this.initializeAgents(this.agents);
-            return;
-        }
-        const diff = newCount - oldCount;
-        if (diff > 0) {
-            for (let i = 0; i < diff; ++i) {
-                const position: number[] = this.getRandomPointOnSide(
-                    agent.id,
-                    this.agents.length
-                );
-                const circle = new Circle(
-                    new Vector(...position),
-                    agent.radius
-                );
-                const instance = new BindingInstance(
-                    circle,
-                    agent.id,
-                    agent.partners,
-                    agent.kOn,
-                    agent.kOff
-                );
-                this.system.insert(instance);
-                this.instances.push(instance);
-            }
-        } else if (diff < 0) {
-            const toRemove = this.instances.filter(
-                (instance) => instance.id === agentId
-            );
-            for (let i = 0; i < Math.abs(diff); ++i) {
-                const instance = toRemove[i];
-                this.system.remove(instance);
-                this.instances.splice(this.instances.indexOf(instance), 1);
-            }
-        }
-    }
-
     private countNumberOfInstancesOnEachSide(agentInstance: BindingInstance) {
         if (this._isMixed) {
             return;
@@ -326,9 +277,9 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
         // checking the rightmost quadrant
         // and the left most quadrant
-        if (agentInstance.pos.x < - this.size / 4) {
+        if (agentInstance.pos.x < -this.size / 4) {
             this.numberAgentOnLeft++;
-        } else if (agentInstance.pos.x > this.size / 4){
+        } else if (agentInstance.pos.x > this.size / 4) {
             this.numberAgentOnRight++;
         }
     }
@@ -421,6 +372,130 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         }
     }
 
+    private resolveCollision(
+        a: BindingInstance,
+        b: BindingInstance,
+        overlapV: Vector,
+        numberOfPasses: number = 0
+    ) {
+        let toCheck = null;
+        const { x, y } = overlapV;
+        // if neither is a trigger, then they 
+        // will both get moved by system.separate()
+        if (!a.isTrigger && !b.isTrigger) {
+            return;
+        }
+        if (numberOfPasses > 5) {
+            return 
+        }
+        
+        // prefer to move an instance that is not bound, ie, not isTrigger
+        // because after it's moved any additional overlaps will be resolved by the system
+        if (!a.isTrigger) {
+            a.move(-x, -y);
+            toCheck = a;
+        } else if (!b.isTrigger && b.type === "Circle") {
+            b.move(-x, -y);
+            toCheck = b;
+        } else {
+            a.move(-x, -y);
+            toCheck = a;
+        }
+        if (toCheck) {
+            numberOfPasses++;
+            // after moving the instance, check if it overlaps with any other instance
+            this.system.checkOne(toCheck, (response: Response) => {
+                if (response) {
+                    const { a, b, overlapV, overlap } = response;
+                    if (!a.isBoundPair(b)) {
+                        // This check is to keep from having to resolve
+                        // a ridiculous number of collisions
+                        // the value is half the radius of the larger agent
+                        if (overlap > 1.5) {
+                            return this.resolveCollision(
+                                a,
+                                b,
+                                overlapV,
+                                numberOfPasses
+                            );
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    private relax(maxCycles: number = 30) {
+        let cycles = 0;
+        while (cycles < maxCycles) {
+            cycles++;
+            this.system.separate();
+        }
+    }
+
+    /** PUBLIC METHODS BELOW */
+
+    public isMixed() {
+        return this._isMixed;
+    }
+
+    public getEvents() {
+        return {
+            numberBindEvents: this.currentNumberOfBindingEvents,
+            numberUnBindEvents: this.currentNumberOfUnbindingEvents,
+        };
+    }
+
+    public changeConcentration(agentId: number, newConcentration: number) {
+        const agent = this.agents.find((agent) => agent.id === agentId);
+        if (!agent) {
+            return;
+        }
+        const newCount = this.convertConcentrationToCount(newConcentration);
+        const oldCount = agent.count || 0;
+        agent.count = newCount;
+        this.static = true;
+        if (!this.initialState) {
+            // if the simulation has played, it needs to be reset to the
+            // initial state
+            this.clearAgents();
+            this.initialState = true;
+            this.initializeAgents(this.agents);
+            return;
+        }
+        const diff = newCount - oldCount;
+        if (diff > 0) {
+            for (let i = 0; i < diff; ++i) {
+                const position: number[] = this.getRandomPointOnSide(
+                    agent.id,
+                    this.agents.length
+                );
+                const circle = new Circle(
+                    new Vector(...position),
+                    agent.radius
+                );
+                const instance = new BindingInstance(
+                    circle,
+                    agent.id,
+                    agent.partners,
+                    agent.kOn,
+                    agent.kOff
+                );
+                this.system.insert(instance);
+                this.instances.push(instance);
+            }
+        } else if (diff < 0) {
+            const toRemove = this.instances.filter(
+                (instance) => instance.id === agentId
+            );
+            for (let i = 0; i < Math.abs(diff); ++i) {
+                const instance = toRemove[i];
+                this.system.remove(instance);
+                this.instances.splice(this.instances.indexOf(instance), 1);
+            }
+        }
+    }
+
     public updateSimulationState() {
         // TODO a type definition to show the possible fields
         // data: {
@@ -444,7 +519,8 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     public staticUpdate() {
         // update the number of agents without
         // changing their positions
-        this.system.separate();
+        this.relax();
+
         const agentData: number[] = [];
         for (let ii = 0; ii < this.instances.length; ++ii) {
             const instance = this.instances[ii];
@@ -503,6 +579,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             const { a, b, overlapV } = response;
 
             if (response) {
+                // if they are bound, check if they should unbind
                 if (a.isBoundPair(b)) {
                     let unbound = false;
                     if (a.r < b.r) {
@@ -520,26 +597,31 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                     // a is the ligand
                     let bound = false;
                     if (a.r < b.r) {
-                        bound = b.bind(a);
+                        bound = b.bind(a, overlapV);
                     } else {
                         // b is the ligand
-                        bound = a.bind(b);
+                        bound = a.bind(b, overlapV);
                     }
                     if (bound) {
                         this.currentNumberOfBindingEvents++;
                         this.currentNumberBound++;
                     }
                 }
-                if (a.isTrigger && b.isTrigger && !a.isBoundPair(b)) {
-                    a.resolveCollision(b, overlapV, this.system);
+                // Now that binding has been resolved, resolve collisions
+                // if they are not bound the system will resolve the collision
+                if (!a.isBoundPair(b)) {
+                    if (!a.isStatic && !b.isStatic) {
+                        this.resolveCollision(a, b, overlapV);
+                    }
                 }
             } else {
                 console.log("no response");
             }
         });
-        this.system.separate();
+        this.relax(5);
         // fill agent data.
         const agentData: number[] = [];
+
         for (let ii = 0; ii < this.instances.length; ++ii) {
             const instance = this.instances[ii];
             agentData.push(VisTypes.ID_VIS_TYPE_DEFAULT); // vis type
