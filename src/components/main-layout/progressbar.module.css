@@ -1,0 +1,15 @@
+.container {
+    height: 100%;
+}
+.module-bar {
+    width: 132px;
+    display: flex;
+    flex-direction: column;
+}
+
+.title, .page-number{
+    font-size: 12px;
+    line-height: 14px;
+    margin: 0;
+    text-align: center;
+}
