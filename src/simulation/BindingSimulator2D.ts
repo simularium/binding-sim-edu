@@ -172,22 +172,21 @@ class BindingInstance extends Circle {
         return true;
     }
 
-    public checkWillBind(possibleLigand: BindingInstance, overlapV: Vector): boolean {
-        if (possibleLigand.bound || this.child) {
+    public checkWillBind(ligand: BindingInstance, overlapV: Vector): boolean {
+        if (ligand.bound || this.child) {
             // already have bound ligand or already bound
             // can't bind to another ligand
             return false;
         }
-        if (possibleLigand.kOn === undefined) {
+        if (ligand.kOn === undefined) {
             return false;
         }
-        const willBind = random(0, 1, true) < possibleLigand.kOn;
+        const willBind = random(0, 1, true) < ligand.kOn;
         if (!willBind) {
             return false;
         }
         this.isTrigger = true;
-        const ligand = possibleLigand.bindToParent(this, overlapV);
-        this.child = ligand;
+        this.child  = ligand.bindToParent(this, overlapV);
         return true;
     }
 }
