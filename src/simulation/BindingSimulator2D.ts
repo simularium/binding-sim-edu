@@ -61,13 +61,13 @@ class BindingInstance extends Circle {
         return [x, y];
     }
 
-    private resetLigandToInitialState() {
+    private releaseFromParent() {
         this.isTrigger = false;
         this.bound = false;
         this.parent = null;
     }
 
-    private convertToLigand(
+    private bindToParent(
         parent: BindingInstance,
         overlapV: Vector
     ): BindingInstance {
@@ -157,7 +157,7 @@ class BindingInstance extends Circle {
         }
     }
 
-    public unBind(ligand: BindingInstance): boolean {
+    public checkWillUnbind(ligand: BindingInstance): boolean {
         if (ligand.kOff === undefined) {
             return false;
         }
@@ -167,12 +167,12 @@ class BindingInstance extends Circle {
         }
         this.child = null;
         this.isTrigger = false;
-        ligand.resetLigandToInitialState();
+        ligand.releaseFromParent();
         // QUESTION: should the ligand be moved to a random position?
         return true;
     }
 
-    public bind(possibleLigand: BindingInstance, overlapV: Vector): boolean {
+    public checkWillBind(possibleLigand: BindingInstance, overlapV: Vector): boolean {
         if (possibleLigand.bound || this.child) {
             // already have bound ligand or already bound
             // can't bind to another ligand
@@ -186,7 +186,7 @@ class BindingInstance extends Circle {
             return false;
         }
         this.isTrigger = true;
-        const ligand = possibleLigand.convertToLigand(this, overlapV);
+        const ligand = possibleLigand.bindToParent(this, overlapV);
         this.child = ligand;
         return true;
     }
@@ -395,7 +395,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             a.move(-x, -y);
             toCheck = a;
         } else if (!b.isTrigger && b.type === "Circle") {
-            b.move(-x, -y);
+            b.move(x, y);
             toCheck = b;
         } else {
             a.move(-x, -y);
