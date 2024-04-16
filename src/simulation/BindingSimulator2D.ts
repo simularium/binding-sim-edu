@@ -582,10 +582,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 if (a.isBoundPair(b)) {
                     let unbound = false;
                     if (a.r < b.r) {
-                        unbound = b.unBind(a);
+                        unbound = b.checkWillUnbind(a);
                     } else {
                         // b is the ligand
-                        unbound = a.unBind(b);
+                        unbound = a.checkWillUnbind(b);
                     }
                     if (unbound) {
                         this.currentNumberOfUnbindingEvents++;
@@ -596,10 +596,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                     // a is the ligand
                     let bound = false;
                     if (a.r < b.r) {
-                        bound = b.bind(a, overlapV);
+                        bound = b.checkWillBind(a, overlapV);
                     } else {
                         // b is the ligand
-                        bound = a.bind(b, overlapV);
+                        bound = a.checkWillBind(b, overlapV);
                     }
                     if (bound) {
                         this.currentNumberOfBindingEvents++;
