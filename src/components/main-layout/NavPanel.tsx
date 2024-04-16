@@ -35,12 +35,14 @@ const NavPanel: React.FC<NavPanelProps> = ({ title, page, total }) => {
                 return (
                     <div
                         key={index}
-                        className={classNames(styles.moduleBar, {
+                        className={classNames(styles.progressBarWrapper, {
                             [styles.current]: isCurrentModule,
                         })}
                     >
                         <div className={styles.title}>{name}</div>
                         <Progress
+                            className={styles.progressBar}
+                            strokeWidth={4}
                             percent={
                                 isCurrentModule
                                     ? (page / total) * 100
@@ -51,11 +53,10 @@ const NavPanel: React.FC<NavPanelProps> = ({ title, page, total }) => {
                             }
                             showInfo={false}
                         />
-                        {isCurrentModule && (
-                            <div className={styles.pageNumber}>
-                                {page} / {total}
-                            </div>
-                        )}
+
+                        <div className={styles.pageNumber}>
+                            {isCurrentModule ? `${page} / ${total}` : ""}
+                        </div>
                     </div>
                 );
             })}

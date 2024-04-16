@@ -1,15 +1,47 @@
 .container {
     height: 100%;
+    margin-right: 182px;
 }
-.module-bar {
+.progress-bar-wrapper {
     width: 132px;
     display: flex;
     flex-direction: column;
 }
 
-.title, .page-number{
+.text-format {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
     font-size: 12px;
     line-height: 14px;
-    margin: 0;
     text-align: center;
+}
+
+.title {
+    composes: text-format;
+    font-size: 12px;
+}
+
+.page-number {
+    composes: text-format;
+
+    height: 12px;
+    font-size: 10px;
+}
+
+.progress-bar {
+    position: relative;
+}
+
+.progress-bar::before {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: 7px;
+    border-radius: 50%;
+    background-color: var(--text-color);
+}
+
+.current .progress-bar::before {
+    background-color: var(--primary-color);
 }
