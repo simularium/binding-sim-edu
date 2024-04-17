@@ -42,7 +42,7 @@
 }
 
 .container:last-child::after {
-    content: url(../../assets/star.svg);
+    content: url(../assets/star.svg);
     width: 10px;
     top: 7px;
     position: absolute;
