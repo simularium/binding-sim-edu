@@ -1,4 +1,4 @@
-import { Progress, theme } from "antd";
+import { theme } from "antd";
 
 import {
     BG_DARK,
