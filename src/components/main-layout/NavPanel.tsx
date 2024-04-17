@@ -5,7 +5,6 @@ import classNames from "classnames";
 
 import { moduleNames } from "../../content";
 import styles from "./progressbar.module.css";
-import Star from "./icons/StarIcon";
 
 interface NavPanelProps {
     title: string;
@@ -62,7 +61,6 @@ const NavPanel: React.FC<NavPanelProps> = ({ title, page, total }) => {
                     </div>
                 );
             })}
-            {/* <Star /> */}
         </Flex>
     );
 };
