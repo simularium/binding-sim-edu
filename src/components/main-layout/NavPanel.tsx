@@ -1,9 +1,11 @@
 import React from "react";
 import { Progress, Flex } from "antd";
 import { map } from "lodash";
+import classNames from "classnames";
+
 import { moduleNames } from "../../content";
 import styles from "./progressbar.module.css";
-import classNames from "classnames";
+import Star from "./icons/StarIcon";
 
 interface NavPanelProps {
     title: string;
@@ -36,7 +38,7 @@ const NavPanel: React.FC<NavPanelProps> = ({ title, page, total }) => {
                     <div
                         key={index}
                         className={classNames(styles.progressBarWrapper, {
-                            [styles.current]: isCurrentModule,
+                            [styles.active]: indexNumber <= currentIndex,
                         })}
                     >
                         <div className={styles.title}>{name}</div>
@@ -60,6 +62,7 @@ const NavPanel: React.FC<NavPanelProps> = ({ title, page, total }) => {
                     </div>
                 );
             })}
+            {/* <Star /> */}
         </Flex>
     );
 };

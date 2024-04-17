@@ -6,6 +6,8 @@
     width: 132px;
     display: flex;
     flex-direction: column;
+        position: relative;
+
 }
 
 .text-format {
@@ -23,25 +25,30 @@
 
 .page-number {
     composes: text-format;
-
     height: 12px;
     font-size: 10px;
 }
 
-.progress-bar {
-    position: relative;
-}
-
-.progress-bar::before {
+.progress-bar-wrapper::before {
+    z-index: 3000;
     content: "";
     position: absolute;
     width: 10px;
     height: 10px;
-    top: 7px;
+    top: 21px;
+    left: -2px;
     border-radius: 50%;
-    background-color: var(--text-color);
+    background-color: var(--dark-gray);
 }
 
-.current .progress-bar::before {
+.container:last-child::after {
+    content: url(../../assets/star.svg);
+    width: 10px;
+    top: 7px;
+    position: absolute;
+}
+
+.active.progress-bar-wrapper::before {
     background-color: var(--primary-color);
 }
+
