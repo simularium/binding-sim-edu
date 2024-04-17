@@ -4,7 +4,7 @@ import { map } from "lodash";
 import classNames from "classnames";
 
 import { moduleNames } from "../content";
-import styles from "./progressbar.module.css";
+import styles from "./page-indicator.module.css";
 
 interface PageIndicatorProps {
     title: string;
