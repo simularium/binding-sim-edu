@@ -6,8 +6,7 @@
     width: 132px;
     display: flex;
     flex-direction: column;
-        position: relative;
-
+    position: relative;
 }
 
 .text-format {
@@ -50,4 +49,3 @@
 .active.progress-bar-wrapper::before {
     background-color: var(--primary-color);
 }
-
