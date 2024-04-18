@@ -12,7 +12,7 @@ import {
     DEFAULT_CAMERA_SPEC,
     VisTypes,
 } from "@aics/simularium-viewer";
-import { InputAgent } from "../types";
+import { InputAgent, StoredAgent } from "../types";
 import { AGENT_AB_COLOR } from "../constants/colors";
 import { DEFAULT_TIME_FACTOR } from "../constants/trajectories";
 
@@ -183,7 +183,7 @@ class BindingInstance extends Circle {
 export default class BindingSimulator implements IClientSimulatorImpl {
     instances: BindingInstance[] = [];
     currentFrame: number;
-    agents: InputAgent[] = [];
+    agents: StoredAgent[] = [];
     system: System;
     distanceFactor: number;
     timeFactor: number;
@@ -205,11 +205,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     ) {
         this.size = size;
         this.system = new System();
-        this.agents = agents;
         this.createBoundingLines();
         this.distanceFactor = 40;
         this.timeFactor = timeFactor;
-        this.initializeAgents(agents);
+        this.agents = this.initializeAgents(agents);
         this.currentFrame = 0;
         this.system.separate();
     }
@@ -223,10 +222,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this._isMixed = false;
     }
 
-    private initializeAgents(agents: InputAgent[]) {
+    private initializeAgents(agents: InputAgent[]): StoredAgent[] {
         let smallestAgentRadius = 1000;
         for (let i = 0; i < agents.length; ++i) {
-            const agent = agents[i];
+            const agent = agents[i] as StoredAgent; // count is no longer optional
             agent.count = this.convertConcentrationToCount(agent.concentration);
             if (agent.radius < smallestAgentRadius) {
                 // use the smallest agent to check if the system is mixed
@@ -253,6 +252,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 this.instances.push(instance);
             }
         }
+        return agents as StoredAgent[];
     }
 
     public isMixed() {
@@ -437,8 +437,17 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.timeFactor = timeScale;
     }
 
-    public getCurrentConcentrationBound() {
-        return this.convertCountToConcentration(this.currentNumberBound);
+    public getCurrentConcentrations() {
+        // 
+        const init = <{[key: string]: number}>{}
+        const concentrations = this.agents.reduce((acc, agent) => {
+            acc[agent.name] = this.convertCountToConcentration(
+                agent.count - this.currentNumberBound
+            );
+            return acc;
+        }, init);
+        concentrations["bound"] = this.convertCountToConcentration(this.currentNumberBound);
+        return concentrations;
     }
 
     public staticUpdate() {

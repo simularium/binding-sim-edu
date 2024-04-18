@@ -61,6 +61,11 @@ function App() {
      * Analysis state
      * used to create plots and feedback
      */
+    const [liveConcentration, setLiveConcentration] = useState({
+        [AvailableAgentNames.A]: inputConcentration[AvailableAgentNames.A],
+        [AvailableAgentNames.B]: inputConcentration[AvailableAgentNames.B],
+        AB: 0,
+    });
     const [productOverTimeTraces, setProductOverTimeTraces] = useState<
         ProductOverTimeTrace[]
     >([]);
@@ -103,9 +108,10 @@ function App() {
     }, [reactionType, viewportSize]);
 
     const handleTimeChange = (timeData: TimeData) => {
-        const newValue = clientSimulator.getCurrentConcentrationBound();
-        const newData = [...currentProductConcentrationArray, newValue];
+        const concentrations = clientSimulator.getCurrentConcentrations();
+        const newData = [...currentProductConcentrationArray, concentrations.AB];
         setCurrentProductConcentrationArray(newData);
+        setLiveConcentration(concentrations);
 
         if (timeData.time % 10 === 0) {
             const { numberBindEvents, numberUnBindEvents } =
@@ -194,7 +200,7 @@ function App() {
 
     const handleRecordEquilibrium = () => {
         const productConcentration =
-            clientSimulator.getCurrentConcentrationBound();
+            clientSimulator.getCurrentConcentrations().AB;
         const reactantConcentration = inputConcentration[ADJUSTABLE_AGENT];
 
         if (!clientSimulator.isMixed()) {
@@ -237,16 +243,16 @@ function App() {
                             />
                         }
                         content={
-                                <ContentPanel
-                                    {...content[reactionType][page]}
-                                />
-                                
+                            <ContentPanel {...content[reactionType][page]} />
                         }
-                        reactionPanel={<ReactionDisplay reactionType={reactionType} />}
+                        reactionPanel={
+                            <ReactionDisplay reactionType={reactionType} />
+                        }
                         leftPanel={
                             <LeftPanel
                                 activeAgents={getActiveAgents(reactionType)}
                                 inputConcentration={inputConcentration}
+                                liveConcentration={liveConcentration}
                                 handleNewInputConcentration={
                                     handleNewInputConcentration
                                 }

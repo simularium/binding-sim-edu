@@ -15,12 +15,26 @@ export enum AvailableAgentNames {
 
 export interface InputAgent {
     id: number;
+    name: AvailableAgentNames;
     concentration: number;
     radius: number;
     partners: number[];
     kOn?: number;
     kOff?: number;
     count?: number;
+    color: string;
+}
+
+// only difference is count is no longer optional
+export interface StoredAgent {
+    id: number;
+    name: AvailableAgentNames;
+    concentration: number;
+    radius: number;
+    partners: number[];
+    kOn?: number;
+    count: number;
+    kOff?: number;
     color: string;
 }
 

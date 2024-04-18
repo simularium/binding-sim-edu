@@ -3,6 +3,7 @@ import { AGENT_A_COLOR, AGENT_B_COLOR, AGENT_C_COLOR } from "./colors";
 
 const agentA = {
     id: 0,
+    name: AvailableAgentNames.A,
     concentration: 10,
     radius: 3,
     partners: [1, 2],
@@ -10,6 +11,7 @@ const agentA = {
 };
 const agentB = {
     id: 1,
+    name: AvailableAgentNames.B,
     concentration: 10,
     radius: 0.7,
     partners: [0],
@@ -20,6 +22,7 @@ const agentB = {
 
 const agentC = {
     id: 2,
+    name: AvailableAgentNames.C,
     concentration: 10,
     radius: 1,
     partners: [0],

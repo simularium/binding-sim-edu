@@ -10,6 +10,7 @@ interface LeftPanelProps {
     activeAgents: AvailableAgentNames[];
     adjustableAgent: AvailableAgentNames;
     inputConcentration: { [key in AvailableAgentNames]: number };
+    liveConcentration: { [key in AvailableAgentNames]: number };
     handleNewInputConcentration: (name: string, value: number) => void;
     bindingEventsOverTime: number[];
     unbindingEventsOverTime: number[];
@@ -18,6 +19,7 @@ interface LeftPanelProps {
 const LeftPanel: React.FC<LeftPanelProps> = ({
     activeAgents,
     inputConcentration,
+    liveConcentration,
     handleNewInputConcentration,
     bindingEventsOverTime,
     unbindingEventsOverTime,
@@ -30,6 +32,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
                 <Concentration
                     activeAgents={activeAgents}
                     concentration={inputConcentration}
+                    liveConcentration={liveConcentration}
                     onChange={handleNewInputConcentration}
                     disabled={isPlaying}
                     adjustableAgent={adjustableAgent}
