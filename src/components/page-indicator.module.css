@@ -4,6 +4,7 @@
 }
 .progress-bar-wrapper {
     width: 132px;
+    height: 43px;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -25,20 +26,28 @@
     composes: text-format;
     height: 12px;
     font-size: 10px;
+    font-weight: 700;
 }
 
+/* dot between modules  */
 .progress-bar-wrapper::before {
     z-index: 3000;
     content: "";
     position: absolute;
     width: 10px;
     height: 10px;
-    top: 21px;
+    top: 19px; /* aligned by eye after rest of layout created */
     left: -2px;
     border-radius: 50%;
     background-color: var(--dark-gray);
 }
 
+.progress-bar {
+    margin: auto;
+    line-height: 7.5px;
+}
+
+/* star at the end */
 .container:last-child::after {
     content: url(../assets/star.svg);
     width: 10px;
@@ -46,6 +55,10 @@
     position: absolute;
 }
 
-.active.progress-bar-wrapper::before {
+.current .title{
+    font-weight: 700;
+}
+
+.previous.progress-bar-wrapper::before {
     background-color: var(--primary-color);
 }

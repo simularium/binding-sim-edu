@@ -41,7 +41,8 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
                     <div
                         key={index}
                         className={classNames(styles.progressBarWrapper, {
-                            [styles.active]: indexNumber <= currentIndex,
+                            [styles.previous]: indexNumber <= currentIndex,
+                            [styles.current]: isCurrentModule,
                         })}
                     >
                         <div className={styles.title}>{name}</div>
