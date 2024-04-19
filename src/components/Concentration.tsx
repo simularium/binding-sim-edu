@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { map, set } from "lodash";
+import { map } from "lodash";
 import { Flex, Progress } from "antd";
 
 import Slider from "./shared/Slider";
@@ -27,9 +27,10 @@ const Concentration: React.FC<AgentProps> = ({
 
     useEffect(() => {
         setWidth(containerRef.current?.offsetWidth || 0);
+        console.log( width)
     }, [containerRef.current?.offsetWidth, width]);
 
-    const count = Math.floor(20/320 * width);
+    const count = Math.floor(13/273 * width);
 
     const getComponent = (
         agent: AvailableAgentNames,
@@ -50,7 +51,9 @@ const Concentration: React.FC<AgentProps> = ({
             return (
                 <div>
                     <Progress
-                        percent={Math.ceil(currentConcentrationOfAgent / 20 * 100)}
+                        percent={Math.ceil(
+                            (currentConcentrationOfAgent / 20) * 100
+                        )}
                         key={agent}
                         steps={count || 0}
                         showInfo={false}

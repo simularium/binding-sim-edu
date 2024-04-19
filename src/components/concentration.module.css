@@ -1,14 +1,25 @@
 .container {
     display: flex;
     width: 100%;
+    padding: 8px 6px;
 }
 
 .concentration {
     display: flex;
     height: 71px;
+    margin-right: 49.5px;
     justify-content: space-evenly;
+}
+
+.concentration :global(.ant-slider) {
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .concentration :global(.ant-progress-steps-item) {
     height: 4px!important;
+}
+
+.concentration :global(.ant-progress-steps-item) {
+    background-color: var(--background-color);
 }
