@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { SimulariumContext } from "../../simulation/context";
-import { PrimaryButton } from "./Buttons";
+import { PrimaryButton } from "./ButtonLibrary";
 
 const NextButton = () => {
     const { page, setPage } = useContext(SimulariumContext);

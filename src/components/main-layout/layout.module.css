@@ -48,3 +48,13 @@
 .center-panel {
     position: relative;
 }
+
+.feedback {
+    font-family: "Open Sans", sans-serif;
+    color: var(--primary-color);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    text-align: center;
+    margin-top: 10px;
+}
