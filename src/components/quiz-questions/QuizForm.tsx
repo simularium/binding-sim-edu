@@ -6,7 +6,7 @@ import { FormState } from "./types";
 import SuccessFeedback from "./SuccessFeedback";
 import FailureFeedback from "./FailureFeedback";
 import styles from "./popup.module.css";
-import { TertiaryButton, IconButton } from "../shared/Buttons";
+import { TertiaryButton, IconButton } from "../shared/ButtonLibrary";
 
 interface QuizFormProps {
     title: string;
@@ -57,7 +57,7 @@ const QuizForm: React.FC<QuizFormProps> = ({
                     {formState === FormState.Incorrect && (
                         <FailureFeedback message={failureMessage} />
                     )}
-                    <TertiaryButton onClick={onSubmit} className={styles.submit}>
+                    <TertiaryButton onClick={onSubmit} style={{ marginTop: 10}}>
                         {formState === FormState.Incorrect
                             ? "Try Again"
                             : "Submit"}

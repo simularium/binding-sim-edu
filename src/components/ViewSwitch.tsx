@@ -4,7 +4,9 @@ import Viewer from "./Viewer";
 import { SimulariumContext } from "../simulation/context";
 import ProgressionControl from "./shared/ProgressionControl";
 import PlayButton from "./PlayButton";
-import { OverlayButton } from "./shared/Buttons";
+import { OverlayButton } from "./shared/ButtonLibrary";
+import LabIcon from "./icons/Lab";
+import Molecules from "./icons/Molecules";
 
 enum View {
     Lab = "lab",
@@ -43,9 +45,13 @@ const ViewSwitch: React.FC = () => {
     return (
         <div style={{ position: "relative", height: "100%" }}>
             <ProgressionControl onPage={1}>
-                <OverlayButton onClick={switchView}>
-                    Switch to {currentView === View.Lab ? "Simulation" : "Lab"}{" "}
-                    View
+                <OverlayButton
+                    onClick={switchView}
+                    style={{ top: 16, left: 16 }}
+                    icon={currentView === View.Lab ? <Molecules /> : <LabIcon />}
+                >
+                     Switch to{" "}
+                    {currentView === View.Lab ? "molecular" : "lab"} view
                 </OverlayButton>
             </ProgressionControl>
             <PlayButton />

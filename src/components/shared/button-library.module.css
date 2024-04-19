@@ -1,0 +1,53 @@
+.base-button {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.base-button:hover,
+.base-button:active{
+    color: var(--background-color) !important;
+    background: var(--light-purple) !important;
+    border-color: var(--light-purple) !important;
+}
+
+.primary {
+    composes: base-button;
+    background-color: var(--primary-color) !important;
+}
+
+.secondary {
+    composes: base-button;
+}
+
+.tertiary {
+    composes: base-button;
+    background-color: #000000;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+
+.tertiary :global(.custom-icon),
+.tertiary :global(.custom-icon) {
+    color: var(--primary-color);
+    transition: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.tertiary:hover :global(.custom-icon) {
+    color: var(--background-color);
+    transition: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.icon {
+    border: none;
+}
+
+.rounded {
+    border-radius: 20px;
+}
+
+.overlay {
+    display: flex;
+    align-items: center;
+}
