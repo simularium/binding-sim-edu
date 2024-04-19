@@ -4,6 +4,26 @@
 
 .content-panel {
     height: var(--content-height);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--app-border-color);
+}
+
+.content-panel p, .content-panel h3 {
+    margin: 0;
+}
+
+.call-to-action-p {
+    display: flex;
+    gap: 8px;
+}
+
+.content-panel-text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 982px;
 }
 
 .reaction-panel {

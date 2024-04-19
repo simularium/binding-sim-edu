@@ -4,6 +4,8 @@
   --border-color: var(--background-color);
   --text-color: #D3D3D3;
   --dark-gray: #979797;
+  --mid-gray-dark: #4B4B4B;
+  --app-border-color: var(--mid-gray-dark);
   --popup-background-color: var(--primary-color);
   --popup-text-color: #141219;
   --mid-gray-dark: #4b4b4b;
@@ -25,3 +27,34 @@ body {
     background-color: var(--background-color);
     color: var(--text-color);
 }
+
+h1, h2, h3, h4 {
+  font-family: "Overpass", sans-serif;
+  font-optical-sizing: auto;
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+h4 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+p {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+}
+
