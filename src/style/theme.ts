@@ -47,6 +47,7 @@ const customTheme = {
             trackHoverBg: MID_GREY_DARKER,
             handleColor: BRIGHT_PURPLE_DARKER,
             handleActiveColor: BRIGHT_PURPLE_DARKER,
+            handleLineWidthHover: 0,
         },
     },
 };
