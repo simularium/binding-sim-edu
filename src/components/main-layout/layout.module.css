@@ -4,10 +4,41 @@
 
 .content-panel {
     height: var(--content-height);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--app-border-color);
+}
+
+.content-panel p, .content-panel h3 {
+    margin: 0;
+}
+
+.call-to-action-p {
+    display: flex;
+    gap: 8px;
+}
+
+.content-panel-text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 982px;
 }
 
 .reaction-panel {
     height: var(--reaction-panel-height);
+    border-bottom: 1px solid var(--app-border-color);
+}
+
+.reaction {
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 14.5px;
+    justify-content: center;
 }
 
 .center-panel {
