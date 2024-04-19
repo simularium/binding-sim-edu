@@ -6,6 +6,7 @@ import EquilibriumPlot from "../plots/EquilibriumPlot";
 import RecordEquilibriumButton from "../RecordEquilibriumButton";
 import { ProductOverTimeTrace } from "../plots/types";
 import styles from "./layout.module.css";
+
 interface RightPanelProps {
     productOverTimeTraces: ProductOverTimeTrace[];
     currentProductConcentrationArray: number[];
