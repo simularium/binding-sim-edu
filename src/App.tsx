@@ -112,7 +112,7 @@ function App() {
         const newData = [...currentProductConcentrationArray, concentrations.AB];
         setCurrentProductConcentrationArray(newData);
         setLiveConcentration(concentrations);
-
+        
         if (timeData.time % 10 === 0) {
             const { numberBindEvents, numberUnBindEvents } =
                 clientSimulator.getEvents();
@@ -186,7 +186,9 @@ function App() {
         const previousConcentration = inputConcentration[agentName];
         addProductionTrace(previousConcentration);
         setInputConcentration({ ...inputConcentration, [name]: value });
+        setLiveConcentration({ ...inputConcentration, [name]: value, AB: 0 });
         const time = simulariumController.time();
+
         simulariumController.gotoTime(time + 1);
         resetAnalysisState();
     };

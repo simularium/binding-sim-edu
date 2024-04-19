@@ -1,5 +1,12 @@
-import { AvailableAgentNames, InputAgent } from "../types";
-import { AGENT_A_COLOR, AGENT_B_COLOR, AGENT_C_COLOR } from "./colors";
+import { AvailableAgentNames, InputAgent, ProductNames } from "../types";
+import { AGENT_AB_COLOR, AGENT_A_COLOR, AGENT_B_COLOR, AGENT_C_COLOR } from "./colors";
+
+export const AGENT_AND_PRODUCT_COLORS = {
+    [AvailableAgentNames.A]: AGENT_A_COLOR,
+    [AvailableAgentNames.B]: AGENT_B_COLOR,
+    [AvailableAgentNames.C]: AGENT_C_COLOR,
+    [ProductNames.AB]: AGENT_AB_COLOR,
+};
 
 const agentA = {
     id: 0,

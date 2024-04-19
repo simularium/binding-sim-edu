@@ -446,7 +446,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             );
             return acc;
         }, init);
-        concentrations["bound"] = this.convertCountToConcentration(this.currentNumberBound);
+        concentrations.AB = this.convertCountToConcentration(this.currentNumberBound);
         return concentrations;
     }
 

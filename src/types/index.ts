@@ -13,6 +13,11 @@ export enum AvailableAgentNames {
     C = "C",
 }
 
+export enum ProductNames {
+    AB = "AB",
+    AC = "AC",
+}
+
 export interface InputAgent {
     id: number;
     name: AvailableAgentNames;

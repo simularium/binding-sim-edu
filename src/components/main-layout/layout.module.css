@@ -6,6 +6,10 @@
     height: var(--content-height);
 }
 
+.side-panel {
+    padding: 10px;
+}
+
 .reaction-panel {
     height: var(--reaction-panel-height);
     border-bottom: 1px solid var(--app-border-color);
