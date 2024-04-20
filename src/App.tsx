@@ -214,7 +214,7 @@ function App() {
 
     const handleRecordEquilibrium = () => {
         const productConcentration =
-            clientSimulator.getCurrentConcentrations().AB;
+            clientSimulator.getCurrentConcentrations()[ProductNames.AB];
         const reactantConcentration = inputConcentration[ADJUSTABLE_AGENT] || 0;
 
         if (!clientSimulator.isMixed()) {

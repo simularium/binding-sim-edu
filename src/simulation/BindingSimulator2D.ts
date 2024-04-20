@@ -12,7 +12,7 @@ import {
     DEFAULT_CAMERA_SPEC,
     VisTypes,
 } from "@aics/simularium-viewer";
-import { InputAgent, StoredAgent } from "../types";
+import { InputAgent, ProductNames, StoredAgent } from "../types";
 import { AGENT_AB_COLOR } from "../constants/colors";
 import { DEFAULT_TIME_FACTOR } from "./trajectories-settings";
 
@@ -512,7 +512,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     public getCurrentConcentrations() {
-        // 
         const init = <{[key: string]: number}>{}
         const concentrations = this.agents.reduce((acc, agent) => {
             acc[agent.name] = this.convertCountToConcentration(
@@ -520,7 +519,9 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             );
             return acc;
         }, init);
-        concentrations.AB = this.convertCountToConcentration(this.currentNumberBound);
+        // TODO: generalize this for the other trajectories 
+        // for module 1 we only have AB
+        concentrations[ProductNames.AB] = this.convertCountToConcentration(this.currentNumberBound);
         return concentrations;
     }
 
