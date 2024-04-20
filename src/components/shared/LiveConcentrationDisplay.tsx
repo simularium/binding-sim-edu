@@ -1,6 +1,6 @@
 import { Flex, Progress } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
-import { AGENT_AND_PRODUCT_COLORS } from '../../constants/trajectories';
+import { AGENT_AND_PRODUCT_COLORS } from '../../simulation/trajectories-settings';
 import { AvailableAgentNames } from '../../types';
 
 import styles from './live-concentration-display.module.css';

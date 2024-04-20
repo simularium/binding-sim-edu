@@ -14,7 +14,7 @@ import {
 } from "@aics/simularium-viewer";
 import { InputAgent, StoredAgent } from "../types";
 import { AGENT_AB_COLOR } from "../constants/colors";
-import { DEFAULT_TIME_FACTOR } from "../constants/trajectories";
+import { DEFAULT_TIME_FACTOR } from "./trajectories-settings";
 
 class BindingInstance extends Circle {
     id: number;

@@ -1,5 +1,11 @@
+import { ReactionType } from "../constants";
 import { AvailableAgentNames, InputAgent, ProductNames } from "../types";
-import { AGENT_AB_COLOR, AGENT_A_COLOR, AGENT_B_COLOR, AGENT_C_COLOR } from "./colors";
+import {
+    AGENT_AB_COLOR,
+    AGENT_A_COLOR,
+    AGENT_B_COLOR,
+    AGENT_C_COLOR,
+} from "../constants/colors";
 
 export const AGENT_AND_PRODUCT_COLORS = {
     [AvailableAgentNames.A]: AGENT_A_COLOR,
@@ -11,31 +17,31 @@ export const AGENT_AND_PRODUCT_COLORS = {
 const agentA = {
     id: 0,
     name: AvailableAgentNames.A,
-    concentration: 10,
+    concentration: 0,
     radius: 3,
     partners: [1, 2],
-    color: AGENT_A_COLOR
+    color: AGENT_A_COLOR,
 };
 const agentB = {
     id: 1,
     name: AvailableAgentNames.B,
-    concentration: 10,
+    concentration: 0,
     radius: 0.7,
     partners: [0],
     kOn: 0.6,
     kOff: 0.2,
-    color: AGENT_B_COLOR
+    color: AGENT_B_COLOR,
 };
 
 const agentC = {
     id: 2,
     name: AvailableAgentNames.C,
-    concentration: 10,
+    concentration: 0,
     radius: 1,
     partners: [0],
     kOn: 0.5,
     kOff: 0.8,
-    color: AGENT_C_COLOR
+    color: AGENT_C_COLOR,
 };
 
 export const AVAILABLE_AGENTS = {
@@ -66,3 +72,25 @@ export const createAgentsFromConcentrations = (
 
 export const DEFAULT_TIME_FACTOR = 40;
 export const DEFAULT_VIEWPORT_SIZE = { width: 500, height: 500 };
+export const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
+
+export const getActiveAgents = (reactionType: ReactionType) => {
+    switch (reactionType) {
+        case ReactionType.A_B_AB:
+            return [AvailableAgentNames.A, AvailableAgentNames.B];
+        case ReactionType.A_C_AC:
+            return [AvailableAgentNames.A, AvailableAgentNames.C];
+        case ReactionType.A_B_C_AB_AC:
+            return [
+                AvailableAgentNames.A,
+                AvailableAgentNames.B,
+                AvailableAgentNames.C,
+            ];
+    }
+};
+
+export const getConcentrations = (activeAgents: AvailableAgentNames[]) => {
+    return activeAgents.reduce((acc, agent) => {
+        return { ...acc, [agent]: INITIAL_CONCENTRATIONS[agent] };
+    }, {});
+};

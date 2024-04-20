@@ -8,7 +8,7 @@ import {
     CurrentConcentration,
     InputConcentration,
 } from "../types";
-import { AGENT_AND_PRODUCT_COLORS } from "../constants/trajectories";
+import { AGENT_AND_PRODUCT_COLORS } from "../simulation/trajectories-settings";
 import { SimulariumContext } from "../simulation/context";
 import styles from "./concentration.module.css";
 import LiveConcentrationDisplay from "./shared/LiveConcentrationDisplay";

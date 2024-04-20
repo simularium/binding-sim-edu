@@ -9,8 +9,11 @@ import {
     AVAILABLE_AGENTS,
     DEFAULT_TIME_FACTOR,
     DEFAULT_VIEWPORT_SIZE,
+    INITIAL_CONCENTRATIONS,
     createAgentsFromConcentrations,
-} from "./constants/trajectories";
+    getActiveAgents,
+    getConcentrations,
+} from "./simulation/trajectories-settings";
 import {
     AvailableAgentNames,
     CurrentConcentration,
@@ -29,28 +32,6 @@ import AdminUI from "./components/AdminUi";
 import { ProductOverTimeTrace } from "./components/plots/types";
 import MainLayout from "./components/main-layout/Layout";
 
-const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
-
-const getActiveAgents = (reactionType: ReactionType) => {
-    switch (reactionType) {
-        case ReactionType.A_B_AB:
-            return [AvailableAgentNames.A, AvailableAgentNames.B];
-        case ReactionType.A_C_AC:
-            return [AvailableAgentNames.A, AvailableAgentNames.C];
-        case ReactionType.A_B_C_AB_AC:
-            return [
-                AvailableAgentNames.A,
-                AvailableAgentNames.B,
-                AvailableAgentNames.C,
-            ];
-    }
-};
-
-const getConcentrations = (activeAgents: AvailableAgentNames[]) => {
-    return activeAgents.reduce((acc, agent) => {
-        return { ...acc, [agent]: INITIAL_CONCENTRATIONS[agent] };
-    }, {});
-};
 
 const ADJUSTABLE_AGENT = AvailableAgentNames.B;
 
