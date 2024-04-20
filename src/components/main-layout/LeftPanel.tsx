@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AvailableAgentNames } from '../../types';
+import { AvailableAgentNames, CurrentConcentration, InputConcentration } from '../../types';
 import VisibilityControl from '../shared/VisibilityControl';
 import EventsOverTimePlot from '../plots/EventsOverTimePlot';
 import Concentration from '../Concentration';
@@ -8,8 +8,8 @@ import Concentration from '../Concentration';
 interface LeftPanelProps {
     activeAgents: AvailableAgentNames[];
     adjustableAgent: AvailableAgentNames;
-    inputConcentration: { [key in AvailableAgentNames]: number };
-    liveConcentration: { [key in AvailableAgentNames]: number };
+    inputConcentration: InputConcentration;
+    liveConcentration: CurrentConcentration;
     handleNewInputConcentration: (name: string, value: number) => void;
     bindingEventsOverTime: number[];
     unbindingEventsOverTime: number[];

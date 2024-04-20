@@ -7,8 +7,8 @@
 .concentration {
     display: flex;
     height: 71px;
-    margin-right: 49.5px;
     justify-content: space-evenly;
+    padding: 4.5px 8px;
 }
 
 .concentration :global(.ant-slider) {
@@ -16,10 +16,10 @@
     margin-right: 0;
 }
 
-.concentration :global(.ant-progress-steps-item) {
-    height: 4px!important;
-}
-
-.concentration :global(.ant-progress-steps-item) {
-    background-color: var(--background-color);
+.agent-name {
+    font-family: Overpass;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 16px;
+    text-align: left;
 }

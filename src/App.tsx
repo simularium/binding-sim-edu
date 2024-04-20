@@ -11,7 +11,11 @@ import {
     DEFAULT_VIEWPORT_SIZE,
     createAgentsFromConcentrations,
 } from "./constants/trajectories";
-import { AvailableAgentNames } from "./types";
+import {
+    AvailableAgentNames,
+    CurrentConcentration,
+    ProductNames,
+} from "./types";
 import LeftPanel from "./components/main-layout/LeftPanel";
 import RightPanel from "./components/main-layout/RightPanel";
 import ReactionDisplay from "./components/main-layout/ReactionDisplay";
@@ -42,6 +46,12 @@ const getActiveAgents = (reactionType: ReactionType) => {
     }
 };
 
+const getConcentrations = (activeAgents: AvailableAgentNames[]) => {
+    return activeAgents.reduce((acc, agent) => {
+        return { ...acc, [agent]: INITIAL_CONCENTRATIONS[agent] };
+    }, {});
+};
+
 const ADJUSTABLE_AGENT = AvailableAgentNames.B;
 
 function App() {
@@ -53,20 +63,27 @@ function App() {
      * input values for the simulation
      */
     const [reactionType] = useState(ReactionType.A_B_AB);
-    const [inputConcentration, setInputConcentration] = useState(
-        INITIAL_CONCENTRATIONS
-    );
+    const [inputConcentration, setInputConcentration] =
+        useState<CurrentConcentration>({
+            [AvailableAgentNames.A]:
+                INITIAL_CONCENTRATIONS[AvailableAgentNames.A],
+            [AvailableAgentNames.B]:
+                INITIAL_CONCENTRATIONS[AvailableAgentNames.B],
+        });
     const [timeFactor, setTimeFactor] = useState(DEFAULT_TIME_FACTOR);
     const [viewportSize, setViewportSize] = useState(DEFAULT_VIEWPORT_SIZE);
     /**
      * Analysis state
      * used to create plots and feedback
      */
-    const [liveConcentration, setLiveConcentration] = useState({
-        [AvailableAgentNames.A]: inputConcentration[AvailableAgentNames.A],
-        [AvailableAgentNames.B]: inputConcentration[AvailableAgentNames.B],
-        AB: 0,
-    });
+    const [liveConcentration, setLiveConcentration] =
+        useState<CurrentConcentration>({
+            [AvailableAgentNames.A]:
+                INITIAL_CONCENTRATIONS[AvailableAgentNames.A],
+            [AvailableAgentNames.B]:
+                INITIAL_CONCENTRATIONS[AvailableAgentNames.B],
+            [ProductNames.AB]: 0,
+        });
     const [productOverTimeTraces, setProductOverTimeTraces] = useState<
         ProductOverTimeTrace[]
     >([]);
@@ -82,7 +99,9 @@ function App() {
         productEquilibriumConcentrations,
         setProductEquilibriumConcentrations,
     ] = useState<number[]>([]);
-    const [equilibriumFeedback, setEquilibriumFeedback] = useState<ReactNode | string>("");
+    const [equilibriumFeedback, setEquilibriumFeedback] = useState<
+        ReactNode | string
+    >("");
     const [
         currentProductConcentrationArray,
         setCurrentProductConcentrationArray,
@@ -100,20 +119,29 @@ function App() {
 
     const clientSimulator = useMemo(() => {
         const activeAgents = getActiveAgents(reactionType);
+
+        setInputConcentration(getConcentrations(activeAgents));
         const trajectory = createAgentsFromConcentrations(
             activeAgents,
             INITIAL_CONCENTRATIONS
         );
         resetAnalysisState();
-        return new BindingSimulator(trajectory, viewportSize.width/5);
+        return new BindingSimulator(trajectory, viewportSize.width / 5);
     }, [reactionType, viewportSize]);
 
     const handleTimeChange = (timeData: TimeData) => {
-        const concentrations = clientSimulator.getCurrentConcentrations();
-        const newData = [...currentProductConcentrationArray, concentrations.AB];
-        setCurrentProductConcentrationArray(newData);
+        const concentrations =
+            clientSimulator.getCurrentConcentrations() as CurrentConcentration;
+        if (concentrations[ProductNames.AB] !== undefined) {
+            // for the first module this will always be true
+            const newData = [
+                ...currentProductConcentrationArray,
+                concentrations[ProductNames.AB],
+            ];
+            setCurrentProductConcentrationArray(newData);
+        }
         setLiveConcentration(concentrations);
-        
+
         if (timeData.time % 10 === 0) {
             const { numberBindEvents, numberUnBindEvents } =
                 clientSimulator.getEvents();
@@ -167,7 +195,6 @@ function App() {
         }
     }, [page, inputEquilibriumConcentrations]);
 
-
     const addProductionTrace = (previousConcentration: number) => {
         const traces = productOverTimeTraces;
         if (currentProductConcentrationArray.length > 0) {
@@ -179,15 +206,18 @@ function App() {
         }
     };
 
-    
     const handleNewInputConcentration = (name: string, value: number) => {
         const agentName = name as AvailableAgentNames;
         const agentId = AVAILABLE_AGENTS[agentName].id;
         clientSimulator.changeConcentration(agentId, value);
-        const previousConcentration = inputConcentration[agentName];
+        const previousConcentration = inputConcentration[agentName] || 0;
         addProductionTrace(previousConcentration);
         setInputConcentration({ ...inputConcentration, [name]: value });
-        setLiveConcentration({ ...inputConcentration, [name]: value, AB: 0 });
+        setLiveConcentration({
+            ...inputConcentration,
+            [name]: value,
+            [ProductNames.AB]: 0,
+        });
         const time = simulariumController.time();
 
         simulariumController.gotoTime(time + 1);
@@ -204,7 +234,7 @@ function App() {
     const handleRecordEquilibrium = () => {
         const productConcentration =
             clientSimulator.getCurrentConcentrations().AB;
-        const reactantConcentration = inputConcentration[ADJUSTABLE_AGENT];
+        const reactantConcentration = inputConcentration[ADJUSTABLE_AGENT] || 0;
 
         if (!clientSimulator.isMixed()) {
             setEquilibriumFeedbackTimeout("Not yet!");
@@ -218,7 +248,11 @@ function App() {
             ...productEquilibriumConcentrations,
             productConcentration,
         ]);
-        setEquilibriumFeedbackTimeout(<>Great! <CheckCircleOutlined /></>);
+        setEquilibriumFeedbackTimeout(
+            <>
+                Great! <CheckCircleOutlined />
+            </>
+        );
     };
 
     return (
@@ -279,7 +313,7 @@ function App() {
                                     handleRecordEquilibrium
                                 }
                                 currentAdjustableAgentConcentration={
-                                    inputConcentration[ADJUSTABLE_AGENT]
+                                    inputConcentration[ADJUSTABLE_AGENT] || 0
                                 }
                                 equilibriumConcentrations={{
                                     inputConcentrations:

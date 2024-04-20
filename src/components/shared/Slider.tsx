@@ -29,6 +29,7 @@ const Slider: React.FC<SliderProps> = ({
         <SliderAntd
             min={min}
             max={max}
+            style={{ width: "100%" }}
             step={2}
             value={value}
             onChange={handleSliderChange}

@@ -18,6 +18,16 @@ export enum ProductNames {
     AC = "AC",
 }
 
+export type StateNames = AvailableAgentNames | ProductNames;
+
+export type InputConcentration = {
+    [key in AvailableAgentNames]?: number;
+};
+
+export type CurrentConcentration = {
+    [key in StateNames]?: number;
+};
+
 export interface InputAgent {
     id: number;
     name: AvailableAgentNames;
