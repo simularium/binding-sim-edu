@@ -19,8 +19,10 @@ const LiveConcentrationDisplay: React.FC<LiveConcentrationDisplayProps> = ({
 
     useEffect(() => {
         setWidth(containerRef.current?.offsetWidth || 0);
-        console.log(width)
     }, [containerRef.current?.offsetWidth, width]);
+
+    // the steps are 14px wide with a 2px gap, so we are adjusting the
+    // count based on the width of the container
     const count = Math.floor((width) / 16);
     return (
         <div className={styles.container} ref={containerRef}>
