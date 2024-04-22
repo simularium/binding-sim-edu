@@ -1,6 +1,6 @@
 import React from 'react';
 import { ReactionType } from '../../constants';
-import { AGENT_AB_COLOR, AGENT_A_COLOR, AGENT_B_COLOR, AGENT_C_COLOR } from '../../constants/colors';
+import { AGENT_AB_COLOR, AGENT_AC_COLOR, AGENT_A_COLOR, AGENT_B_COLOR, AGENT_C_COLOR } from '../../constants/colors';
 import ReversibleArrows from './icons/ReversibleArrows';
 import styles from './layout.module.css';
 
@@ -14,7 +14,7 @@ const ReactionDisplay: React.FC<ReactionDisplayProps> = ({ reactionType }) => {
     const B = <span style={{ color: AGENT_B_COLOR }}>B</span>;
     const C = <span style={{ color: AGENT_C_COLOR }}>C</span>;
     const AB = <span style={{ color: AGENT_AB_COLOR }}>AB</span>;
-    const AC = <span style={{ color: AGENT_AB_COLOR }}>AB</span>;
+    const AC = <span style={{ color: AGENT_AC_COLOR }}>AB</span>;
 
     return (
         <div className={styles.reaction}>
