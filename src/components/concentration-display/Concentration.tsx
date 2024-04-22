@@ -62,7 +62,7 @@ const Concentration: React.FC<AgentProps> = ({
     };
     return (
         <>
-            <h4>Agent Concentrations</h4>
+            <h3>Agent Concentrations</h3>
             <Flex className={styles.container} vertical>
                 {map(
                     liveConcentration,

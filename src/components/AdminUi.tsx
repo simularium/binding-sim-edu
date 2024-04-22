@@ -33,6 +33,7 @@ const AdminUI: React.FC<AdminUIProps> = ({ timeFactor, setTimeFactor }) => {
                 <Slider
                     min={0}
                     max={100}
+                    step={1}
                     initialValue={timeFactor}
                     onChange={(_, value) => {
                         setTimeFactor(value);
