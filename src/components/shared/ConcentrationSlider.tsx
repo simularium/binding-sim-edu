@@ -30,21 +30,22 @@ const ConcentrationSlider: React.FC<SliderProps> = ({
         const marks: SliderSingleProps["marks"] = {};
         for (let index = min; index <= max; index = index + 2) {
             if (recordedConcentrations.includes(index)) {
-                console.log(recordedConcentrations);
                 marks[index] = <span className={styles.recorded}>{index}</span>;
             } else {
-                marks[index] = <span className={styles.initial}>{index}</span>;
+                marks[index] = <span className={styles.numberLabel}>{index}</span>;
             }
         }
         return marks;
     }, [recordedConcentrations, min, max]);
     return (
         <SliderAntd
+            className={styles.container}
             min={min}
             max={max}
             style={{ width: "100%" }}
             step={2}
             value={value}
+            onChangeComplete={handleSliderChange}
             onChange={handleSliderChange}
             disabled={disabled}
             marks={marks}

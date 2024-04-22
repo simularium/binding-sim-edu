@@ -194,14 +194,15 @@ function App() {
         const previousConcentration = inputConcentration[agentName] || 0;
         addProductionTrace(previousConcentration);
         setInputConcentration({ ...inputConcentration, [name]: value });
+        const time = simulariumController.time();
+        simulariumController.gotoTime(time + 1);
+
         setLiveConcentration({
             ...inputConcentration,
             [name]: value,
             [ProductNames.AB]: 0,
         });
-        const time = simulariumController.time();
 
-        simulariumController.gotoTime(time + 1);
         resetAnalysisState();
     };
 
