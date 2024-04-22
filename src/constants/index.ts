@@ -1,7 +1,7 @@
 export const enum ReactionType {
-    A_B_AB = "high affinity",
-    A_C_AC = "low affinity",
-    A_B_C_AB_AC = "competitive",
+    A_B_AB = 1,
+    A_C_AC = 2,
+    A_B_C_AB_AC = 3,
 }
 
 export const kds = {
