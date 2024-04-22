@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { map } from "lodash";
 import { Flex } from "antd";
 
@@ -28,7 +28,12 @@ const Concentration: React.FC<AgentProps> = ({
 }) => {
     const { isPlaying } = useContext(SimulariumContext);
 
+    const [width, setWidth] = useState<number>(0);
+    const containerRef = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+        setWidth(containerRef.current?.offsetWidth || 0);
+    }, [containerRef.current?.offsetWidth, width]);
 
     const getComponent = (
         agent: AvailableAgentNames,
@@ -48,6 +53,7 @@ const Concentration: React.FC<AgentProps> = ({
         } else {
             return (
                 <LiveConcentrationDisplay
+                    width={width}
                     agent={agent}
                     concentration={currentConcentrationOfAgent}
                 />
@@ -78,12 +84,16 @@ const Concentration: React.FC<AgentProps> = ({
                                 >
                                     {agent}
                                 </span>
-                                <Flex  gap={16} style={{width: "100%"}} >
+                                <Flex
+                                    gap={16}
+                                    style={{ width: "100%" }}
+                                    ref={containerRef}
+                                >
                                     {getComponent(
                                         agent,
                                         agentLiveConcentration
                                     )}
-                                    <span style={{margin: 13.5}}>μM</span>
+                                    <span className={styles.unit}>μM</span>
                                 </Flex>
                             </Flex>
                         );
