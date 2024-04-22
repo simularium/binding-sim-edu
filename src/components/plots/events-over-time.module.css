@@ -1,0 +1,17 @@
+.container {
+    position: relative;
+}
+
+.plots {
+    margin-left: 30px;
+}
+
+.y-label {
+    position: absolute;
+    transform: rotate(-90deg);
+    font-family: Open Sans;
+    font-size: 12px;
+    font-weight: 400;
+    left: -47px;
+    top: 90px
+}
