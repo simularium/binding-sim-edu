@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Plot from "react-plotly.js";
-import { BASE_PLOT_LAYOUT, GRAY_COLOR } from "./constants";
+import { AXIS_COLOR, BASE_PLOT_LAYOUT, GRAY_COLOR, PLOT_BACKGROUND_COLOR } from "./constants";
 import { SimulariumContext } from "../../simulation/context";
 import styles from "./events-over-time.module.css";
 import { Flex } from "antd";
@@ -31,8 +31,15 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
         width: width,
         margin: { l: 0, r: 25.5, b: 0, t: 0 },
     };
-    const xAxisSettings = { range: [0, "auto"], showticklabels: false };
-    const yAxisSettings = { range: [0, "auto"], showticklabels: false };
+
+    const axisSettings = {
+        range: [0, "auto"],
+        gridcolor: PLOT_BACKGROUND_COLOR,
+        showticklabels: false,
+        color: AXIS_COLOR,
+        fixedrange: true,
+        showline: true,
+    };
     // the two arrays will always be the same length
     // so this time calculation only needs to happen once
     const time = bindingEventsOverTime.map(
@@ -64,8 +71,8 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                     ]}
                     layout={{
                         ...layout,
-                        xaxis: { ...xAxisSettings },
-                        yaxis: { ...yAxisSettings },
+                        xaxis: { ...axisSettings },
+                        yaxis: { ...axisSettings },
                     }}
                     config={{ displayModeBar: false }}
                 />
@@ -88,8 +95,8 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                     ]}
                     layout={{
                         ...layout,
-                        xaxis: { ...xAxisSettings },
-                        yaxis: { ...yAxisSettings },
+                        xaxis: { ...axisSettings },
+                        yaxis: { ...axisSettings },
                     }}
                     config={{ displayModeBar: false }}
                 />
