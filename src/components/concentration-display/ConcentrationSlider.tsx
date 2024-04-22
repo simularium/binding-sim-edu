@@ -11,7 +11,6 @@ interface SliderProps {
     initialValue: number;
     onChange: (name: string, value: number) => void;
     name: string;
-    disabled?: boolean;
 }
 
 const ConcentrationSlider: React.FC<SliderProps> = ({
@@ -20,7 +19,6 @@ const ConcentrationSlider: React.FC<SliderProps> = ({
     initialValue,
     onChange,
     name,
-    disabled,
 }) => {
     const { recordedConcentrations } = useContext(SimulariumContext);
 
@@ -44,7 +42,6 @@ const ConcentrationSlider: React.FC<SliderProps> = ({
             max={max}
             step={2}
             onChange={onChange}
-            disabled={disabled}
             marks={marks}
         />
     );
