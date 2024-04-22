@@ -250,6 +250,7 @@ function App() {
                         timeFactor,
                         viewportSize,
                         setViewportSize,
+                        recordedConcentrations: inputEquilibriumConcentrations,
                     }}
                 >
                     <MainLayout

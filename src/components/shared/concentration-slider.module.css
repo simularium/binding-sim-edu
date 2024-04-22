@@ -1,0 +1,21 @@
+.number-label {
+    font-family: 'Open Sans';
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 13.62px;
+    text-align: right;
+    color: #D3D3D3;
+}
+
+.initial {
+    composes: number-label;
+}
+
+.recorded {
+    composes: number-label;
+    color: var(--primary-color);
+}
+
+.recorded::before {
+    content: url('./../../assets/react.svg')
+}

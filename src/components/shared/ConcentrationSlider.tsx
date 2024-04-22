@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { Slider as SliderAntd, SliderSingleProps } from "antd";
 import { SimulariumContext } from "../../simulation/context";
+import styles from "./concentration-slider.module.css";
 
 interface SliderProps {
     min: number;
@@ -11,7 +12,7 @@ interface SliderProps {
     disabled?: boolean;
 }
 
-const Slider: React.FC<SliderProps> = ({
+const ConcentrationSlider: React.FC<SliderProps> = ({
     min,
     max,
     initialValue,
@@ -25,14 +26,18 @@ const Slider: React.FC<SliderProps> = ({
         setValue(value);
         onChange(name, value);
     };
-    const marks: SliderSingleProps["marks"] = {};
-    for (let index = min; index <= max; index = index + 2) {
-        if (recordedConcentrations.includes(index)) {
-            marks[index] = <span>{index}</span>;
+    const marks = useMemo(() => {
+        const marks: SliderSingleProps["marks"] = {};
+        for (let index = min; index <= max; index = index + 2) {
+            if (recordedConcentrations.includes(index)) {
+                console.log(recordedConcentrations);
+                marks[index] = <span className={styles.recorded}>{index}</span>;
+            } else {
+                marks[index] = <span className={styles.initial}>{index}</span>;
+            }
         }
-        marks[index] = <span>{index}</span>;
-    }
-
+        return marks;
+    }, [recordedConcentrations, min, max]);
     return (
         <SliderAntd
             min={min}
@@ -47,4 +52,4 @@ const Slider: React.FC<SliderProps> = ({
     );
 };
 
-export default Slider;
+export default ConcentrationSlider;

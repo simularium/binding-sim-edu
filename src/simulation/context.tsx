@@ -12,6 +12,7 @@ interface SimulariumContextType {
     timeFactor: number;
     viewportSize: { width: number; height: number };
     setViewportSize: (value: { width: number; height: number }) => void;
+    recordedConcentrations: number[];
 }
 
 export const SimulariumContext = createContext({
@@ -24,4 +25,5 @@ export const SimulariumContext = createContext({
     timeFactor: 30,
     viewportSize: DEFAULT_VIEWPORT_SIZE,
     setViewportSize: () => {},
+    recordedConcentrations: [],
 } as SimulariumContextType);

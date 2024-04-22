@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { map } from "lodash";
 import { Flex } from "antd";
 
-import Slider from "./shared/Slider";
+import ConcentrationSlider from "./shared/ConcentrationSlider";
 import {
     AvailableAgentNames,
     CurrentConcentration,
@@ -41,8 +41,8 @@ const Concentration: React.FC<AgentProps> = ({
     ) => {
         if (adjustableAgent === agent && !isPlaying) {
             return (
-                <Slider
-                    min={2}
+                <ConcentrationSlider
+                    min={0}
                     max={20}
                     name={agent}
                     initialValue={concentration[agent] || 0}
