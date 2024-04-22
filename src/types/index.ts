@@ -40,17 +40,8 @@ export interface InputAgent {
     color: string;
 }
 
-// only difference is count is no longer optional
-export interface StoredAgent {
-    id: number;
-    name: AvailableAgentNames;
-    concentration: number;
-    radius: number;
-    partners: number[];
-    kOn?: number;
+export interface StoredAgent extends InputAgent {
     count: number;
-    kOff?: number;
-    color: string;
 }
 
 export type ProgressionInputEvent = ChangeEvent<HTMLInputElement> &
