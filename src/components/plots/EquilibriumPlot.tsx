@@ -26,7 +26,6 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y }) => {
 
     const layout = {
         ...BASE_PLOT_LAYOUT,
-        title: "Equilibrium concentration",
         xaxis: {
             ...BASE_PLOT_LAYOUT.xaxis,
             title: "[B]microM",

@@ -39,7 +39,6 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
 
     const layout = {
         ...BASE_PLOT_LAYOUT,
-        title: "Concentration over Time",
         xaxis: { ...BASE_PLOT_LAYOUT.xaxis, title: "time (us)" },
         yaxis: { ...BASE_PLOT_LAYOUT.yaxis, title: "[AB]" },
     };

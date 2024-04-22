@@ -40,7 +40,10 @@ const RightPanel: React.FC<RightPanelProps> = ({
     return (
         <>
             <VisibilityControl excludedPages={[0, 1, 2]}>
+                <h3>Concentration over time</h3>
                 <ProductConcentrationPlot data={data} />
+                <h3>Equilibrium concentration</h3>
+
                 <EquilibriumPlot
                     x={equilibriumConcentrations.inputConcentrations}
                     y={equilibriumConcentrations.productConcentrations}
