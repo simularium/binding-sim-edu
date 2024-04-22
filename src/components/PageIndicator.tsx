@@ -12,8 +12,6 @@ interface PageIndicatorProps {
     total: number;
 }
 
-
-
 const PageIndicator: React.FC<PageIndicatorProps> = ({
     title,
     page,
@@ -21,11 +19,8 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
 }) => {
     let indexOfActiveModule = -1;
 
-    const getModulePercent = (
-        isCurrentModule: boolean,
-        moduleIndex: number
-    ) => {
-        if (isCurrentModule) {
+    const getModulePercent = (isActiveModule: boolean, moduleIndex: number) => {
+        if (isActiveModule) {
             return (page / total) * 100;
         } else if (moduleIndex < indexOfActiveModule) {
             return 100;
@@ -45,7 +40,8 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
                     <div
                         key={index}
                         className={classNames(styles.progressBarWrapper, {
-                            [styles.previous]: moduleIndex <= indexOfActiveModule,
+                            [styles.previous]:
+                                moduleIndex <= indexOfActiveModule,
                             [styles.current]: isActiveModule,
                         })}
                     >
@@ -55,7 +51,7 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
                             strokeWidth={4}
                             percent={getModulePercent(
                                 isActiveModule,
-                                moduleIndex,
+                                moduleIndex
                             )}
                             showInfo={false}
                         />
