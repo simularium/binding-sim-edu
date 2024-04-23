@@ -13,10 +13,12 @@ import {
     createAgentsFromConcentrations,
     getActiveAgents,
     getConcentrations,
+    getMaxConcentration,
 } from "./simulation/trajectories-settings";
 import {
     AvailableAgentNames,
     CurrentConcentration,
+    InputConcentration,
     ProductNames,
 } from "./types";
 import LeftPanel from "./components/main-layout/LeftPanel";
@@ -45,7 +47,7 @@ function App() {
      */
     const [reactionType] = useState(ReactionType.A_B_AB);
     const [inputConcentration, setInputConcentration] =
-        useState<CurrentConcentration>({
+        useState<InputConcentration>({
             [AvailableAgentNames.A]:
                 INITIAL_CONCENTRATIONS[AvailableAgentNames.A],
             [AvailableAgentNames.B]:
@@ -242,6 +244,7 @@ function App() {
             <div className="app">
                 <SimulariumContext.Provider
                     value={{
+                        maxConcentration: getMaxConcentration(reactionType),
                         isPlaying,
                         setIsPlaying,
                         simulariumController,

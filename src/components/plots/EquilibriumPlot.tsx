@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import Plot from "react-plotly.js";
 import { AXIS_SETTINGS, BASE_PLOT_LAYOUT, CONFIG, GRAY_COLOR, PLOT_COLORS } from "./constants";
 import { getColorIndex } from "./utils";
+import { SimulariumContext } from "../../simulation/context";
 
 interface PlotProps {
     x: number[];
@@ -9,6 +10,7 @@ interface PlotProps {
 }
 
 const EquilibriumPlot: React.FC<PlotProps> = ({ x, y }) => {
+    const { maxConcentration } = useContext(SimulariumContext);
     const colors = x.map(
         (value) => PLOT_COLORS[getColorIndex((value))]
     );
@@ -41,14 +43,14 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y }) => {
         xaxis: {
             ...AXIS_SETTINGS,
             title: "[B]microM",
-            range: [0, 20],
             showticklabels: true,
+            range: [0, maxConcentration],
         },
         yaxis: {
             ...AXIS_SETTINGS,
             title: "[AB]microM",
-            range: [0, 10],
             showticklabels: true,
+            range: [0, maxConcentration],
         },
     };
 

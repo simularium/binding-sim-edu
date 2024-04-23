@@ -12,56 +12,52 @@ interface PageIndicatorProps {
     total: number;
 }
 
-const getNonCurrentModulePercent = (
-    currentIndex: number,
-    numberIndex: number
-) => {
-    if (numberIndex < currentIndex) {
-        return 100;
-    } else {
-        return 0;
-    }
-};
-
 const PageIndicator: React.FC<PageIndicatorProps> = ({
     title,
     page,
     total,
 }) => {
-    let currentIndex = -1;
+    let indexOfActiveModule = -1;
+
+    const getModulePercent = (isActiveModule: boolean, moduleIndex: number) => {
+        if (isActiveModule) {
+            return (page / total) * 100;
+        } else if (moduleIndex < indexOfActiveModule) {
+            return 100;
+        } else {
+            return 0;
+        }
+    };
     return (
         <Flex align="center" justify="flex-end" className={styles.container}>
             {map(moduleNames, (name, index) => {
-                const indexNumber = Number(index);
-                const isCurrentModule = name === title;
-                if (isCurrentModule) {
-                    currentIndex = indexNumber;
+                const moduleIndex = Number(index);
+                const isActiveModule = name === title;
+                if (isActiveModule) {
+                    indexOfActiveModule = moduleIndex;
                 }
                 return (
                     <div
                         key={index}
                         className={classNames(styles.progressBarWrapper, {
-                            [styles.previous]: indexNumber <= currentIndex,
-                            [styles.current]: isCurrentModule,
+                            [styles.previous]:
+                                moduleIndex <= indexOfActiveModule,
+                            [styles.current]: isActiveModule,
                         })}
                     >
                         <div className={styles.title}>{name}</div>
                         <Progress
                             className={styles.progressBar}
                             strokeWidth={4}
-                            percent={
-                                isCurrentModule
-                                    ? (page / total) * 100
-                                    : getNonCurrentModulePercent(
-                                          currentIndex,
-                                          indexNumber
-                                      )
-                            }
+                            percent={getModulePercent(
+                                isActiveModule,
+                                moduleIndex
+                            )}
                             showInfo={false}
                         />
 
                         <div className={styles.pageNumber}>
-                            {isCurrentModule ? `${page} / ${total}` : ""}
+                            {isActiveModule ? `${page} / ${total}` : ""}
                         </div>
                     </div>
                 );

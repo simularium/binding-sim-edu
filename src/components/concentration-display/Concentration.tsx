@@ -26,8 +26,7 @@ const Concentration: React.FC<AgentProps> = ({
     adjustableAgent,
     liveConcentration,
 }) => {
-    const { isPlaying } = useContext(SimulariumContext);
-
+    const { isPlaying, maxConcentration } = useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -43,7 +42,7 @@ const Concentration: React.FC<AgentProps> = ({
             return (
                 <ConcentrationSlider
                     min={0}
-                    max={20}
+                    max={maxConcentration}
                     name={agent}
                     initialValue={concentration[agent] || 0}
                     onChange={onChange}
