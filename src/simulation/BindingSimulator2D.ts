@@ -186,7 +186,7 @@ class BindingInstance extends Circle {
             return false;
         }
         this.isTrigger = true;
-        this.child  = ligand.bindToParent(this, overlapV);
+        this.child = ligand.bindToParent(this, overlapV);
         return true;
     }
 }
@@ -350,7 +350,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
     private getRandomPointOnSide(side: number, total: number) {
         const size = this.size;
-        const buffer = size / 5;
+        const buffer = size / 20;
         const dFromSide = random(0 + buffer, size / 2, true);
         let dAlongSide = random(-size / 2, size / 2, true);
 
@@ -512,16 +512,18 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     public getCurrentConcentrations() {
-        const init = <{[key: string]: number}>{}
+        const init = <{ [key: string]: number }>{};
         const concentrations = this.agents.reduce((acc, agent) => {
             acc[agent.name] = this.convertCountToConcentration(
                 agent.count - this.currentNumberBound
             );
             return acc;
         }, init);
-        // TODO: generalize this for the other trajectories 
+        // TODO: generalize this for the other trajectories
         // for module 1 we only have AB
-        concentrations[ProductNames.AB] = this.convertCountToConcentration(this.currentNumberBound);
+        concentrations[ProductNames.AB] = this.convertCountToConcentration(
+            this.currentNumberBound
+        );
         return concentrations;
     }
 
