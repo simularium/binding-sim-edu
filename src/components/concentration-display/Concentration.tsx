@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { map } from "lodash";
 import { Flex } from "antd";
 
-import ConcentrationSlider from "./ConcentrationSlider";
 import {
     AvailableAgentNames,
     CurrentConcentration,
@@ -12,6 +11,7 @@ import { AGENT_AND_PRODUCT_COLORS } from "../../simulation/trajectories-settings
 import { SimulariumContext } from "../../simulation/context";
 import styles from "./concentration.module.css";
 import LiveConcentrationDisplay from "./LiveConcentrationDisplay";
+import ConcentrationSlider from "./ConcentrationSlider";
 
 interface AgentProps {
     adjustableAgent: AvailableAgentNames;
@@ -26,8 +26,7 @@ const Concentration: React.FC<AgentProps> = ({
     adjustableAgent,
     liveConcentration,
 }) => {
-    const { isPlaying } = useContext(SimulariumContext);
-
+    const { isPlaying, maxConcentration } = useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -42,8 +41,8 @@ const Concentration: React.FC<AgentProps> = ({
         if (adjustableAgent === agent && !isPlaying) {
             return (
                 <ConcentrationSlider
-                    min={0}
-                    max={20}
+                    min={2}
+                    max={maxConcentration}
                     name={agent}
                     initialValue={concentration[agent] || 0}
                     onChange={onChange}
