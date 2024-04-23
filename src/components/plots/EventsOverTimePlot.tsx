@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Plot from "react-plotly.js";
-import { AXIS_COLOR, BASE_PLOT_LAYOUT, GRAY_COLOR, PLOT_BACKGROUND_COLOR } from "./constants";
+import { AXIS_COLOR, BASE_PLOT_LAYOUT, PLOT_BACKGROUND_COLOR } from "./constants";
 import { SimulariumContext } from "../../simulation/context";
 import styles from "./events-over-time.module.css";
 import { Flex } from "antd";
@@ -66,7 +66,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                             y: bindingEventsOverTime,
                             type: "bar" as const,
                             name: "bind events",
-                            marker: { color: GRAY_COLOR },
+                            marker: { color: AXIS_COLOR },
                         },
                     ]}
                     layout={{
@@ -90,7 +90,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                             y: unbindingEventsOverTime,
                             type: "bar" as const,
                             name: "unbind events",
-                            marker: { color: GRAY_COLOR },
+                            marker: { color: AXIS_COLOR },
                         },
                     ]}
                     layout={{
