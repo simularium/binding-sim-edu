@@ -17,6 +17,7 @@ import {
 import {
     AvailableAgentNames,
     CurrentConcentration,
+    InputConcentration,
     ProductNames,
 } from "./types";
 import LeftPanel from "./components/main-layout/LeftPanel";
@@ -45,7 +46,7 @@ function App() {
      */
     const [reactionType] = useState(ReactionType.A_B_AB);
     const [inputConcentration, setInputConcentration] =
-        useState<CurrentConcentration>({
+        useState<InputConcentration>({
             [AvailableAgentNames.A]:
                 INITIAL_CONCENTRATIONS[AvailableAgentNames.A],
             [AvailableAgentNames.B]:
