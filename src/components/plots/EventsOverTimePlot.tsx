@@ -2,10 +2,16 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Flex } from "antd";
 import Plot from "react-plotly.js";
 
-import { AXIS_COLOR, BASE_PLOT_LAYOUT, PLOT_BACKGROUND_COLOR } from "./constants";
+import {
+    AXIS_COLOR,
+    BASE_PLOT_LAYOUT,
+    PLOT_BACKGROUND_COLOR,
+} from "./constants";
 import { SimulariumContext } from "../../simulation/context";
-import styles from "./events-over-time.module.css";
 import { A, B, AB } from "../agent-symbols";
+
+import plotStyles from "./plots.module.css";
+import layoutStyles from "./events-over-time.module.css";
 
 interface PlotProps {
     bindingEventsOverTime: number[];
@@ -46,17 +52,21 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
     );
 
     return (
-        <div className={styles.container}>
+        <div className={layoutStyles.container}>
             <h3>Reaction events over time</h3>
-            <div className={styles.yLabel}>Count of reactions</div>
-            <Flex className={styles.plots} vertical gap={8} ref={containerRef}>
+            <div className={plotStyles.yLabel}>Count of reactions</div>
+            <Flex
+                className={layoutStyles.plots}
+                vertical
+                gap={8}
+                ref={containerRef}
+            >
                 <div>
-                    {A}
+                    <A />
                     <span> + </span>
-                    {B}
+                    <B />
                     <span> &#8594; </span>
-
-                    {AB}
+                    <AB />
                 </div>
                 <Plot
                     data={[
@@ -76,11 +86,11 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                     config={{ displayModeBar: false }}
                 />
                 <div>
-                    {AB}
+                    <AB />
                     <span> &#8594; </span>
-                    {A}
+                    <A />
                     <span> + </span>
-                    {B}
+                    <B />
                 </div>
                 <Plot
                     data={[
