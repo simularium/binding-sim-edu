@@ -4,6 +4,7 @@
   --background-color: #141219;
   --border-color: var(--background-color);
   --text-color: #D3D3D3;
+  --dark-gray: #979797;
   --mid-gray-dark: #4B4B4B;
   --app-border-color: var(--mid-gray-dark);
   --popup-background-color: var(--primary-color);

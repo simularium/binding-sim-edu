@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+import PageIndicator from "../PageIndicator";
 
 interface NavPanelProps {
     title: string;
@@ -6,13 +7,11 @@ interface NavPanelProps {
     total: number;
 }
 
+
+
 const NavPanel: React.FC<NavPanelProps> = ({ title, page, total }) => {
-
-
     return (
-        <div>
-                {title} {page} / {total}
-        </div>
+        <PageIndicator title={title} page={page} total={total} />
     );
 };
 
