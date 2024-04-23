@@ -13,10 +13,12 @@ import {
     createAgentsFromConcentrations,
     getActiveAgents,
     getConcentrations,
+    getMaxConcentration,
 } from "./simulation/trajectories-settings";
 import {
     AvailableAgentNames,
     CurrentConcentration,
+    InputConcentration,
     ProductNames,
 } from "./types";
 import LeftPanel from "./components/main-layout/LeftPanel";
@@ -45,7 +47,7 @@ function App() {
      */
     const [reactionType] = useState(ReactionType.A_B_AB);
     const [inputConcentration, setInputConcentration] =
-        useState<CurrentConcentration>({
+        useState<InputConcentration>({
             [AvailableAgentNames.A]:
                 INITIAL_CONCENTRATIONS[AvailableAgentNames.A],
             [AvailableAgentNames.B]:
@@ -188,6 +190,11 @@ function App() {
     };
 
     const handleNewInputConcentration = (name: string, value: number) => {
+        if (value === 0 ) {
+            // this is available on the slider, but we only want it visible 
+            // as a axis marker, not as a selection
+            return;
+        }
         const agentName = name as AvailableAgentNames;
         const agentId = AVAILABLE_AGENTS[agentName].id;
         clientSimulator.changeConcentration(agentId, value);
@@ -242,6 +249,7 @@ function App() {
             <div className="app">
                 <SimulariumContext.Provider
                     value={{
+                        maxConcentration: getMaxConcentration(reactionType),
                         isPlaying,
                         setIsPlaying,
                         simulariumController,

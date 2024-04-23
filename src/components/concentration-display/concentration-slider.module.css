@@ -1,3 +1,7 @@
+.container :global(.ant-slider-mark-text) {
+    width: 12px; /*needed to make sure the stars above single digit numbers are centered the same as double digits */
+}
+
 .number-label {
     font-family: "Open Sans";
     font-size: 10px;
@@ -13,16 +17,34 @@
     font-weight: 600;
     color: var(--primary-color);
 }
+/* The following styles are all to have a 0 on the slider but not 
+let it be selectable  */
+.disabled {
+    composes: number-label;
+}
 
-.recorded::before {
+.disabled:hover {
+    cursor: not-allowed;
+}
+
+.container :global(.ant-slider) {
+    cursor: initial;
+}
+
+.container :global(.ant-slider-dot):first-of-type {
+    display: none;
+}
+
+span:has(.recorded)::before {
     content: "";
     position: absolute;
     width: 10px;
-    height: 10px;
-    top: -28px;
+    height: 9px;
+    top: -21px;
     right: 1px;
     background-color: var(--primary-color);
     -webkit-mask-size: 10px;
+    -webkit-mask-repeat: no-repeat;
     -webkit-mask-image: url(/src/assets/star.svg);
     mask-image: url(/src/assets/star.svg);
 }
@@ -30,6 +52,7 @@
 .container :global(.ant-slider-dot) {
     width: 2px;
     height: 10px;
+    border-radius: initial;
     background-color: #4b4b4b;
     border: none;
     inset-block-start: initial;
@@ -38,4 +61,4 @@
 .container :global(.ant-slider-handle):after {
     background-color: var(--primary-color);
     box-shadow: none;
-} 
+}
