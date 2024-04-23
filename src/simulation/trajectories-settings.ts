@@ -74,6 +74,17 @@ export const DEFAULT_TIME_FACTOR = 40;
 export const DEFAULT_VIEWPORT_SIZE = { width: 500, height: 500 };
 export const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
+export const getMaxConcentration = (reactionType: ReactionType) => {
+    switch (reactionType) {
+        case ReactionType.A_B_AB:
+            return 20;
+        case ReactionType.A_C_AC:
+            return 20; //TODO: adjust these as needed
+        case ReactionType.A_B_C_AB_AC:
+            return 20; //TODO: adjust these as needed
+    }
+};
+
 export const getActiveAgents = (reactionType: ReactionType) => {
     switch (reactionType) {
         case ReactionType.A_B_AB:

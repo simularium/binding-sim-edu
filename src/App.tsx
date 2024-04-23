@@ -13,6 +13,7 @@ import {
     createAgentsFromConcentrations,
     getActiveAgents,
     getConcentrations,
+    getMaxConcentration,
 } from "./simulation/trajectories-settings";
 import {
     AvailableAgentNames,
@@ -242,6 +243,7 @@ function App() {
             <div className="app">
                 <SimulariumContext.Provider
                     value={{
+                        maxConcentration: getMaxConcentration(reactionType),
                         isPlaying,
                         setIsPlaying,
                         simulariumController,
