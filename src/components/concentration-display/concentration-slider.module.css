@@ -14,13 +14,12 @@
     color: var(--primary-color);
 }
 
-.recorded::before {
+span:has(.recorded)::before {
     content: "";
     position: absolute;
     width: 10px;
-    height: 10px;
+    height: 9px;
     top: -28px;
-    right: 1px;
     background-color: var(--primary-color);
     -webkit-mask-size: 10px;
     -webkit-mask-image: url(/src/assets/star.svg);

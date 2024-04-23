@@ -17,11 +17,19 @@ export const PLOT_COLORS = [
 ];
 
 export const BASE_PLOT_LAYOUT = {
-    xaxis: { range: [0, "auto"], color: AXIS_COLOR },
-    yaxis: { color: AXIS_COLOR },
     paper_bgcolor: PLOT_BACKGROUND_COLOR,
     plot_bgcolor: PLOT_BACKGROUND_COLOR,
     width: 300,
     height: 200,
     margin: { l: 40, r: 10, b: 40, t: 20 },
 };
+
+export const AXIS_SETTINGS = {
+    range: [0, "auto"],
+    gridcolor: PLOT_BACKGROUND_COLOR,
+    showticklabels: false,
+    color: AXIS_COLOR,
+    fixedrange: true,
+};
+
+export const CONFIG = { displayModeBar: false, responsive: true };

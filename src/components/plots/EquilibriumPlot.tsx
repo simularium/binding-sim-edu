@@ -1,6 +1,6 @@
 import React from "react";
 import Plot from "react-plotly.js";
-import { BASE_PLOT_LAYOUT, PLOT_COLORS } from "./constants";
+import { AXIS_SETTINGS, BASE_PLOT_LAYOUT, CONFIG, GRAY_COLOR, PLOT_COLORS } from "./constants";
 import { getColorIndex } from "./utils";
 
 interface PlotProps {
@@ -13,7 +13,17 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y }) => {
         (value) => PLOT_COLORS[getColorIndex((value))]
     );
 
+
     const trace = [
+        {
+            x: [0, 20],
+            y: [5, 5],
+            mode: "lines",
+            line: {
+                color: GRAY_COLOR,
+                dash: "dot",
+            },
+        },
         {
             x,
             y,
@@ -26,19 +36,23 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y }) => {
 
     const layout = {
         ...BASE_PLOT_LAYOUT,
+        showlegend: false,
+        height: 130,
         xaxis: {
-            ...BASE_PLOT_LAYOUT.xaxis,
+            ...AXIS_SETTINGS,
             title: "[B]microM",
             range: [0, 20],
+            showticklabels: true,
         },
         yaxis: {
-            ...BASE_PLOT_LAYOUT.yaxis,
+            ...AXIS_SETTINGS,
             title: "[AB]microM",
-            range: [0, 20],
+            range: [0, 10],
+            showticklabels: true,
         },
     };
 
-    return <Plot data={trace} layout={layout} />;
+    return <Plot data={trace} layout={layout} config={CONFIG}/>;
 };
 
 export default EquilibriumPlot;

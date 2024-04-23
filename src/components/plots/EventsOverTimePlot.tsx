@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Plot from "react-plotly.js";
-import { AXIS_COLOR, BASE_PLOT_LAYOUT, GRAY_COLOR, PLOT_BACKGROUND_COLOR } from "./constants";
+import { AXIS_SETTINGS, BASE_PLOT_LAYOUT, CONFIG, GRAY_COLOR } from "./constants";
 import { SimulariumContext } from "../../simulation/context";
 import styles from "./events-over-time.module.css";
 import { Flex } from "antd";
@@ -32,14 +32,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
         margin: { l: 0, r: 25.5, b: 0, t: 0 },
     };
 
-    const axisSettings = {
-        range: [0, "auto"],
-        gridcolor: PLOT_BACKGROUND_COLOR,
-        showticklabels: false,
-        color: AXIS_COLOR,
-        fixedrange: true,
-        showline: true,
-    };
+
     // the two arrays will always be the same length
     // so this time calculation only needs to happen once
     const time = bindingEventsOverTime.map(
@@ -71,10 +64,10 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                     ]}
                     layout={{
                         ...layout,
-                        xaxis: { ...axisSettings },
-                        yaxis: { ...axisSettings },
+                        xaxis: { ...AXIS_SETTINGS },
+                        yaxis: { ...AXIS_SETTINGS },
                     }}
-                    config={{ displayModeBar: false }}
+                    config={CONFIG}
                 />
                 <div>
                     {AB}
@@ -95,10 +88,10 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                     ]}
                     layout={{
                         ...layout,
-                        xaxis: { ...axisSettings },
-                        yaxis: { ...axisSettings },
+                        xaxis: { ...AXIS_SETTINGS },
+                        yaxis: { ...AXIS_SETTINGS },
                     }}
-                    config={{ displayModeBar: false }}
+                    config={CONFIG}
                 />
             </Flex>
         </div>

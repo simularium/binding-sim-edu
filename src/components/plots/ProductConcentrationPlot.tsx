@@ -2,7 +2,7 @@ import { PlotData } from "plotly.js";
 import React, { useContext } from "react";
 import Plot from "react-plotly.js";
 
-import { BASE_PLOT_LAYOUT, PLOT_COLORS } from "./constants";
+import { AXIS_SETTINGS, BASE_PLOT_LAYOUT, CONFIG, PLOT_COLORS } from "./constants";
 import { getColorIndex } from "./utils";
 import { ProductOverTimeTrace } from "./types";
 import { SimulariumContext } from "../../simulation/context";
@@ -39,11 +39,22 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
 
     const layout = {
         ...BASE_PLOT_LAYOUT,
-        xaxis: { ...BASE_PLOT_LAYOUT.xaxis, title: "time (us)" },
-        yaxis: { ...BASE_PLOT_LAYOUT.yaxis, title: "[AB]" },
+        height: 130,
+        xaxis: {
+            ...AXIS_SETTINGS,
+            title: "time (us)",
+            showticklabels: true,
+            range: [0, "auto"],
+        },
+        yaxis: {
+            ...AXIS_SETTINGS,
+            title: "[AB]",
+            range: [0, "auto"],
+            showticklabels: true,
+        },
     };
 
-    return <Plot data={traces} layout={layout} />;
+    return <Plot data={traces} layout={layout} config={CONFIG} />;
 };
 
 export default ProductConcentrationPlot;
