@@ -17,7 +17,8 @@ const LiveConcentrationDisplay: React.FC<LiveConcentrationDisplayProps> = ({
     width,
 }) => {
     // width is initially 0
-    const widthMinusMargins = width ? width - 64.2 : 0;
+    // on super small screens this can result in a negative number
+    const widthMinusMargins = width - 64.2 > 0 ? width - 64.2 : 0;
     // the steps are 14px wide with a 2px gap, so we are adjusting the
     // count based on the width of the container
     const count = Math.floor(widthMinusMargins / 16);
