@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { Flex } from "antd";
 import Plot from "react-plotly.js";
+
 import { AXIS_COLOR, BASE_PLOT_LAYOUT, PLOT_BACKGROUND_COLOR } from "./constants";
 import { SimulariumContext } from "../../simulation/context";
 import styles from "./events-over-time.module.css";
-import { Flex } from "antd";
 import { A } from "../agent-symbols/A";
 import { AB } from "../agent-symbols/AB";
 import { B } from "../agent-symbols/B";
