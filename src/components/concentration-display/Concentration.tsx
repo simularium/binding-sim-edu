@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { map } from "lodash";
 import { Flex } from "antd";
 
-import ConcentrationSlider from "./ConcentrationSlider";
 import {
     AvailableAgentNames,
     CurrentConcentration,
@@ -12,6 +11,7 @@ import { AGENT_AND_PRODUCT_COLORS } from "../../simulation/trajectories-settings
 import { SimulariumContext } from "../../simulation/context";
 import styles from "./concentration.module.css";
 import LiveConcentrationDisplay from "./LiveConcentrationDisplay";
+import ConcentrationSlider from "./ConcentrationSlider";
 
 interface AgentProps {
     adjustableAgent: AvailableAgentNames;
