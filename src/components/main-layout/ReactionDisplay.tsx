@@ -2,11 +2,7 @@ import React from 'react';
 import { ReactionType } from '../../constants';
 import ReversibleArrows from './icons/ReversibleArrows';
 import styles from './layout.module.css';
-import { A } from '../agent-symbols/A';
-import { AB } from '../agent-symbols/AB';
-import { AC } from '../agent-symbols/AC';
-import { B } from '../agent-symbols/B';
-import { C } from '../agent-symbols/C';
+import { A, B, C, AC, AB } from '../agent-symbols';
 
 interface ReactionDisplayProps {
     reactionType: ReactionType;
