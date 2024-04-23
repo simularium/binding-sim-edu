@@ -23,7 +23,7 @@ span:has(.recorded)::before {
     position: absolute;
     width: 10px;
     height: 9px;
-    top: -22px;
+    top: -21px;
     right: 1px;
     background-color: var(--primary-color);
     -webkit-mask-size: 10px;

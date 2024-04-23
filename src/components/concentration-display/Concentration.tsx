@@ -41,7 +41,7 @@ const Concentration: React.FC<AgentProps> = ({
         if (adjustableAgent === agent && !isPlaying) {
             return (
                 <ConcentrationSlider
-                    min={2}
+                    min={0}
                     max={maxConcentration}
                     name={agent}
                     initialValue={concentration[agent] || 0}
