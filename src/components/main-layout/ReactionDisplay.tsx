@@ -1,49 +1,44 @@
-import React from 'react';
-import { ReactionType } from '../../constants';
-import ReversibleArrows from './icons/ReversibleArrows';
-import styles from './layout.module.css';
-import { A } from '../agent-symbols/A';
-import { AB } from '../agent-symbols/AB';
-import { AC } from '../agent-symbols/AC';
-import { B } from '../agent-symbols/B';
-import { C } from '../agent-symbols/C';
+import React from "react";
+import { ReactionType } from "../../constants";
+import ReversibleArrows from "./icons/ReversibleArrows";
+import styles from "./layout.module.css";
+import { A, B, C, AC, AB } from "../agent-symbols";
 
 interface ReactionDisplayProps {
     reactionType: ReactionType;
 }
 
 const ReactionDisplay: React.FC<ReactionDisplayProps> = ({ reactionType }) => {
-
     return (
         <div className={styles.reaction}>
             {reactionType === ReactionType.A_B_AB && (
                 <>
-                    {A}
+                    <A />
                     <span> + </span>
-                    {B}
+                    <B />
                     <ReversibleArrows />
-                    {AB}
+                    <AB />
                 </>
             )}
             {reactionType === ReactionType.A_C_AC && (
                 <>
-                    {A}
+                    <A />
                     <span> + </span>
-                    {C}
+                    <C />
                     <ReversibleArrows />
-                    {AC}
+                    <AC />
                 </>
             )}
             {reactionType === ReactionType.A_B_C_AB_AC && (
                 <>
-                    {A}
+                    <A />
                     <span> + </span>
-                    {B}
+                    <B />
                     <span> + </span>
-                    {C}
+                    <C />
                     <ReversibleArrows />
-                    {AB}
-                    {AC}
+                    <AB />
+                    <AC />
                 </>
             )}
         </div>

@@ -1,12 +1,16 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Plot from "react-plotly.js";
-import { AXIS_SETTINGS, BASE_PLOT_LAYOUT, CONFIG, GRAY_COLOR } from "./constants";
-import { SimulariumContext } from "../../simulation/context";
-import styles from "./events-over-time.module.css";
 import { Flex } from "antd";
-import { A } from "../agent-symbols/A";
-import { AB } from "../agent-symbols/AB";
-import { B } from "../agent-symbols/B";
+
+import { AXIS_SETTINGS, BASE_PLOT_LAYOUT, CONFIG } from "./constants";
+import { SimulariumContext } from "../../simulation/context";
+import {
+    AXIS_COLOR,
+} from "./constants";
+import { A, B, AB } from "../agent-symbols";
+
+import plotStyles from "./plots.module.css";
+import layoutStyles from "./events-over-time.module.css";
 
 interface PlotProps {
     bindingEventsOverTime: number[];
@@ -40,17 +44,21 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
     );
 
     return (
-        <div className={styles.container}>
+        <div className={layoutStyles.container}>
             <h3>Reaction events over time</h3>
-            <div className={styles.yLabel}>Count of reactions</div>
-            <Flex className={styles.plots} vertical gap={8} ref={containerRef}>
+            <div className={plotStyles.yLabel}>Count of reactions</div>
+            <Flex
+                className={layoutStyles.plots}
+                vertical
+                gap={8}
+                ref={containerRef}
+            >
                 <div>
-                    {A}
+                    <A />
                     <span> + </span>
-                    {B}
+                    <B />
                     <span> &#8594; </span>
-
-                    {AB}
+                    <AB />
                 </div>
                 <Plot
                     data={[
@@ -59,7 +67,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                             y: bindingEventsOverTime,
                             type: "bar" as const,
                             name: "bind events",
-                            marker: { color: GRAY_COLOR },
+                            marker: { color: AXIS_COLOR },
                         },
                     ]}
                     layout={{
@@ -70,11 +78,11 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                     config={CONFIG}
                 />
                 <div>
-                    {AB}
+                    <AB />
                     <span> &#8594; </span>
-                    {A}
+                    <A />
                     <span> + </span>
-                    {B}
+                    <B />
                 </div>
                 <Plot
                     data={[
@@ -83,7 +91,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                             y: unbindingEventsOverTime,
                             type: "bar" as const,
                             name: "unbind events",
-                            marker: { color: GRAY_COLOR },
+                            marker: { color: AXIS_COLOR },
                         },
                     ]}
                     layout={{
