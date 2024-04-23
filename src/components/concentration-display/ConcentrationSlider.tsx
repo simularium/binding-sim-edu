@@ -21,18 +21,23 @@ const ConcentrationSlider: React.FC<SliderProps> = ({
     name,
 }) => {
     const { recordedConcentrations } = useContext(SimulariumContext);
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const disabledNumbers = [0];
     const marks = useMemo(() => {
         const marks: SliderSingleProps["marks"] = {};
         for (let index = min; index <= max; index = index + 2) {
-            if (recordedConcentrations.includes(index)) {
+            if (disabledNumbers.includes(index)) {
+                marks[index] = <span className={styles.disabled}>{index}</span>;
+            } else if (recordedConcentrations.includes(index)) {
                 marks[index] = <span className={styles.recorded}>{index}</span>;
             } else {
-                marks[index] = <span className={styles.numberLabel}>{index}</span>;
+                marks[index] = (
+                    <span className={styles.numberLabel}>{index}</span>
+                );
             }
         }
         return marks;
-    }, [recordedConcentrations, min, max]);
+    }, [recordedConcentrations, min, max, disabledNumbers]);
     return (
         <Slider
             initialValue={initialValue}
@@ -43,6 +48,7 @@ const ConcentrationSlider: React.FC<SliderProps> = ({
             step={2}
             onChange={onChange}
             marks={marks}
+            disabledNumbers={disabledNumbers}
         />
     );
 };

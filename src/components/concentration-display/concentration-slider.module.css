@@ -1,4 +1,4 @@
-.container :global(.ant-slider-mark-text ) {
+.container :global(.ant-slider-mark-text) {
     width: 12px; /*needed to make sure the stars above single digit numbers are centered the same as double digits */
 }
 
@@ -16,6 +16,23 @@
     composes: number-label;
     font-weight: 600;
     color: var(--primary-color);
+}
+/* The following styles are all to have a 0 on the slider but not 
+let it be selectable  */
+.disabled {
+    composes: number-label;
+}
+
+.disabled:hover {
+    cursor: not-allowed;
+}
+
+.container :global(.ant-slider) {
+    cursor: initial;
+}
+
+.container :global(.ant-slider-dot):first-of-type {
+    display: none;
 }
 
 span:has(.recorded)::before {
@@ -41,8 +58,7 @@ span:has(.recorded)::before {
     inset-block-start: initial;
 }
 
-
 .container :global(.ant-slider-handle):after {
     background-color: var(--primary-color);
     box-shadow: none;
-} 
+}
