@@ -100,7 +100,7 @@ export const getActiveAgents = (reactionType: ReactionType): AvailableAgentNames
     }
 };
 
-export const getConcentrations = (activeAgents: AvailableAgentNames[]): InputConcentration => {
+export const getInitialConcentrations = (activeAgents: AvailableAgentNames[]): InputConcentration => {
     return activeAgents.reduce((acc, agent) => {
         return { ...acc, [agent]: INITIAL_CONCENTRATIONS[agent] };
     }, {});

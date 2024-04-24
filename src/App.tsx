@@ -12,7 +12,7 @@ import {
     INITIAL_CONCENTRATIONS,
     createAgentsFromConcentrations,
     getActiveAgents,
-    getConcentrations,
+    getInitialConcentrations,
     getMaxConcentration,
 } from "./simulation/trajectories-settings";
 import {
@@ -103,7 +103,7 @@ function App() {
     const clientSimulator = useMemo(() => {
         const activeAgents = getActiveAgents(reactionType);
 
-        setInputConcentration(getConcentrations(activeAgents));
+        setInputConcentration(getInitialConcentrations(activeAgents));
         const trajectory = createAgentsFromConcentrations(
             activeAgents,
             INITIAL_CONCENTRATIONS
