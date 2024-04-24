@@ -1,5 +1,5 @@
 import { ReactionType } from "../constants";
-import { AvailableAgentNames, InputAgent, ProductNames } from "../types";
+import { AvailableAgentNames, InputAgent, InputConcentration, ProductNames } from "../types";
 import {
     AGENT_AB_COLOR,
     AGENT_A_COLOR,
@@ -14,7 +14,7 @@ export const AGENT_AND_PRODUCT_COLORS = {
     [ProductNames.AB]: AGENT_AB_COLOR,
 };
 
-const agentA = {
+const agentA: InputAgent = {
     id: 0,
     name: AvailableAgentNames.A,
     concentration: 0,
@@ -22,7 +22,7 @@ const agentA = {
     partners: [1, 2],
     color: AGENT_A_COLOR,
 };
-const agentB = {
+const agentB: InputAgent = {
     id: 1,
     name: AvailableAgentNames.B,
     concentration: 0,
@@ -33,7 +33,7 @@ const agentB = {
     color: AGENT_B_COLOR,
 };
 
-const agentC = {
+const agentC: InputAgent = {
     id: 2,
     name: AvailableAgentNames.C,
     concentration: 0,
@@ -74,7 +74,7 @@ export const DEFAULT_TIME_FACTOR = 40;
 export const DEFAULT_VIEWPORT_SIZE = { width: 500, height: 500 };
 export const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
-export const getMaxConcentration = (reactionType: ReactionType) => {
+export const getMaxConcentration = (reactionType: ReactionType): number => {
     switch (reactionType) {
         case ReactionType.A_B_AB:
             return 20;
@@ -85,7 +85,7 @@ export const getMaxConcentration = (reactionType: ReactionType) => {
     }
 };
 
-export const getActiveAgents = (reactionType: ReactionType) => {
+export const getActiveAgents = (reactionType: ReactionType): AvailableAgentNames[] => {
     switch (reactionType) {
         case ReactionType.A_B_AB:
             return [AvailableAgentNames.A, AvailableAgentNames.B];
@@ -100,7 +100,7 @@ export const getActiveAgents = (reactionType: ReactionType) => {
     }
 };
 
-export const getConcentrations = (activeAgents: AvailableAgentNames[]) => {
+export const getInitialConcentrations = (activeAgents: AvailableAgentNames[]): InputConcentration => {
     return activeAgents.reduce((acc, agent) => {
         return { ...acc, [agent]: INITIAL_CONCENTRATIONS[agent] };
     }, {});
