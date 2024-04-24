@@ -18,7 +18,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y }) => {
 
     const trace = [
         {
-            x: [0, 20],
+            x: [0, maxConcentration],
             y: [5, 5],
             mode: "lines",
             line: {
@@ -44,13 +44,13 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y }) => {
             ...AXIS_SETTINGS,
             title: "[B]microM",
             showticklabels: true,
-            range: [0, maxConcentration],
+            range: [0, maxConcentration ],
         },
         yaxis: {
             ...AXIS_SETTINGS,
             title: "[AB]microM",
             showticklabels: true,
-            range: [0, maxConcentration],
+            range: [0, maxConcentration / 2],
         },
     };
 
