@@ -11,7 +11,7 @@ import {
 const customTheme = {
     algorithm: theme.darkAlgorithm,
     token: {
-        fontFamily: 'Open Sans',
+        fontFamily: 'Open Sans, sans-serif',
         borderRadius: 4,
         colorPrimary: BRIGHT_PURPLE_DARKER,
         colorBgContainer: BG_DARK,
