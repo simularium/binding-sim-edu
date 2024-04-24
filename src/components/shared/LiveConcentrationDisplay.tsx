@@ -18,24 +18,23 @@ const LiveConcentrationDisplay: React.FC<LiveConcentrationDisplayProps> = ({
     width,
 }) => {
     const { maxConcentration } = useContext(SimulariumContext);
-    // width is initially 0
-    // on super small screens this can result in a negative number
     const MARGINS = 64.2;
-    const STEP_WIDTH = 16;
+    // on super small screens this can result in a negative number
     const widthMinusMargins = Math.max(width - MARGINS, 0);
-    // the steps are 14px wide with a 2px gap, so we are adjusting the
-    // count based on the width of the container
-    const count = Math.floor(widthMinusMargins / STEP_WIDTH);
+    // the steps have a 2px gap, so we are adjusting the
+    // size of the step based on the total number we want
+    const size = widthMinusMargins / maxConcentration - 2;
     return (
         <div className={styles.container}>
             <Progress
                 className={styles.progressBar}
                 percent={Math.ceil((concentration / maxConcentration) * 100)}
                 key={agent}
-                steps={count}
+                steps={maxConcentration}
                 showInfo={false}
                 strokeColor={AGENT_AND_PRODUCT_COLORS[agent]}
                 style={{ width: widthMinusMargins }}
+                size={[size, 4]}
             />
             <Flex justify="space-between" className={styles.labels}>
                 <span className={styles.numberLabel}>0</span>
