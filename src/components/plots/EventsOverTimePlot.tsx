@@ -4,13 +4,12 @@ import { Flex } from "antd";
 
 import { AXIS_SETTINGS, BASE_PLOT_LAYOUT, CONFIG } from "./constants";
 import { SimulariumContext } from "../../simulation/context";
-import {
-    AXIS_COLOR,
-} from "./constants";
+import { AXIS_COLOR } from "./constants";
 import { A, B, AB } from "../agent-symbols";
 
 import plotStyles from "./plots.module.css";
 import layoutStyles from "./events-over-time.module.css";
+import { MICRO } from "../../constants";
 
 interface PlotProps {
     bindingEventsOverTime: number[];
@@ -31,11 +30,10 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
 
     const layout = {
         ...BASE_PLOT_LAYOUT,
-        height: 40,
+        height: 60,
         width: width,
-        margin: { l: 0, r: 25.5, b: 0, t: 0 },
+        margin: { l: 0, r: 25.5, b: 18, t: 0 },
     };
-
 
     // the two arrays will always be the same length
     // so this time calculation only needs to happen once
@@ -44,15 +42,10 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
     );
 
     return (
-        <div className={layoutStyles.container}>
+        <div className={plotStyles.plotContainer}>
             <h3>Reaction events over time</h3>
             <div className={plotStyles.yLabel}>Count of reactions</div>
-            <Flex
-                className={layoutStyles.plots}
-                vertical
-                gap={8}
-                ref={containerRef}
-            >
+            <Flex className={layoutStyles.plots} vertical ref={containerRef}>
                 <div>
                     <A />
                     <span> + </span>
@@ -96,7 +89,17 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                     ]}
                     layout={{
                         ...layout,
-                        xaxis: { ...AXIS_SETTINGS },
+                        margin: {
+                            ...layout.margin,
+                            b: 18,
+                        },
+                        xaxis: {
+                            ...AXIS_SETTINGS,
+                            title: `time (${MICRO}s)`,
+                            titlefont: {
+                                size: 12,
+                            },
+                        },
                         yaxis: { ...AXIS_SETTINGS },
                     }}
                     config={CONFIG}

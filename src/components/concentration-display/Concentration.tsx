@@ -12,6 +12,7 @@ import { SimulariumContext } from "../../simulation/context";
 import styles from "./concentration.module.css";
 import LiveConcentrationDisplay from "./LiveConcentrationDisplay";
 import ConcentrationSlider from "./ConcentrationSlider";
+import { MICRO } from "../../constants";
 
 interface AgentProps {
     adjustableAgent: AvailableAgentNames;
@@ -92,7 +93,7 @@ const Concentration: React.FC<AgentProps> = ({
                                         agent,
                                         agentLiveConcentration
                                     )}
-                                    <span className={styles.unit}>μM</span>
+                                    <span className={styles.unit}>{MICRO}M</span>
                                 </Flex>
                             </Flex>
                         );
