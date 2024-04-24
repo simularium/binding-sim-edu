@@ -13,8 +13,24 @@ export enum AvailableAgentNames {
     C = "C",
 }
 
+export enum ProductNames {
+    AB = "AB",
+    AC = "AC",
+}
+
+export type StateNames = AvailableAgentNames | ProductNames;
+
+export type InputConcentration = {
+    [key in AvailableAgentNames]?: number;
+};
+
+export type CurrentConcentration = {
+    [key in StateNames]?: number;
+};
+
 export interface InputAgent {
     id: number;
+    name: AvailableAgentNames;
     concentration: number;
     radius: number;
     partners: number[];
@@ -22,6 +38,10 @@ export interface InputAgent {
     kOff?: number;
     count?: number;
     color: string;
+}
+
+export interface StoredAgent extends InputAgent {
+    count: number;
 }
 
 export type ProgressionInputEvent = ChangeEvent<HTMLInputElement> &

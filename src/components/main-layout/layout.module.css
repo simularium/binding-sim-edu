@@ -26,6 +26,16 @@
     max-width: 982px;
 }
 
+.side-panel {
+    padding: 10px 12px;
+}
+
+/* h3 are generally 16px for the app, but 
+the side panels size them down  */
+.side-panel h3 {
+    font-size: 14px;
+}
+
 .reaction-panel {
     height: var(--reaction-panel-height);
     border-bottom: 1px solid var(--app-border-color);

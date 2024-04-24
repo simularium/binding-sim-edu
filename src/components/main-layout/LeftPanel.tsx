@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { SimulariumContext } from '../../simulation/context';
-import { AvailableAgentNames } from '../../types';
+import { AvailableAgentNames, CurrentConcentration, InputConcentration } from '../../types';
 import VisibilityControl from '../shared/VisibilityControl';
 import EventsOverTimePlot from '../plots/EventsOverTimePlot';
 import Concentration from '../Concentration';
@@ -9,29 +8,28 @@ import Concentration from '../Concentration';
 interface LeftPanelProps {
     activeAgents: AvailableAgentNames[];
     adjustableAgent: AvailableAgentNames;
-    inputConcentration: { [key in AvailableAgentNames]: number };
+    inputConcentration: InputConcentration;
+    liveConcentration: CurrentConcentration;
     handleNewInputConcentration: (name: string, value: number) => void;
     bindingEventsOverTime: number[];
     unbindingEventsOverTime: number[];
 }
 
 const LeftPanel: React.FC<LeftPanelProps> = ({
-    activeAgents,
     inputConcentration,
+    liveConcentration,
     handleNewInputConcentration,
     bindingEventsOverTime,
     unbindingEventsOverTime,
     adjustableAgent,
 }) => {
-    const { isPlaying } = useContext(SimulariumContext);
     return (
         <>
             <VisibilityControl excludedPages={[0, 1]}>
                 <Concentration
-                    activeAgents={activeAgents}
                     concentration={inputConcentration}
+                    liveConcentration={liveConcentration}
                     onChange={handleNewInputConcentration}
-                    disabled={isPlaying}
                     adjustableAgent={adjustableAgent}
                 />
             </VisibilityControl>

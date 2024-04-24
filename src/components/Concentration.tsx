@@ -1,40 +1,106 @@
-import React from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { map } from "lodash";
+import { Flex } from "antd";
 
 import Slider from "./shared/Slider";
-import { AvailableAgentNames } from "../types";
+import {
+    AvailableAgentNames,
+    CurrentConcentration,
+    InputConcentration,
+} from "../types";
+import { AGENT_AND_PRODUCT_COLORS } from "../simulation/trajectories-settings";
+import { SimulariumContext } from "../simulation/context";
+import styles from "./concentration.module.css";
+import LiveConcentrationDisplay from "./shared/LiveConcentrationDisplay";
 
 interface AgentProps {
-    activeAgents: AvailableAgentNames[];
     adjustableAgent: AvailableAgentNames;
-    concentration: { [key in AvailableAgentNames]: number };
+    concentration: InputConcentration;
     onChange: (name: string, value: number) => void;
-    disabled: boolean;
+    liveConcentration: CurrentConcentration;
 }
 
 const Concentration: React.FC<AgentProps> = ({
     concentration,
     onChange,
-    activeAgents,
-    disabled,
     adjustableAgent,
+    liveConcentration,
 }) => {
-    return map(concentration, (concentration, agent: AvailableAgentNames) => {
-        if (!activeAgents.includes(agent)) {
-            return null;
+    const { isPlaying, maxConcentration } = useContext(SimulariumContext);
+    const [width, setWidth] = useState<number>(0);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        setWidth(containerRef.current?.offsetWidth || 0);
+    }, [containerRef.current?.offsetWidth, width]);
+
+    const getComponent = (
+        agent: AvailableAgentNames,
+        currentConcentrationOfAgent: number
+    ) => {
+        if (adjustableAgent === agent && !isPlaying) {
+            return (
+                <Slider
+                    min={2}
+                    max={maxConcentration}
+                    name={agent}
+                    initialValue={concentration[agent] || 0}
+                    onChange={onChange}
+                    key={agent}
+                />
+            );
+        } else {
+            return (
+                <LiveConcentrationDisplay
+                    width={width}
+                    agent={agent}
+                    concentration={currentConcentrationOfAgent}
+                />
+            );
         }
-        return (
-            <Slider
-                min={2}
-                max={20}
-                name={agent}
-                initialValue={concentration}
-                onChange={onChange}
-                key={agent}
-                disabled={disabled || agent !== adjustableAgent}
-            />
-        );
-    });
+    };
+    return (
+        <>
+            <h3>Agent Concentrations</h3>
+            <Flex className={styles.container} vertical>
+                {map(
+                    liveConcentration,
+                    (
+                        agentLiveConcentration: number,
+                        agent: AvailableAgentNames
+                    ) => {
+                        return (
+                            <Flex
+                                className={styles.concentration}
+                                vertical
+                                key={agent}
+                            >
+                                <span
+                                    className={styles.agentName}
+                                    style={{
+                                        color: AGENT_AND_PRODUCT_COLORS[agent],
+                                    }}
+                                >
+                                    {agent}
+                                </span>
+                                <Flex
+                                    gap={16}
+                                    style={{ width: "100%" }}
+                                    ref={containerRef}
+                                >
+                                    {getComponent(
+                                        agent,
+                                        agentLiveConcentration
+                                    )}
+                                    <span className={styles.unit}>μM</span>
+                                </Flex>
+                            </Flex>
+                        );
+                    }
+                )}
+            </Flex>
+        </>
+    );
 };
 
 export default Concentration;
