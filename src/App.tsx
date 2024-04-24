@@ -192,7 +192,7 @@ function App() {
     const handleNewInputConcentration = (name: string, value: number) => {
         if (value === 0 ) {
             // this is available on the slider, but we only want it visible 
-            // as a axis marker, not as a selection
+            // as an axis marker, not as a selection
             return;
         }
         const agentName = name as AvailableAgentNames;
