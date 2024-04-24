@@ -17,10 +17,6 @@
 }
 
 .container :global(.ant-progress-steps-item) {
-    height: 4px !important;
-}
-
-.container :global(.ant-progress-steps-item) {
     background-color: var(--background-color);
 }
 
