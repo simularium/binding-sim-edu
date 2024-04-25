@@ -1,5 +1,5 @@
 import { PlotData } from "plotly.js";
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import Plot from "react-plotly.js";
 
 import {
@@ -24,17 +24,28 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
     data,
 }) => {
     const { timeFactor } = useContext(SimulariumContext);
+    const hasData = useRef(false);
     const traces = data.map((trace): Partial<PlotData> => {
         const { inputConcentration, productConcentrations } = trace;
         if (!productConcentrations) {
             return {};
         }
-
         if (productConcentrations.length <= 1) {
             // when the concentration is first changed it,
             // plays one frame to update, so there is one value
             // already but not necessarily data yet
             return {};
+        }
+
+        /**
+         * When there is just a single plot, we need to check if the
+         * find the point where the data is first greater than 0
+         */
+        if (data.length === 1 && !hasData.current) {
+            const lastValue = productConcentrations[productConcentrations.length - 1];
+            if (lastValue > 0) {
+                hasData.current = true;
+            }
         }
         return {
             x: productConcentrations.map((_, i) => (i * timeFactor) / 1000),
@@ -45,18 +56,23 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
             line: { color: PLOT_COLORS[getColorIndex(inputConcentration)] },
         };
     });
-
+    /**
+     * When there is no data, we want to show the axis at 0, 0, but plotly 
+     * defaults to -1.5 to 1.5 with no data, even when the range is set to 
+     * [0,  "auto"]
+     */
+    const range = hasData.current ? [0, "auto"]: [0,1];
     const layout = {
         ...BASE_PLOT_LAYOUT,
         height: 130,
         xaxis: {
             ...AXIS_SETTINGS,
             title: `time (${MICRO}s)`,
-            range: [0, "auto"],
+            range: range,
         },
         yaxis: {
             ...AXIS_SETTINGS,
-            range: [0, "auto"],
+            range: range,
             title: `[AB] ${MICRO}M`,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,
