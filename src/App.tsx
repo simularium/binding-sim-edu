@@ -103,6 +103,7 @@ function App() {
     const clientSimulator = useMemo(() => {
         const activeAgents = getActiveAgents(reactionType);
 
+
         setInputConcentration(getInitialConcentrations(activeAgents));
         const trajectory = createAgentsFromConcentrations(
             activeAgents,
