@@ -43,7 +43,8 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
          * to set the range of the plot axis to "auto"
          */
         if (data.length === 1 && !hasData.current) {
-            const lastValue = productConcentrations[productConcentrations.length - 1];
+            const lastValue =
+                productConcentrations[productConcentrations.length - 1];
             if (lastValue > 0) {
                 hasData.current = true;
             }
@@ -58,11 +59,11 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         };
     });
     /**
-     * When there is no data, we want to show the axis at 0, 0, but plotly 
-     * defaults to -1.5 to 1.5 with no data, even when the range is set to 
+     * When there is no data, we want to show the axis at 0, 0, but plotly
+     * defaults to -1.5 to 1.5 with no data, even when the range is set to
      * [0,  "auto"]
      */
-    const range = hasData.current ? [0, "auto"]: [0,1];
+    const range = hasData.current ? [0, "auto"] : [0, 1];
     const layout = {
         ...BASE_PLOT_LAYOUT,
         height: 130,
