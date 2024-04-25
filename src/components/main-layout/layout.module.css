@@ -35,6 +35,7 @@ the side panels size them down  */
 .side-panel h3 {
     font-size: 14px;
     color: var(--text-color);
+    margin-bottom: 2px;
 }
 
 .reaction-panel {

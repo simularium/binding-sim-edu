@@ -21,7 +21,7 @@ export const BASE_PLOT_LAYOUT = {
     plot_bgcolor: PLOT_BACKGROUND_COLOR,
     width: 300,
     height: 200,
-    margin: { l: 40, r: 10, b: 40, t: 20 },
+    margin: { l: 40, r: 10, b: 30, t: 14 },
 };
 
 export const AXIS_SETTINGS = {
@@ -30,6 +30,10 @@ export const AXIS_SETTINGS = {
     showticklabels: false,
     color: AXIS_COLOR,
     fixedrange: true,
+    tickfont: {
+        family: "Open Sans",
+        size: 10,
+    },
 };
 
 export const CONFIG = { displayModeBar: false, responsive: true };
