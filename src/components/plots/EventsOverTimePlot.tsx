@@ -26,7 +26,6 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
 }) => {
     const { timeFactor } = useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
-    const [max, setMax] = useState<number>(0);
     const containerRef = useRef<HTMLDivElement>(null);
 
     // the two arrays will always be the same length
@@ -39,15 +38,15 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
         setWidth(containerRef.current?.offsetWidth || 0);
     }, [containerRef.current?.offsetWidth, width]);
 
+    const max = useRef<number>(0);
     const checkForNewMax = (array: number[]) => {
         const currentValue = array[array.length - 1];
-        if (currentValue > max) {
-            setMax(currentValue);
+        if (currentValue > max.current) {
+            max.current = currentValue;
         }
     };
     checkForNewMax(bindingEventsOverTime);
     checkForNewMax(unbindingEventsOverTime);
-
     const hideTickLabels = {
         ...AXIS_SETTINGS,
         showticklabels: false,
@@ -61,17 +60,18 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
     };
 
     /**
-     * Initially there is no data, and in that state, the yaxis
+     * Initially there is no data, and in that state, the axis
      * defaults to showing -1.5 to 1.5 and then the xaxis jumps down
      * when the data starts showing. To avoid this behavior, the yaxis
      * is given a hardcoded range until the real numbers arrive.
      */
-    const yAxisRange = max > 0 ? [0, max] : [0, 20];
+    const xAxisRange = max.current > 0 ? ["auto", "auto"] : [0, 1];
+    const yAxisRange = max.current > 0 ? [0, max.current] : [0, 20];
     /**
      * Regarding the bottom margin:
      * the plots need a bottom margin to display numbers. Only one of the
-     * two plots has numbers along the axis, but if the margins are different, 
-     * the plots end up being different heights. So they are given the same margin, 
+     * two plots has numbers along the axis, but if the margins are different,
+     * the plots end up being different heights. So they are given the same margin,
      * defined here, and then the container moves the bottom plot up by the same value
      */
     const BOTTOM_MARGIN = 30;
@@ -135,6 +135,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                             ...layout,
                             xaxis: {
                                 ...AXIS_SETTINGS,
+                                range: xAxisRange,
                                 title: `time (${MICRO}s)`,
                                 titlefont: {
                                     size: 12,
