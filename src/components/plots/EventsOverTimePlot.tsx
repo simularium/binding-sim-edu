@@ -1,10 +1,14 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import Plot from "react-plotly.js";
 import { Flex } from "antd";
+import Plot from "react-plotly.js";
 
-import { AXIS_SETTINGS, BASE_PLOT_LAYOUT, CONFIG } from "./constants";
+import {
+    AXIS_COLOR,
+    AXIS_SETTINGS,
+    BASE_PLOT_LAYOUT,
+    CONFIG,
+} from "./constants";
 import { SimulariumContext } from "../../simulation/context";
-import { AXIS_COLOR } from "./constants";
 import { A, B, AB } from "../agent-symbols";
 
 import plotStyles from "./plots.module.css";
@@ -45,7 +49,12 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
         <div className={plotStyles.plotContainer}>
             <h3>Reaction events over time</h3>
             <div className={plotStyles.yLabel}>Count of reactions</div>
-            <Flex className={layoutStyles.plots} vertical ref={containerRef}>
+            <Flex
+                className={layoutStyles.plots}
+                vertical
+                gap={8}
+                ref={containerRef}
+            >
                 <div>
                     <A />
                     <span> + </span>

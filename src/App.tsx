@@ -12,7 +12,7 @@ import {
     INITIAL_CONCENTRATIONS,
     createAgentsFromConcentrations,
     getActiveAgents,
-    getConcentrations,
+    getInitialConcentrations,
     getMaxConcentration,
 } from "./simulation/trajectories-settings";
 import {
@@ -103,7 +103,7 @@ function App() {
     const clientSimulator = useMemo(() => {
         const activeAgents = getActiveAgents(reactionType);
 
-        setInputConcentration(getConcentrations(activeAgents));
+        setInputConcentration(getInitialConcentrations(activeAgents));
         const trajectory = createAgentsFromConcentrations(
             activeAgents,
             INITIAL_CONCENTRATIONS
@@ -190,9 +190,9 @@ function App() {
     };
 
     const handleNewInputConcentration = (name: string, value: number) => {
-        if (value === 0 ) {
+        if (value === 0) {
             // this is available on the slider, but we only want it visible 
-            // as a axis marker, not as a selection
+            // as an axis marker, not as a selection
             return;
         }
         const agentName = name as AvailableAgentNames;
@@ -202,6 +202,7 @@ function App() {
         addProductionTrace(previousConcentration);
         setInputConcentration({ ...inputConcentration, [name]: value });
         const time = simulariumController.time();
+
         simulariumController.gotoTime(time + 1);
 
         setLiveConcentration({

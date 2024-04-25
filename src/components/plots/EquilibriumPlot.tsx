@@ -20,7 +20,9 @@ interface PlotProps {
 
 const EquilibriumPlot: React.FC<PlotProps> = ({ x, y }) => {
     const { maxConcentration } = useContext(SimulariumContext);
-    const colors = x.map((value) => PLOT_COLORS[getColorIndex(value)]);
+    const colors = x.map(
+        (value) => PLOT_COLORS[getColorIndex((value))]
+    );
 
     const trace = [
         {

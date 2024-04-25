@@ -512,18 +512,16 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     public getCurrentConcentrations() {
-        const init = <{ [key: string]: number }>{};
+        const init = <{[key: string]: number}>{}
         const concentrations = this.agents.reduce((acc, agent) => {
             acc[agent.name] = this.convertCountToConcentration(
                 agent.count - this.currentNumberBound
             );
             return acc;
         }, init);
-        // TODO: generalize this for the other trajectories
+        // TODO: generalize this for the other trajectories 
         // for module 1 we only have AB
-        concentrations[ProductNames.AB] = this.convertCountToConcentration(
-            this.currentNumberBound
-        );
+        concentrations[ProductNames.AB] = this.convertCountToConcentration(this.currentNumberBound);
         return concentrations;
     }
 
