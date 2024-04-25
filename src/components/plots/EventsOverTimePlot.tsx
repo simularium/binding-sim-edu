@@ -10,9 +10,10 @@ import {
 } from "./constants";
 import { SimulariumContext } from "../../simulation/context";
 import { A, B, AB } from "../agent-symbols";
+import { MICRO } from "../../constants";
+
 import plotStyles from "./plots.module.css";
 import layoutStyles from "./events-over-time.module.css";
-import { MICRO } from "../../constants";
 
 interface PlotProps {
     bindingEventsOverTime: number[];
@@ -40,12 +41,12 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
 
     const checkForNewMax = (array: number[]) => {
         const currentValue = array[array.length - 1];
-        if (currentValue > 0) {
+        if (currentValue > max) {
             setMax(currentValue);
         }
     };
     checkForNewMax(bindingEventsOverTime);
-    checkForNewMax(bindingEventsOverTime);
+    checkForNewMax(unbindingEventsOverTime);
 
     const hideTickLabels = {
         ...AXIS_SETTINGS,
@@ -64,10 +65,10 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
      * defaults to showing -1.5 to 1.5 and then the xaxis jumps down
      * when the data starts showing. To avoid this behavior, the yaxis
      * is given a hardcoded range until the real numbers arrive.
-     * Using max here keeps the two plots on the same y axis scale
      */
     const yAxisRange = max > 0 ? [0, max] : [0, 20];
     /**
+     * Regarding the bottom margin:
      * the plots need a bottom margin to display numbers. But only one of the
      * two plots has number, but if the margins are different, the plots
      * end up being different heights. So they get the same margin, and then

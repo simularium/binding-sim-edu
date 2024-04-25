@@ -10,9 +10,10 @@ import {
 } from "./constants";
 import { getColorIndex } from "./utils";
 import { SimulariumContext } from "../../simulation/context";
-import plotStyles from "./plots.module.css";
-import { MICRO } from "../../constants";
 import { AGENT_AB_COLOR, AGENT_B_COLOR } from "../../constants/colors";
+import { MICRO } from "../../constants";
+
+import plotStyles from "./plots.module.css";
 
 interface PlotProps {
     x: number[];

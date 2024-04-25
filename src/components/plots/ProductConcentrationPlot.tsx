@@ -11,9 +11,10 @@ import {
 import { getColorIndex } from "./utils";
 import { ProductOverTimeTrace } from "./types";
 import { SimulariumContext } from "../../simulation/context";
-import { MICRO } from "../../constants";
-import plotStyles from "./plots.module.css";
 import { AGENT_AB_COLOR } from "../../constants/colors";
+import { MICRO } from "../../constants";
+
+import plotStyles from "./plots.module.css";
 
 interface ProductConcentrationPlotProps {
     data: ProductOverTimeTrace[];
