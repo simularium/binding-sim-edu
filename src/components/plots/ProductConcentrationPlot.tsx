@@ -38,8 +38,9 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         }
 
         /**
-         * When there is just a single plot, we need to check if the
+         * When there is just a single plot, we need to
          * find the point where the data is first greater than 0
+         * to set the range of the plot axis to "auto"
          */
         if (data.length === 1 && !hasData.current) {
             const lastValue = productConcentrations[productConcentrations.length - 1];
