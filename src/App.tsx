@@ -190,7 +190,7 @@ function App() {
     };
 
     const handleNewInputConcentration = (name: string, value: number) => {
-        if (value === 0 ) {
+        if (value === 0) {
             // this is available on the slider, but we only want it visible 
             // as an axis marker, not as a selection
             return;
