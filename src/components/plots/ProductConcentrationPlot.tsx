@@ -51,19 +51,14 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         xaxis: {
             ...AXIS_SETTINGS,
             title: `time (${MICRO}s)`,
-            showticklabels: true,
             range: [0, "auto"],
-            titlefont: {
-                size: 12,
-            },
         },
         yaxis: {
             ...AXIS_SETTINGS,
             range: [0, "auto"],
-            showticklabels: true,
             title: `[AB] ${MICRO}M`,
             titlefont: {
-                size: 12,
+                ...AXIS_SETTINGS.titlefont,
                 color: AGENT_AB_COLOR,
             },
         },

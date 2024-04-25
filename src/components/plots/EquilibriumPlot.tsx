@@ -13,6 +13,7 @@ import { SimulariumContext } from "../../simulation/context";
 import plotStyles from "./plots.module.css";
 import { MICRO } from "../../constants";
 import { AGENT_AB_COLOR, AGENT_B_COLOR } from "../../constants/colors";
+
 interface PlotProps {
     x: number[];
     y: number[];
@@ -23,17 +24,17 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y }) => {
     const colors = x.map(
         (value) => PLOT_COLORS[getColorIndex((value))]
     );
-
-    const trace = [
-        {
-            x: [0, maxConcentration],
-            y: [5, 5],
-            mode: "lines",
-            line: {
-                color: GRAY_COLOR,
-                dash: "dot",
-            },
+    const horizontalDottedLine = {
+        x: [0, maxConcentration],
+        y: [5, 5],
+        mode: "lines",
+        line: {
+            color: GRAY_COLOR,
+            dash: "dot",
         },
+    };
+    const trace = [
+        horizontalDottedLine,
         {
             x,
             y,
@@ -50,21 +51,19 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y }) => {
         height: 130,
         xaxis: {
             ...AXIS_SETTINGS,
-            showticklabels: true,
             range: [0, maxConcentration],
             title: `[B] ${MICRO}M`,
             titlefont: {
-                size: 12,
+                ...AXIS_SETTINGS.titlefont,
                 color: AGENT_B_COLOR,
             },
         },
         yaxis: {
             ...AXIS_SETTINGS,
-            showticklabels: true,
             range: [0, maxConcentration / 2],
             title: `[AB] ${MICRO}M`,
             titlefont: {
-                size: 12,
+                ...AXIS_SETTINGS.titlefont,
                 color: AGENT_AB_COLOR,
             },
         },
