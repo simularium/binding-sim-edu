@@ -53,7 +53,6 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
             title: `time (${MICRO}s)`,
             showticklabels: true,
             range: [0, "auto"],
-
             titlefont: {
                 size: 12,
             },
