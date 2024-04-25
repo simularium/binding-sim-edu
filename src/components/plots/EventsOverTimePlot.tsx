@@ -69,10 +69,10 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
     const yAxisRange = max > 0 ? [0, max] : [0, 20];
     /**
      * Regarding the bottom margin:
-     * the plots need a bottom margin to display numbers. But only one of the
-     * two plots has number, but if the margins are different, the plots
-     * end up being different heights. So they get the same margin, and then
-     * the container moves the bottom plot up by the same amount
+     * the plots need a bottom margin to display numbers. Only one of the
+     * two plots has numbers along the axis, but if the margins are different, 
+     * the plots end up being different heights. So they are given the same margin, 
+     * defined here, and then the container moves the bottom plot up by the same value
      */
     const BOTTOM_MARGIN = 30;
     const layout = {
