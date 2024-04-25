@@ -1,51 +1,44 @@
-import React from 'react';
-import { ReactionType } from '../../constants';
-import { AGENT_AB_COLOR, AGENT_AC_COLOR, AGENT_A_COLOR, AGENT_B_COLOR, AGENT_C_COLOR } from '../../constants/colors';
-import ReversibleArrows from './icons/ReversibleArrows';
-import styles from './layout.module.css';
+import React from "react";
+import { ReactionType } from "../../constants";
+import ReversibleArrows from "./icons/ReversibleArrows";
+import styles from "./layout.module.css";
+import { A, B, C, AC, AB } from "../agent-symbols";
 
 interface ReactionDisplayProps {
     reactionType: ReactionType;
 }
 
 const ReactionDisplay: React.FC<ReactionDisplayProps> = ({ reactionType }) => {
-    
-    const A = <span style={{ color: AGENT_A_COLOR }}>A</span>;
-    const B = <span style={{ color: AGENT_B_COLOR }}>B</span>;
-    const C = <span style={{ color: AGENT_C_COLOR }}>C</span>;
-    const AB = <span style={{ color: AGENT_AB_COLOR }}>AB</span>;
-    const AC = <span style={{ color: AGENT_AC_COLOR }}>AB</span>;
-
     return (
         <div className={styles.reaction}>
             {reactionType === ReactionType.A_B_AB && (
                 <>
-                    {A}
+                    <A />
                     <span> + </span>
-                    {B}
+                    <B />
                     <ReversibleArrows />
-                    {AB}
+                    <AB />
                 </>
             )}
             {reactionType === ReactionType.A_C_AC && (
                 <>
-                    {A}
+                    <A />
                     <span> + </span>
-                    {C}
+                    <C />
                     <ReversibleArrows />
-                    {AC}
+                    <AC />
                 </>
             )}
             {reactionType === ReactionType.A_B_C_AB_AC && (
                 <>
-                    {A}
+                    <A />
                     <span> + </span>
-                    {B}
+                    <B />
                     <span> + </span>
-                    {C}
+                    <C />
                     <ReversibleArrows />
-                    {AB}
-                    {AC}
+                    <AB />
+                    <AC />
                 </>
             )}
         </div>

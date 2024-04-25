@@ -52,6 +52,9 @@ const customTheme = {
             handleActiveColor: BRIGHT_PURPLE_DARKER,
             handleLineWidthHover: 0,
         },
+        Progress: {
+            defaultColor: BRIGHT_PURPLE_DARKER,
+        },
     },
 };
 
