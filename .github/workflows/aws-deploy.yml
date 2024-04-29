@@ -41,9 +41,6 @@
                 role-to-assume: arn:aws:iam::${{ env.S3_AWS_ACCOUNT_ID }}:role/github_simularium_ipub
                 role-session-name: binding-sim-edu-${{ env.SHORT_SHA }}
                 aws-region: ${{ env.AWS_REGION }}
-
-            - name: Print debug messages
-              run: pwd && ls -al
             
             - name: Copy build files to staging S3 bucket
               run: aws s3 sync . ${{ env.STAGING_S3_BUCKET }}
@@ -78,7 +75,7 @@
                 aws-region: ${{ env.AWS_REGION }}
 
             - name: Copy build files to S3 root
-              run: aws s3 sync ../ ${{ env.PRODUCTION_S3_BUCKET }}
+              run: aws s3 sync . ${{ env.PRODUCTION_S3_BUCKET }}
 
             - name: Configure AWS credentials with OIDC for CloudFront cache invalidation
               uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
