@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import Rainbow from "rainbowvis.js";
 
 import Viewer from "./Viewer";
 import { SimulariumContext } from "../simulation/context";
@@ -7,6 +8,8 @@ import PlayButton from "./PlayButton";
 import { OverlayButton } from "./shared/ButtonLibrary";
 import LabIcon from "./icons/Lab";
 import Molecules from "./icons/Molecules";
+import Cuvette from "./icons/Cuvette";
+import { AGENT_AB_COLOR } from "../constants/colors";
 
 enum View {
     Lab = "lab",
@@ -14,6 +17,10 @@ enum View {
 }
 
 const LabView: React.FC = () => {
+    const { currentProductionConcentration, maxConcentration } = useContext(SimulariumContext);
+    const rainbow = new Rainbow();
+    rainbow.setSpectrum("#FFFFFF", AGENT_AB_COLOR);
+    const position = currentProductionConcentration / maxConcentration   * 100;
     return (
         <div
             style={{
@@ -24,7 +31,9 @@ const LabView: React.FC = () => {
                 zIndex: 300,
             }}
         >
-            <h1>Lab View</h1>
+            <Cuvette
+                color={rainbow.colorAt(position)}
+            />
         </div>
     );
 };
@@ -48,10 +57,12 @@ const ViewSwitch: React.FC = () => {
                 <OverlayButton
                     onClick={switchView}
                     style={{ top: 16, left: 16 }}
-                    icon={currentView === View.Lab ? <Molecules /> : <LabIcon />}
+                    icon={
+                        currentView === View.Lab ? <Molecules /> : <LabIcon />
+                    }
                 >
-                     Switch to{" "}
-                    {currentView === View.Lab ? "molecular" : "lab"} view
+                    Switch to {currentView === View.Lab ? "molecular" : "lab"}{" "}
+                    view
                 </OverlayButton>
             </ProgressionControl>
             <PlayButton />
