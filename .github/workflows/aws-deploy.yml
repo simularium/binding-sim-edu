@@ -1,0 +1,61 @@
+---
+    name: AWS Deployment
+    
+    on:
+      push:
+        branches:
+          - main
+           
+    env:
+      AWS_ACCOUNT_ID: ${{ vars.AWS_PUBLIC_DATA_RELEASES_ACCOUNT_ID }}
+      AWS_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+      STAGING_CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.STAGING_CLOUDFRONT_DISTRIBUTION_ID }}
+      STAGING_S3_BUCKET: s3://staging-ipub-simularium
+      PRODUCTION_CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.PRODUCTION_CLOUDFRONT_DISTRIBUTION_ID }}
+      PRODUCTION_S3_BUCKET: s3://production-ipub-simularium
+    
+    permissions:
+        id-token: write  # Required for requesting the JWT and OIDC
+        contents: write  # Required for actions/checkout and OIDC tokens
+    
+    jobs:
+        setup:
+          runs-on: ubuntu-latest
+    
+          steps:
+            - name: Checkout
+              uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744
+
+              # Compute a short sha for use in the OIDC session name, which has a 64 character limit
+            - name: Add SHORT_SHA env property with commit short sha
+              run: echo "SHORT_SHA=`echo ${{ github.sha }} | cut -c1-8`" >> $GITHUB_ENV
+    
+            - name: Configure AWS credentials with OIDC
+              uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
+              with:
+                role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github_simularium_ipub
+                role-session-name: binding-sim-edu-${{ env.SHORT_SHA }}
+                aws-region: ${{ env.AWS_REGION }} 
+
+        deploy-staging:
+            needs: setup
+            runs-on: ubuntu-latest
+
+            steps:      
+              - name: Copy build files to staging S3 bucket
+                run: aws s3 sync . ${{ env.STAGING_S3_BUCKET }}
+
+              - name: Invalidate CloudFront cache
+                run: aws cloudfront create-invalidation --distribution-id ${{ env.STAGING_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+        
+        deploy-production:
+            if: startsWith(github.ref, 'refs/tags/v')
+            needs: setup
+            runs-on: ubuntu-latest
+    
+            steps:     
+              - name: Copy build files to S3 root
+                run: aws s3 sync . ${{ env.PRODUCTION_S3_BUCKET }}
+    
+              - name: Invalidate CloudFront cache
+                run: aws cloudfront create-invalidation --distribution-id ${{ env.PRODUCTION_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
