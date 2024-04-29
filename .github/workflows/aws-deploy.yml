@@ -5,10 +5,16 @@
       push:
         branches:
           - main
+          - "**" # Uncomment this line to build on all branches, such as when debugging a workflow
            
     env:
-      AWS_ACCOUNT_ID: ${{ vars.AWS_PUBLIC_DATA_RELEASES_ACCOUNT_ID }}
+      
       AWS_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+      # AWS resources are spread across different AWS accounts: aics-sw and public_data_releases
+      # The CloudFront distributions is in the aics-sw account
+      # The S3 buckets are in the public_data_releases account
+      CLOUDFRONT_AWS_ACCOUNT_ID: ${{ vars.AWS_AICS_SW_ACCOUNT_ID }}
+      S3_AWS_ACCOUNT_ID: ${{ vars.AWS_PUBLIC_DATA_RELEASES_ACCOUNT_ID }}
       STAGING_CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.STAGING_CLOUDFRONT_DISTRIBUTION_ID }}
       STAGING_S3_BUCKET: s3://staging-ipub-simularium
       PRODUCTION_CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.PRODUCTION_CLOUDFRONT_DISTRIBUTION_ID }}
@@ -35,15 +41,22 @@
             - name: Add SHORT_SHA env property with commit short sha
               run: echo "SHORT_SHA=`echo ${{ github.sha }} | cut -c1-8`" >> $GITHUB_ENV
     
-            - name: Configure AWS credentials with OIDC
+            - name: Configure AWS credentials with OIDC for S3 copy
               uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
               with:
-                role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github_simularium_ipub
+                role-to-assume: arn:aws:iam::${{ env.S3_AWS_ACCOUNT_ID }}:role/github_simularium_ipub
                 role-session-name: binding-sim-edu-${{ env.SHORT_SHA }}
                 aws-region: ${{ env.AWS_REGION }}
 
             - name: Copy build files to staging S3 bucket
-              run: aws s3 sync . ${{ env.STAGING_S3_BUCKET }}
+              run: aws s3 sync ../ ${{ env.STAGING_S3_BUCKET }}
+
+            - name: Configure AWS credentials with OIDC for CloudFront cache invalidation
+              uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
+              with:
+                role-to-assume: arn:aws:iam::${{ env.CLOUDFRONT_AWS_ACCOUNT_ID }}:role/github_simularium_ipub
+                role-session-name: binding-sim-edu-${{ env.SHORT_SHA }}
+                aws-region: ${{ env.AWS_REGION }}
 
             - name: Invalidate CloudFront cache
               run: aws cloudfront create-invalidation --distribution-id ${{ env.STAGING_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
@@ -58,15 +71,22 @@
             - name: Add SHORT_SHA env property with commit short sha
               run: echo "SHORT_SHA=`echo ${{ github.sha }} | cut -c1-8`" >> $GITHUB_ENV
     
-            - name: Configure AWS credentials with OIDC
+            - name: Configure AWS credentials with OIDC for S3 copy
               uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
               with:
-                role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github_simularium_ipub
+                role-to-assume: arn:aws:iam::${{ env.S3_AWS_ACCOUNT_ID }}:role/github_simularium_ipub
                 role-session-name: binding-sim-edu-${{ env.SHORT_SHA }}
                 aws-region: ${{ env.AWS_REGION }}
 
             - name: Copy build files to S3 root
-              run: aws s3 sync . ${{ env.PRODUCTION_S3_BUCKET }}
+              run: aws s3 sync ../ ${{ env.PRODUCTION_S3_BUCKET }}
+
+            - name: Configure AWS credentials with OIDC for S3 copy
+              uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
+              with:
+                role-to-assume: arn:aws:iam::${{ env.S3_AWS_ACCOUNT_ID }}:role/github_simularium_ipub
+                role-session-name: binding-sim-edu-${{ env.SHORT_SHA }}
+                aws-region: ${{ env.AWS_REGION }}
     
             - name: Invalidate CloudFront cache
               run: aws cloudfront create-invalidation --distribution-id ${{ env.PRODUCTION_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
