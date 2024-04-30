@@ -42,7 +42,7 @@
                 aws-region: ${{ env.AWS_REGION }}
 
             - name: Setup Bun
-              uses: oven-sh/setup-bun@v1
+              uses: oven-sh/setup-bun@8f24390df009a496891208e5e36b8a1de1f45135
             - run: bun install
             # until vite fixes it's webworker issues the dev build needs a local viewer, but the prod build 
             # uses the viewer from the npm package
@@ -50,7 +50,7 @@
             - run: bun run build
 
             - name: Copy build files to staging S3 bucket
-              run: aws s3 sync . ${{ env.STAGING_S3_BUCKET }}
+              run: aws s3 sync ./dist ${{ env.STAGING_S3_BUCKET }}
 
             - name: Configure AWS credentials with OIDC for CloudFront cache invalidation
               uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
@@ -82,14 +82,14 @@
                 aws-region: ${{ env.AWS_REGION }}
 
             - name: Setup Bun
-              uses: oven-sh/setup-bun@v1
+              uses: oven-sh/setup-bun@8f24390df009a496891208e5e36b8a1de1f45135
             - run: bun install
             # until vite fixes it's webworker issues the dev build needs a local viewer, but the prod build 
             # uses the viewer from the npm package
             - run: bun install-viewer
             - run: bun build
             - name: Copy build files to S3 root
-              run: aws s3 sync . ${{ env.PRODUCTION_S3_BUCKET }}
+              run: aws s3 sync ./dist ${{ env.PRODUCTION_S3_BUCKET }}
 
             - name: Configure AWS credentials with OIDC for CloudFront cache invalidation
               uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
