@@ -7,7 +7,7 @@ const PointerIcon: React.FC = () => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
         >
-            <g clip-path="url(#clip0_639_169231)">
+            <g clipPath="url(#clip0_639_169231)">
                 <path
                     d="M18.3423 15.4411L8.27734 7.45239L9.81734 20.2124L12.1961 16.8436L15.0423 21.9174L17.0636 20.7761L14.2311 15.7024L18.3423 15.4411Z"
                     fill="#B59FF6"
