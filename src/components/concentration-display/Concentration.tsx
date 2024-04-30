@@ -80,11 +80,7 @@ const Concentration: React.FC<AgentProps> = ({
                                     {agent}
                                 </span>
                                 <ResizeContainer
-                                    style={{
-                                        width: "100%",
-                                        display: "flex",
-                                        gap: 16,
-                                    }}
+                                    className={styles.widthWrapper}
                                     setWidth={setWidth}
                                 >
                                     {getComponent(
