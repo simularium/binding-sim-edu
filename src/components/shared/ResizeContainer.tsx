@@ -14,7 +14,7 @@ const ResizeContainer: React.FC<ResizeContainerProps> = ({
     setWidth,
     setHeight,
     children,
-    style
+    style,
 }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     // set the size on mount

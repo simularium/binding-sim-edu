@@ -54,7 +54,6 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
         marker: { color: AXIS_COLOR },
         x: time,
     };
-
     /**
      * Initially there is no data, and in that state, the axis
      * defaults to showing -1.5 to 1.5 and then the xaxis jumps down
@@ -87,12 +86,8 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
         <div className={plotStyles.plotContainer}>
             <h3>Reaction events over time</h3>
             <div className={plotStyles.yLabel}>Count of reactions</div>
-            <ResizeContainer
-                setWidth={setWidth}
-                className={layoutStyles.plots}
-                style={{ display: "flex", gap: 8, flexDirection: "column"}}
-            >
-                <Flex vertical>
+            <ResizeContainer className={layoutStyles.plots} setWidth={setWidth}>
+                <Flex vertical style={{ marginBottom: 10 }}>
                     <div>
                         <A />
                         <span> + </span>

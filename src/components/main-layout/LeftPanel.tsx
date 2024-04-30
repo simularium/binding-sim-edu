@@ -1,9 +1,13 @@
-import React from 'react';
+import React from "react";
 
-import { AvailableAgentNames, CurrentConcentration, InputConcentration } from '../../types';
-import VisibilityControl from '../shared/VisibilityControl';
-import EventsOverTimePlot from '../plots/EventsOverTimePlot';
-import Concentration from '../concentration-display/Concentration';
+import {
+    AvailableAgentNames,
+    CurrentConcentration,
+    InputConcentration,
+} from "../../types";
+import VisibilityControl from "../shared/VisibilityControl";
+import EventsOverTimePlot from "../plots/EventsOverTimePlot";
+import Concentration from "../concentration-display/Concentration";
 
 interface LeftPanelProps {
     activeAgents: AvailableAgentNames[];
