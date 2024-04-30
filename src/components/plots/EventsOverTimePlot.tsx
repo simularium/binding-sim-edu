@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Flex } from "antd";
 import Plot from "react-plotly.js";
 
@@ -14,6 +14,7 @@ import { MICRO } from "../../constants";
 
 import plotStyles from "./plots.module.css";
 import layoutStyles from "./events-over-time.module.css";
+import useWindowResize from "../../hooks/useWindowResize";
 
 interface PlotProps {
     bindingEventsOverTime: number[];
@@ -33,10 +34,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
     const time = bindingEventsOverTime.map(
         (_, i) => (i * 10 * timeFactor) / 1000
     );
-
-    useEffect(() => {
-        setWidth(containerRef.current?.offsetWidth || 0);
-    }, [containerRef.current?.offsetWidth, width]);
+    useWindowResize(() => setWidth(containerRef.current?.offsetWidth || 0));
 
     const max = useRef<number>(0);
     const checkForNewMax = (array: number[]) => {
