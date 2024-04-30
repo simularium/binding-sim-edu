@@ -1,6 +1,6 @@
 import React from "react";
 import { ReactionType } from "../../constants";
-import ReversibleArrows from "./icons/ReversibleArrows";
+import ReversibleArrows from "../icons/ReversibleArrows";
 import styles from "./layout.module.css";
 import { A, B, C, AC, AB } from "../agent-symbols";
 

@@ -103,6 +103,7 @@ function App() {
     const clientSimulator = useMemo(() => {
         const activeAgents = getActiveAgents(reactionType);
 
+
         setInputConcentration(getInitialConcentrations(activeAgents));
         const trajectory = createAgentsFromConcentrations(
             activeAgents,
@@ -250,6 +251,7 @@ function App() {
             <div className="app">
                 <SimulariumContext.Provider
                     value={{
+                        currentProductionConcentration: liveConcentration[ProductNames.AB] || 0,
                         maxConcentration: getMaxConcentration(reactionType),
                         isPlaying,
                         setIsPlaying,
