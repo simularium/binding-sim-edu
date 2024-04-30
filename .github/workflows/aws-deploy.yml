@@ -88,6 +88,7 @@
             - run: bun install-viewer
             - run: bun install
             - run: bun run build
+
             - name: Copy build files to S3 root
               run: aws s3 sync ./dist ${{ env.PRODUCTION_S3_BUCKET }}
 
