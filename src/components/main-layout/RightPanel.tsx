@@ -5,8 +5,9 @@ import ProductConcentrationPlot from "../plots/ProductConcentrationPlot";
 import EquilibriumPlot from "../plots/EquilibriumPlot";
 import RecordEquilibriumButton from "../RecordEquilibriumButton";
 import { ProductOverTimeTrace } from "../plots/types";
-import styles from "./layout.module.css";
 import { AB } from "../agent-symbols";
+
+import styles from "./layout.module.css";
 
 interface RightPanelProps {
     productOverTimeTraces: ProductOverTimeTrace[];
@@ -41,7 +42,9 @@ const RightPanel: React.FC<RightPanelProps> = ({
     return (
         <>
             <VisibilityControl excludedPages={[0, 1, 2]}>
-                <h3>Concentration over time for <AB /></h3>
+                <h3>
+                    Concentration over time for <AB />
+                </h3>
                 <ProductConcentrationPlot data={data} />
                 <h3>Equilibrium concentration</h3>
 
@@ -49,9 +52,11 @@ const RightPanel: React.FC<RightPanelProps> = ({
                     x={equilibriumConcentrations.inputConcentrations}
                     y={equilibriumConcentrations.productConcentrations}
                 />
-                <RecordEquilibriumButton
-                    handleRecordEquilibrium={handleRecordEquilibrium}
-                />
+                <div className={styles.recordButton}>
+                    <RecordEquilibriumButton
+                        handleRecordEquilibrium={handleRecordEquilibrium}
+                    />
+                </div>
                 <div className={styles.feedback}>{equilibriumFeedback}</div>
             </VisibilityControl>
         </>
