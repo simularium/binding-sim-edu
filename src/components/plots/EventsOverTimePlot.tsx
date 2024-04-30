@@ -14,7 +14,7 @@ import { MICRO } from "../../constants";
 
 import plotStyles from "./plots.module.css";
 import layoutStyles from "./events-over-time.module.css";
-import useWindowResize from "../../hooks/useWindowResize";
+import ResizeContainer from "../shared/ResizeContainer";
 
 interface PlotProps {
     bindingEventsOverTime: number[];
@@ -27,14 +27,12 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
 }) => {
     const { timeFactor } = useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
-    const containerRef = useRef<HTMLDivElement>(null);
 
     // the two arrays will always be the same length
     // so this time calculation only needs to happen once
     const time = bindingEventsOverTime.map(
         (_, i) => (i * 10 * timeFactor) / 1000
     );
-    useWindowResize(() => setWidth(containerRef.current?.offsetWidth || 0));
 
     const max = useRef<number>(0);
     const checkForNewMax = (array: number[]) => {
@@ -89,11 +87,10 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
         <div className={plotStyles.plotContainer}>
             <h3>Reaction events over time</h3>
             <div className={plotStyles.yLabel}>Count of reactions</div>
-            <Flex
+            <ResizeContainer
+                setWidth={setWidth}
                 className={layoutStyles.plots}
-                vertical
-                gap={8}
-                ref={containerRef}
+                style={{ display: "flex", gap: 8, flexDirection: "column"}}
             >
                 <Flex vertical>
                     <div>
@@ -143,7 +140,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                         config={CONFIG}
                     />
                 </Flex>
-            </Flex>
+            </ResizeContainer>
         </div>
     );
 };
