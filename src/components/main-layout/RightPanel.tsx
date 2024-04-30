@@ -5,6 +5,7 @@ import ProductConcentrationPlot from "../plots/ProductConcentrationPlot";
 import EquilibriumPlot from "../plots/EquilibriumPlot";
 import RecordEquilibriumButton from "../RecordEquilibriumButton";
 import { ProductOverTimeTrace } from "../plots/types";
+
 import styles from "./layout.module.css";
 
 interface RightPanelProps {
@@ -45,9 +46,11 @@ const RightPanel: React.FC<RightPanelProps> = ({
                     x={equilibriumConcentrations.inputConcentrations}
                     y={equilibriumConcentrations.productConcentrations}
                 />
-                <RecordEquilibriumButton
-                    handleRecordEquilibrium={handleRecordEquilibrium}
-                />
+                <div className={styles.recordButton}>
+                    <RecordEquilibriumButton
+                        handleRecordEquilibrium={handleRecordEquilibrium}
+                    />
+                </div>
                 <div className={styles.feedback}>{equilibriumFeedback}</div>
             </VisibilityControl>
         </>

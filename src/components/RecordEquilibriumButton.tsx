@@ -10,7 +10,7 @@ const RecordEquilibriumButton = ({
 }: RecordEquilibriumButtonProps) => {
     return (
         <ProgressionControl onPage={[3, 6]}>
-            <SecondaryButton onClick={handleRecordEquilibrium} style={{width: "100%"}}>
+            <SecondaryButton onClick={handleRecordEquilibrium} style={{maxWidth: 236, width: "100%"}}>
                 Record
             </SecondaryButton>
         </ProgressionControl>
