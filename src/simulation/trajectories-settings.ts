@@ -22,6 +22,7 @@ const agentA: InputAgent = {
     partners: [1, 2],
     color: AGENT_A_COLOR,
 };
+
 const agentB: InputAgent = {
     id: 1,
     name: AvailableAgentNames.B,

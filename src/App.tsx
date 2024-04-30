@@ -103,6 +103,7 @@ function App() {
     const clientSimulator = useMemo(() => {
         const activeAgents = getActiveAgents(reactionType);
 
+
         setInputConcentration(getInitialConcentrations(activeAgents));
         const trajectory = createAgentsFromConcentrations(
             activeAgents,
@@ -190,20 +191,27 @@ function App() {
     };
 
     const handleNewInputConcentration = (name: string, value: number) => {
+        if (value === 0) {
+            // this is available on the slider, but we only want it visible 
+            // as an axis marker, not as a selection
+            return;
+        }
         const agentName = name as AvailableAgentNames;
         const agentId = AVAILABLE_AGENTS[agentName].id;
         clientSimulator.changeConcentration(agentId, value);
         const previousConcentration = inputConcentration[agentName] || 0;
         addProductionTrace(previousConcentration);
         setInputConcentration({ ...inputConcentration, [name]: value });
+        const time = simulariumController.time();
+
+        simulariumController.gotoTime(time + 1);
+
         setLiveConcentration({
             ...inputConcentration,
             [name]: value,
             [ProductNames.AB]: 0,
         });
-        const time = simulariumController.time();
 
-        simulariumController.gotoTime(time + 1);
         resetAnalysisState();
     };
 
@@ -253,6 +261,7 @@ function App() {
                         timeFactor,
                         viewportSize,
                         setViewportSize,
+                        recordedConcentrations: inputEquilibriumConcentrations,
                     }}
                 >
                     <MainLayout
