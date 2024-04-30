@@ -48,7 +48,7 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
                         <div className={styles.title}>{name}</div>
                         <Progress
                             className={styles.progressBar}
-                            size={4}
+                            size={["100%", 4]}
                             percent={getModulePercent(
                                 isActiveModule,
                                 moduleIndex
