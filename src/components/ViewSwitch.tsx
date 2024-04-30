@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import Rainbow from "rainbowvis.js";
 
 import Viewer from "./Viewer";
 import { SimulariumContext } from "../simulation/context";
@@ -8,35 +7,14 @@ import PlayButton from "./PlayButton";
 import { OverlayButton } from "./shared/ButtonLibrary";
 import LabIcon from "./icons/Lab";
 import Molecules from "./icons/Molecules";
-import Cuvette from "./icons/Cuvette";
-import { AGENT_AB_COLOR } from "../constants/colors";
+import LabView from "./LabView";
+
 
 enum View {
     Lab = "lab",
     Simulation = "simulation",
 }
 
-const LabView: React.FC = () => {
-    const { currentProductionConcentration, maxConcentration } = useContext(SimulariumContext);
-    const rainbow = new Rainbow();
-    rainbow.setSpectrum("#FFFFFF", AGENT_AB_COLOR);
-    const position = currentProductionConcentration / maxConcentration   * 100;
-    return (
-        <div
-            style={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                background: "black",
-                zIndex: 300,
-            }}
-        >
-            <Cuvette
-                color={rainbow.colorAt(position)}
-            />
-        </div>
-    );
-};
 
 const ViewSwitch: React.FC = () => {
     const [currentView, setCurrentView] = useState<View>(View.Lab);
