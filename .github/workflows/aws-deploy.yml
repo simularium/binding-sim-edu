@@ -30,7 +30,6 @@
           steps:
             - name: Checkout
               uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744      
-
               # Compute a short sha for use in the OIDC session name, which has a 64 character limit
             - name: Add SHORT_SHA env property with commit short sha
               run: echo "SHORT_SHA=`echo ${{ github.sha }} | cut -c1-8`" >> $GITHUB_ENV
@@ -41,9 +40,17 @@
                 role-to-assume: arn:aws:iam::${{ env.S3_AWS_ACCOUNT_ID }}:role/github_simularium_ipub
                 role-session-name: binding-sim-edu-${{ env.SHORT_SHA }}
                 aws-region: ${{ env.AWS_REGION }}
-            
+
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@8f24390df009a496891208e5e36b8a1de1f45135
+            - run: bun install
+            # until vite fixes it's webworker issues the dev build needs a local viewer, but the prod build 
+            # uses the viewer from the npm package
+            - run: bun install-viewer
+            - run: bun run build
+
             - name: Copy build files to staging S3 bucket
-              run: aws s3 sync . ${{ env.STAGING_S3_BUCKET }}
+              run: aws s3 sync ./dist ${{ env.STAGING_S3_BUCKET }}
 
             - name: Configure AWS credentials with OIDC for CloudFront cache invalidation
               uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
@@ -74,8 +81,15 @@
                 role-session-name: binding-sim-edu-${{ env.SHORT_SHA }}
                 aws-region: ${{ env.AWS_REGION }}
 
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@8f24390df009a496891208e5e36b8a1de1f45135
+            - run: bun install
+            # until vite fixes it's webworker issues the dev build needs a local viewer, but the prod build 
+            # uses the viewer from the npm package
+            - run: bun install-viewer
+            - run: bun build
             - name: Copy build files to S3 root
-              run: aws s3 sync . ${{ env.PRODUCTION_S3_BUCKET }}
+              run: aws s3 sync ./dist ${{ env.PRODUCTION_S3_BUCKET }}
 
             - name: Configure AWS credentials with OIDC for CloudFront cache invalidation
               uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
