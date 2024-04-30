@@ -75,7 +75,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
         ...BASE_PLOT_LAYOUT,
         height: 60,
         width: width,
-        margin: { l: 10, r: 25.5, b: BOTTOM_MARGIN, t: 0 },
+        margin: { l: 10, r: BASE_PLOT_LAYOUT.margin.r, b: BOTTOM_MARGIN, t: 0 },
         xaxis: hideTickLabels,
         yaxis: {
             ...hideTickLabels,

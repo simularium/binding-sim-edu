@@ -18,10 +18,14 @@ import plotStyles from "./plots.module.css";
 
 interface ProductConcentrationPlotProps {
     data: ProductOverTimeTrace[];
+    width: number;
+    height: number;
 }
 
 const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
     data,
+    width,
+    height,
 }) => {
     const { timeFactor } = useContext(SimulariumContext);
     const hasData = useRef(false);
@@ -66,7 +70,8 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
     const range = hasData.current ? [0, "auto"] : [0, 1];
     const layout = {
         ...BASE_PLOT_LAYOUT,
-        height: 130,
+        width: width,
+        height: Math.max(130, height),
         xaxis: {
             ...AXIS_SETTINGS,
             title: `time (${MICRO}s)`,

@@ -10,7 +10,8 @@
     border-bottom: 1px solid var(--app-border-color);
 }
 
-.content-panel p, .content-panel h3 {
+.content-panel p,
+.content-panel h3 {
     margin: 0;
 }
 
