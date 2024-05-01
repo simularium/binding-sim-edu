@@ -17,11 +17,28 @@ export const PLOT_COLORS = [
 ];
 
 export const BASE_PLOT_LAYOUT = {
-    xaxis: { range: [0, "auto"], color: AXIS_COLOR },
-    yaxis: { color: AXIS_COLOR },
-    paper_bgcolor: PLOT_BACKGROUND_COLOR,
-    plot_bgcolor: PLOT_BACKGROUND_COLOR,
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)",
     width: 300,
     height: 200,
-    margin: { l: 40, r: 10, b: 40, t: 20 },
+    margin: { l: 40, r: 10, b: 30, t: 14 },
 };
+
+export const AXIS_SETTINGS = {
+    range: [0, "auto"],
+    showgrid: false,
+    gridcolor: PLOT_BACKGROUND_COLOR,
+    showticklabels: true,
+    color: AXIS_COLOR,
+    fixedrange: true,
+    titlefont: {
+        size: 12,
+    },
+    tickfont: {
+        family: "Open Sans",
+        size: 10,
+        color: AXIS_COLOR,
+    },
+};
+
+export const CONFIG = { displayModeBar: false, responsive: true };

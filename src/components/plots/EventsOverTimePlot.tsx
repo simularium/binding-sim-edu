@@ -4,11 +4,13 @@ import Plot from "react-plotly.js";
 
 import {
     AXIS_COLOR,
+    AXIS_SETTINGS,
     BASE_PLOT_LAYOUT,
-    PLOT_BACKGROUND_COLOR,
+    CONFIG,
 } from "./constants";
 import { SimulariumContext } from "../../simulation/context";
 import { A, B, AB } from "../agent-symbols";
+import { MICRO } from "../../constants";
 
 import plotStyles from "./plots.module.css";
 import layoutStyles from "./events-over-time.module.css";
@@ -26,33 +28,67 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
     const [width, setWidth] = useState<number>(0);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        setWidth(containerRef.current?.offsetWidth || 0);
-    }, [containerRef.current?.offsetWidth, width]);
-
-    const layout = {
-        ...BASE_PLOT_LAYOUT,
-        height: 40,
-        width: width,
-        margin: { l: 0, r: 25.5, b: 0, t: 0 },
-    };
-
-    const axisSettings = {
-        range: [0, "auto"],
-        gridcolor: PLOT_BACKGROUND_COLOR,
-        showticklabels: false,
-        color: AXIS_COLOR,
-        fixedrange: true,
-        showline: true,
-    };
     // the two arrays will always be the same length
     // so this time calculation only needs to happen once
     const time = bindingEventsOverTime.map(
         (_, i) => (i * 10 * timeFactor) / 1000
     );
 
+    useEffect(() => {
+        setWidth(containerRef.current?.offsetWidth || 0);
+    }, [containerRef.current?.offsetWidth, width]);
+
+    const max = useRef<number>(0);
+    const checkForNewMax = (array: number[]) => {
+        const currentValue = array[array.length - 1];
+        if (currentValue > max.current) {
+            max.current = currentValue;
+        }
+    };
+    checkForNewMax(bindingEventsOverTime);
+    checkForNewMax(unbindingEventsOverTime);
+    const hideTickLabels = {
+        ...AXIS_SETTINGS,
+        showticklabels: false,
+    };
+
+    const plotSettings = {
+        type: "bar" as const,
+        name: "unbind events",
+        marker: { color: AXIS_COLOR },
+        x: time,
+    };
+
+    /**
+     * Initially there is no data, and in that state, the axis
+     * defaults to showing -1.5 to 1.5 and then the xaxis jumps down
+     * when the data starts showing. To avoid this behavior, the yaxis
+     * is given a hardcoded range until the real numbers arrive.
+     */
+    const xAxisRange = max.current > 0 ? ["auto", "auto"] : [0, 1];
+    const yAxisRange = max.current > 0 ? [0, max.current] : [0, 20];
+    /**
+     * Regarding the bottom margin:
+     * the plots need a bottom margin to display numbers. Only one of the
+     * two plots has numbers along the axis, but if the margins are different,
+     * the plots end up being different heights. So they are given the same margin,
+     * defined here, and then the container moves the bottom plot up by the same value
+     */
+    const BOTTOM_MARGIN = 30;
+    const layout = {
+        ...BASE_PLOT_LAYOUT,
+        height: 60,
+        width: width,
+        margin: { l: 10, r: 25.5, b: BOTTOM_MARGIN, t: 0 },
+        xaxis: hideTickLabels,
+        yaxis: {
+            ...hideTickLabels,
+            range: yAxisRange,
+        },
+    };
+
     return (
-        <div className={layoutStyles.container}>
+        <div className={plotStyles.plotContainer}>
             <h3>Reaction events over time</h3>
             <div className={plotStyles.yLabel}>Count of reactions</div>
             <Flex
@@ -61,54 +97,54 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                 gap={8}
                 ref={containerRef}
             >
-                <div>
-                    <A />
-                    <span> + </span>
-                    <B />
-                    <span> &#8594; </span>
-                    <AB />
-                </div>
-                <Plot
-                    data={[
-                        {
-                            x: time,
-                            y: bindingEventsOverTime,
-                            type: "bar" as const,
-                            name: "bind events",
-                            marker: { color: AXIS_COLOR },
-                        },
-                    ]}
-                    layout={{
-                        ...layout,
-                        xaxis: { ...axisSettings },
-                        yaxis: { ...axisSettings },
-                    }}
-                    config={{ displayModeBar: false }}
-                />
-                <div>
-                    <AB />
-                    <span> &#8594; </span>
-                    <A />
-                    <span> + </span>
-                    <B />
-                </div>
-                <Plot
-                    data={[
-                        {
-                            x: time,
-                            y: unbindingEventsOverTime,
-                            type: "bar" as const,
-                            name: "unbind events",
-                            marker: { color: AXIS_COLOR },
-                        },
-                    ]}
-                    layout={{
-                        ...layout,
-                        xaxis: { ...axisSettings },
-                        yaxis: { ...axisSettings },
-                    }}
-                    config={{ displayModeBar: false }}
-                />
+                <Flex vertical>
+                    <div>
+                        <A />
+                        <span> + </span>
+                        <B />
+                        <span> &#8594; </span>
+                        <AB />
+                    </div>
+                    <Plot
+                        data={[
+                            {
+                                ...plotSettings,
+                                y: bindingEventsOverTime,
+                            },
+                        ]}
+                        layout={layout}
+                        config={CONFIG}
+                    />
+                </Flex>
+                <Flex vertical style={{ marginTop: -BOTTOM_MARGIN }}>
+                    <div>
+                        <AB />
+                        <span> &#8594; </span>
+                        <A />
+                        <span> + </span>
+                        <B />
+                    </div>
+                    <Plot
+                        data={[
+                            {
+                                ...plotSettings,
+                                y: unbindingEventsOverTime,
+                            },
+                        ]}
+                        layout={{
+                            ...layout,
+                            xaxis: {
+                                ...AXIS_SETTINGS,
+                                range: xAxisRange,
+                                title: `time (${MICRO}s)`,
+                                titlefont: {
+                                    size: 12,
+                                },
+                            },
+                        }}
+                        config={CONFIG}
+                    />
+                </Flex>
             </Flex>
         </div>
     );

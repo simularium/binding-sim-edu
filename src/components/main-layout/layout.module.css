@@ -30,10 +30,20 @@
     padding: 10px 12px;
 }
 
+.left {
+    border-right: 1px solid var(--app-border-color);
+}
+
+.right {
+    border-left: 1px solid var(--app-border-color);
+}
+
 /* h3 are generally 16px for the app, but 
 the side panels size them down  */
 .side-panel h3 {
     font-size: 14px;
+    color: var(--text-color);
+    margin-bottom: 2px;
 }
 
 .reaction-panel {

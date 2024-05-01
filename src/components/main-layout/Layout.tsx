@@ -26,9 +26,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({
             <Content className={styles.contentPanel}>{content}</Content>
             <Header className={styles.reactionPanel}>{reactionPanel}</Header>
             <Layout>
-                <Sider className={styles.sidePanel} width={"25%"}>{leftPanel}</Sider>
+                <Sider className={[styles.sidePanel, styles.left].join(" ")} width={"25%"}>{leftPanel}</Sider>
                 <Content className={styles.centerPanel}>{centerPanel}</Content>
-                <Sider className={styles.sidePanel} width={"25%"}>{rightPanel}</Sider>
+                <Sider className={[styles.sidePanel, styles.right].join(" ")} width={"25%"}>{rightPanel}</Sider>
             </Layout>
         </Layout>
     );
