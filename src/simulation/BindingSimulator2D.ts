@@ -274,8 +274,8 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             return;
         }
 
-        // checking the rightmost quadrant
-        // and the left most quadrant
+        // checking the rightmost third of the simulation
+        // and the left most third of the simulation
         if (agentInstance.pos.x < -this.size / 3) {
             this.numberAgentOnLeft++;
         } else if (agentInstance.pos.x > this.size / 3) {
