@@ -32,6 +32,7 @@ export default function Viewer({
         hiddenAgents: [],
         colorChange: null,
     });
+    const [lockedCamera, setLockedCamera] = useState(true);
     const container = useRef<HTMLDivElement>(null);
     const { viewportSize, setViewportSize } = useContext(SimulariumContext);
 
@@ -49,11 +50,10 @@ export default function Viewer({
     }, [setViewportToContainerSize]);
 
     useWindowResize(setViewportToContainerSize);
-    
     return (
         <div className={styles.container} key="viewer" ref={container}>
             <SimulariumViewer
-                // lockedCamera={true}
+                lockedCamera={lockedCamera}
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}
                 height={viewportSize.height}
                 width={viewportSize.width}
@@ -62,9 +62,21 @@ export default function Viewer({
                 simulariumController={controller}
                 onJsonDataArrived={() => {}}
                 showCameraControls={false}
-                onTrajectoryFileInfoChanged={(info) => {console.log("trajectory file info changed", info)}}
+                onTrajectoryFileInfoChanged={(info) => {
+                    if (info.trajectoryTitle) {
+                        // is a pre-rendered trajectory
+                        // we want to use the perspective camera 
+                        // and allow the user to move the camera
+                        controller.setCameraType(false);
+                        setLockedCamera(false);
+                    } else {
+                        // local 2D simulation
+                        controller.setCameraType(true);
+                        setLockedCamera(true);
+                    }
+                }}
                 selectionStateInfo={selectionStateInfo}
-                onUIDisplayDataChanged={() => {
+                onUIDisplayDataChanged={(data) => {
                     return undefined;
                 }}
                 loadInitialData={true}
