@@ -5,6 +5,7 @@ import { ReactionType } from "../constants";
 
 interface SimulariumContextType {
     maxConcentration: number;
+    currentProductionConcentration: number;
     isPlaying: boolean;
     setIsPlaying: (value: boolean) => void;
     simulariumController: SimulariumController | null;
@@ -19,6 +20,7 @@ interface SimulariumContextType {
 
 export const SimulariumContext = createContext({
     maxConcentration: getMaxConcentration(ReactionType.A_B_AB),
+    currentProductionConcentration: 0,
     isPlaying: false,
     setIsPlaying: () => {},
     simulariumController: null,

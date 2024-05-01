@@ -251,6 +251,7 @@ function App() {
             <div className="app">
                 <SimulariumContext.Provider
                     value={{
+                        currentProductionConcentration: liveConcentration[ProductNames.AB] || 0,
                         maxConcentration: getMaxConcentration(reactionType),
                         isPlaying,
                         setIsPlaying,
