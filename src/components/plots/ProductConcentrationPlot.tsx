@@ -27,7 +27,7 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
     width,
     height,
 }) => {
-    const { timeFactor } = useContext(SimulariumContext);
+    const { timeFactor, maxConcentration } = useContext(SimulariumContext);
     const hasData = useRef(false);
     const traces = data.map((trace): Partial<PlotData> => {
         const { inputConcentration, productConcentrations } = trace;
@@ -59,7 +59,7 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
             type: "scatter" as const,
             mode: "lines" as const,
             name: inputConcentration.toString(),
-            line: { color: PLOT_COLORS[getColorIndex(inputConcentration)] },
+            line: { color: PLOT_COLORS[getColorIndex(inputConcentration, maxConcentration)] },
         };
     });
     /**

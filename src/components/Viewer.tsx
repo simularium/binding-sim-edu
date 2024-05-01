@@ -53,7 +53,7 @@ export default function Viewer({
     return (
         <div className={styles.container} key="viewer" ref={container}>
             <SimulariumViewer
-                lockedCamera={true}
+                // lockedCamera={true}
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}
                 height={viewportSize.height}
                 width={viewportSize.width}
@@ -62,7 +62,7 @@ export default function Viewer({
                 simulariumController={controller}
                 onJsonDataArrived={() => {}}
                 showCameraControls={false}
-                onTrajectoryFileInfoChanged={() => {}}
+                onTrajectoryFileInfoChanged={(info) => {console.log("trajectory file info changed", info)}}
                 selectionStateInfo={selectionStateInfo}
                 onUIDisplayDataChanged={() => {
                     return undefined;

@@ -234,13 +234,13 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     private initializeAgents(agents: InputAgent[]): StoredAgent[] {
-        let smallestAgentRadius = 1000;
+        let largestRadius = 0;
         for (let i = 0; i < agents.length; ++i) {
             const agent = agents[i] as StoredAgent; // count is no longer optional
             agent.count = this.convertConcentrationToCount(agent.concentration);
-            if (agent.radius < smallestAgentRadius) {
+            if (agent.radius > largestRadius) {
                 // use the smallest agent to check if the system is mixed
-                smallestAgentRadius = agent.radius;
+                largestRadius = agent.radius;
                 this.mixCheckAgent = agent.id;
             }
             for (let j = 0; j < agent.count; ++j) {
@@ -276,9 +276,9 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
         // checking the rightmost quadrant
         // and the left most quadrant
-        if (agentInstance.pos.x < -this.size / 4) {
+        if (agentInstance.pos.x < -this.size / 3) {
             this.numberAgentOnLeft++;
-        } else if (agentInstance.pos.x > this.size / 4) {
+        } else if (agentInstance.pos.x > this.size / 3) {
             this.numberAgentOnRight++;
         }
     }
@@ -289,10 +289,30 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         if (this._isMixed) {
             return;
         }
+
+        // if either of the agents is a limiting reactant
+        // then the system is mixed when it's been used up
+        // even if the other agent is not evenly distributed 
+        let limitReached = false;
+        this.agents.forEach((agent) => {
+            const agentUnbound = agent.count - this.currentNumberBound; 
+            if (agentUnbound / agent.count * 100 < 10) {
+                limitReached = true;
+                return;
+            }
+        })
+        if (limitReached) {
+            console.log("limit is reached is mixed");
+
+            this._isMixed = true;
+            return;
+        }
+
         const diff = Math.abs(this.numberAgentOnLeft - this.numberAgentOnRight);
         const total = this.numberAgentOnLeft + this.numberAgentOnRight;
         const percentUnmixed = (diff / total) * 100;
         if (percentUnmixed < 10) {
+            console.log("System is mixed", percentUnmixed);
             this._isMixed = true;
         }
     }

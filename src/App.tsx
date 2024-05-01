@@ -1,6 +1,10 @@
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import { uniq } from "lodash";
-import { SimulariumController, TimeData } from "@aics/simularium-viewer";
+import {
+    SimulariumController,
+    TimeData,
+    loadSimulariumFile,
+} from "@aics/simularium-viewer";
 import { CheckCircleOutlined } from "@ant-design/icons";
 
 import "./App.css";
@@ -33,7 +37,6 @@ import NavPanel from "./components/main-layout/NavPanel";
 import AdminUI from "./components/AdminUi";
 import { ProductOverTimeTrace } from "./components/plots/types";
 import MainLayout from "./components/main-layout/Layout";
-
 
 const ADJUSTABLE_AGENT = AvailableAgentNames.B;
 
@@ -103,7 +106,6 @@ function App() {
     const clientSimulator = useMemo(() => {
         const activeAgents = getActiveAgents(reactionType);
 
-
         setInputConcentration(getInitialConcentrations(activeAgents));
         const trajectory = createAgentsFromConcentrations(
             activeAgents,
@@ -170,14 +172,52 @@ function App() {
         if (page === 5) {
             setIsPlaying(false);
         }
-        // they have finished recording equilibrium concentrations
-        // I don't love that this breaks the progression control handling all
-        // progress through the content, but I can't think of a way to include this
-        // in the progression control without making it more complicated
-        if (uniq(inputEquilibriumConcentrations).length >= 6 && page === 7) {
+        // they have enough values to determine kd
+        const uniqMeasuredConcentrations = uniq(inputEquilibriumConcentrations);
+        const halfFilled = inputConcentration.A || 10 / 2;
+        const hasAValueAboveKd =
+            uniqMeasuredConcentrations.filter((c) => c > halfFilled).length >=
+            1;
+        const hasAValueBelowKd =
+            uniqMeasuredConcentrations.filter((c) => c < halfFilled).length >=
+            1;
+            console.log(hasAValueAboveKd, hasAValueBelowKd, uniqMeasuredConcentrations.length, page)
+        if (
+            hasAValueAboveKd &&
+            hasAValueBelowKd &&
+            uniqMeasuredConcentrations.length >= 3 &&
+            page === 7
+        ) {
             setPage(page + 1);
         }
-    }, [page, inputEquilibriumConcentrations]);
+        if (page ===3) {
+            fetch(
+                "https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/binding-affinity_antibodies.simularium"
+            )
+                .then((response) => {
+                    if (response.ok) {
+                        return response.blob();
+                    } else {
+                        // If there's a CORS error, this line of code is not reached because there is no response
+                        throw new Error(`Failed to fetch - ${response.status}`);
+                    }
+                })
+                .then((blob) => {
+                    return loadSimulariumFile(blob);
+                })
+                .then((simulariumFile) => {
+                    console.log(simulariumFile);
+                    simulariumController.changeFile(
+                        {
+                            simulariumFile: simulariumFile,
+                        },
+                        "test"
+                    );
+                    setIsPlaying(false);
+
+                }).catch(console.log)
+        }
+    }, [page, inputEquilibriumConcentrations, reactionType]);
 
     const addProductionTrace = (previousConcentration: number) => {
         const traces = productOverTimeTraces;
@@ -192,7 +232,7 @@ function App() {
 
     const handleNewInputConcentration = (name: string, value: number) => {
         if (value === 0) {
-            // this is available on the slider, but we only want it visible 
+            // this is available on the slider, but we only want it visible
             // as an axis marker, not as a selection
             return;
         }
@@ -251,7 +291,8 @@ function App() {
             <div className="app">
                 <SimulariumContext.Provider
                     value={{
-                        currentProductionConcentration: liveConcentration[ProductNames.AB] || 0,
+                        currentProductionConcentration:
+                            liveConcentration[ProductNames.AB] || 0,
                         maxConcentration: getMaxConcentration(reactionType),
                         isPlaying,
                         setIsPlaying,

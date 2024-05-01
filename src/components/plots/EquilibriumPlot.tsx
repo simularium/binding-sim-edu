@@ -24,7 +24,8 @@ interface PlotProps {
 
 const EquilibriumPlot: React.FC<PlotProps> = ({ x, y, height, width }) => {
     const { maxConcentration } = useContext(SimulariumContext);
-    const colors = x.map((value) => PLOT_COLORS[getColorIndex(value)]);
+    const colors = x.map((value) => PLOT_COLORS[getColorIndex(value, maxConcentration)])
+    
     const horizontalDottedLine = {
         x: [0, maxConcentration],
         y: [5, 5],
