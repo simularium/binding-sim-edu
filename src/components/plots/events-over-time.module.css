@@ -4,4 +4,7 @@
 
 .plots {
     margin: 6px 10px 0px 30px;
+    display: "flex";
+    flex-direction: "column";
+    gap: 8;
 }

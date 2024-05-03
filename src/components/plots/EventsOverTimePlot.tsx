@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Flex } from "antd";
 import Plot from "react-plotly.js";
 
@@ -14,6 +14,7 @@ import { MICRO } from "../../constants";
 
 import plotStyles from "./plots.module.css";
 import layoutStyles from "./events-over-time.module.css";
+import ResizeContainer from "../shared/ResizeContainer";
 
 interface PlotProps {
     bindingEventsOverTime: number[];
@@ -26,17 +27,12 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
 }) => {
     const { timeFactor } = useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
-    const containerRef = useRef<HTMLDivElement>(null);
 
     // the two arrays will always be the same length
     // so this time calculation only needs to happen once
     const time = bindingEventsOverTime.map(
         (_, i) => (i * 10 * timeFactor) / 1000
     );
-
-    useEffect(() => {
-        setWidth(containerRef.current?.offsetWidth || 0);
-    }, [containerRef.current?.offsetWidth, width]);
 
     const max = useRef<number>(0);
     const checkForNewMax = (array: number[]) => {
@@ -58,7 +54,6 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
         marker: { color: AXIS_COLOR },
         x: time,
     };
-
     /**
      * Initially there is no data, and in that state, the axis
      * defaults to showing -1.5 to 1.5 and then the xaxis jumps down
@@ -79,7 +74,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
         ...BASE_PLOT_LAYOUT,
         height: 60,
         width: width,
-        margin: { l: 10, r: 25.5, b: BOTTOM_MARGIN, t: 0 },
+        margin: { l: 10, r: BASE_PLOT_LAYOUT.margin.r, b: BOTTOM_MARGIN, t: 0 },
         xaxis: hideTickLabels,
         yaxis: {
             ...hideTickLabels,
@@ -91,13 +86,8 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
         <div className={plotStyles.plotContainer}>
             <h3>Reaction events over time</h3>
             <div className={plotStyles.yLabel}>Count of reactions</div>
-            <Flex
-                className={layoutStyles.plots}
-                vertical
-                gap={8}
-                ref={containerRef}
-            >
-                <Flex vertical>
+            <ResizeContainer className={layoutStyles.plots} setWidth={setWidth}>
+                <Flex vertical style={{ marginBottom: 10 }}>
                     <div>
                         <A />
                         <span> + </span>
@@ -145,7 +135,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                         config={CONFIG}
                     />
                 </Flex>
-            </Flex>
+            </ResizeContainer>
         </div>
     );
 };

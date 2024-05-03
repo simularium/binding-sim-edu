@@ -27,3 +27,9 @@
 .unit {
     margin: 13.5px;
 }
+
+.width-wrapper {
+    gap: 16px;
+    width: 100%;
+    display: flex;
+}

@@ -18,9 +18,11 @@ import plotStyles from "./plots.module.css";
 interface PlotProps {
     x: number[];
     y: number[];
+    height: number;
+    width: number;
 }
 
-const EquilibriumPlot: React.FC<PlotProps> = ({ x, y }) => {
+const EquilibriumPlot: React.FC<PlotProps> = ({ x, y, height, width }) => {
     const { maxConcentration } = useContext(SimulariumContext);
     const colors = x.map(
         (value) => PLOT_COLORS[getColorIndex(value, maxConcentration)]
@@ -51,7 +53,8 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y }) => {
     const layout = {
         ...BASE_PLOT_LAYOUT,
         showlegend: false,
-        height: 130,
+        width: width,
+        height: Math.max(130, height),
         xaxis: {
             ...AXIS_SETTINGS,
             range: [0, maxPlusBuffer],
