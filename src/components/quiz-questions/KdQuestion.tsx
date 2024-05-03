@@ -4,11 +4,11 @@ import { valueType } from "antd/es/statistic/utils";
 import QuizForm from "./QuizForm";
 import VisibilityControl from "../shared/VisibilityControl";
 import InputNumber from "../shared/InputNumber";
-import { ReactionType, kds } from "../../constants";
+import { Module, kds } from "../../constants";
 import { FormState } from "./types";
 import styles from "./popup.module.css";
 interface KdQuestionProps {
-    reactionType: ReactionType;
+    reactionType: Module;
 }
 
 const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {

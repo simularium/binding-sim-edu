@@ -1,17 +1,17 @@
 import React from "react";
-import { ReactionType } from "../../constants";
+import { Module } from "../../constants";
 import ReversibleArrows from "../icons/ReversibleArrows";
 import styles from "./layout.module.css";
 import { A, B, C, AC, AB } from "../agent-symbols";
 
 interface ReactionDisplayProps {
-    reactionType: ReactionType;
+    reactionType: Module;
 }
 
 const ReactionDisplay: React.FC<ReactionDisplayProps> = ({ reactionType }) => {
     return (
         <div className={styles.reaction}>
-            {reactionType === ReactionType.A_B_AB && (
+            {reactionType === Module.A_B_AB && (
                 <>
                     <A />
                     <span> + </span>
@@ -20,7 +20,7 @@ const ReactionDisplay: React.FC<ReactionDisplayProps> = ({ reactionType }) => {
                     <AB />
                 </>
             )}
-            {reactionType === ReactionType.A_C_AC && (
+            {reactionType === Module.A_C_AC && (
                 <>
                     <A />
                     <span> + </span>
@@ -29,7 +29,7 @@ const ReactionDisplay: React.FC<ReactionDisplayProps> = ({ reactionType }) => {
                     <AC />
                 </>
             )}
-            {reactionType === ReactionType.A_B_C_AB_AC && (
+            {reactionType === Module.A_B_C_AB_AC && (
                 <>
                     <A />
                     <span> + </span>

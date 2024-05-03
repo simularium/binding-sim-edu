@@ -1,4 +1,4 @@
-import { ReactionType } from "../constants";
+import { Module } from "../constants";
 import { AvailableAgentNames, InputAgent, InputConcentration, ProductNames } from "../types";
 import {
     AGENT_AB_COLOR,
@@ -75,24 +75,24 @@ export const DEFAULT_TIME_FACTOR = 40;
 export const DEFAULT_VIEWPORT_SIZE = { width: 500, height: 500 };
 export const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
-export const getMaxConcentration = (reactionType: ReactionType): number => {
+export const getMaxConcentration = (reactionType: Module): number => {
     switch (reactionType) {
-        case ReactionType.A_B_AB:
+        case Module.A_B_AB:
             return 20;
-        case ReactionType.A_C_AC:
+        case Module.A_C_AC:
             return 20; //TODO: adjust these as needed
-        case ReactionType.A_B_C_AB_AC:
+        case Module.A_B_C_AB_AC:
             return 20; //TODO: adjust these as needed
     }
 };
 
-export const getActiveAgents = (reactionType: ReactionType): AvailableAgentNames[] => {
+export const getActiveAgents = (reactionType: Module): AvailableAgentNames[] => {
     switch (reactionType) {
-        case ReactionType.A_B_AB:
+        case Module.A_B_AB:
             return [AvailableAgentNames.A, AvailableAgentNames.B];
-        case ReactionType.A_C_AC:
+        case Module.A_C_AC:
             return [AvailableAgentNames.A, AvailableAgentNames.C];
-        case ReactionType.A_B_C_AB_AC:
+        case Module.A_B_C_AB_AC:
             return [
                 AvailableAgentNames.A,
                 AvailableAgentNames.B,

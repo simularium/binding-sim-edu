@@ -26,7 +26,7 @@ import RightPanel from "./components/main-layout/RightPanel";
 import ReactionDisplay from "./components/main-layout/ReactionDisplay";
 import ContentPanel from "./components/main-layout/ContentPanel";
 import content, { moduleNames } from "./content";
-import { ReactionType } from "./constants";
+import { Module } from "./constants";
 import CenterPanel from "./components/main-layout/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
 import NavPanel from "./components/main-layout/NavPanel";
@@ -45,7 +45,7 @@ function App() {
      * Simulation state
      * input values for the simulation
      */
-    const [reactionType] = useState(ReactionType.A_B_AB);
+    const [reactionType] = useState(Module.A_B_AB);
     const [inputConcentration, setInputConcentration] =
         useState<InputConcentration>({
             [AvailableAgentNames.A]:
