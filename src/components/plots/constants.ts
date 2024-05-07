@@ -21,7 +21,7 @@ export const BASE_PLOT_LAYOUT = {
     plot_bgcolor: "rgba(0,0,0,0)",
     width: 300,
     height: 200,
-    margin: { l: 40, r: 10, b: 30, t: 14 },
+    margin: { l: 50, r: 25.5, b: 30, t: 14 },
 };
 
 export const AXIS_SETTINGS = {

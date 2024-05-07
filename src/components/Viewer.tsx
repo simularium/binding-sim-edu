@@ -13,6 +13,7 @@ import SimulariumViewer, {
 import "@aics/simularium-viewer/style/style.css";
 import { SimulariumContext } from "../simulation/context";
 import styles from "./viewer.module.css";
+import useWindowResize from "../hooks/useWindowResize";
 
 interface ViewerProps {
     handleTimeChange: (timeData: TimeData) => void;
@@ -44,20 +45,13 @@ export default function Viewer({
     useEffect(() => {
         setViewportToContainerSize();
     }, [setViewportToContainerSize]);
+    
+    useWindowResize(setViewportToContainerSize);
 
-    const resizeEvent = useRef<NodeJS.Timeout | undefined>(undefined);
-    window.addEventListener("resize", () => {
-        clearTimeout(resizeEvent.current);
-        // resizing resets the simulation so we don't
-        // want to trigger this too often
-        resizeEvent.current = setTimeout(() => {
-            clearTimeout(resizeEvent.current);
-            setViewportToContainerSize()
-        }, 200);
-    });
     if (!simulariumController) {
         return null;
     }
+    
     return (
         <div className={styles.container} key="viewer" ref={container}>
             <SimulariumViewer

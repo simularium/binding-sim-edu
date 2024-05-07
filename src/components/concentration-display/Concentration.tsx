@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import { map } from "lodash";
 import { Flex } from "antd";
 
@@ -13,6 +13,7 @@ import styles from "./concentration.module.css";
 import LiveConcentrationDisplay from "./LiveConcentrationDisplay";
 import ConcentrationSlider from "./ConcentrationSlider";
 import { MICRO } from "../../constants";
+import ResizeContainer from "../shared/ResizeContainer";
 
 interface AgentProps {
     adjustableAgent: AgentName;
@@ -29,12 +30,6 @@ const Concentration: React.FC<AgentProps> = ({
 }) => {
     const { isPlaying, maxConcentration } = useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
-    const containerRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        setWidth(containerRef.current?.offsetWidth || 0);
-    }, [containerRef.current?.offsetWidth, width]);
-
     const getComponent = (
         agent: AgentName,
         currentConcentrationOfAgent: number
@@ -84,17 +79,18 @@ const Concentration: React.FC<AgentProps> = ({
                                 >
                                     {agent}
                                 </span>
-                                <Flex
-                                    gap={16}
-                                    style={{ width: "100%" }}
-                                    ref={containerRef}
+                                <ResizeContainer
+                                    className={styles.widthWrapper}
+                                    setWidth={setWidth}
                                 >
                                     {getComponent(
                                         agent,
                                         agentLiveConcentration
                                     )}
-                                    <span className={styles.unit}>{MICRO}M</span>
-                                </Flex>
+                                    <span className={styles.unit}>
+                                        {MICRO}M
+                                    </span>
+                                </ResizeContainer>
                             </Flex>
                         );
                     }

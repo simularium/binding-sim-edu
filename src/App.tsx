@@ -36,6 +36,7 @@ import MainLayout from "./components/main-layout/Layout";
 import usePageNumber from "./hooks/usePageNumber";
 import fetch3DTrajectory from "./utils/fetch3DTrajectory";
 import { getCurrentProduct } from "./simulation/results";
+import { insertIntoArray, insertValueSorted } from "./utils";
 
 const ADJUSTABLE_AGENT = AgentName.B;
 
@@ -276,14 +277,17 @@ function App() {
             setEquilibriumFeedbackTimeout("Not yet!");
             return false;
         }
-        setInputEquilibriumConcentrations([
-            ...inputEquilibriumConcentrations,
-            reactantConcentration,
-        ]);
-        setProductEquilibriumConcentrations([
-            ...productEquilibriumConcentrations,
-            productConcentration,
-        ]);
+        const { newArray, index } = insertValueSorted(
+            inputEquilibriumConcentrations,
+            reactantConcentration
+        );
+        setInputEquilibriumConcentrations(newArray as number[]);
+        const newProductArray = insertIntoArray(
+            productEquilibriumConcentrations,
+            index,
+            productConcentration
+        );
+        setProductEquilibriumConcentrations(newProductArray as number[]);
         setEquilibriumFeedbackTimeout(
             <>
                 Great! <CheckCircleOutlined />
