@@ -33,7 +33,7 @@ import NavPanel from "./components/main-layout/NavPanel";
 import AdminUI from "./components/AdminUi";
 import { ProductOverTimeTrace } from "./components/plots/types";
 import MainLayout from "./components/main-layout/Layout";
-
+import { insertIntoArray, insertValueSorted } from "./utils";
 
 const ADJUSTABLE_AGENT = AvailableAgentNames.B;
 
@@ -102,7 +102,6 @@ function App() {
 
     const clientSimulator = useMemo(() => {
         const activeAgents = getActiveAgents(reactionType);
-
 
         setInputConcentration(getInitialConcentrations(activeAgents));
         const trajectory = createAgentsFromConcentrations(
@@ -192,7 +191,7 @@ function App() {
 
     const handleNewInputConcentration = (name: string, value: number) => {
         if (value === 0) {
-            // this is available on the slider, but we only want it visible 
+            // this is available on the slider, but we only want it visible
             // as an axis marker, not as a selection
             return;
         }
@@ -231,14 +230,17 @@ function App() {
             setEquilibriumFeedbackTimeout("Not yet!");
             return false;
         }
-        setInputEquilibriumConcentrations([
-            ...inputEquilibriumConcentrations,
-            reactantConcentration,
-        ]);
-        setProductEquilibriumConcentrations([
-            ...productEquilibriumConcentrations,
-            productConcentration,
-        ]);
+        const { newArray, index } = insertValueSorted(
+            inputEquilibriumConcentrations,
+            reactantConcentration
+        );
+        setInputEquilibriumConcentrations(newArray as number[]);
+        const newProductArray = insertIntoArray(
+            productEquilibriumConcentrations,
+            index,
+            productConcentration
+        );
+        setProductEquilibriumConcentrations(newProductArray as number[]);
         setEquilibriumFeedbackTimeout(
             <>
                 Great! <CheckCircleOutlined />
@@ -251,7 +253,8 @@ function App() {
             <div className="app">
                 <SimulariumContext.Provider
                     value={{
-                        currentProductionConcentration: liveConcentration[ProductNames.AB] || 0,
+                        currentProductionConcentration:
+                            liveConcentration[ProductNames.AB] || 0,
                         maxConcentration: getMaxConcentration(reactionType),
                         isPlaying,
                         setIsPlaying,
