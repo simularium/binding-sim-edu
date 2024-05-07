@@ -1,5 +1,5 @@
 import { ContentPanelProps } from "../components/main-layout/ContentPanel";
-import { Module } from "../constants";
+import { Module } from "../types";
 
 export const highAffinityContentArray: ContentPanelProps[] = [
     // making the content array 1 indexed to match the page numbers

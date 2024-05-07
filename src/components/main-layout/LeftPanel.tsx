@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { AvailableAgentNames, CurrentConcentration, InputConcentration } from '../../types';
+import { AgentName, CurrentConcentration, InputConcentration } from '../../types';
 import VisibilityControl from '../shared/VisibilityControl';
 import EventsOverTimePlot from '../plots/EventsOverTimePlot';
 import Concentration from '../concentration-display/Concentration';
 
 interface LeftPanelProps {
-    activeAgents: AvailableAgentNames[];
-    adjustableAgent: AvailableAgentNames;
+    activeAgents: AgentName[];
+    adjustableAgent: AgentName;
     inputConcentration: InputConcentration;
     liveConcentration: CurrentConcentration;
     handleNewInputConcentration: (name: string, value: number) => void;

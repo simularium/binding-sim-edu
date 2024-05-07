@@ -7,21 +7,27 @@ import {
     MouseEventHandler,
 } from "react";
 
-export enum AvailableAgentNames {
+export const enum Module {
+    A_B_AB = 1,
+    A_C_AC = 2,
+    A_B_C_AB_AC = 3,
+}
+
+export enum AgentName {
     A = "A",
     B = "B",
     C = "C",
 }
 
-export enum ProductNames {
+export enum ProductName {
     AB = "AB",
     AC = "AC",
 }
 
-export type StateNames = AvailableAgentNames | ProductNames;
+export type StateNames = AgentName | ProductName;
 
 export type InputConcentration = {
-    [key in AvailableAgentNames]?: number;
+    [key in AgentName]?: number;
 };
 
 export type CurrentConcentration = {
@@ -30,7 +36,7 @@ export type CurrentConcentration = {
 
 export interface InputAgent {
     id: number;
-    name: AvailableAgentNames;
+    name: AgentName;
     concentration: number;
     radius: number;
     partners: number[];
@@ -64,3 +70,10 @@ export type BaseHandler =
 export type ProgressionControlEvent = FormEvent<HTMLButtonElement> &
     ReactMouseEvent<HTMLButtonElement, MouseEvent> &
     ChangeEvent<HTMLInputElement>;
+
+export enum TrajectoryStatus {
+    INITIAL,
+    LOADING,
+    LOADED,
+    ERROR,
+}

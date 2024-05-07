@@ -1,5 +1,4 @@
-import { Module } from "../constants";
-import { AvailableAgentNames, InputAgent, InputConcentration, ProductNames } from "../types";
+import { AgentName, InputAgent, InputConcentration, Module, ProductName } from "../types";
 import {
     AGENT_AB_COLOR,
     AGENT_A_COLOR,
@@ -8,15 +7,15 @@ import {
 } from "../constants/colors";
 
 export const AGENT_AND_PRODUCT_COLORS = {
-    [AvailableAgentNames.A]: AGENT_A_COLOR,
-    [AvailableAgentNames.B]: AGENT_B_COLOR,
-    [AvailableAgentNames.C]: AGENT_C_COLOR,
-    [ProductNames.AB]: AGENT_AB_COLOR,
+    [AgentName.A]: AGENT_A_COLOR,
+    [AgentName.B]: AGENT_B_COLOR,
+    [AgentName.C]: AGENT_C_COLOR,
+    [ProductName.AB]: AGENT_AB_COLOR,
 };
 
 const agentA: InputAgent = {
     id: 0,
-    name: AvailableAgentNames.A,
+    name: AgentName.A,
     concentration: 0,
     radius: 3,
     partners: [1, 2],
@@ -25,7 +24,7 @@ const agentA: InputAgent = {
 
 const agentB: InputAgent = {
     id: 1,
-    name: AvailableAgentNames.B,
+    name: AgentName.B,
     concentration: 0,
     radius: 0.7,
     partners: [0],
@@ -36,7 +35,7 @@ const agentB: InputAgent = {
 
 const agentC: InputAgent = {
     id: 2,
-    name: AvailableAgentNames.C,
+    name: AgentName.C,
     concentration: 0,
     radius: 1,
     partners: [0],
@@ -46,25 +45,16 @@ const agentC: InputAgent = {
 };
 
 export const AVAILABLE_AGENTS = {
-    [AvailableAgentNames.A]: agentA,
-    [AvailableAgentNames.B]: agentB,
-    [AvailableAgentNames.C]: agentC,
-};
-
-const trajectory1 = ["A", "B"];
-const trajectory2 = ["A", "B"];
-const trajectory3 = ["A", "B", "C"];
-export const trajectories: { [key: number]: string[] } = {
-    0: trajectory1,
-    1: trajectory2,
-    2: trajectory3,
+    [AgentName.A]: agentA,
+    [AgentName.B]: agentB,
+    [AgentName.C]: agentC,
 };
 
 export const createAgentsFromConcentrations = (
-    activeAgents: AvailableAgentNames[],
-    concentrations: { [key in AvailableAgentNames]: number }
+    activeAgents: AgentName[],
+    concentrations: { [key in AgentName]: number }
 ): InputAgent[] => {
-    return activeAgents.map((agentName: AvailableAgentNames) => {
+    return activeAgents.map((agentName: AgentName) => {
         const agent = AVAILABLE_AGENTS[agentName];
         agent.concentration = concentrations[agentName];
         return agent;
@@ -72,7 +62,6 @@ export const createAgentsFromConcentrations = (
 };
 
 export const DEFAULT_TIME_FACTOR = 40;
-export const DEFAULT_VIEWPORT_SIZE = { width: 500, height: 500 };
 export const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
 export const getMaxConcentration = (reactionType: Module): number => {
@@ -86,23 +75,24 @@ export const getMaxConcentration = (reactionType: Module): number => {
     }
 };
 
-export const getActiveAgents = (reactionType: Module): AvailableAgentNames[] => {
+export const getActiveAgents = (reactionType: Module): AgentName[] => {
     switch (reactionType) {
         case Module.A_B_AB:
-            return [AvailableAgentNames.A, AvailableAgentNames.B];
+            return [AgentName.A, AgentName.B];
         case Module.A_C_AC:
-            return [AvailableAgentNames.A, AvailableAgentNames.C];
+            return [AgentName.A, AgentName.C];
         case Module.A_B_C_AB_AC:
             return [
-                AvailableAgentNames.A,
-                AvailableAgentNames.B,
-                AvailableAgentNames.C,
+                AgentName.A,
+                AgentName.B,
+                AgentName.C,
             ];
     }
 };
 
-export const getInitialConcentrations = (activeAgents: AvailableAgentNames[]): InputConcentration => {
+export const getInitialConcentrations = (activeAgents: AgentName[]): InputConcentration => {
     return activeAgents.reduce((acc, agent) => {
         return { ...acc, [agent]: INITIAL_CONCENTRATIONS[agent] };
     }, {});
 };
+

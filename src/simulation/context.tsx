@@ -1,7 +1,8 @@
 import { SimulariumController, TimeData } from "@aics/simularium-viewer";
 import { createContext } from "react";
-import { DEFAULT_VIEWPORT_SIZE, getMaxConcentration } from "./trajectories-settings";
-import { Module } from "../constants";
+import { getMaxConcentration } from "./setup";
+import { DEFAULT_VIEWPORT_SIZE } from "../constants";
+import { Module } from "../types";
 
 interface SimulariumContextType {
     maxConcentration: number;

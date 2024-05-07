@@ -1,8 +1,8 @@
 import React from "react";
-import { Module } from "../../constants";
 import ReversibleArrows from "../icons/ReversibleArrows";
 import styles from "./layout.module.css";
 import { A, B, C, AC, AB } from "../agent-symbols";
+import { Module } from "../../types";
 
 interface ReactionDisplayProps {
     reactionType: Module;
