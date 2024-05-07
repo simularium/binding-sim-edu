@@ -528,7 +528,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.timeFactor = timeScale;
     }
 
-    public getCurrentConcentrations() {
+    public getCurrentConcentrations(product: ProductName) {
         const init = <{[key: string]: number}>{}
         const concentrations = this.agents.reduce((acc, agent) => {
             acc[agent.name] = this.convertCountToConcentration(
@@ -536,9 +536,9 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             );
             return acc;
         }, init);
-        // TODO: generalize this for the other trajectories 
-        // for module 1 we only have AB
-        concentrations[ProductName.AB] = this.convertCountToConcentration(this.currentNumberBound);
+        concentrations[product] = this.convertCountToConcentration(
+            this.currentNumberBound
+        );
         return concentrations;
     }
 

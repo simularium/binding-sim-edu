@@ -208,8 +208,9 @@ function App() {
 
     // User input handlers
     const handleTimeChange = (timeData: TimeData) => {
-        const concentrations =
-            clientSimulator.getCurrentConcentrations() as CurrentConcentration;
+        const concentrations = clientSimulator.getCurrentConcentrations(
+            productName
+        ) as CurrentConcentration;
         const productConcentration = concentrations[productName];
         if (productConcentration !== undefined) {
             const newData = [
@@ -268,7 +269,7 @@ function App() {
 
     const handleRecordEquilibrium = () => {
         const productConcentration =
-            clientSimulator.getCurrentConcentrations()[productName];
+            clientSimulator.getCurrentConcentrations(productName)[productName];
         const reactantConcentration = inputConcentration[ADJUSTABLE_AGENT] || 0;
 
         if (!clientSimulator.isMixed()) {
