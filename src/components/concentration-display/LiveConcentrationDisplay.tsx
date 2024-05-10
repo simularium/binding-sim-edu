@@ -1,14 +1,14 @@
 import { Flex, Progress } from "antd";
 import React, { useContext } from "react";
-import { AGENT_AND_PRODUCT_COLORS } from "../../simulation/trajectories-settings";
-import { AvailableAgentNames } from "../../types";
+import { AGENT_AND_PRODUCT_COLORS } from "../../simulation/setup";
+import { AgentName } from "../../types";
 
 import styles from "./live-concentration-display.module.css";
 import { SimulariumContext } from "../../simulation/context";
 
 interface LiveConcentrationDisplayProps {
     concentration: number;
-    agent: AvailableAgentNames;
+    agent: AgentName;
     width: number;
 }
 

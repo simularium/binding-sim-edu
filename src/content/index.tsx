@@ -1,5 +1,5 @@
 import { ContentPanelProps } from "../components/main-layout/ContentPanel";
-import { ReactionType } from "../constants";
+import { Module } from "../types";
 
 export const highAffinityContentArray: ContentPanelProps[] = [
     // making the content array 1 indexed to match the page numbers
@@ -65,11 +65,11 @@ export const highAffinityContentArray: ContentPanelProps[] = [
 ];
 
 export const moduleNames = {
-    [ReactionType.A_B_AB] : "High Affinity",
-    [ReactionType.A_C_AC] : "Low Affinity",
-    [ReactionType.A_B_C_AB_AC] : "Competitive Binding",
+    [Module.A_B_AB] : "High Affinity",
+    [Module.A_C_AC] : "Low Affinity",
+    [Module.A_B_C_AB_AC] : "Competitive Binding",
 }
 
 export default {
-    [ReactionType.A_B_AB]: highAffinityContentArray
-} as {[key in ReactionType]: ContentPanelProps[]};
+    [Module.A_B_AB]: highAffinityContentArray
+} as {[key in Module]: ContentPanelProps[]};

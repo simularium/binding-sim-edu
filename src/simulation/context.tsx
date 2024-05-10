@@ -1,7 +1,8 @@
 import { SimulariumController, TimeData } from "@aics/simularium-viewer";
 import { createContext } from "react";
-import { DEFAULT_VIEWPORT_SIZE, getMaxConcentration } from "./trajectories-settings";
-import { ReactionType } from "../constants";
+import { getMaxConcentration } from "./setup";
+import { DEFAULT_VIEWPORT_SIZE } from "../constants";
+import { Module } from "../types";
 
 interface SimulariumContextType {
     maxConcentration: number;
@@ -19,7 +20,7 @@ interface SimulariumContextType {
 }
 
 export const SimulariumContext = createContext({
-    maxConcentration: getMaxConcentration(ReactionType.A_B_AB),
+    maxConcentration: getMaxConcentration(Module.A_B_AB),
     currentProductionConcentration: 0,
     isPlaying: false,
     setIsPlaying: () => {},

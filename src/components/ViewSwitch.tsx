@@ -9,12 +9,10 @@ import LabIcon from "./icons/Lab";
 import Molecules from "./icons/Molecules";
 import LabView from "./LabView";
 
-
 enum View {
     Lab = "lab",
     Simulation = "simulation",
 }
-
 
 const ViewSwitch: React.FC = () => {
     const [currentView, setCurrentView] = useState<View>(View.Lab);
@@ -24,11 +22,8 @@ const ViewSwitch: React.FC = () => {
             prevView === View.Lab ? View.Simulation : View.Lab
         );
     };
-    const { isPlaying, setIsPlaying, simulariumController, handleTimeChange } =
+    const { isPlaying, setIsPlaying, handleTimeChange } =
         useContext(SimulariumContext);
-    if (!simulariumController) {
-        return null;
-    }
     return (
         <div style={{ position: "relative", height: "100%" }}>
             <ProgressionControl onPage={1}>
@@ -48,7 +43,6 @@ const ViewSwitch: React.FC = () => {
             <Viewer
                 isPlaying={isPlaying}
                 setIsPlaying={setIsPlaying}
-                controller={simulariumController}
                 handleTimeChange={handleTimeChange}
             />
         </div>

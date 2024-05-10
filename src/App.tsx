@@ -8,50 +8,57 @@ import BindingSimulator from "./simulation/BindingSimulator2D";
 import {
     AVAILABLE_AGENTS,
     DEFAULT_TIME_FACTOR,
-    DEFAULT_VIEWPORT_SIZE,
     INITIAL_CONCENTRATIONS,
     createAgentsFromConcentrations,
     getActiveAgents,
     getInitialConcentrations,
     getMaxConcentration,
-} from "./simulation/trajectories-settings";
+} from "./simulation/setup";
 import {
-    AvailableAgentNames,
+    AgentName,
     CurrentConcentration,
     InputConcentration,
-    ProductNames,
+    Module,
+    TrajectoryStatus,
 } from "./types";
 import LeftPanel from "./components/main-layout/LeftPanel";
 import RightPanel from "./components/main-layout/RightPanel";
 import ReactionDisplay from "./components/main-layout/ReactionDisplay";
 import ContentPanel from "./components/main-layout/ContentPanel";
 import content, { moduleNames } from "./content";
-import { ReactionType } from "./constants";
+import { DEFAULT_VIEWPORT_SIZE, EXAMPLE_TRAJECTORY_URLS } from "./constants";
 import CenterPanel from "./components/main-layout/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
 import NavPanel from "./components/main-layout/NavPanel";
 import AdminUI from "./components/AdminUi";
 import { ProductOverTimeTrace } from "./components/plots/types";
 import MainLayout from "./components/main-layout/Layout";
+import usePageNumber from "./hooks/usePageNumber";
+import fetch3DTrajectory from "./utils/fetch3DTrajectory";
+import { getCurrentProduct } from "./simulation/results";
 import { insertIntoArray, insertValueSorted } from "./utils";
 
-const ADJUSTABLE_AGENT = AvailableAgentNames.B;
+const ADJUSTABLE_AGENT = AgentName.B;
 
 function App() {
     const [page, setPage] = useState(1);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [trajectoryStatus, setTrajectoryStatus] = useState(TrajectoryStatus.INITIAL);
 
     /**
      * Simulation state
      * input values for the simulation
      */
-    const [reactionType] = useState(ReactionType.A_B_AB);
+    const [currentModule] = useState(Module.A_B_AB);
+    const productName = useMemo(() => {
+        return getCurrentProduct(currentModule);
+    }, [currentModule]);
     const [inputConcentration, setInputConcentration] =
         useState<InputConcentration>({
-            [AvailableAgentNames.A]:
-                INITIAL_CONCENTRATIONS[AvailableAgentNames.A],
-            [AvailableAgentNames.B]:
-                INITIAL_CONCENTRATIONS[AvailableAgentNames.B],
+            [AgentName.A]:
+                INITIAL_CONCENTRATIONS[AgentName.A],
+            [AgentName.B]:
+                INITIAL_CONCENTRATIONS[AgentName.B],
         });
     const [timeFactor, setTimeFactor] = useState(DEFAULT_TIME_FACTOR);
     const [viewportSize, setViewportSize] = useState(DEFAULT_VIEWPORT_SIZE);
@@ -61,11 +68,9 @@ function App() {
      */
     const [liveConcentration, setLiveConcentration] =
         useState<CurrentConcentration>({
-            [AvailableAgentNames.A]:
-                INITIAL_CONCENTRATIONS[AvailableAgentNames.A],
-            [AvailableAgentNames.B]:
-                INITIAL_CONCENTRATIONS[AvailableAgentNames.B],
-            [ProductNames.AB]: 0,
+            [AgentName.A]: INITIAL_CONCENTRATIONS[AgentName.A],
+            [AgentName.B]: INITIAL_CONCENTRATIONS[AgentName.B],
+            [productName]: 0,
         });
     const [productOverTimeTraces, setProductOverTimeTraces] = useState<
         ProductOverTimeTrace[]
@@ -96,13 +101,13 @@ function App() {
         setCurrentProductConcentrationArray([]);
     };
 
+    // SIMULATION INITIALIZATION
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
     }, []);
 
     const clientSimulator = useMemo(() => {
-        const activeAgents = getActiveAgents(reactionType);
-
+        const activeAgents = getActiveAgents(currentModule);
         setInputConcentration(getInitialConcentrations(activeAgents));
         const trajectory = createAgentsFromConcentrations(
             activeAgents,
@@ -110,16 +115,118 @@ function App() {
         );
         resetAnalysisState();
         return new BindingSimulator(trajectory, viewportSize.width / 5);
-    }, [reactionType, viewportSize]);
+    }, [currentModule, viewportSize]);
 
+    useEffect(() => {
+        simulariumController.changeFile(
+            {
+                clientSimulator: clientSimulator,
+            },
+            "binding-simulator"
+        );
+    }, [simulariumController, clientSimulator]);
+
+    // Synchronize the simulation play with the UI
+    useEffect(() => {
+        if (isPlaying) {
+            clientSimulator.initialState = false;
+            simulariumController.resume();
+        } else {
+            simulariumController.pause();
+        }
+    }, [isPlaying, simulariumController, clientSimulator]);
+
+    useEffect(() => {
+        clientSimulator.setTimeScale(timeFactor);
+    }, [timeFactor, clientSimulator]);
+
+
+    // Ongoing check to see if they've measured enough values to determine Kd
+    const halfFilled = inputConcentration.A ? inputConcentration.A / 2 : 5;
+    const uniqMeasuredConcentrations = useMemo(
+        () => uniq(inputEquilibriumConcentrations),
+        [inputEquilibriumConcentrations]
+    );
+    const hasAValueAboveKd = useMemo(
+        () =>
+            uniqMeasuredConcentrations.filter((c) => c > halfFilled).length >=
+            1,
+        [halfFilled, uniqMeasuredConcentrations]
+    );
+    const hasAValueBelowKd = useMemo(
+        () =>
+            uniqMeasuredConcentrations.filter((c) => c < halfFilled).length >=
+            1,
+        [halfFilled, uniqMeasuredConcentrations]
+    );
+    const canDetermineEquilibrium = useMemo(() => {
+        return (
+            hasAValueAboveKd &&
+            hasAValueBelowKd &&
+            uniqMeasuredConcentrations.length >= 3
+        );
+    }, [hasAValueAboveKd, hasAValueBelowKd, uniqMeasuredConcentrations]);
+
+    // Special events in page navigation
+    // usePageNumber takes a page number, a conditional and a callback 
+    usePageNumber(
+        page,
+        (page) => page === 5,
+        () => setIsPlaying(false)
+    );
+
+    // if they hit pause instead of clicking "Next", we still want to progress
+    usePageNumber(
+        page, 
+        (page) => page === 4 && uniqMeasuredConcentrations.length > 0 && !isPlaying,
+        () => {
+            setPage(5);
+        }
+    );
+    usePageNumber(
+        page,
+        (page) => canDetermineEquilibrium && page === 7,
+        () => setPage(8)
+    );
+    
+    usePageNumber(
+        page,
+        (page) =>
+            page === content[currentModule].length - 1 &&
+            trajectoryStatus == TrajectoryStatus.INITIAL,
+        async () => {
+            setIsPlaying(false);
+            setTrajectoryStatus(TrajectoryStatus.LOADING);
+            resetAnalysisState();
+            await fetch3DTrajectory(
+                EXAMPLE_TRAJECTORY_URLS[currentModule],
+                simulariumController
+            );
+            setTrajectoryStatus(TrajectoryStatus.LOADED);
+        }
+    );
+
+    const addProductionTrace = (previousConcentration: number) => {
+        const traces = productOverTimeTraces;
+        if (currentProductConcentrationArray.length > 0) {
+            const newTrace = {
+                inputConcentration: previousConcentration,
+                productConcentrations: currentProductConcentrationArray,
+            };
+            setProductOverTimeTraces([...traces, newTrace]);
+        }
+    };
+
+    // User input handlers
     const handleTimeChange = (timeData: TimeData) => {
-        const concentrations =
-            clientSimulator.getCurrentConcentrations() as CurrentConcentration;
-        if (concentrations[ProductNames.AB] !== undefined) {
-            // for the first module this will always be true
+        const concentrations = clientSimulator.getCurrentConcentrations(
+            productName
+        ) as CurrentConcentration;
+        const productConcentration = concentrations[productName];
+        if (productConcentration !== undefined) {
             const newData = [
                 ...currentProductConcentrationArray,
-                concentrations[ProductNames.AB],
+                productConcentration,
             ];
             setCurrentProductConcentrationArray(newData);
         }
@@ -139,63 +246,13 @@ function App() {
         }
     };
 
-    useEffect(() => {
-        simulariumController.setCameraType(true);
-        simulariumController.changeFile(
-            {
-                clientSimulator: clientSimulator,
-            },
-            "binding-simulator"
-        );
-    }, [simulariumController, clientSimulator]);
-
-    useEffect(() => {
-        if (isPlaying) {
-            clientSimulator.initialState = false;
-            simulariumController.resume();
-        } else {
-            simulariumController.pause();
-        }
-    }, [isPlaying, simulariumController, clientSimulator]);
-
-    useEffect(() => {
-        clientSimulator.setTimeScale(timeFactor);
-    }, [timeFactor, clientSimulator]);
-
-    useEffect(() => {
-        // we pause the simulation to show them how to adjust
-        // the concentration of the reactant
-        // this happens on page 5.
-        if (page === 5) {
-            setIsPlaying(false);
-        }
-        // they have finished recording equilibrium concentrations
-        // I don't love that this breaks the progression control handling all
-        // progress through the content, but I can't think of a way to include this
-        // in the progression control without making it more complicated
-        if (uniq(inputEquilibriumConcentrations).length >= 6 && page === 7) {
-            setPage(page + 1);
-        }
-    }, [page, inputEquilibriumConcentrations]);
-
-    const addProductionTrace = (previousConcentration: number) => {
-        const traces = productOverTimeTraces;
-        if (currentProductConcentrationArray.length > 0) {
-            const newTrace = {
-                inputConcentration: previousConcentration,
-                productConcentrations: currentProductConcentrationArray,
-            };
-            setProductOverTimeTraces([...traces, newTrace]);
-        }
-    };
-
     const handleNewInputConcentration = (name: string, value: number) => {
         if (value === 0) {
             // this is available on the slider, but we only want it visible
             // as an axis marker, not as a selection
             return;
         }
-        const agentName = name as AvailableAgentNames;
+        const agentName = name as AgentName;
         const agentId = AVAILABLE_AGENTS[agentName].id;
         clientSimulator.changeConcentration(agentId, value);
         const previousConcentration = inputConcentration[agentName] || 0;
@@ -208,7 +265,7 @@ function App() {
         setLiveConcentration({
             ...inputConcentration,
             [name]: value,
-            [ProductNames.AB]: 0,
+            [productName]: 0,
         });
 
         resetAnalysisState();
@@ -223,7 +280,7 @@ function App() {
 
     const handleRecordEquilibrium = () => {
         const productConcentration =
-            clientSimulator.getCurrentConcentrations()[ProductNames.AB];
+            clientSimulator.getCurrentConcentrations(productName)[productName];
         const reactantConcentration = inputConcentration[ADJUSTABLE_AGENT] || 0;
 
         if (!clientSimulator.isMixed()) {
@@ -254,8 +311,8 @@ function App() {
                 <SimulariumContext.Provider
                     value={{
                         currentProductionConcentration:
-                            liveConcentration[ProductNames.AB] || 0,
-                        maxConcentration: getMaxConcentration(reactionType),
+                            liveConcentration[productName] || 0,
+                        maxConcentration: getMaxConcentration(currentModule),
                         isPlaying,
                         setIsPlaying,
                         simulariumController,
@@ -272,19 +329,19 @@ function App() {
                         header={
                             <NavPanel
                                 page={page}
-                                title={moduleNames[reactionType]}
-                                total={content[reactionType].length}
+                                title={moduleNames[currentModule]}
+                                total={content[currentModule].length}
                             />
                         }
                         content={
-                            <ContentPanel {...content[reactionType][page]} />
+                            <ContentPanel {...content[currentModule][page]} />
                         }
                         reactionPanel={
-                            <ReactionDisplay reactionType={reactionType} />
+                            <ReactionDisplay reactionType={currentModule} />
                         }
                         leftPanel={
                             <LeftPanel
-                                activeAgents={getActiveAgents(reactionType)}
+                                activeAgents={getActiveAgents(currentModule)}
                                 inputConcentration={inputConcentration}
                                 liveConcentration={liveConcentration}
                                 handleNewInputConcentration={
@@ -298,7 +355,7 @@ function App() {
                             />
                         }
                         centerPanel={
-                            <CenterPanel reactionType={reactionType} />
+                            <CenterPanel reactionType={currentModule} />
                         }
                         rightPanel={
                             <RightPanel

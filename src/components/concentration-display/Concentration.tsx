@@ -3,11 +3,11 @@ import { map } from "lodash";
 import { Flex } from "antd";
 
 import {
-    AvailableAgentNames,
+    AgentName,
     CurrentConcentration,
     InputConcentration,
 } from "../../types";
-import { AGENT_AND_PRODUCT_COLORS } from "../../simulation/trajectories-settings";
+import { AGENT_AND_PRODUCT_COLORS } from "../../simulation/setup";
 import { SimulariumContext } from "../../simulation/context";
 import styles from "./concentration.module.css";
 import LiveConcentrationDisplay from "./LiveConcentrationDisplay";
@@ -16,7 +16,7 @@ import { MICRO } from "../../constants";
 import ResizeContainer from "../shared/ResizeContainer";
 
 interface AgentProps {
-    adjustableAgent: AvailableAgentNames;
+    adjustableAgent: AgentName;
     concentration: InputConcentration;
     onChange: (name: string, value: number) => void;
     liveConcentration: CurrentConcentration;
@@ -31,7 +31,7 @@ const Concentration: React.FC<AgentProps> = ({
     const { isPlaying, maxConcentration } = useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
     const getComponent = (
-        agent: AvailableAgentNames,
+        agent: AgentName,
         currentConcentrationOfAgent: number
     ) => {
         if (adjustableAgent === agent && !isPlaying) {
@@ -63,7 +63,7 @@ const Concentration: React.FC<AgentProps> = ({
                     liveConcentration,
                     (
                         agentLiveConcentration: number,
-                        agent: AvailableAgentNames
+                        agent: AgentName
                     ) => {
                         return (
                             <Flex

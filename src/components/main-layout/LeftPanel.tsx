@@ -1,7 +1,7 @@
 import React from "react";
 
 import {
-    AvailableAgentNames,
+    AgentName,
     CurrentConcentration,
     InputConcentration,
 } from "../../types";
@@ -10,8 +10,8 @@ import EventsOverTimePlot from "../plots/EventsOverTimePlot";
 import Concentration from "../concentration-display/Concentration";
 
 interface LeftPanelProps {
-    activeAgents: AvailableAgentNames[];
-    adjustableAgent: AvailableAgentNames;
+    activeAgents: AgentName[];
+    adjustableAgent: AgentName;
     inputConcentration: InputConcentration;
     liveConcentration: CurrentConcentration;
     handleNewInputConcentration: (name: string, value: number) => void;
