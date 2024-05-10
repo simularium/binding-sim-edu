@@ -43,7 +43,9 @@ const ADJUSTABLE_AGENT = AgentName.B;
 function App() {
     const [page, setPage] = useState(1);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [trajectoryStatus, setTrajectoryStatus] = useState(TrajectoryStatus.INITIAL);
+    const [trajectoryStatus, setTrajectoryStatus] = useState(
+        TrajectoryStatus.INITIAL
+    );
 
     /**
      * Simulation state
@@ -55,10 +57,8 @@ function App() {
     }, [currentModule]);
     const [inputConcentration, setInputConcentration] =
         useState<InputConcentration>({
-            [AgentName.A]:
-                INITIAL_CONCENTRATIONS[AgentName.A],
-            [AgentName.B]:
-                INITIAL_CONCENTRATIONS[AgentName.B],
+            [AgentName.A]: INITIAL_CONCENTRATIONS[AgentName.A],
+            [AgentName.B]: INITIAL_CONCENTRATIONS[AgentName.B],
         });
     const [timeFactor, setTimeFactor] = useState(DEFAULT_TIME_FACTOR);
     const [viewportSize, setViewportSize] = useState(DEFAULT_VIEWPORT_SIZE);
@@ -140,7 +140,6 @@ function App() {
         clientSimulator.setTimeScale(timeFactor);
     }, [timeFactor, clientSimulator]);
 
-
     // Ongoing check to see if they've measured enough values to determine Kd
     const halfFilled = inputConcentration.A ? inputConcentration.A / 2 : 5;
     const uniqMeasuredConcentrations = useMemo(
@@ -168,7 +167,7 @@ function App() {
     }, [hasAValueAboveKd, hasAValueBelowKd, uniqMeasuredConcentrations]);
 
     // Special events in page navigation
-    // usePageNumber takes a page number, a conditional and a callback 
+    // usePageNumber takes a page number, a conditional and a callback
     usePageNumber(
         page,
         (page) => page === 5,
@@ -177,8 +176,9 @@ function App() {
 
     // if they hit pause instead of clicking "Next", we still want to progress
     usePageNumber(
-        page, 
-        (page) => page === 4 && uniqMeasuredConcentrations.length > 0 && !isPlaying,
+        page,
+        (page) =>
+            page === 4 && uniqMeasuredConcentrations.length > 0 && !isPlaying,
         () => {
             setPage(5);
         }
@@ -188,7 +188,7 @@ function App() {
         (page) => canDetermineEquilibrium && page === 7,
         () => setPage(8)
     );
-    
+
     usePageNumber(
         page,
         (page) =>
@@ -231,7 +231,6 @@ function App() {
             setCurrentProductConcentrationArray(newData);
         }
         setLiveConcentration(concentrations);
-
         if (timeData.time % 10 === 0) {
             const { numberBindEvents, numberUnBindEvents } =
                 clientSimulator.getEvents();
