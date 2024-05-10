@@ -1,4 +1,10 @@
-import { AgentName, InputAgent, InputConcentration, Module, ProductName } from "../types";
+import {
+    AgentName,
+    InputAgent,
+    InputConcentration,
+    Module,
+    ProductName,
+} from "../types";
 import {
     AGENT_AB_COLOR,
     AGENT_A_COLOR,
@@ -61,7 +67,7 @@ export const createAgentsFromConcentrations = (
     });
 };
 
-export const DEFAULT_TIME_FACTOR = 40;
+export const DEFAULT_TIME_FACTOR = 85;
 export const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 
 export const getMaxConcentration = (reactionType: Module): number => {
@@ -82,17 +88,14 @@ export const getActiveAgents = (reactionType: Module): AgentName[] => {
         case Module.A_C_AC:
             return [AgentName.A, AgentName.C];
         case Module.A_B_C_AB_AC:
-            return [
-                AgentName.A,
-                AgentName.B,
-                AgentName.C,
-            ];
+            return [AgentName.A, AgentName.B, AgentName.C];
     }
 };
 
-export const getInitialConcentrations = (activeAgents: AgentName[]): InputConcentration => {
+export const getInitialConcentrations = (
+    activeAgents: AgentName[]
+): InputConcentration => {
     return activeAgents.reduce((acc, agent) => {
         return { ...acc, [agent]: INITIAL_CONCENTRATIONS[agent] };
     }, {});
 };
-
