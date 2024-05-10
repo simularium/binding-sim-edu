@@ -1,8 +1,8 @@
-import React, { ReactNode } from 'react';
-import { Layout } from 'antd';
+import React, { ReactNode } from "react";
+import { Layout } from "antd";
 const { Header, Sider, Content } = Layout;
 
-import styles from './layout.module.css';
+import styles from "./layout.module.css";
 interface MainLayoutProps {
     header: ReactNode;
     leftPanel: ReactNode;
@@ -18,7 +18,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     rightPanel,
     content,
     centerPanel,
-    reactionPanel
+    reactionPanel,
 }) => {
     return (
         <Layout>
@@ -26,9 +26,19 @@ const MainLayout: React.FC<MainLayoutProps> = ({
             <Content className={styles.contentPanel}>{content}</Content>
             <Header className={styles.reactionPanel}>{reactionPanel}</Header>
             <Layout>
-                <Sider className={[styles.sidePanel, styles.left].join(" ")} width={"25%"}>{leftPanel}</Sider>
+                <Sider
+                    className={[styles.sidePanel, styles.left].join(" ")}
+                    width={"25%"}
+                >
+                    {leftPanel}
+                </Sider>
                 <Content className={styles.centerPanel}>{centerPanel}</Content>
-                <Sider className={[styles.sidePanel, styles.right].join(" ")} width={"25%"}>{rightPanel}</Sider>
+                <Sider
+                    className={[styles.sidePanel, styles.right].join(" ")}
+                    width={"25%"}
+                >
+                    {rightPanel}
+                </Sider>
             </Layout>
         </Layout>
     );
