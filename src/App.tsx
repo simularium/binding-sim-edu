@@ -174,6 +174,15 @@ function App() {
         (page) => page === 5,
         () => setIsPlaying(false)
     );
+
+    // if they hit pause instead of clicking "Next", we still want to progress
+    usePageNumber(
+        page, 
+        (page) => page === 4 && uniqMeasuredConcentrations.length > 0 && !isPlaying,
+        () => {
+            setPage(5);
+        }
+    );
     usePageNumber(
         page,
         (page) => canDetermineEquilibrium && page === 7,
@@ -188,6 +197,7 @@ function App() {
         async () => {
             setIsPlaying(false);
             setTrajectoryStatus(TrajectoryStatus.LOADING);
+            resetAnalysisState();
             await fetch3DTrajectory(
                 EXAMPLE_TRAJECTORY_URLS[currentModule],
                 simulariumController
