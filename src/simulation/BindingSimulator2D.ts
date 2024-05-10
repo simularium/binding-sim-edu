@@ -15,6 +15,7 @@ import {
 import { InputAgent, ProductName, StoredAgent } from "../types";
 import { AGENT_AB_COLOR } from "../constants/colors";
 import { DEFAULT_TIME_FACTOR } from "./setup";
+import { LIVE_SIMULATION_NAME } from "../constants";
 
 class BindingInstance extends Circle {
     id: number;
@@ -715,6 +716,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         return {
             // TODO get msgType and connId out of here
             connId: "hello world",
+            trajectoryTitle: LIVE_SIMULATION_NAME,
             msgType: ClientMessageEnum.ID_TRAJECTORY_FILE_INFO,
             version: 3,
             timeStepSize: 1,

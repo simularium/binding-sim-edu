@@ -14,6 +14,7 @@ export const CURRENT_PRODUCT = {
 
 export const MICRO = String.fromCharCode(956);
 export const DEFAULT_VIEWPORT_SIZE = { width: 500, height: 500 };
+export const LIVE_SIMULATION_NAME = "Binding Affinity Simulation";
 export const EXAMPLE_TRAJECTORY_URLS = {
     [Module.A_B_AB]:
         "https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/binding-affinity_antibodies.simularium",

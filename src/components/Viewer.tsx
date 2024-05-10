@@ -14,6 +14,7 @@ import "@aics/simularium-viewer/style/style.css";
 import { SimulariumContext } from "../simulation/context";
 import styles from "./viewer.module.css";
 import useWindowResize from "../hooks/useWindowResize";
+import { LIVE_SIMULATION_NAME } from "../constants";
 
 interface ViewerProps {
     handleTimeChange: (timeData: TimeData) => void;
@@ -45,7 +46,7 @@ export default function Viewer({
     useEffect(() => {
         setViewportToContainerSize();
     }, [setViewportToContainerSize]);
-    
+
     useWindowResize(setViewportToContainerSize);
 
     if (!simulariumController) {
@@ -65,16 +66,16 @@ export default function Viewer({
                 onJsonDataArrived={() => {}}
                 showCameraControls={false}
                 onTrajectoryFileInfoChanged={(trajectoryInfo) => {
-                    if (trajectoryInfo.trajectoryTitle) {
-                        // 3d trajectory 
-                        // allow camera to move and switch to perspective camera
-                        simulariumController.setCameraType(false);
-                        setLockedCamera(false);
-                    } else {
+                    if (trajectoryInfo.trajectoryTitle === LIVE_SIMULATION_NAME) {
                         // 2d trajectory
                         // lock camera and switch to orthographic camera
                         simulariumController.setCameraType(true);
                         setLockedCamera(true);
+                    } else {
+                        // 3d trajectory 
+                        // allow camera to move and switch to perspective camera
+                        simulariumController.setCameraType(false);
+                        setLockedCamera(false);
                     }
                 }}
                 selectionStateInfo={selectionStateInfo}
