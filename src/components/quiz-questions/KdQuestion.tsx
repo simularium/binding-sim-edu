@@ -4,9 +4,10 @@ import { valueType } from "antd/es/statistic/utils";
 import QuizForm from "./QuizForm";
 import VisibilityControl from "../shared/VisibilityControl";
 import InputNumber from "../shared/InputNumber";
-import { Module, kds } from "../../constants";
+import { kds } from "../../constants";
 import { FormState } from "./types";
 import styles from "./popup.module.css";
+import { Module } from "../../types";
 interface KdQuestionProps {
     reactionType: Module;
 }
