@@ -11,7 +11,7 @@ import {
 const customTheme = {
     algorithm: theme.darkAlgorithm,
     token: {
-        fontFamily: 'Open Sans, sans-serif',
+        fontFamily: "Open Sans, sans-serif",
         borderRadius: 4,
         colorPrimary: BRIGHT_PURPLE_DARKER,
         colorBgContainer: BG_DARK,
@@ -55,9 +55,9 @@ const customTheme = {
         },
         Progress: {
             defaultColor: BRIGHT_PURPLE_DARKER,
+            colorSuccess: BRIGHT_PURPLE_DARKER,
         },
     },
 };
-
 
 export default customTheme;
