@@ -2,10 +2,10 @@ import React from 'react';
 import ViewSwitch from '../ViewSwitch';
 import EquilibriumQuestion from '../quiz-questions/EquilibriumQuestion';
 import KdQuestion from '../quiz-questions/KdQuestion';
-import { ReactionType } from '../../constants';
+import { Module } from '../../types';
 
 interface CenterPanelProps {
-    reactionType: ReactionType;
+    reactionType: Module;
 }
 
 const CenterPanel: React.FC<CenterPanelProps> = ({ reactionType }) => {

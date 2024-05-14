@@ -43,8 +43,12 @@ const RightPanel: React.FC<RightPanelProps> = ({
         ];
     }
     return (
-        <ResizeContainer setWidth={setWidth} setHeight={setHeight} style={{height: "100%"}}>
-            <VisibilityControl excludedPages={[0, 1, 2, 9, 10 ]}>
+        <ResizeContainer
+            setWidth={setWidth}
+            setHeight={setHeight}
+            style={{ height: "100%" }}
+        >
+            <VisibilityControl excludedPages={[0, 1, 2]}>
                 <h3>
                     Concentration over time for <AB />
                 </h3>

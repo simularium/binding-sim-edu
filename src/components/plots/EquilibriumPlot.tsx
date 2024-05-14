@@ -14,6 +14,7 @@ import { AGENT_AB_COLOR, AGENT_B_COLOR } from "../../constants/colors";
 import { MICRO } from "../../constants";
 
 import plotStyles from "./plots.module.css";
+import { Dash } from "plotly.js";
 
 interface PlotProps {
     x: number[];
@@ -24,15 +25,17 @@ interface PlotProps {
 
 const EquilibriumPlot: React.FC<PlotProps> = ({ x, y, height, width }) => {
     const { maxConcentration } = useContext(SimulariumContext);
-    const colors = x.map((value) => PLOT_COLORS[getColorIndex(value, maxConcentration)])
-    
+    const colors = x.map(
+        (value) => PLOT_COLORS[getColorIndex(value, maxConcentration)]
+    );
+    const maxPlusBuffer = maxConcentration + 1;
     const horizontalDottedLine = {
-        x: [0, maxConcentration],
+        x: [0, maxPlusBuffer],
         y: [5, 5],
         mode: "lines",
         line: {
             color: GRAY_COLOR,
-            dash: "dot",
+            width: 1,
         },
     };
     const trace = [
@@ -41,9 +44,15 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y, height, width }) => {
             x,
             y,
             type: "scatter" as const,
-            mode: "markers" as const,
+            mode: "lines+markers" as const,
             name: "equilibrium",
             marker: { color: colors },
+            line: {
+                color: GRAY_COLOR,
+                shape: "spline" as const,
+                width: 1,
+                dash: "dot" as Dash,
+            },
         },
     ];
 
@@ -54,7 +63,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y, height, width }) => {
         height: Math.max(130, height),
         xaxis: {
             ...AXIS_SETTINGS,
-            range: [0, maxConcentration],
+            range: [0, maxPlusBuffer],
             title: `[B] ${MICRO}M`,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,

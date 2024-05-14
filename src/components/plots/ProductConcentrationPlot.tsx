@@ -59,7 +59,11 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
             type: "scatter" as const,
             mode: "lines" as const,
             name: inputConcentration.toString(),
-            line: { color: PLOT_COLORS[getColorIndex(inputConcentration, maxConcentration)] },
+            line: {
+                color: PLOT_COLORS[
+                    getColorIndex(inputConcentration, maxConcentration)
+                ],
+            },
         };
     });
     /**

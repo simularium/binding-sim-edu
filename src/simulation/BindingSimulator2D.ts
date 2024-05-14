@@ -12,9 +12,10 @@ import {
     DEFAULT_CAMERA_SPEC,
     VisTypes,
 } from "@aics/simularium-viewer";
-import { InputAgent, ProductNames, StoredAgent } from "../types";
+import { InputAgent, ProductName, StoredAgent } from "../types";
 import { AGENT_AB_COLOR } from "../constants/colors";
-import { DEFAULT_TIME_FACTOR } from "./trajectories-settings";
+import { DEFAULT_TIME_FACTOR } from "./setup";
+import { LIVE_SIMULATION_NAME } from "../constants";
 
 class BindingInstance extends Circle {
     id: number;
@@ -239,7 +240,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             const agent = agents[i] as StoredAgent; // count is no longer optional
             agent.count = this.convertConcentrationToCount(agent.concentration);
             if (agent.radius > largestRadius) {
-                // use the smallest agent to check if the system is mixed
+                // use the largest agent to check if the system is mixed
                 largestRadius = agent.radius;
                 this.mixCheckAgent = agent.id;
             }
@@ -274,8 +275,8 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             return;
         }
 
-        // checking the rightmost quadrant
-        // and the left most quadrant
+        // checking the rightmost third of the simulation
+        // and the left most third of the simulation
         if (agentInstance.pos.x < -this.size / 3) {
             this.numberAgentOnLeft++;
         } else if (agentInstance.pos.x > this.size / 3) {
@@ -292,18 +293,16 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
         // if either of the agents is a limiting reactant
         // then the system is mixed when it's been used up
-        // even if the other agent is not evenly distributed 
+        // even if the other agent is not evenly distributed
         let limitReached = false;
         this.agents.forEach((agent) => {
-            const agentUnbound = agent.count - this.currentNumberBound; 
-            if (agentUnbound / agent.count * 100 < 10) {
+            const agentUnbound = agent.count - this.currentNumberBound;
+            if ((agentUnbound / agent.count) * 100 < 10) {
                 limitReached = true;
                 return;
             }
-        })
+        });
         if (limitReached) {
-            console.log("limit is reached is mixed");
-
             this._isMixed = true;
             return;
         }
@@ -531,17 +530,17 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.timeFactor = timeScale;
     }
 
-    public getCurrentConcentrations() {
-        const init = <{[key: string]: number}>{}
+    public getCurrentConcentrations(product: ProductName) {
+        const init = <{ [key: string]: number }>{};
         const concentrations = this.agents.reduce((acc, agent) => {
             acc[agent.name] = this.convertCountToConcentration(
                 agent.count - this.currentNumberBound
             );
             return acc;
         }, init);
-        // TODO: generalize this for the other trajectories 
-        // for module 1 we only have AB
-        concentrations[ProductNames.AB] = this.convertCountToConcentration(this.currentNumberBound);
+        concentrations[product] = this.convertCountToConcentration(
+            this.currentNumberBound
+        );
         return concentrations;
     }
 
@@ -718,6 +717,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         return {
             // TODO get msgType and connId out of here
             connId: "hello world",
+            trajectoryTitle: LIVE_SIMULATION_NAME,
             msgType: ClientMessageEnum.ID_TRAJECTORY_FILE_INFO,
             version: 3,
             timeStepSize: 1,

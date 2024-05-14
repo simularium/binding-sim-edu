@@ -27,7 +27,6 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
 }) => {
     const { timeFactor } = useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
-    const max = useRef<number>(0);
 
     // the two arrays will always be the same length
     // so this time calculation only needs to happen once
@@ -35,9 +34,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
         (_, i) => (i * 10 * timeFactor) / 1000
     );
 
-    if (bindingEventsOverTime.length === 0) {
-        max.current = 0;
-    }
+    const max = useRef<number>(0);
     const checkForNewMax = (array: number[]) => {
         const currentValue = array[array.length - 1];
         if (currentValue > max.current) {

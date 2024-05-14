@@ -3,11 +3,11 @@ import { map } from "lodash";
 import { Flex } from "antd";
 
 import {
-    AvailableAgentNames,
+    AgentName,
     CurrentConcentration,
     InputConcentration,
 } from "../../types";
-import { AGENT_AND_PRODUCT_COLORS } from "../../simulation/trajectories-settings";
+import { AGENT_AND_PRODUCT_COLORS } from "../../simulation/setup";
 import { SimulariumContext } from "../../simulation/context";
 import styles from "./concentration.module.css";
 import LiveConcentrationDisplay from "./LiveConcentrationDisplay";
@@ -16,7 +16,7 @@ import { MICRO } from "../../constants";
 import ResizeContainer from "../shared/ResizeContainer";
 
 interface AgentProps {
-    adjustableAgent: AvailableAgentNames;
+    adjustableAgent: AgentName;
     concentration: InputConcentration;
     onChange: (name: string, value: number) => void;
     liveConcentration: CurrentConcentration;
@@ -28,13 +28,13 @@ const Concentration: React.FC<AgentProps> = ({
     adjustableAgent,
     liveConcentration,
 }) => {
-    const { isPlaying, maxConcentration } = useContext(SimulariumContext);
+    const { isPlaying, maxConcentration, page } = useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
     const getComponent = (
-        agent: AvailableAgentNames,
+        agent: AgentName,
         currentConcentrationOfAgent: number
     ) => {
-        if (adjustableAgent === agent && !isPlaying) {
+        if (adjustableAgent === agent && !isPlaying && page !== 2) {
             return (
                 <ConcentrationSlider
                     min={0}
@@ -61,10 +61,7 @@ const Concentration: React.FC<AgentProps> = ({
             <Flex className={styles.container} vertical>
                 {map(
                     liveConcentration,
-                    (
-                        agentLiveConcentration: number,
-                        agent: AvailableAgentNames
-                    ) => {
+                    (agentLiveConcentration: number, agent: AgentName) => {
                         return (
                             <Flex
                                 className={styles.concentration}
