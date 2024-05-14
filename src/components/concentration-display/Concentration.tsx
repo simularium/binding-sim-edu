@@ -28,13 +28,13 @@ const Concentration: React.FC<AgentProps> = ({
     adjustableAgent,
     liveConcentration,
 }) => {
-    const { isPlaying, maxConcentration } = useContext(SimulariumContext);
+    const { isPlaying, maxConcentration, page } = useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
     const getComponent = (
         agent: AgentName,
         currentConcentrationOfAgent: number
     ) => {
-        if (adjustableAgent === agent && !isPlaying) {
+        if (adjustableAgent === agent && !isPlaying && page !== 2) {
             return (
                 <ConcentrationSlider
                     min={0}
@@ -61,10 +61,7 @@ const Concentration: React.FC<AgentProps> = ({
             <Flex className={styles.container} vertical>
                 {map(
                     liveConcentration,
-                    (
-                        agentLiveConcentration: number,
-                        agent: AgentName
-                    ) => {
+                    (agentLiveConcentration: number, agent: AgentName) => {
                         return (
                             <Flex
                                 className={styles.concentration}
