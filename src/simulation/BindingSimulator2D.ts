@@ -311,7 +311,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         const total = this.numberAgentOnLeft + this.numberAgentOnRight;
         const percentUnmixed = (diff / total) * 100;
         if (percentUnmixed < 10) {
-            console.log("System is mixed", percentUnmixed);
             this._isMixed = true;
         }
     }
