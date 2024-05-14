@@ -179,9 +179,7 @@ function App() {
         page,
         (page) =>
             page === 4 && uniqMeasuredConcentrations.length > 0 && !isPlaying,
-        () => {
-            setPage(5);
-        }
+        () => setPage(5)
     );
     usePageNumber(
         page,
