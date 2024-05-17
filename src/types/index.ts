@@ -37,7 +37,7 @@ export type CurrentConcentration = {
 export interface InputAgent {
     id: number;
     name: AgentName;
-    concentration: number;
+    initialConcentration: number;
     radius: number;
     partners: number[];
     kOn?: number;

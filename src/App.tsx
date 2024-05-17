@@ -206,12 +206,13 @@ function App() {
 
     const addProductionTrace = (previousConcentration: number) => {
         const traces = productOverTimeTraces;
-        if (currentProductConcentrationArray.length > 0) {
+        if (currentProductConcentrationArray.length > 1) {
             const newTrace = {
                 inputConcentration: previousConcentration,
                 productConcentrations: currentProductConcentrationArray,
             };
             setProductOverTimeTraces([...traces, newTrace]);
+            setCurrentProductConcentrationArray([]);
         }
     };
 
@@ -243,28 +244,37 @@ function App() {
         }
     };
 
+    const handleFinishInputConcentrationChange = (
+        name: string,
+        value: number
+    ) => {
+        // this is called when the user finishes dragging the slider
+        // it stores the previous collected data and resets the live data
+        const agentName = name as AgentName;
+        const previousConcentration = inputConcentration[agentName] || 0;
+        addProductionTrace(previousConcentration);
+        setInputConcentration({ ...inputConcentration, [name]: value });
+        setLiveConcentration({
+            ...inputConcentration,
+            [name]: value,
+            [productName]: 0,
+        });
+    };
+
     const handleNewInputConcentration = (name: string, value: number) => {
         if (value === 0) {
             // this is available on the slider, but we only want it visible
             // as an axis marker, not as a selection
             return;
         }
+        // this is called when the user changes the slider
+        // it updates the simulation to have the new value and clears
+        // the collected data
         const agentName = name as AgentName;
         const agentId = AVAILABLE_AGENTS[agentName].id;
         clientSimulator.changeConcentration(agentId, value);
-        const previousConcentration = inputConcentration[agentName] || 0;
-        addProductionTrace(previousConcentration);
-        setInputConcentration({ ...inputConcentration, [name]: value });
         const time = simulariumController.time();
-
         simulariumController.gotoTime(time + 1);
-
-        setLiveConcentration({
-            ...inputConcentration,
-            [name]: value,
-            [productName]: 0,
-        });
-
         resetAnalysisState();
     };
 
@@ -343,6 +353,9 @@ function App() {
                                 liveConcentration={liveConcentration}
                                 handleNewInputConcentration={
                                     handleNewInputConcentration
+                                }
+                                handleFinishInputConcentrationChange={
+                                    handleFinishInputConcentrationChange
                                 }
                                 bindingEventsOverTime={bindingEventsOverTime}
                                 unbindingEventsOverTime={

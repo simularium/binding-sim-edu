@@ -22,7 +22,7 @@ export const AGENT_AND_PRODUCT_COLORS = {
 const agentA: InputAgent = {
     id: 0,
     name: AgentName.A,
-    concentration: 0,
+    initialConcentration: 0,
     radius: 3,
     partners: [1, 2],
     color: AGENT_A_COLOR,
@@ -31,7 +31,7 @@ const agentA: InputAgent = {
 const agentB: InputAgent = {
     id: 1,
     name: AgentName.B,
-    concentration: 0,
+    initialConcentration: 0,
     radius: 0.7,
     partners: [0],
     kOn: 0.6,
@@ -42,7 +42,7 @@ const agentB: InputAgent = {
 const agentC: InputAgent = {
     id: 2,
     name: AgentName.C,
-    concentration: 0,
+    initialConcentration: 0,
     radius: 1,
     partners: [0],
     kOn: 0.5,
@@ -61,8 +61,8 @@ export const createAgentsFromConcentrations = (
     concentrations: { [key in AgentName]: number }
 ): InputAgent[] => {
     return activeAgents.map((agentName: AgentName) => {
-        const agent = AVAILABLE_AGENTS[agentName];
-        agent.concentration = concentrations[agentName];
+        const agent = { ...AVAILABLE_AGENTS[agentName] };
+        agent.initialConcentration = concentrations[agentName];
         return agent;
     });
 };
@@ -73,7 +73,7 @@ export const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 export const getMaxConcentration = (reactionType: Module): number => {
     switch (reactionType) {
         case Module.A_B_AB:
-            return 20;
+            return 10;
         case Module.A_C_AC:
             return 20; //TODO: adjust these as needed
         case Module.A_B_C_AB_AC:

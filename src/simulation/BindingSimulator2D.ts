@@ -1,5 +1,5 @@
 import { System, Circle, Response } from "detect-collisions";
-import { random } from "lodash";
+import { find, random } from "lodash";
 import { Vector } from "sat";
 
 import {
@@ -238,7 +238,14 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         let largestRadius = 0;
         for (let i = 0; i < agents.length; ++i) {
             const agent = agents[i] as StoredAgent; // count is no longer optional
-            agent.count = this.convertConcentrationToCount(agent.concentration);
+            // if this is called from the constructor, the count will be undefined
+            // if it's called from update concentration
+            // the count will already be set
+            if (agent.count === undefined) {
+                agent.count = this.convertConcentrationToCount(
+                    agent.initialConcentration
+                );
+            }
             if (agent.radius > largestRadius) {
                 // use the largest agent to check if the system is mixed
                 largestRadius = agent.radius;
@@ -293,15 +300,15 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
         // if either of the agents is a limiting reactant
         // then the system is mixed when it's been used up
-        // even if the other agent is not evenly distributed 
+        // even if the other agent is not evenly distributed
         let limitReached = false;
         this.agents.forEach((agent) => {
-            const agentUnbound = agent.count - this.currentNumberBound; 
-            if (agentUnbound / agent.count * 100 < 10) {
+            const agentUnbound = agent.count - this.currentNumberBound;
+            if ((agentUnbound / agent.count) * 100 < 10) {
                 limitReached = true;
                 return;
             }
-        })
+        });
         if (limitReached) {
             this._isMixed = true;
             return;
@@ -402,7 +409,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         if (!a.isTrigger && !b.isTrigger) {
             return;
         }
-        if (numberOfPasses > 5) {
+        if (numberOfPasses > 8) {
             return;
         }
 
@@ -428,7 +435,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                         // This check is to keep from having to resolve
                         // a ridiculous number of collisions
                         // the value is half the radius of the larger agent
-                        if (overlap > 1.5) {
+                        if (overlap > 1) {
                             return this.resolveCollision(
                                 a,
                                 b,
@@ -464,13 +471,14 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     public changeConcentration(agentId: number, newConcentration: number) {
-        const agent = this.agents.find((agent) => agent.id === agentId);
+        const agent = find(this.agents, (agent) => agent.id === agentId);
         if (!agent) {
             return;
         }
         const newCount = this.convertConcentrationToCount(newConcentration);
         const oldCount = agent.count || 0;
         agent.count = newCount;
+        agent.initialConcentration = newConcentration;
         this.static = true;
         if (!this.initialState) {
             // if the simulation has played, it needs to be reset to the
@@ -530,7 +538,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     public getCurrentConcentrations(product: ProductName) {
-        const init = <{[key: string]: number}>{}
+        const init = <{ [key: string]: number }>{};
         const concentrations = this.agents.reduce((acc, agent) => {
             acc[agent.name] = this.convertCountToConcentration(
                 agent.count - this.currentNumberBound
