@@ -8,7 +8,7 @@ import theme from "./style/theme.ts";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-        <ConfigProvider theme={theme} >
+        <ConfigProvider theme={theme}>
             <App />
         </ConfigProvider>
     </React.StrictMode>

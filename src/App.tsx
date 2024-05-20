@@ -42,6 +42,7 @@ const ADJUSTABLE_AGENT = AgentName.B;
 
 function App() {
     const [page, setPage] = useState(1);
+    const [time, setTime] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [trajectoryStatus, setTrajectoryStatus] = useState(
         TrajectoryStatus.INITIAL
@@ -218,6 +219,7 @@ function App() {
 
     // User input handlers
     const handleTimeChange = (timeData: TimeData) => {
+        setTime(timeData.time);
         const concentrations = clientSimulator.getCurrentConcentrations(
             productName
         ) as CurrentConcentration;
@@ -273,7 +275,6 @@ function App() {
         const agentName = name as AgentName;
         const agentId = AVAILABLE_AGENTS[agentName].id;
         clientSimulator.changeConcentration(agentId, value);
-        const time = simulariumController.time();
         simulariumController.gotoTime(time + 1);
         resetAnalysisState();
     };
