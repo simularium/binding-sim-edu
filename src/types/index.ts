@@ -46,6 +46,14 @@ export interface InputAgent {
     color: string;
 }
 
+export interface ScatterTrace {
+    x: number[];
+    y: number[];
+    mode: "markers" | "lines" | "lines+markers";
+    type: "scatter";
+    name: string;
+}
+
 export interface StoredAgent extends InputAgent {
     count: number;
 }

@@ -705,7 +705,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         const size = this.size;
         for (let i = 0; i < this.agents.length; ++i) {
             typeMapping[this.agents[i].id] = {
-                name: `${this.agents[i].id}`,
+                name: `${this.agents[i].name}`,
                 geometry: {
                     color: this.agents[i].color,
                     displayType: GeometryDisplayType.SPHERE,
@@ -713,7 +713,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 },
             };
             typeMapping[this.agents[i].id + 100] = {
-                name: `${this.agents[i].id}#bound`,
+                name: `${this.agents[i].name}#bound`,
                 geometry: {
                     color: AGENT_AB_COLOR,
                     displayType: GeometryDisplayType.SPHERE,

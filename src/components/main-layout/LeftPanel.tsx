@@ -10,7 +10,6 @@ import EventsOverTimePlot from "../plots/EventsOverTimePlot";
 import Concentration from "../concentration-display/Concentration";
 
 interface LeftPanelProps {
-    activeAgents: AgentName[];
     adjustableAgent: AgentName;
     inputConcentration: InputConcentration;
     liveConcentration: CurrentConcentration;

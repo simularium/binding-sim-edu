@@ -81,8 +81,8 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
                     }
                 }}
                 selectionStateInfo={selectionStateInfo}
-                onUIDisplayDataChanged={() => {
-                    return undefined;
+                onUIDisplayDataChanged={(data) => {
+                    console.log("UIDisplayDataChanged", data);
                 }}
                 loadInitialData={true}
                 showPaths={true}

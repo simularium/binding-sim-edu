@@ -23,14 +23,16 @@ const LiveConcentrationDisplay: React.FC<LiveConcentrationDisplayProps> = ({
     const widthMinusMargins = Math.max(width - MARGINS, 0);
     // the steps have a 2px gap, so we are adjusting the
     // size of the step based on the total number we want
-    const size = widthMinusMargins / maxConcentration - 2;
+    const numberOfSteps = Math.min(maxConcentration, 20);
+    const size = widthMinusMargins / numberOfSteps - 2;
+    console.log((concentration / maxConcentration) * 100);
     return (
         <div className={styles.container}>
             <Progress
                 className={styles.progressBar}
                 percent={Math.ceil((concentration / maxConcentration) * 100)}
                 key={agent}
-                steps={maxConcentration}
+                // steps={numberOfSteps}
                 showInfo={false}
                 strokeColor={AGENT_AND_PRODUCT_COLORS[agent]}
                 style={{ width: widthMinusMargins }}

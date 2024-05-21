@@ -73,7 +73,7 @@ export const INITIAL_CONCENTRATIONS = { A: 10, B: 10, C: 10 };
 export const getMaxConcentration = (reactionType: Module): number => {
     switch (reactionType) {
         case Module.A_B_AB:
-            return 10;
+            return 500;
         case Module.A_C_AC:
             return 20; //TODO: adjust these as needed
         case Module.A_B_C_AB_AC:

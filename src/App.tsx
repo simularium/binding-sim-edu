@@ -19,6 +19,7 @@ import {
     CurrentConcentration,
     InputConcentration,
     Module,
+    ScatterTrace,
     TrajectoryStatus,
 } from "./types";
 import LeftPanel from "./components/main-layout/LeftPanel";
@@ -37,6 +38,7 @@ import usePageNumber from "./hooks/usePageNumber";
 import fetch3DTrajectory from "./utils/fetch3DTrajectory";
 import { getCurrentProduct } from "./simulation/results";
 import { insertIntoArray, insertValueSorted } from "./utils";
+import PlotData from "./simulation/plotdata";
 
 const ADJUSTABLE_AGENT = AgentName.B;
 
@@ -67,6 +69,8 @@ function App() {
      * Analysis state
      * used to create plots and feedback
      */
+    const [trajectoryPlotData, setTrajectoryPlotData] =
+        useState<ScatterTrace[]>();
     const [liveConcentration, setLiveConcentration] =
         useState<CurrentConcentration>({
             [AgentName.A]: INITIAL_CONCENTRATIONS[AgentName.A],
@@ -117,6 +121,13 @@ function App() {
         resetAnalysisState();
         return new BindingSimulator(trajectory, viewportSize.width / 5);
     }, [currentModule, viewportSize]);
+
+    const plotDataManager = useMemo(() => {
+        if (!trajectoryPlotData) {
+            return null;
+        }
+        return new PlotData(trajectoryPlotData);
+    }, [trajectoryPlotData]);
 
     useEffect(() => {
         simulariumController.changeFile(
@@ -190,16 +201,15 @@ function App() {
 
     usePageNumber(
         page,
-        (page) =>
-            page === content[currentModule].length - 1 &&
-            trajectoryStatus == TrajectoryStatus.INITIAL,
+        (page) => page === 3 && trajectoryStatus == TrajectoryStatus.INITIAL,
         async () => {
             setIsPlaying(false);
             setTrajectoryStatus(TrajectoryStatus.LOADING);
             resetAnalysisState();
             await fetch3DTrajectory(
                 EXAMPLE_TRAJECTORY_URLS[currentModule],
-                simulariumController
+                simulariumController,
+                setTrajectoryPlotData
             );
             setTrajectoryStatus(TrajectoryStatus.LOADED);
         }
@@ -220,9 +230,16 @@ function App() {
     // User input handlers
     const handleTimeChange = (timeData: TimeData) => {
         setTime(timeData.time);
-        const concentrations = clientSimulator.getCurrentConcentrations(
-            productName
-        ) as CurrentConcentration;
+        let concentrations: CurrentConcentration;
+        if (plotDataManager) {
+            plotDataManager.update(timeData.time);
+            concentrations = plotDataManager.getCurrentConcentrations();
+            console.log(concentrations);
+        } else {
+            concentrations = clientSimulator.getCurrentConcentrations(
+                productName
+            ) as CurrentConcentration;
+        }
         const productConcentration = concentrations[productName];
         if (productConcentration !== undefined) {
             const newData = [
@@ -349,7 +366,6 @@ function App() {
                         }
                         leftPanel={
                             <LeftPanel
-                                activeAgents={getActiveAgents(currentModule)}
                                 inputConcentration={inputConcentration}
                                 liveConcentration={liveConcentration}
                                 handleNewInputConcentration={
