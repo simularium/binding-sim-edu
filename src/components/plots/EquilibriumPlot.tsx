@@ -29,6 +29,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y, height, width }) => {
         (value) => PLOT_COLORS[getColorIndex(value, maxConcentration)]
     );
     const maxPlusBuffer = maxConcentration + 1;
+
     const horizontalDottedLine = {
         x: [0, maxPlusBuffer],
         y: [5, 5],
@@ -72,7 +73,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y, height, width }) => {
         },
         yaxis: {
             ...AXIS_SETTINGS,
-            range: [0, maxConcentration / 2],
+            range: [0, maxConcentration],
             title: `[AB] ${MICRO}M`,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,

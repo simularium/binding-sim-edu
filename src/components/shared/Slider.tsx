@@ -7,11 +7,12 @@ interface SliderProps {
     step: number;
     initialValue: number;
     onChange: (name: string, value: number) => void;
+    onChangeComplete?: (name: string, value: number) => void;
     name: string;
     disabled?: boolean;
     marks?: SliderSingleProps["marks"];
     className?: string;
-    disabledNumbers?: number[]
+    disabledNumbers?: number[];
 }
 
 const Slider: React.FC<SliderProps> = ({
@@ -24,7 +25,8 @@ const Slider: React.FC<SliderProps> = ({
     disabled,
     marks,
     className,
-    disabledNumbers
+    disabledNumbers,
+    onChangeComplete,
 }) => {
     const [value, setValue] = useState(initialValue);
     const handleSliderChange = (newValue: number) => {
@@ -37,6 +39,13 @@ const Slider: React.FC<SliderProps> = ({
         onChange(name, newValue);
     };
 
+    const handleSliderChangeComplete = (newValue: number) => {
+        if (disabledNumbers && disabledNumbers.includes(newValue)) {
+            return;
+        }
+        onChangeComplete && onChangeComplete(name, newValue);
+    };
+
     return (
         <SliderAntd
             className={className}
@@ -46,7 +55,7 @@ const Slider: React.FC<SliderProps> = ({
             step={step}
             value={value}
             onChange={handleSliderChange}
-            onChangeComplete={handleSliderChange}
+            onChangeComplete={handleSliderChangeComplete}
             disabled={disabled}
             marks={marks}
         />

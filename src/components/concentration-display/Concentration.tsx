@@ -19,6 +19,7 @@ interface AgentProps {
     adjustableAgent: AgentName;
     concentration: InputConcentration;
     onChange: (name: string, value: number) => void;
+    onChangeComplete?: (name: string, value: number) => void;
     liveConcentration: CurrentConcentration;
 }
 
@@ -27,6 +28,7 @@ const Concentration: React.FC<AgentProps> = ({
     onChange,
     adjustableAgent,
     liveConcentration,
+    onChangeComplete,
 }) => {
     const { isPlaying, maxConcentration, page } = useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
@@ -42,6 +44,7 @@ const Concentration: React.FC<AgentProps> = ({
                     name={agent}
                     initialValue={concentration[agent] || 0}
                     onChange={onChange}
+                    onChangeComplete={onChangeComplete}
                     key={agent}
                 />
             );
