@@ -15,7 +15,6 @@ const fetch3DTrajectory = async (
             const blob = await response.blob();
             const simulariumFile = await loadSimulariumFile(blob);
             const plotData = simulariumFile.getPlotData();
-            console.log(plotData);
             setTrajectoryPlotData(plotData[0].data as ScatterTrace[]); // we're not using histograms
             await simulariumController.changeFile(
                 {
