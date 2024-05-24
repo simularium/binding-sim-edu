@@ -7,7 +7,6 @@ import {
     CurrentConcentration,
     InputConcentration,
 } from "../../types";
-import { AGENT_AND_PRODUCT_COLORS } from "../../simulation/setup";
 import { SimulariumContext } from "../../simulation/context";
 import styles from "./concentration.module.css";
 import LiveConcentrationDisplay from "./LiveConcentrationDisplay";
@@ -30,7 +29,8 @@ const Concentration: React.FC<AgentProps> = ({
     liveConcentration,
     onChangeComplete,
 }) => {
-    const { isPlaying, maxConcentration, page } = useContext(SimulariumContext);
+    const { isPlaying, maxConcentration, page, getAgentColor } =
+        useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
     const getComponent = (
         agent: AgentName,
@@ -74,7 +74,7 @@ const Concentration: React.FC<AgentProps> = ({
                                 <span
                                     className={styles.agentName}
                                     style={{
-                                        color: AGENT_AND_PRODUCT_COLORS[agent],
+                                        color: getAgentColor(agent),
                                     }}
                                 >
                                     {agent}

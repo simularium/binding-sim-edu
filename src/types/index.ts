@@ -13,15 +13,26 @@ export const enum Module {
     A_B_C_AB_AC = 3,
 }
 
+export enum AgentFunction {
+    Fixed = "Fixed",
+    Adjustable = "Adjustable",
+    Competitor = "Competitor",
+    Complex = "Complex",
+}
+
 export enum AgentName {
     A = "A",
     B = "B",
     C = "C",
+    Antibody = "Antibody",
+    Antigen = "Antigen",
 }
 
 export enum ProductName {
     AB = "AB",
     AC = "AC",
+    AntibodyAntigen = "Antibody-Antigen",
+    Hemoglobin = "Hemoglobin",
 }
 
 export type StateNames = AgentName | ProductName;

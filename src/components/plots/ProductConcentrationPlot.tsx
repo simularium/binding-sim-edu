@@ -29,6 +29,9 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
 }) => {
     const { timeFactor, maxConcentration } = useContext(SimulariumContext);
     const hasData = useRef(false);
+    if (data.length === 0) {
+        hasData.current = false;
+    }
     const traces = data.map((trace): Partial<PlotData> => {
         const { inputConcentration, productConcentrations } = trace;
         if (!productConcentrations) {
