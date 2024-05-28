@@ -1,7 +1,7 @@
 import { Module } from "../types";
 
 export const kds = {
-    [Module.A_B_AB]: 10, // TODO: get actual values
+    [Module.A_B_AB]: 6,
     [Module.A_C_AC]: 10,
     [Module.A_B_C_AB_AC]: 5,
 };

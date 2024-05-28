@@ -27,7 +27,7 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
     };
     const handleSubmit = () => {
         const correctAnswer = kds[reactionType];
-        const tolerance = 5;
+        const tolerance = 1.5;
         if (selectedAnswer === null) {
             // No answer selected
             return;
