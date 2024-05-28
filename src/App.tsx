@@ -421,6 +421,7 @@ function App() {
                         page,
                         setPage,
                         timeFactor,
+                        timeUnit: simulationData.timeUnit,
                         handleTrajectoryChange,
                         viewportSize,
                         setViewportSize,

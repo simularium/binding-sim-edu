@@ -12,7 +12,7 @@ import { getColorIndex } from "./utils";
 import { ProductOverTimeTrace } from "./types";
 import { SimulariumContext } from "../../simulation/context";
 import { AGENT_AB_COLOR } from "../../constants/colors";
-import { MICRO } from "../../constants";
+import { MICRO, NANO } from "../../constants";
 
 import plotStyles from "./plots.module.css";
 
@@ -27,7 +27,7 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
     width,
     height,
 }) => {
-    const { timeFactor, maxConcentration, productName } =
+    const { timeFactor, maxConcentration, productName, timeUnit } =
         useContext(SimulariumContext);
     const hasData = useRef(false);
     if (data.length === 0) {
@@ -57,8 +57,15 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
                 hasData.current = true;
             }
         }
+        const timeArray = productConcentrations.map((_, i) => {
+            if (timeUnit === NANO) {
+                return (i * timeFactor) / 1000;
+            } else {
+                return i * timeFactor;
+            }
+        });
         return {
-            x: productConcentrations.map((_, i) => (i * timeFactor) / 1000),
+            x: timeArray,
             y: productConcentrations,
             type: "scatter" as const,
             mode: "lines" as const,

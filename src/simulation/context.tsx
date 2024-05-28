@@ -4,7 +4,11 @@ import {
     TrajectoryFileInfo,
 } from "@aics/simularium-viewer";
 import { createContext } from "react";
-import { DEFAULT_VIEWPORT_SIZE, LIVE_SIMULATION_NAME } from "../constants";
+import {
+    DEFAULT_VIEWPORT_SIZE,
+    LIVE_SIMULATION_NAME,
+    NANO,
+} from "../constants";
 import { AgentName, ProductName } from "../types";
 
 interface SimulariumContextType {
@@ -20,6 +24,7 @@ interface SimulariumContextType {
     setPage: (value: number) => void;
     page: number;
     timeFactor: number;
+    timeUnit: string;
     handleTrajectoryChange: (value: TrajectoryFileInfo) => void;
     viewportSize: { width: number; height: number };
     setViewportSize: (value: { width: number; height: number }) => void;
@@ -39,6 +44,7 @@ export const SimulariumContext = createContext({
     setPage: () => {},
     page: 0,
     timeFactor: 30,
+    timeUnit: NANO,
     handleTrajectoryChange: () => {},
     viewportSize: DEFAULT_VIEWPORT_SIZE,
     setViewportSize: () => {},

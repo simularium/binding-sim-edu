@@ -25,7 +25,7 @@ export enum TrajectoryType {
     precomputed = "precomputed",
 }
 interface ISimulationData {
-    timeUnits: string;
+    timeUnit: string;
     getType: () => TrajectoryType;
     getCurrentProduct: (module: Module) => ProductName;
     getMaxConcentration: (module: Module) => number;

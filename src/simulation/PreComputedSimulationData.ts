@@ -27,7 +27,7 @@ export default class PreComputedSimulationData implements ISimulationData {
             "https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/binding-affinity_hemoglobin-co.simularium",
     };
 
-    timeUnits = MICRO;
+    timeUnit = MICRO;
 
     PRODUCT = {
         [Module.A_B_AB]: ProductName.AntibodyAntigen,
