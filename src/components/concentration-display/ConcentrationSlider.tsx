@@ -1,9 +1,10 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useRef } from "react";
 import { SliderSingleProps } from "antd";
 
 import Slider from "../shared/Slider";
 import { SimulariumContext } from "../../simulation/context";
 import styles from "./concentration-slider.module.css";
+import classNames from "classnames";
 
 interface SliderProps {
     min: number;
@@ -14,6 +15,44 @@ interface SliderProps {
     name: string;
 }
 
+const Mark: React.FC<{
+    index: number;
+    disabledNumbers: number[];
+    onMouseUp: () => void;
+}> = ({ index, disabledNumbers, onMouseUp }) => {
+    const { recordedConcentrations } = useContext(SimulariumContext);
+
+    const ref = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        // clicking on the antd slider marks initiate the onChange event,
+        // but not the onChangeComplete event, so we need to listen
+        // for the mouseup event on the mark to trigger the
+        // onChangeComplete event the same way the mouseup event
+        // on the slider does
+        const mark = ref.current;
+        if (!mark) {
+            return;
+        }
+        mark.addEventListener("mouseup", onMouseUp);
+        return () => {
+            mark.removeEventListener("mouseup", onMouseUp);
+        };
+    }, [onMouseUp]);
+
+    return (
+        <div
+            ref={ref}
+            key={index}
+            className={classNames(styles.numberLabel, {
+                [styles.recorded]: recordedConcentrations.includes(index),
+                [styles.disabled]: disabledNumbers.includes(index),
+            })}
+        >
+            <span>{index}</span>
+        </div>
+    );
+};
+
 const ConcentrationSlider: React.FC<SliderProps> = ({
     min,
     max,
@@ -22,24 +61,26 @@ const ConcentrationSlider: React.FC<SliderProps> = ({
     onChangeComplete,
     name,
 }) => {
-    const { recordedConcentrations } = useContext(SimulariumContext);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const disabledNumbers = [0];
+
     const marks = useMemo(() => {
         const marks: SliderSingleProps["marks"] = {};
         for (let index = min; index <= max; index = index + 2) {
-            if (disabledNumbers.includes(index)) {
-                marks[index] = <span className={styles.disabled}>{index}</span>;
-            } else if (recordedConcentrations.includes(index)) {
-                marks[index] = <span className={styles.recorded}>{index}</span>;
-            } else {
-                marks[index] = (
-                    <span className={styles.numberLabel}>{index}</span>
-                );
-            }
+            marks[index] = {
+                label: (
+                    <Mark
+                        index={index}
+                        disabledNumbers={disabledNumbers}
+                        onMouseUp={() =>
+                            onChangeComplete && onChangeComplete(name, index)
+                        }
+                    />
+                ),
+            };
         }
         return marks;
-    }, [recordedConcentrations, min, max, disabledNumbers]);
+    }, [min, max, disabledNumbers, onChangeComplete, name]);
     return (
         <Slider
             initialValue={initialValue}
