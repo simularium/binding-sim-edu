@@ -5,10 +5,11 @@ import {
 } from "@aics/simularium-viewer";
 import { createContext } from "react";
 import { DEFAULT_VIEWPORT_SIZE, LIVE_SIMULATION_NAME } from "../constants";
-import { AgentName } from "../types";
+import { AgentName, ProductName } from "../types";
 
 interface SimulariumContextType {
     trajectoryName: string;
+    productName: ProductName;
     maxConcentration: number;
     getAgentColor: (agentName: AgentName) => string;
     currentProductionConcentration: number;
@@ -27,6 +28,7 @@ interface SimulariumContextType {
 
 export const SimulariumContext = createContext({
     trajectoryName: LIVE_SIMULATION_NAME,
+    productName: ProductName.AB,
     maxConcentration: 10,
     getAgentColor: () => {},
     currentProductionConcentration: 0,

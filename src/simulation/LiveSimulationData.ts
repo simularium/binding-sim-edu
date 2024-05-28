@@ -11,7 +11,11 @@ import {
     AGENT_B_COLOR,
     AGENT_C_COLOR,
 } from "../constants/colors";
-import ISimulationData, { AGENT_AND_PRODUCT_COLORS } from "./ISimulationData";
+import ISimulationData, {
+    AGENT_AND_PRODUCT_COLORS,
+    TrajectoryType,
+} from "./ISimulationData";
+import { NANO } from "../constants";
 
 const agentA: InputAgent = {
     id: 0,
@@ -69,6 +73,16 @@ export default class LiveSimulation implements ISimulationData {
         [Module.A_B_C_AB_AC]: ProductName.AB,
     };
 
+    timeUnits = NANO;
+
+    getType = (): TrajectoryType => {
+        return TrajectoryType.live;
+    };
+
+    getCurrentProduct = (module: Module): ProductName => {
+        return this.PRODUCT[module];
+    };
+
     getAgentFunction = (name: AgentName | ProductName): AgentFunction => {
         return (
             LiveSimulation.NAME_TO_FUNCTION_MAP as Record<
@@ -81,6 +95,22 @@ export default class LiveSimulation implements ISimulationData {
     getAgentColor = (name: AgentName | ProductName): string => {
         const agentFunction = this.getAgentFunction(name);
         return AGENT_AND_PRODUCT_COLORS[agentFunction];
+    };
+
+    getMaxConcentration = (module: Module): number => {
+        let maxConcentration = 0;
+        switch (module) {
+            case Module.A_B_AB:
+                maxConcentration = 10;
+                break;
+            case Module.A_C_AC:
+                maxConcentration = 20; //TODO: adjust these as needed
+                break;
+            case Module.A_B_C_AB_AC:
+                maxConcentration = 20; //TODO: adjust these as needed
+                break;
+        }
+        return maxConcentration;
     };
 
     createAgentsFromConcentrations = (
@@ -101,26 +131,6 @@ export default class LiveSimulation implements ISimulationData {
                 ];
             return agent;
         });
-    };
-
-    getCurrentProduct = (module: Module): ProductName => {
-        return this.PRODUCT[module];
-    };
-
-    getMaxConcentration = (module: Module): number => {
-        let maxConcentration = 0;
-        switch (module) {
-            case Module.A_B_AB:
-                maxConcentration = 10;
-                break;
-            case Module.A_C_AC:
-                maxConcentration = 20; //TODO: adjust these as needed
-                break;
-            case Module.A_B_C_AB_AC:
-                maxConcentration = 20; //TODO: adjust these as needed
-                break;
-        }
-        return maxConcentration;
     };
 
     getActiveAgents = (currentModule: Module): AgentName[] => {

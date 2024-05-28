@@ -6,16 +6,13 @@ import {
     Module,
     ProductName,
 } from "../types";
-import ISimulationData, { AGENT_AND_PRODUCT_COLORS } from "./ISimulationData";
-
-// const HighA: { [key: string]: string } = {
-//     Antigen: "Antigen",
-//     "Antibody#Bound": "Antibody-Antigen",
-//     "Antibody#Unbound": "Antibody",
-// };
+import ISimulationData, {
+    AGENT_AND_PRODUCT_COLORS,
+    TrajectoryType,
+} from "./ISimulationData";
+import { MICRO } from "../constants";
 
 export default class PreComputedSimulationData implements ISimulationData {
-    DEFAULT_TIME_FACTOR = 85;
     static NAME_TO_FUNCTION_MAP = {
         [AgentName.Antibody]: AgentFunction.Fixed,
         [AgentName.Antigen]: AgentFunction.Adjustable,
@@ -30,10 +27,16 @@ export default class PreComputedSimulationData implements ISimulationData {
             "https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/binding-affinity_hemoglobin-co.simularium",
     };
 
+    timeUnits = MICRO;
+
     PRODUCT = {
         [Module.A_B_AB]: ProductName.AntibodyAntigen,
         [Module.A_C_AC]: ProductName.Hemoglobin,
         [Module.A_B_C_AB_AC]: ProductName.Hemoglobin,
+    };
+
+    getType = (): TrajectoryType => {
+        return TrajectoryType.precomputed;
     };
 
     getCurrentProduct = (module: Module): ProductName => {
@@ -55,6 +58,7 @@ export default class PreComputedSimulationData implements ISimulationData {
         }
         return maxConcentration;
     };
+
     getAgentFunction = (name: AgentName | ProductName): AgentFunction => {
         return (
             PreComputedSimulationData.NAME_TO_FUNCTION_MAP as Record<

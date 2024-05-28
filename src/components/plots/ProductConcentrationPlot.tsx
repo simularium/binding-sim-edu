@@ -27,7 +27,8 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
     width,
     height,
 }) => {
-    const { timeFactor, maxConcentration } = useContext(SimulariumContext);
+    const { timeFactor, maxConcentration, productName } =
+        useContext(SimulariumContext);
     const hasData = useRef(false);
     if (data.length === 0) {
         hasData.current = false;
@@ -87,7 +88,7 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         yaxis: {
             ...AXIS_SETTINGS,
             range: range,
-            title: `[AB] ${MICRO}M`,
+            title: `[${productName}] ${MICRO}M`,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,
                 color: AGENT_AB_COLOR,

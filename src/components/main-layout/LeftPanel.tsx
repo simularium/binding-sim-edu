@@ -39,7 +39,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
                     adjustableAgent={adjustableAgent}
                 />
             </VisibilityControl>
-            <VisibilityControl excludedPages={[0, 1, 2]}>
+            <VisibilityControl excludedPages={[0, 1, 2, 9]}>
                 <EventsOverTimePlot
                     bindingEventsOverTime={bindingEventsOverTime}
                     unbindingEventsOverTime={unbindingEventsOverTime}

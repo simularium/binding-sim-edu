@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useMemo, useState } from "react";
-import { set, uniq } from "lodash";
+import { uniq } from "lodash";
 import {
     SimulariumController,
     TimeData,
@@ -310,7 +310,6 @@ function App() {
             ) as CurrentConcentration;
         }
         const productConcentration = concentrations[productName];
-        console.log(currentProductConcentrationArray.length);
         if (productConcentration !== undefined) {
             const newData = [...previousData, productConcentration];
             setCurrentProductConcentrationArray(newData);
@@ -336,7 +335,6 @@ function App() {
     ) => {
         // this is called when the user finishes dragging the slider
         // it stores the previous collected data and resets the live data
-        console.log("handleFinishInputConcentrationChange", name, value);
         const agentName = name as AgentName;
         const previousConcentration = inputConcentration[agentName] || 0;
         addProductionTrace(previousConcentration);
@@ -410,6 +408,7 @@ function App() {
                 <SimulariumContext.Provider
                     value={{
                         trajectoryName,
+                        productName,
                         currentProductionConcentration:
                             liveConcentration[productName] || 0,
                         maxConcentration:

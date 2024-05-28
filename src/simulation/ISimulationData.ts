@@ -19,17 +19,23 @@ export const AGENT_AND_PRODUCT_COLORS = {
     [AgentFunction.Competitor]: AGENT_C_COLOR,
     [AgentFunction.Complex]: AGENT_AB_COLOR,
 };
+
+export enum TrajectoryType {
+    live = "live",
+    precomputed = "precomputed",
+}
 interface ISimulationData {
+    timeUnits: string;
+    getType: () => TrajectoryType;
     getCurrentProduct: (module: Module) => ProductName;
-    getAgentColor: (agentName: AgentName) => string;
     getMaxConcentration: (module: Module) => number;
-    getActiveAgents: (reactionType: Module) => AgentName[];
+    getAgentFunction: (name: AgentName | ProductName) => AgentFunction;
+    getAgentColor: (agentName: AgentName) => string;
+    getActiveAgents: (currentModule: Module) => AgentName[];
     getInitialConcentrations: (
         activeAgents: AgentName[]
     ) => CurrentConcentration;
-    createAgentsFromConcentrations: (
-        activeAgents?: AgentName[]
-    ) => InputAgent[] | null;
+    createAgentsFromConcentrations: () => InputAgent[] | null;
 }
 
 export default ISimulationData;

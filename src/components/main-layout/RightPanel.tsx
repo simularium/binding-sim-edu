@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useContext, useState } from "react";
 
 import VisibilityControl from "../shared/VisibilityControl";
 import ProductConcentrationPlot from "../plots/ProductConcentrationPlot";
@@ -9,6 +9,7 @@ import { ProductOverTimeTrace } from "../plots/types";
 import styles from "./layout.module.css";
 import { AB } from "../agent-symbols";
 import ResizeContainer from "../shared/ResizeContainer";
+import { SimulariumContext } from "../../simulation/context";
 
 interface RightPanelProps {
     productOverTimeTraces: ProductOverTimeTrace[];
@@ -30,6 +31,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
     currentProductConcentrationArray,
     currentAdjustableAgentConcentration,
 }) => {
+    const { productName } = useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
     const [height, setHeight] = useState<number>(0);
     let data = productOverTimeTraces;
@@ -50,7 +52,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
         >
             <VisibilityControl excludedPages={[0, 1, 2]}>
                 <h3>
-                    Concentration over time for <AB />
+                    Concentration over time for <AB name={productName} />
                 </h3>
                 <ProductConcentrationPlot
                     data={data}
