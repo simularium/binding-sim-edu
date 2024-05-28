@@ -14,14 +14,14 @@ const fetch3DTrajectory = async (
         if (response.ok) {
             const blob = await response.blob();
             const simulariumFile = await loadSimulariumFile(blob);
-            const plotData = simulariumFile.getPlotData();
-            setTrajectoryPlotData(plotData[0].data as ScatterTrace[]); // we're not using histograms
             await simulariumController.changeFile(
                 {
                     simulariumFile: simulariumFile,
                 },
                 "example"
             );
+            const plotData = simulariumFile.getPlotData();
+            setTrajectoryPlotData(plotData[0].data as ScatterTrace[]); // we're not using histograms
         } else {
             throw new Error(`Failed to fetch - ${response.status}`);
         }
