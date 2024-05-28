@@ -286,11 +286,7 @@ function App() {
 
     const handleTimeChange = (timeData: TimeData) => {
         setTime(timeData.time);
-        if (
-            finalTime > 0 &&
-            timeData.time >= finalTime - timeFactor &&
-            isPlaying
-        ) {
+        if (isLastFrame && isPlaying) {
             setIsPlaying(false);
             return;
         }
