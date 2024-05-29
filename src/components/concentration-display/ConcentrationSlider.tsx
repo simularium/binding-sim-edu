@@ -24,11 +24,10 @@ const Mark: React.FC<{
 
     const ref = useRef<HTMLDivElement>(null);
     useEffect(() => {
-        // clicking on the antd slider marks initiate the onChange event,
-        // but not the onChangeComplete event, so we need to listen
-        // for the mouseup event on the mark to trigger the
-        // onChangeComplete event the same way the mouseup event
-        // on the slider does
+        // clicking on the antd slider marks initiates the onChange event,
+        // but not the onChangeComplete event. This add a mouseup listener
+        // to the mark to trigger the onChangeComplete event the same way
+        // as if the user had clicked on the slider handle.
         const mark = ref.current;
         if (!mark) {
             return;
