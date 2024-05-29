@@ -285,13 +285,16 @@ function App() {
     };
 
     const handleTimeChange = (timeData: TimeData) => {
-        setTime(timeData.time);
-        if (isLastFrame && isPlaying) {
+        const { time } = timeData;
+        setTime(time);
+        // can't use isLastFrame here because the time is not updated
+        // in state yet
+        if (finalTime > 0 && time >= finalTime - timeFactor && isPlaying) {
             setIsPlaying(false);
-            return;
         }
         let concentrations: CurrentConcentration = {};
         let previousData = currentProductConcentrationArray;
+
         if (plotDataManager) {
             if (timeData.time === 0) {
                 // for the 3D trajectory,

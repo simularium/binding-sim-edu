@@ -60,7 +60,7 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         <div className={styles.container} key="viewer" ref={container}>
             <SimulariumViewer
                 lockedCamera={trajectoryName === LIVE_SIMULATION_NAME}
-                disableCache={true}
+                disableCache={trajectoryName === LIVE_SIMULATION_NAME}
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}
                 height={viewportSize.height}
                 width={viewportSize.width}
