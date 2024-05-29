@@ -35,7 +35,7 @@ export const SimulariumContext = createContext({
     trajectoryName: LIVE_SIMULATION_NAME,
     productName: ProductName.AB,
     maxConcentration: 10,
-    getAgentColor: () => {},
+    getAgentColor: () => "",
     currentProductionConcentration: 0,
     isPlaying: false,
     setIsPlaying: () => {},
@@ -49,4 +49,4 @@ export const SimulariumContext = createContext({
     viewportSize: DEFAULT_VIEWPORT_SIZE,
     setViewportSize: () => {},
     recordedConcentrations: [],
-} as unknown as SimulariumContextType);
+} as SimulariumContextType);
