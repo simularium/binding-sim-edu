@@ -52,7 +52,7 @@ function App() {
      * Simulation state
      * input values for the simulation
      */
-    const [currentModule] = useState(Module.A_B_AB);
+    const [currentModule, setCurrentModule] = useState(Module.A_B_AB);
     const productName = useMemo(() => {
         return getCurrentProduct(currentModule);
     }, [currentModule]);
@@ -118,6 +118,27 @@ function App() {
         return new BindingSimulator(trajectory, viewportSize.width / 5);
     }, [currentModule, viewportSize]);
 
+    const totalReset = () => {
+        setLiveConcentration({
+            [AgentName.A]: INITIAL_CONCENTRATIONS[AgentName.A],
+            [AgentName.B]: INITIAL_CONCENTRATIONS[AgentName.B],
+            [productName]: 0,
+        });
+        setCurrentModule(Module.A_B_AB);
+        setInputConcentration({
+            [AgentName.A]: INITIAL_CONCENTRATIONS[AgentName.A],
+            [AgentName.B]: INITIAL_CONCENTRATIONS[AgentName.B],
+        });
+        handleNewInputConcentration(
+            ADJUSTABLE_AGENT,
+            INITIAL_CONCENTRATIONS[AgentName.B]
+        );
+        setIsPlaying(false);
+        resetAnalysisState();
+        setInputEquilibriumConcentrations([]);
+        setProductEquilibriumConcentrations([]);
+    };
+
     useEffect(() => {
         simulariumController.changeFile(
             {
@@ -169,6 +190,15 @@ function App() {
 
     // Special events in page navigation
     // usePageNumber takes a page number, a conditional and a callback
+
+    usePageNumber(
+        page,
+        (page) => page === 1 && currentProductConcentrationArray.length > 1,
+        () => {
+            totalReset();
+        }
+    );
+
     usePageNumber(
         page,
         (page) => page === 5,
@@ -366,7 +396,12 @@ function App() {
                             />
                         }
                         centerPanel={
-                            <CenterPanel reactionType={currentModule} />
+                            <CenterPanel
+                                reactionType={currentModule}
+                                hasProgressed={
+                                    currentProductConcentrationArray.length > 0
+                                }
+                            />
                         }
                         rightPanel={
                             <RightPanel

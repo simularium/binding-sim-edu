@@ -43,9 +43,9 @@ const QuizForm: React.FC<QuizFormProps> = ({
             })}
         >
             <div className={styles.header}>
-                <h4 className={styles.title}>
+                <h3 className={styles.title}>
                     {isFormVisible ? title : minimizedTitle}
-                </h4>
+                </h3>
                 <IconButton
                     onClick={toggleFormVisibility}
                     icon={isFormVisible ? <DownOutlined /> : <UpOutlined />}
@@ -57,7 +57,10 @@ const QuizForm: React.FC<QuizFormProps> = ({
                     {formState === FormState.Incorrect && (
                         <FailureFeedback message={failureMessage} />
                     )}
-                    <TertiaryButton onClick={onSubmit} style={{ marginTop: 10}}>
+                    <TertiaryButton
+                        onClick={onSubmit}
+                        style={{ marginTop: 10 }}
+                    >
                         {formState === FormState.Incorrect
                             ? "Try Again"
                             : "Submit"}

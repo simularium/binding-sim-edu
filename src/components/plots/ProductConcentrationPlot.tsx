@@ -15,6 +15,7 @@ import { AGENT_AB_COLOR } from "../../constants/colors";
 import { MICRO } from "../../constants";
 
 import plotStyles from "./plots.module.css";
+import { has } from "lodash";
 
 interface ProductConcentrationPlotProps {
     data: ProductOverTimeTrace[];
@@ -29,6 +30,9 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
 }) => {
     const { timeFactor, maxConcentration } = useContext(SimulariumContext);
     const hasData = useRef(false);
+    if (!data.length) {
+        hasData.current = false;
+    }
     const traces = data.map((trace): Partial<PlotData> => {
         const { inputConcentration, productConcentrations } = trace;
         if (!productConcentrations) {
@@ -51,8 +55,11 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
                 productConcentrations[productConcentrations.length - 1];
             if (lastValue > 0) {
                 hasData.current = true;
+            } else {
+                hasData.current = false;
             }
         }
+
         return {
             x: productConcentrations.map((_, i) => (i * timeFactor) / 1000),
             y: productConcentrations,
@@ -76,14 +83,17 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         ...BASE_PLOT_LAYOUT,
         width: width,
         height: Math.max(130, height),
+
         xaxis: {
             ...AXIS_SETTINGS,
             title: `time (${MICRO}s)`,
+            rangemode: "tozero",
             range: range,
         },
         yaxis: {
             ...AXIS_SETTINGS,
             range: range,
+            rangemode: "tozero",
             title: `[AB] ${MICRO}M`,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,
