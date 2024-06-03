@@ -60,8 +60,8 @@ const customTheme = {
         },
         Dropdown: {
             colorBgElevated: OVERLAY_GREY,
+            controlItemBgHover: OVERLAY_GREY,
             colorText: LIGHT_GREY,
-            colorBorder: MID_GREY_DARKER,
         },
     },
 };

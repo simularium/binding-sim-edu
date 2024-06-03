@@ -63,3 +63,8 @@ h4 {
 p {
     font-weight: 400;
 }
+
+a:hover,
+a:focus {
+    color: white;
+}

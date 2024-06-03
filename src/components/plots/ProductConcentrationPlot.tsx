@@ -15,7 +15,6 @@ import { AGENT_AB_COLOR } from "../../constants/colors";
 import { MICRO } from "../../constants";
 
 import plotStyles from "./plots.module.css";
-import { has } from "lodash";
 
 interface ProductConcentrationPlotProps {
     data: ProductOverTimeTrace[];
@@ -87,13 +86,13 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         xaxis: {
             ...AXIS_SETTINGS,
             title: `time (${MICRO}s)`,
-            rangemode: "tozero",
+            rangemode: "tozero" as const,
             range: range,
         },
         yaxis: {
             ...AXIS_SETTINGS,
             range: range,
-            rangemode: "tozero",
+            rangemode: "tozero" as const,
             title: `[AB] ${MICRO}M`,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,
