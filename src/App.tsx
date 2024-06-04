@@ -272,6 +272,7 @@ function App() {
             // 2d trajectory
             // switch to orthographic camera
             simulariumController.setCameraType(true);
+            setTimeFactor(LiveSimulationData.DEFAULT_TIME_FACTOR);
             setFinalTime(-1);
         } else {
             // 3d trajectory
