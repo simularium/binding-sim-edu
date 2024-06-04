@@ -6,7 +6,7 @@ const NAMES: { [key: string]: string } = {
     "Antibody#Unbound": "Antibody",
 };
 
-class PlotData {
+class PreComputedPlotData {
     private data: ScatterTrace[];
     public time: number;
     private timeFactor: number;
@@ -34,4 +34,4 @@ class PlotData {
     }
 }
 
-export default PlotData;
+export default PreComputedPlotData;
