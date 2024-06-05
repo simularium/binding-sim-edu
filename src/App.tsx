@@ -399,7 +399,7 @@ function App() {
                             <CenterPanel
                                 reactionType={currentModule}
                                 hasProgressed={
-                                    currentProductConcentrationArray.length > 0
+                                    currentProductConcentrationArray.length > 1
                                 }
                             />
                         }
