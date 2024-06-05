@@ -1,0 +1,32 @@
+.container {
+    position: absolute;
+    display: flex;
+    flex-flow: row wrap;
+    width: 100vw;
+    height: 100%;
+    z-index: 4000;
+    top: 0;
+    background-color: black;
+}
+
+.image-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    min-width: 900px;
+    flex: 1 1 50%;
+    max-height: 50%;
+}
+
+.image-container div {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.container img {
+    max-height: 100%;
+    width: auto;
+}

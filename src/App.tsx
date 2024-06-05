@@ -169,6 +169,8 @@ function App() {
 
     // Special events in page navigation
     // usePageNumber takes a page number, a conditional and a callback
+
+    const finalPageNumber = content[currentModule].length - 1; // -1 for the 0-index
     usePageNumber(
         page,
         (page) => page === 5,
@@ -191,7 +193,7 @@ function App() {
     usePageNumber(
         page,
         (page) =>
-            page === content[currentModule].length - 1 &&
+            page === finalPageNumber - 1 &&
             trajectoryStatus == TrajectoryStatus.INITIAL,
         async () => {
             setIsPlaying(false);
@@ -338,7 +340,7 @@ function App() {
                             <NavPanel
                                 page={page}
                                 title={moduleNames[currentModule]}
-                                total={content[currentModule].length}
+                                total={finalPageNumber}
                             />
                         }
                         content={
