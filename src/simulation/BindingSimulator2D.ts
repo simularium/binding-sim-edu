@@ -14,7 +14,7 @@ import {
 } from "@aics/simularium-viewer";
 import { InputAgent, ProductName, StoredAgent } from "../types";
 import { AGENT_AB_COLOR } from "../constants/colors";
-import { DEFAULT_TIME_FACTOR } from "./setup";
+import LiveSimulationData from "./LiveSimulationData";
 import { LIVE_SIMULATION_NAME } from "../constants";
 
 class BindingInstance extends Circle {
@@ -124,7 +124,10 @@ class BindingInstance extends Circle {
         this.child.setPosition(childPosAndRotation[0], childPosAndRotation[1]);
     }
 
-    public oneStep(size: number, timeFactor: number = DEFAULT_TIME_FACTOR) {
+    public oneStep(
+        size: number,
+        timeFactor: number = LiveSimulationData.DEFAULT_TIME_FACTOR
+    ) {
         if (this.bound) {
             return;
         }
@@ -213,7 +216,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     constructor(
         agents: InputAgent[],
         size: number,
-        timeFactor: number = DEFAULT_TIME_FACTOR
+        timeFactor: number = LiveSimulationData.DEFAULT_TIME_FACTOR
     ) {
         this.size = size;
         this.system = new System();
@@ -705,7 +708,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         const size = this.size;
         for (let i = 0; i < this.agents.length; ++i) {
             typeMapping[this.agents[i].id] = {
-                name: `${this.agents[i].id}`,
+                name: `${this.agents[i].name}`,
                 geometry: {
                     color: this.agents[i].color,
                     displayType: GeometryDisplayType.SPHERE,
@@ -713,7 +716,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 },
             };
             typeMapping[this.agents[i].id + 100] = {
-                name: `${this.agents[i].id}#bound`,
+                name: `${this.agents[i].name}#bound`,
                 geometry: {
                     color: AGENT_AB_COLOR,
                     displayType: GeometryDisplayType.SPHERE,
