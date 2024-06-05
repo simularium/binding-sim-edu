@@ -143,6 +143,7 @@ function App() {
             return null;
         }
         return new PreComputedPlotData(trajectoryPlotData);
+
     }, [trajectoryPlotData]);
 
     useEffect(() => {
