@@ -3,7 +3,6 @@ import { Layout } from "antd";
 const { Header, Sider, Content } = Layout;
 
 import styles from "./layout.module.css";
-import VisibilityControl from "../shared/VisibilityControl";
 interface MainLayoutProps {
     header: ReactNode;
     leftPanel: ReactNode;
@@ -27,23 +26,19 @@ const MainLayout: React.FC<MainLayoutProps> = ({
             <Content className={styles.contentPanel}>{content}</Content>
             <Header className={styles.reactionPanel}>{reactionPanel}</Header>
             <Layout>
-                <VisibilityControl excludedPages={[10]}>
-                    <Sider
-                        className={[styles.sidePanel, styles.left].join(" ")}
-                        width={"25%"}
-                    >
-                        {leftPanel}
-                    </Sider>
-                </VisibilityControl>
+                <Sider
+                    className={[styles.sidePanel, styles.left].join(" ")}
+                    width={"25%"}
+                >
+                    {leftPanel}
+                </Sider>
                 <Content className={styles.centerPanel}>{centerPanel}</Content>
-                <VisibilityControl excludedPages={[10]}>
-                    <Sider
-                        className={[styles.sidePanel, styles.right].join(" ")}
-                        width={"25%"}
-                    >
-                        {rightPanel}
-                    </Sider>
-                </VisibilityControl>
+                <Sider
+                    className={[styles.sidePanel, styles.right].join(" ")}
+                    width={"25%"}
+                >
+                    {rightPanel}
+                </Sider>
             </Layout>
         </Layout>
     );
