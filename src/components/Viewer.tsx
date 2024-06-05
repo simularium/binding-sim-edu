@@ -28,10 +28,14 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         hiddenAgents: [],
         colorChange: null,
     });
-    const [lockedCamera, setLockedCamera] = useState(true);
     const container = useRef<HTMLDivElement>(null);
-    const { viewportSize, setViewportSize, simulariumController } =
-        useContext(SimulariumContext);
+    const {
+        viewportSize,
+        setViewportSize,
+        simulariumController,
+        handleTrajectoryChange,
+        trajectoryName,
+    } = useContext(SimulariumContext);
 
     const setViewportToContainerSize = useCallback(() => {
         if (container.current) {
@@ -55,8 +59,8 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
     return (
         <div className={styles.container} key="viewer" ref={container}>
             <SimulariumViewer
-                lockedCamera={lockedCamera}
-                // disableCache={true}
+                lockedCamera={trajectoryName === LIVE_SIMULATION_NAME}
+                disableCache={trajectoryName === LIVE_SIMULATION_NAME}
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}
                 height={viewportSize.height}
                 width={viewportSize.width}
@@ -65,25 +69,9 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
                 simulariumController={simulariumController}
                 onJsonDataArrived={() => {}}
                 showCameraControls={false}
-                onTrajectoryFileInfoChanged={(trajectoryInfo) => {
-                    if (
-                        trajectoryInfo.trajectoryTitle === LIVE_SIMULATION_NAME
-                    ) {
-                        // 2d trajectory
-                        // lock camera and switch to orthographic camera
-                        simulariumController.setCameraType(true);
-                        setLockedCamera(true);
-                    } else {
-                        // 3d trajectory
-                        // allow camera to move and switch to perspective camera
-                        simulariumController.setCameraType(false);
-                        setLockedCamera(false);
-                    }
-                }}
+                onTrajectoryFileInfoChanged={handleTrajectoryChange}
                 selectionStateInfo={selectionStateInfo}
-                onUIDisplayDataChanged={() => {
-                    return undefined;
-                }}
+                onUIDisplayDataChanged={() => {}}
                 loadInitialData={true}
                 showPaths={true}
                 onError={console.log}

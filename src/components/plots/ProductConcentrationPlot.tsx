@@ -12,7 +12,7 @@ import { getColorIndex } from "./utils";
 import { ProductOverTimeTrace } from "./types";
 import { SimulariumContext } from "../../simulation/context";
 import { AGENT_AB_COLOR } from "../../constants/colors";
-import { MICRO } from "../../constants";
+import { MICRO, NANO } from "../../constants";
 
 import plotStyles from "./plots.module.css";
 
@@ -27,8 +27,12 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
     width,
     height,
 }) => {
-    const { timeFactor, maxConcentration } = useContext(SimulariumContext);
+    const { timeFactor, maxConcentration, productName, timeUnit } =
+        useContext(SimulariumContext);
     const hasData = useRef(false);
+    if (data.length === 0) {
+        hasData.current = false;
+    }
     const traces = data.map((trace): Partial<PlotData> => {
         const { inputConcentration, productConcentrations } = trace;
         if (!productConcentrations) {
@@ -53,8 +57,15 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
                 hasData.current = true;
             }
         }
+        const timeArray = productConcentrations.map((_, i) => {
+            if (timeUnit === NANO) {
+                return (i * timeFactor) / 1000;
+            } else {
+                return i * timeFactor;
+            }
+        });
         return {
-            x: productConcentrations.map((_, i) => (i * timeFactor) / 1000),
+            x: timeArray,
             y: productConcentrations,
             type: "scatter" as const,
             mode: "lines" as const,
@@ -80,11 +91,13 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
             ...AXIS_SETTINGS,
             title: `time (${MICRO}s)`,
             range: range,
+            rangemode: "tozero" as const,
         },
         yaxis: {
             ...AXIS_SETTINGS,
             range: range,
-            title: `[AB] ${MICRO}M`,
+            title: `[${productName}] ${MICRO}M`,
+            rangemode: "tozero" as const,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,
                 color: AGENT_AB_COLOR,

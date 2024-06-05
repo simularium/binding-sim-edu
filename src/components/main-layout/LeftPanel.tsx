@@ -10,7 +10,6 @@ import EventsOverTimePlot from "../plots/EventsOverTimePlot";
 import Concentration from "../concentration-display/Concentration";
 
 interface LeftPanelProps {
-    activeAgents: AgentName[];
     adjustableAgent: AgentName;
     inputConcentration: InputConcentration;
     liveConcentration: CurrentConcentration;
@@ -40,7 +39,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
                     adjustableAgent={adjustableAgent}
                 />
             </VisibilityControl>
-            <VisibilityControl excludedPages={[0, 1, 2, 10]}>
+            <VisibilityControl excludedPages={[0, 1, 2, 9, 10]}>
                 <EventsOverTimePlot
                     bindingEventsOverTime={bindingEventsOverTime}
                     unbindingEventsOverTime={unbindingEventsOverTime}
