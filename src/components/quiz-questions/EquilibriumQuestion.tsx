@@ -11,7 +11,7 @@ const EquilibriumQuestion: React.FC = () => {
     const handleAnswerSelection = (answer: string) => {
         setSelectedAnswer(answer);
 
-        // instead of clicking the "try again" button they 
+        // instead of clicking the "try again" button they
         // can just select a different answer, in that case
         // we should reset the form state
         if (formState === FormState.Incorrect) {
@@ -43,9 +43,12 @@ const EquilibriumQuestion: React.FC = () => {
         { value: "B", label: "B. unbinding reactions stop happening" },
         {
             value: "C",
-            label: "C. the amount of product stays roughly the same over time",
+            label: "C. the amount of product stays roughly the steady over time",
         },
-        { value: "D", label: "D. the amount of products and reactants are equal" },
+        {
+            value: "D",
+            label: "D. the amount of products and reactants are equal",
+        },
     ];
 
     const formContent = (
@@ -59,12 +62,12 @@ const EquilibriumQuestion: React.FC = () => {
     return (
         <VisibilityControl includedPages={[4]}>
             <QuizForm
-                title="Which of the following is true about equilibrium?"
+                title="Which of the following is true about the reaction at equilibrium?"
                 formContent={formContent}
                 onSubmit={handleSubmit}
                 formState={formState}
                 successMessage="It’s the forward and reverse reaction rates that are equal at equilibrium, not the concentrations of reactants and products. And binding and unbinding events don’t stop happening."
-                failureMessage="Please try again. Helpful text?" // TODO: Add helpful text (this matches the current design)
+                failureMessage="Please try again. Look carefully at what is happening in each of the plots to help find the answer."
                 minimizedTitle="Q:Equilibrium"
             />
         </VisibilityControl>
