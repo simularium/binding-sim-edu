@@ -91,11 +91,13 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
             ...AXIS_SETTINGS,
             title: `time (${MICRO}s)`,
             range: range,
+            rangemode: "tozero" as const,
         },
         yaxis: {
             ...AXIS_SETTINGS,
             range: range,
             title: `[${productName}] ${MICRO}M`,
+            rangemode: "tozero" as const,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,
                 color: AGENT_AB_COLOR,

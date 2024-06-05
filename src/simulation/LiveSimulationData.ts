@@ -72,12 +72,8 @@ export default class LiveSimulation implements ISimulationData {
         [Module.A_C_AC]: ProductName.AC,
         [Module.A_B_C_AB_AC]: ProductName.AB,
     };
-
     timeUnit = NANO;
-
-    getType = (): TrajectoryType => {
-        return TrajectoryType.live;
-    };
+    type = TrajectoryType.live;
 
     getCurrentProduct = (module: Module): ProductName => {
         return this.PRODUCT[module];

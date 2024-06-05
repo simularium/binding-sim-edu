@@ -26,7 +26,7 @@ export enum TrajectoryType {
 }
 interface ISimulationData {
     timeUnit: string;
-    getType: () => TrajectoryType;
+    type: TrajectoryType;
     getCurrentProduct: (module: Module) => ProductName;
     getMaxConcentration: (module: Module) => number;
     getAgentFunction: (name: AgentName | ProductName) => AgentFunction;

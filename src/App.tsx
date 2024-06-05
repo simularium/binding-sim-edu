@@ -33,7 +33,7 @@ import MainLayout from "./components/main-layout/Layout";
 import usePageNumber from "./hooks/usePageNumber";
 import fetch3DTrajectory from "./utils/fetch3DTrajectory";
 import { insertIntoArray, insertValueSorted } from "./utils";
-import PlotData from "./simulation/plotdata";
+import PreComputedPlotData from "./simulation/PreComputedPlotData";
 import PreComputedSimulationData from "./simulation/PreComputedSimulationData";
 import LiveSimulationData from "./simulation/LiveSimulationData";
 
@@ -138,11 +138,12 @@ function App() {
         return new BindingSimulator(trajectory, viewportSize.width / 5);
     }, [currentModule, viewportSize, simulationData]);
 
-    const plotDataManager = useMemo(() => {
+    const preComputedPlotDataManager = useMemo(() => {
         if (!trajectoryPlotData) {
             return null;
         }
-        return new PlotData(trajectoryPlotData);
+        return new PreComputedPlotData(trajectoryPlotData);
+
     }, [trajectoryPlotData]);
 
     useEffect(() => {
@@ -272,6 +273,7 @@ function App() {
             // 2d trajectory
             // switch to orthographic camera
             simulariumController.setCameraType(true);
+            setTimeFactor(LiveSimulationData.DEFAULT_TIME_FACTOR);
             setFinalTime(-1);
         } else {
             // 3d trajectory
@@ -295,14 +297,15 @@ function App() {
         let concentrations: CurrentConcentration = {};
         let previousData = currentProductConcentrationArray;
 
-        if (plotDataManager) {
+        if (preComputedPlotDataManager) {
             if (timeData.time === 0) {
                 // for the 3D trajectory,
                 // we want to reset the data when we loop
                 previousData = [];
             }
-            plotDataManager.update(timeData.time);
-            concentrations = plotDataManager.getCurrentConcentrations();
+            preComputedPlotDataManager.update(timeData.time);
+            concentrations =
+                preComputedPlotDataManager.getCurrentConcentrations();
         } else if (clientSimulator) {
             concentrations = clientSimulator.getCurrentConcentrations(
                 productName

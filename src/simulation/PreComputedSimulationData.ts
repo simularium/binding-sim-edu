@@ -34,10 +34,7 @@ export default class PreComputedSimulationData implements ISimulationData {
         [Module.A_C_AC]: ProductName.Hemoglobin,
         [Module.A_B_C_AB_AC]: ProductName.Hemoglobin,
     };
-
-    getType = (): TrajectoryType => {
-        return TrajectoryType.precomputed;
-    };
+    type = TrajectoryType.precomputed;
 
     getCurrentProduct = (module: Module): ProductName => {
         return this.PRODUCT[module];
