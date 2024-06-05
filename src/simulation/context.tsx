@@ -1,11 +1,21 @@
-import { SimulariumController, TimeData } from "@aics/simularium-viewer";
+import {
+    SimulariumController,
+    TimeData,
+    TrajectoryFileInfo,
+} from "@aics/simularium-viewer";
 import { createContext } from "react";
-import { getMaxConcentration } from "./setup";
-import { DEFAULT_VIEWPORT_SIZE } from "../constants";
-import { Module } from "../types";
+import {
+    DEFAULT_VIEWPORT_SIZE,
+    LIVE_SIMULATION_NAME,
+    NANO,
+} from "../constants";
+import { AgentName, ProductName } from "../types";
 
 interface SimulariumContextType {
+    trajectoryName: string;
+    productName: ProductName;
     maxConcentration: number;
+    getAgentColor: (agentName: AgentName) => string;
     currentProductionConcentration: number;
     isPlaying: boolean;
     setIsPlaying: (value: boolean) => void;
@@ -14,13 +24,18 @@ interface SimulariumContextType {
     setPage: (value: number) => void;
     page: number;
     timeFactor: number;
+    timeUnit: string;
+    handleTrajectoryChange: (value: TrajectoryFileInfo) => void;
     viewportSize: { width: number; height: number };
     setViewportSize: (value: { width: number; height: number }) => void;
     recordedConcentrations: number[];
 }
 
 export const SimulariumContext = createContext({
-    maxConcentration: getMaxConcentration(Module.A_B_AB),
+    trajectoryName: LIVE_SIMULATION_NAME,
+    productName: ProductName.AB,
+    maxConcentration: 10,
+    getAgentColor: () => "",
     currentProductionConcentration: 0,
     isPlaying: false,
     setIsPlaying: () => {},
@@ -29,6 +44,8 @@ export const SimulariumContext = createContext({
     setPage: () => {},
     page: 0,
     timeFactor: 30,
+    timeUnit: NANO,
+    handleTrajectoryChange: () => {},
     viewportSize: DEFAULT_VIEWPORT_SIZE,
     setViewportSize: () => {},
     recordedConcentrations: [],
