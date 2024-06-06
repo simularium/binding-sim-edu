@@ -43,7 +43,9 @@ const Slider: React.FC<SliderProps> = ({
         if (disabledNumbers && disabledNumbers.includes(newValue)) {
             return;
         }
-        onChangeComplete && onChangeComplete(name, newValue);
+        if (onChangeComplete) {
+            onChangeComplete(name, newValue);
+        }
     };
 
     return (

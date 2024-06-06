@@ -2,10 +2,12 @@ import {
     SimulariumController,
     loadSimulariumFile,
 } from "@aics/simularium-viewer";
+import { ScatterTrace } from "../types";
 
 const fetch3DTrajectory = async (
     url: string,
-    simulariumController: SimulariumController
+    simulariumController: SimulariumController,
+    setTrajectoryPlotData: (plotData: ScatterTrace[]) => void
 ) => {
     try {
         const response = await fetch(url);
@@ -18,6 +20,8 @@ const fetch3DTrajectory = async (
                 },
                 "example"
             );
+            const plotData = simulariumFile.getPlotData();
+            setTrajectoryPlotData(plotData[0].data as ScatterTrace[]); // we're not using histograms
         } else {
             throw new Error(`Failed to fetch - ${response.status}`);
         }
