@@ -29,7 +29,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
     adjustableAgent,
 }) => {
     return (
-        <VisibilityControl excludedPages={[10]}>
+        <>
             <VisibilityControl excludedPages={[0, 1]}>
                 <Concentration
                     concentration={inputConcentration}
@@ -45,7 +45,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
                     unbindingEventsOverTime={unbindingEventsOverTime}
                 />
             </VisibilityControl>
-        </VisibilityControl>
+        </>
     );
 };
 
