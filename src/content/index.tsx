@@ -39,7 +39,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
     },
     {
         content:
-            "We want to understand the affinity of enzyme  and substrate B regardless of the concentration of substrate. Let’s repeat the experiment with a new concentration of B. We will keep the concentration of A constant to avoid introducing more than one variable at a time.",
+            "We want to understand the affinity of enzyme A and substrate B regardless of the concentration of substrate. Let’s repeat the experiment with a new concentration of B. We will keep the concentration of A constant to avoid introducing more than one variable at a time.",
         callToAction:
             "For each new concentration of B, determine when equilibrium has been reached and then press the 'Record' button to plot their equilibrium concentrations.",
     },
