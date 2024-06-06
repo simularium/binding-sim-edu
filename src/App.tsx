@@ -143,7 +143,6 @@ function App() {
             return null;
         }
         return new PreComputedPlotData(trajectoryPlotData);
-
     }, [trajectoryPlotData]);
 
     useEffect(() => {
@@ -214,26 +213,22 @@ function App() {
     // Special events in page navigation
     // usePageNumber takes a page number, a conditional and a callback
     usePageNumber(
-        page,
         (page) => page === 5,
         () => setIsPlaying(false)
     );
 
     // if they hit pause instead of clicking "Next", we still want to progress
     usePageNumber(
-        page,
         (page) =>
             page === 4 && uniqMeasuredConcentrations.length > 0 && !isPlaying,
         () => setPage(5)
     );
     usePageNumber(
-        page,
         (page) => canDetermineEquilibrium && page === 7,
         () => setPage(8)
     );
 
     usePageNumber(
-        page,
         (page) =>
             page === content[currentModule].length - 1 &&
             trajectoryStatus == TrajectoryStatus.INITIAL,

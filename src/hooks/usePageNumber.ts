@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { SimulariumContext } from "../simulation/context";
 
 const usePageNumber = (
-    page: number,
     conditional: (page: number) => boolean,
     callback: () => void
 ) => {
+    const { page } = useContext(SimulariumContext);
     useEffect(() => {
         if (conditional(page)) {
             callback();
