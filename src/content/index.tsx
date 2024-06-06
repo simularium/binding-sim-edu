@@ -39,7 +39,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
     },
     {
         content:
-            "We want to understand the affinity of enzyme A and substrate B regardless of the concentration of substrate. Let’s repeat the experiment with a new concentration of B. We will keep the concentration of A constant to avoid introducing more than one variable at a time.",
+            "We want to understand the affinity of enzyme  and substrate B regardless of the concentration of substrate. Let’s repeat the experiment with a new concentration of B. We will keep the concentration of A constant to avoid introducing more than one variable at a time.",
         callToAction:
             "For each new concentration of B, determine when equilibrium has been reached and then press the 'Record' button to plot their equilibrium concentrations.",
     },
@@ -66,7 +66,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
     {
         title: "Antibodies and antigens - high affinity partners ",
         content:
-            "A pair of molecules’ binding affinity is determined by intermolecular forces. The pair of molecules on the right have a higher binding affinity than the molecules on the left. Why, do you think, is this the case?",
+            "A pair of molecules’ binding affinity is determined by intermolecular forces. The first Antibody has a lower binding affinity for the Antigen than the second Antibody. Why, do you think, is this the case?",
         nextButton: true,
         backButton: true,
     },
