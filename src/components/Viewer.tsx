@@ -50,6 +50,11 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         setViewportToContainerSize();
     }, [setViewportToContainerSize]);
 
+    // resize on container change
+    useEffect(() => {
+        setViewportToContainerSize();
+    }, [setViewportToContainerSize, container.current?.offsetWidth]);
+
     useWindowResize(setViewportToContainerSize);
 
     if (!simulariumController) {

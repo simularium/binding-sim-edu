@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import useWindowResize from "../../hooks/useWindowResize";
 
 interface ResizeContainerProps {
-    setWidth: (width: number) => void;
+    setWidth?: (width: number) => void;
     setHeight?: (width: number) => void;
     children: React.ReactNode;
     className?: string;
@@ -17,19 +17,33 @@ const ResizeContainer: React.FC<ResizeContainerProps> = ({
     style,
 }) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    // set the size on mount
-    useEffect(() => {
-        setWidth(containerRef.current?.offsetWidth || 0);
+
+    const setSize = useCallback(() => {
+        if (setWidth) {
+            setWidth(containerRef.current?.offsetWidth || 0);
+        }
         if (setHeight) {
             setHeight(containerRef.current?.offsetHeight || 0);
         }
     }, [setWidth, setHeight]);
 
+    // set the size on mount
+    useEffect(() => {
+        setSize();
+    }, [setSize]);
+
+    // set the size on container change,
+    // can happen when the side panels close
+    useEffect(() => {
+        setSize();
+    }, [
+        setSize,
+        containerRef.current?.offsetWidth,
+        containerRef.current?.offsetHeight,
+    ]);
+
     useWindowResize(() => {
-        setWidth(containerRef.current?.offsetWidth || 0);
-        if (setHeight) {
-            setHeight(containerRef.current?.offsetHeight || 0);
-        }
+        setSize();
     });
 
     return (

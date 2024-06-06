@@ -2,6 +2,8 @@ import React, { ReactNode } from "react";
 import { Layout } from "antd";
 const { Header, Sider, Content } = Layout;
 
+import VisibilityControl from "../shared/VisibilityControl";
+
 import styles from "./layout.module.css";
 interface MainLayoutProps {
     header: ReactNode;
@@ -24,21 +26,30 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         <Layout>
             <Header className={styles.navBar}>{header}</Header>
             <Content className={styles.contentPanel}>{content}</Content>
-            <Header className={styles.reactionPanel}>{reactionPanel}</Header>
+            <VisibilityControl excludedPages={[10]}>
+                <Header className={styles.reactionPanel}>
+                    {reactionPanel}
+                </Header>
+            </VisibilityControl>
             <Layout>
-                <Sider
-                    className={[styles.sidePanel, styles.left].join(" ")}
-                    width={"25%"}
-                >
-                    {leftPanel}
-                </Sider>
+                <VisibilityControl excludedPages={[10]}>
+                    <Sider
+                        className={[styles.sidePanel, styles.left].join(" ")}
+                        width={"25%"}
+                    >
+                        {leftPanel}
+                    </Sider>
+                </VisibilityControl>
+
                 <Content className={styles.centerPanel}>{centerPanel}</Content>
-                <Sider
-                    className={[styles.sidePanel, styles.right].join(" ")}
-                    width={"25%"}
-                >
-                    {rightPanel}
-                </Sider>
+                <VisibilityControl excludedPages={[10]}>
+                    <Sider
+                        className={[styles.sidePanel, styles.right].join(" ")}
+                        width={"25%"}
+                    >
+                        {rightPanel}
+                    </Sider>
+                </VisibilityControl>
             </Layout>
         </Layout>
     );
