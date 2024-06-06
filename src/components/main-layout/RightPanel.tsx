@@ -45,40 +45,38 @@ const RightPanel: React.FC<RightPanelProps> = ({
         ];
     }
     return (
-        <VisibilityControl excludedPages={[10]}>
-            <ResizeContainer
-                setWidth={setWidth}
-                setHeight={setHeight}
-                style={{ height: "100%" }}
-            >
-                <VisibilityControl excludedPages={[0, 1, 2]}>
-                    <h3>
-                        Concentration over time for <AB name={productName} />
-                    </h3>
-                    <ProductConcentrationPlot
-                        data={data}
-                        width={width}
-                        height={height / 3}
-                    />
-                </VisibilityControl>
+        <ResizeContainer
+            setWidth={setWidth}
+            setHeight={setHeight}
+            style={{ height: "100%" }}
+        >
+            <VisibilityControl excludedPages={[0, 1, 2]}>
+                <h3>
+                    Concentration over time for <AB name={productName} />
+                </h3>
+                <ProductConcentrationPlot
+                    data={data}
+                    width={width}
+                    height={height / 3}
+                />
+            </VisibilityControl>
 
-                <VisibilityControl excludedPages={[0, 1, 2, 9]}>
-                    <h3>Equilibrium concentration</h3>
-                    <EquilibriumPlot
-                        width={width}
-                        height={height / 3}
-                        x={equilibriumConcentrations.inputConcentrations}
-                        y={equilibriumConcentrations.productConcentrations}
+            <VisibilityControl excludedPages={[0, 1, 2, 9]}>
+                <h3>Equilibrium concentration</h3>
+                <EquilibriumPlot
+                    width={width}
+                    height={height / 3}
+                    x={equilibriumConcentrations.inputConcentrations}
+                    y={equilibriumConcentrations.productConcentrations}
+                />
+                <div className={styles.recordButton}>
+                    <RecordEquilibriumButton
+                        handleRecordEquilibrium={handleRecordEquilibrium}
                     />
-                    <div className={styles.recordButton}>
-                        <RecordEquilibriumButton
-                            handleRecordEquilibrium={handleRecordEquilibrium}
-                        />
-                    </div>
-                    <div className={styles.feedback}>{equilibriumFeedback}</div>
-                </VisibilityControl>
-            </ResizeContainer>
-        </VisibilityControl>
+                </div>
+                <div className={styles.feedback}>{equilibriumFeedback}</div>
+            </VisibilityControl>
+        </ResizeContainer>
     );
 };
 
