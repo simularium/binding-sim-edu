@@ -59,7 +59,7 @@ function App() {
             return new PreComputedSimulationData();
         }
     }, [trajectoryName]);
-    const [currentModule] = useState(Module.A_B_AB);
+    const [currentModule, setCurrentModule] = useState(Module.A_B_AB);
     const [finalTime, setFinalTime] = useState(-1);
     const productName: ProductName = useMemo(() => {
         return simulationData.getCurrentProduct(currentModule);
@@ -145,6 +145,27 @@ function App() {
         return new PreComputedPlotData(trajectoryPlotData);
     }, [trajectoryPlotData]);
 
+    const totalReset = () => {
+        setLiveConcentration({
+            [AgentName.A]: INITIAL_CONCENTRATIONS[AgentName.A],
+            [AgentName.B]: INITIAL_CONCENTRATIONS[AgentName.B],
+            [productName]: 0,
+        });
+        setCurrentModule(Module.A_B_AB);
+        setInputConcentration({
+            [AgentName.A]: INITIAL_CONCENTRATIONS[AgentName.A],
+            [AgentName.B]: INITIAL_CONCENTRATIONS[AgentName.B],
+        });
+        handleNewInputConcentration(
+            ADJUSTABLE_AGENT,
+            INITIAL_CONCENTRATIONS[AgentName.B]
+        );
+        setIsPlaying(false);
+        resetAnalysisState();
+        setInputEquilibriumConcentrations([]);
+        setProductEquilibriumConcentrations([]);
+    };
+
     useEffect(() => {
         if (!clientSimulator) {
             return;
@@ -212,6 +233,15 @@ function App() {
 
     // Special events in page navigation
     // usePageNumber takes a page number, a conditional and a callback
+
+    usePageNumber(
+        page,
+        (page) => page === 1 && currentProductConcentrationArray.length > 1,
+        () => {
+            totalReset();
+        }
+    );
+
     usePageNumber(
         (page) => page === 5,
         () => setIsPlaying(false)
@@ -457,7 +487,12 @@ function App() {
                             />
                         }
                         centerPanel={
-                            <CenterPanel reactionType={currentModule} />
+                            <CenterPanel
+                                reactionType={currentModule}
+                                hasProgressed={
+                                    currentProductConcentrationArray.length > 1
+                                }
+                            />
                         }
                         rightPanel={
                             <RightPanel
