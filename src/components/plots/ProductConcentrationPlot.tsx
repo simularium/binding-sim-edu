@@ -53,10 +53,7 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         if (data.length === 1 && !hasData.current) {
             const lastValue =
                 productConcentrations[productConcentrations.length - 1];
-            if (lastValue > 0) {
-                hasData.current = true;
-            } else {
-                hasData.current = false;
+            hasData.current = lastValue > 0;
             }
         }
 
