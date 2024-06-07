@@ -12,7 +12,7 @@ import { getColorIndex } from "./utils";
 import { ProductOverTimeTrace } from "./types";
 import { SimulariumContext } from "../../simulation/context";
 import { AGENT_AB_COLOR } from "../../constants/colors";
-import { MICRO } from "../../constants";
+import { MICRO, NANO } from "../../constants";
 
 import plotStyles from "./plots.module.css";
 
@@ -27,9 +27,10 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
     width,
     height,
 }) => {
-    const { timeFactor, maxConcentration } = useContext(SimulariumContext);
+    const { timeFactor, maxConcentration, productName, timeUnit } =
+        useContext(SimulariumContext);
     const hasData = useRef(false);
-    if (!data.length) {
+    if (data.length === 0) {
         hasData.current = false;
     }
     const traces = data.map((trace): Partial<PlotData> => {
@@ -52,15 +53,18 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         if (data.length === 1 && !hasData.current) {
             const lastValue =
                 productConcentrations[productConcentrations.length - 1];
-            if (lastValue > 0) {
-                hasData.current = true;
-            } else {
-                hasData.current = false;
-            }
+            hasData.current = lastValue > 0;
         }
 
+        const timeArray = productConcentrations.map((_, i) => {
+            if (timeUnit === NANO) {
+                return (i * timeFactor) / 1000;
+            } else {
+                return i * timeFactor;
+            }
+        });
         return {
-            x: productConcentrations.map((_, i) => (i * timeFactor) / 1000),
+            x: timeArray,
             y: productConcentrations,
             type: "scatter" as const,
             mode: "lines" as const,
@@ -92,8 +96,8 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         yaxis: {
             ...AXIS_SETTINGS,
             range: range,
+            title: `[${productName}] ${MICRO}M`,
             rangemode: "tozero" as const,
-            title: `[AB] ${MICRO}M`,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,
                 color: AGENT_AB_COLOR,

@@ -6,10 +6,17 @@
     font-family: "Open Sans";
     font-size: 10px;
     font-weight: 400;
-    line-height: 13.62px;
-    text-align: right;
     color: #d3d3d3;
     position: relative;
+    display: inline-block;
+    height: 24px;
+    width: 12px;
+    top: -10px;
+}
+
+.number-label span {
+    position: relative;
+    top: 10px;
 }
 
 .recorded {
