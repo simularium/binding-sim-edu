@@ -6,14 +6,19 @@ import { Module } from "../../types";
 import FinalPage from "../FinalPage";
 import VisibilityControl from "../shared/VisibilityControl";
 
+
 interface CenterPanelProps {
     reactionType: Module;
+    hasProgressed: boolean;
 }
 
-const CenterPanel: React.FC<CenterPanelProps> = ({ reactionType }) => {
+const CenterPanel: React.FC<CenterPanelProps> = ({
+    reactionType,
+    hasProgressed,
+}) => {
     return (
         <>
-            <ViewSwitch />
+            <ViewSwitch hasProgressed={hasProgressed} />
             <EquilibriumQuestion />
             <KdQuestion reactionType={reactionType} />
             <VisibilityControl includedPages={[10]}>

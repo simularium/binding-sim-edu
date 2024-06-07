@@ -6,6 +6,7 @@ import {
     LIGHT_GREY,
     BG_MEDIUM,
     MID_GREY_DARKER,
+    OVERLAY_GREY,
 } from "../constants/colors";
 
 const customTheme = {
@@ -56,6 +57,11 @@ const customTheme = {
         Progress: {
             defaultColor: BRIGHT_PURPLE_DARKER,
             colorSuccess: BRIGHT_PURPLE_DARKER,
+        },
+        Dropdown: {
+            colorBgElevated: OVERLAY_GREY,
+            controlItemBgHover: OVERLAY_GREY,
+            colorText: LIGHT_GREY,
         },
     },
 };
