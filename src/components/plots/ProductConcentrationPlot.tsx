@@ -85,9 +85,9 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
 
         xaxis: {
             ...AXIS_SETTINGS,
-            title: `time (${MICRO}s)`,
-            rangemode: "tozero" as const,
             range: range,
+            rangemode: "tozero" as const,
+            title: `time (${MICRO}s)`,
         },
         yaxis: {
             ...AXIS_SETTINGS,
