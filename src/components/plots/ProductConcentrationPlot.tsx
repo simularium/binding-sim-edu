@@ -53,11 +53,7 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         if (data.length === 1 && !hasData.current) {
             const lastValue =
                 productConcentrations[productConcentrations.length - 1];
-            if (lastValue > 0) {
-                hasData.current = true;
-            } else {
-                hasData.current = false;
-            }
+            hasData.current = lastValue > 0;
         }
 
         const timeArray = productConcentrations.map((_, i) => {
@@ -93,10 +89,9 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
 
         xaxis: {
             ...AXIS_SETTINGS,
-            title: `time (${MICRO}s)`,
-            rangemode: "tozero" as const,
             range: range,
             rangemode: "tozero" as const,
+            title: `time (${MICRO}s)`,
         },
         yaxis: {
             ...AXIS_SETTINGS,
