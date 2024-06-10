@@ -9,7 +9,7 @@ import { ProductOverTimeTrace } from "../plots/types";
 import styles from "./layout.module.css";
 import { AB } from "../agent-symbols";
 import ResizeContainer from "../shared/ResizeContainer";
-import { SimulariumContext } from "../../simulation/context";
+import { SimulariumContext } from "../../context/context";
 
 interface RightPanelProps {
     productOverTimeTraces: ProductOverTimeTrace[];

@@ -6,23 +6,14 @@ import {
     useRef,
     useState,
 } from "react";
-import SimulariumViewer, {
-    RenderStyle,
-    TimeData,
-} from "@aics/simularium-viewer";
+import SimulariumViewer, { RenderStyle } from "@aics/simularium-viewer";
 import "@aics/simularium-viewer/style/style.css";
-import { SimulariumContext } from "../simulation/context";
+import { SimulariumContext } from "../context/context";
 import styles from "./viewer.module.css";
 import useWindowResize from "../hooks/useWindowResize";
 import { LIVE_SIMULATION_NAME } from "../constants";
 
-interface ViewerProps {
-    handleTimeChange: (timeData: TimeData) => void;
-    isPlaying: boolean;
-    setIsPlaying: (isPlaying: boolean) => void;
-}
-
-export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
+export default function Viewer(): ReactNode {
     const [selectionStateInfo] = useState({
         highlightedAgents: [],
         hiddenAgents: [],
@@ -35,6 +26,7 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         simulariumController,
         handleTrajectoryChange,
         trajectoryName,
+        handleTimeChange,
     } = useContext(SimulariumContext);
 
     const setViewportToContainerSize = useCallback(() => {

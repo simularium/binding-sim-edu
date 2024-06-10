@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
 
-import { SimulariumContext } from "../simulation/context";
+import { SimulariumContext } from "../context/context";
 import ProgressionControl from "./shared/ProgressionControl";
 import VisibilityControl from "./shared/VisibilityControl";
 import { OverlayButton } from "./shared/ButtonLibrary";
@@ -18,9 +18,9 @@ const PlayButton: React.FC = () => {
             <ProgressionControl onPage={[2, 5]}>
                 <OverlayButton
                     onClick={handleClick}
-                    style={{ bottom: 14, left: 16}}
+                    style={{ bottom: 14, left: 16 }}
                     icon={
-                        isPlaying ? <PauseOutlined /> : <CaretRightOutlined /> 
+                        isPlaying ? <PauseOutlined /> : <CaretRightOutlined />
                     }
                 />
             </ProgressionControl>

@@ -1,5 +1,4 @@
 import { ReactNode, useEffect, useMemo, useState } from "react";
-import { uniq } from "lodash";
 import {
     SimulariumController,
     TimeData,
@@ -16,22 +15,24 @@ import {
     Module,
     ProductName,
     ScatterTrace,
-    TrajectoryStatus,
 } from "./types";
 import LeftPanel from "./components/main-layout/LeftPanel";
 import RightPanel from "./components/main-layout/RightPanel";
 import ReactionDisplay from "./components/main-layout/ReactionDisplay";
 import ContentPanel from "./components/main-layout/ContentPanel";
-import content, { moduleNames } from "./content";
+import content from "./content";
 import { DEFAULT_VIEWPORT_SIZE, LIVE_SIMULATION_NAME } from "./constants";
 import CenterPanel from "./components/main-layout/CenterPanel";
-import { SimulariumContext } from "./simulation/context";
+import {
+    AnalysisContext,
+    AppContext,
+    SimulariumContext,
+    LiveEventsContext,
+} from "./context/context";
 import NavPanel from "./components/main-layout/NavPanel";
 import AdminUI from "./components/AdminUi";
 import { ProductOverTimeTrace } from "./components/plots/types";
 import MainLayout from "./components/main-layout/Layout";
-import usePageNumber from "./hooks/usePageNumber";
-import fetch3DTrajectory from "./utils/fetch3DTrajectory";
 import { insertIntoArray, insertValueSorted } from "./utils";
 import PreComputedPlotData from "./simulation/PreComputedPlotData";
 import PreComputedSimulationData from "./simulation/PreComputedSimulationData";
@@ -43,10 +44,6 @@ function App() {
     const [page, setPage] = useState(1);
     const [time, setTime] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [trajectoryStatus, setTrajectoryStatus] = useState(
-        TrajectoryStatus.INITIAL
-    );
-
     /**
      * Simulation state
      * input values for the simulation
@@ -147,18 +144,22 @@ function App() {
 
     const totalReset = () => {
         setLiveConcentration({
-            [AgentName.A]: INITIAL_CONCENTRATIONS[AgentName.A],
-            [AgentName.B]: INITIAL_CONCENTRATIONS[AgentName.B],
+            [AgentName.A]:
+                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
+            [AgentName.B]:
+                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
             [productName]: 0,
         });
         setCurrentModule(Module.A_B_AB);
         setInputConcentration({
-            [AgentName.A]: INITIAL_CONCENTRATIONS[AgentName.A],
-            [AgentName.B]: INITIAL_CONCENTRATIONS[AgentName.B],
+            [AgentName.A]:
+                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
+            [AgentName.B]:
+                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
         });
         handleNewInputConcentration(
             ADJUSTABLE_AGENT,
-            INITIAL_CONCENTRATIONS[AgentName.B]
+            LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B]
         );
         setIsPlaying(false);
         resetAnalysisState();
@@ -204,79 +205,6 @@ function App() {
             clientSimulator.setTimeScale(timeFactor);
         }
     }, [timeFactor, clientSimulator]);
-
-    // Ongoing check to see if they've measured enough values to determine Kd
-    const halfFilled = inputConcentration.A ? inputConcentration.A / 2 : 5;
-    const uniqMeasuredConcentrations = useMemo(
-        () => uniq(inputEquilibriumConcentrations),
-        [inputEquilibriumConcentrations]
-    );
-    const hasAValueAboveKd = useMemo(
-        () =>
-            uniqMeasuredConcentrations.filter((c) => c > halfFilled).length >=
-            1,
-        [halfFilled, uniqMeasuredConcentrations]
-    );
-    const hasAValueBelowKd = useMemo(
-        () =>
-            uniqMeasuredConcentrations.filter((c) => c < halfFilled).length >=
-            1,
-        [halfFilled, uniqMeasuredConcentrations]
-    );
-    const canDetermineEquilibrium = useMemo(() => {
-        return (
-            hasAValueAboveKd &&
-            hasAValueBelowKd &&
-            uniqMeasuredConcentrations.length >= 3
-        );
-    }, [hasAValueAboveKd, hasAValueBelowKd, uniqMeasuredConcentrations]);
-
-    // Special events in page navigation
-    // usePageNumber takes a page number, a conditional and a callback
-
-    usePageNumber(
-        page,
-        (page) => page === 1 && currentProductConcentrationArray.length > 1,
-        () => {
-            totalReset();
-        }
-    );
-
-    usePageNumber(
-        (page) => page === 5,
-        () => setIsPlaying(false)
-    );
-
-    // if they hit pause instead of clicking "Next", we still want to progress
-    usePageNumber(
-        (page) =>
-            page === 4 && uniqMeasuredConcentrations.length > 0 && !isPlaying,
-        () => setPage(5)
-    );
-    usePageNumber(
-        (page) => canDetermineEquilibrium && page === 7,
-        () => setPage(8)
-    );
-
-    usePageNumber(
-        (page) =>
-            page === content[currentModule].length - 1 &&
-            trajectoryStatus == TrajectoryStatus.INITIAL,
-        async () => {
-            setIsPlaying(false);
-            setTrajectoryStatus(TrajectoryStatus.LOADING);
-            resetAnalysisState();
-            await fetch3DTrajectory(
-                PreComputedSimulationData.EXAMPLE_TRAJECTORY_URLS[
-                    currentModule
-                ],
-                simulariumController,
-                setTrajectoryPlotData
-            );
-            setProductOverTimeTraces([]);
-            setTrajectoryStatus(TrajectoryStatus.LOADED);
-        }
-    );
 
     const addProductionTrace = (previousConcentration: number) => {
         const traces = productOverTimeTraces;
@@ -431,97 +359,102 @@ function App() {
     };
     return (
         <>
-            <div className="app">
-                <SimulariumContext.Provider
-                    value={{
-                        trajectoryName,
-                        productName,
-                        currentProductionConcentration:
-                            liveConcentration[productName] || 0,
-                        maxConcentration:
-                            simulationData.getMaxConcentration(currentModule),
-                        getAgentColor: simulationData.getAgentColor,
-                        isPlaying,
-                        setIsPlaying,
-                        simulariumController,
-                        handleTimeChange,
-                        page,
-                        setPage,
-                        timeFactor,
-                        timeUnit: simulationData.timeUnit,
-                        handleTrajectoryChange,
-                        viewportSize,
-                        setViewportSize,
-                        recordedConcentrations: inputEquilibriumConcentrations,
-                    }}
-                >
-                    <MainLayout
-                        header={
-                            <NavPanel
-                                page={page}
-                                title={moduleNames[currentModule]}
-                                total={content[currentModule].length}
-                            />
-                        }
-                        content={
-                            <ContentPanel {...content[currentModule][page]} />
-                        }
-                        reactionPanel={
-                            <ReactionDisplay reactionType={currentModule} />
-                        }
-                        leftPanel={
-                            <LeftPanel
-                                inputConcentration={inputConcentration}
-                                liveConcentration={liveConcentration}
-                                handleNewInputConcentration={
-                                    handleNewInputConcentration
-                                }
-                                handleFinishInputConcentrationChange={
-                                    handleFinishInputConcentrationChange
-                                }
-                                bindingEventsOverTime={bindingEventsOverTime}
-                                unbindingEventsOverTime={
-                                    unBindingEventsOverTime
-                                }
-                                adjustableAgent={ADJUSTABLE_AGENT}
-                            />
-                        }
-                        centerPanel={
-                            <CenterPanel
-                                reactionType={currentModule}
-                                hasProgressed={
-                                    currentProductConcentrationArray.length > 1
-                                }
-                            />
-                        }
-                        rightPanel={
-                            <RightPanel
-                                productOverTimeTraces={productOverTimeTraces}
-                                currentProductConcentrationArray={
-                                    currentProductConcentrationArray
-                                }
-                                handleRecordEquilibrium={
-                                    handleRecordEquilibrium
-                                }
-                                currentAdjustableAgentConcentration={
-                                    inputConcentration[ADJUSTABLE_AGENT] || 0
-                                }
-                                equilibriumConcentrations={{
-                                    inputConcentrations:
-                                        inputEquilibriumConcentrations,
-                                    productConcentrations:
-                                        productEquilibriumConcentrations,
-                                }}
-                                equilibriumFeedback={equilibriumFeedback}
-                            />
-                        }
-                    />
-                    <AdminUI
-                        timeFactor={timeFactor}
-                        setTimeFactor={setTimeFactor}
-                    />
-                </SimulariumContext.Provider>
-            </div>
+            <AppContext.Provider value={{ page, setPage, currentModule }}>
+                <div className="app">
+                    <SimulariumContext.Provider
+                        value={{
+                            trajectoryName,
+                            productName,
+                            maxConcentration:
+                                simulationData.getMaxConcentration(
+                                    currentModule
+                                ),
+                            getAgentColor: simulationData.getAgentColor,
+                            isPlaying,
+                            setIsPlaying,
+                            simulariumController,
+                            handleTimeChange,
+
+                            timeFactor,
+                            timeUnit: simulationData.timeUnit,
+                            handleTrajectoryChange,
+                            viewportSize,
+                            setViewportSize,
+                            recordedConcentrations:
+                                inputEquilibriumConcentrations,
+                        }}
+                    >
+                        <MainLayout
+                            header={<NavPanel />}
+                            content={
+                                <ContentPanel
+                                    {...content[currentModule][page]}
+                                />
+                            }
+                            reactionPanel={
+                                <ReactionDisplay reactionType={currentModule} />
+                            }
+                            leftPanel={
+                                <LiveEventsContext.Provider
+                                    value={{
+                                        liveConcentration: liveConcentration,
+                                        handleNewInputConcentration:
+                                            handleNewInputConcentration,
+                                        handleFinishInputConcentrationChange:
+                                            handleFinishInputConcentrationChange,
+                                        bindingEventsOverTime:
+                                            bindingEventsOverTime,
+                                        unbindingEventsOverTime:
+                                            unBindingEventsOverTime,
+                                    }}
+                                >
+                                    <LeftPanel
+                                        inputConcentration={inputConcentration}
+                                        adjustableAgent={ADJUSTABLE_AGENT}
+                                    />
+                                </LiveEventsContext.Provider>
+                            }
+                            centerPanel={
+                                <CenterPanel
+                                    reactionType={currentModule}
+                                    hasProgressed={
+                                        currentProductConcentrationArray.length >
+                                        1
+                                    }
+                                />
+                            }
+                            rightPanel={
+                                <RightPanel
+                                    productOverTimeTraces={
+                                        productOverTimeTraces
+                                    }
+                                    currentProductConcentrationArray={
+                                        currentProductConcentrationArray
+                                    }
+                                    handleRecordEquilibrium={
+                                        handleRecordEquilibrium
+                                    }
+                                    currentAdjustableAgentConcentration={
+                                        inputConcentration[ADJUSTABLE_AGENT] ||
+                                        0
+                                    }
+                                    equilibriumConcentrations={{
+                                        inputConcentrations:
+                                            inputEquilibriumConcentrations,
+                                        productConcentrations:
+                                            productEquilibriumConcentrations,
+                                    }}
+                                    equilibriumFeedback={equilibriumFeedback}
+                                />
+                            }
+                        />
+                        <AdminUI
+                            timeFactor={timeFactor}
+                            setTimeFactor={setTimeFactor}
+                        />
+                    </SimulariumContext.Provider>
+                </div>
+            </AppContext.Provider>
         </>
     );
 }

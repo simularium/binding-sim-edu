@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { SimulariumContext } from '../../simulation/context';
+import React, { useContext } from "react";
+import { AppContext } from "../../context/context";
 
 interface VisibilityControlProps {
     excludedPages?: number[];
@@ -12,7 +12,7 @@ const VisibilityControl: React.FC<VisibilityControlProps> = ({
     children,
     includedPages,
 }) => {
-    const { page } = useContext(SimulariumContext);
+    const { page } = useContext(AppContext);
 
     let shouldRender = true;
     if (includedPages) {

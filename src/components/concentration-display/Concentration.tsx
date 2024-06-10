@@ -2,12 +2,12 @@ import React, { useContext, useState } from "react";
 import { map } from "lodash";
 import { Flex } from "antd";
 
+import { AgentName, InputConcentration } from "../../types";
 import {
-    AgentName,
-    CurrentConcentration,
-    InputConcentration,
-} from "../../types";
-import { SimulariumContext } from "../../simulation/context";
+    AppContext,
+    LiveEventsContext,
+    SimulariumContext,
+} from "../../context/context";
 import styles from "./concentration.module.css";
 import LiveConcentrationDisplay from "./LiveConcentrationDisplay";
 import ConcentrationSlider from "./ConcentrationSlider";
@@ -17,20 +17,21 @@ import ResizeContainer from "../shared/ResizeContainer";
 interface AgentProps {
     adjustableAgent: AgentName;
     concentration: InputConcentration;
-    onChange: (name: string, value: number) => void;
-    onChangeComplete?: (name: string, value: number) => void;
-    liveConcentration: CurrentConcentration;
 }
 
 const Concentration: React.FC<AgentProps> = ({
     concentration,
-    onChange,
     adjustableAgent,
-    liveConcentration,
-    onChangeComplete,
 }) => {
-    const { isPlaying, maxConcentration, page, getAgentColor } =
+    const { page } = useContext(AppContext);
+    const { isPlaying, maxConcentration, getAgentColor } =
         useContext(SimulariumContext);
+    const {
+        liveConcentration,
+        handleNewInputConcentration,
+        handleFinishInputConcentrationChange,
+    } = useContext(LiveEventsContext);
+
     const [width, setWidth] = useState<number>(0);
     const getComponent = (
         agent: AgentName,
@@ -43,8 +44,8 @@ const Concentration: React.FC<AgentProps> = ({
                     max={maxConcentration}
                     name={agent}
                     initialValue={concentration[agent] || 0}
-                    onChange={onChange}
-                    onChangeComplete={onChangeComplete}
+                    onChange={handleNewInputConcentration}
+                    onChangeComplete={handleFinishInputConcentrationChange}
                     key={agent}
                 />
             );

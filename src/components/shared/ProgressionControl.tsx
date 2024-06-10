@@ -1,13 +1,12 @@
 import React, { useContext } from "react";
-import { SimulariumContext } from "../../simulation/context";
+import { AppContext } from "../../context/context";
 import { BaseHandler, ProgressionControlEvent } from "../../types";
 
 type ProgressionControlChildProps =
-| React.InputHTMLAttributes<HTMLInputElement>
-| React.ButtonHTMLAttributes<HTMLButtonElement>;
+    | React.InputHTMLAttributes<HTMLInputElement>
+    | React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-type ProgressionControlChild =
-    React.ReactElement<ProgressionControlChildProps>;
+type ProgressionControlChild = React.ReactElement<ProgressionControlChildProps>;
 interface ProgressionControlProps {
     children: ProgressionControlChild;
     onPage: number | number[];
@@ -22,7 +21,7 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
     children,
     onPage,
 }) => {
-    const { page, setPage } = useContext(SimulariumContext);
+    const { page, setPage } = useContext(AppContext);
     const progress = () => {
         if (Array.isArray(onPage)) {
             if (onPage.includes(page)) {
@@ -56,8 +55,7 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
         const reactElement = child as ProgressionControlChild;
         if (child.props.onClick) {
             return React.cloneElement(reactElement, {
-                onClick: mergeHandlers(
-                    child.props.onClick as BaseHandler),
+                onClick: mergeHandlers(child.props.onClick as BaseHandler),
             });
         } else if (child.props.onChange) {
             return React.cloneElement(reactElement, {

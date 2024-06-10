@@ -2,16 +2,14 @@ import React, { useContext } from "react";
 import { Flex } from "antd";
 import PageIndicator from "../PageIndicator";
 import Dropdown from "../shared/Dropdown";
-import { SimulariumContext } from "../../simulation/context";
+import { AppContext } from "../../context/context";
+import content, { moduleNames } from "../../content";
 
-interface NavPanelProps {
-    title: string;
-    page: number;
-    total: number;
-}
+const NavPanel: React.FC = () => {
+    const { page, setPage, currentModule } = useContext(AppContext);
+    const title = moduleNames[currentModule];
+    const finalPageNumber = content[currentModule].length;
 
-const NavPanel: React.FC<NavPanelProps> = ({ title, page, total }) => {
-    const { setPage } = useContext(SimulariumContext);
     const helpMenuItems = [
         {
             key: "1",
@@ -29,7 +27,7 @@ const NavPanel: React.FC<NavPanelProps> = ({ title, page, total }) => {
     return (
         <Flex align="center" justify="space-between" style={{ height: "100%" }}>
             <h2>Binding affinity</h2>
-            <PageIndicator title={title} page={page} total={total} />
+            <PageIndicator title={title} page={page} total={finalPageNumber} />
             <Flex align="center" gap={12}>
                 <a onClick={() => setPage(1)}>
                     <h4>Home</h4>

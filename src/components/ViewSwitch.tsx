@@ -1,14 +1,13 @@
 import React, { useContext, useState } from "react";
 
 import Viewer from "./Viewer";
-import { SimulariumContext } from "../simulation/context";
+import { AppContext } from "../context/context";
 import ProgressionControl from "./shared/ProgressionControl";
 import PlayButton from "./PlayButton";
 import { OverlayButton } from "./shared/ButtonLibrary";
 import LabIcon from "./icons/Lab";
 import Molecules from "./icons/Molecules";
 import LabView from "./LabView";
-import usePageNumber from "../hooks/usePageNumber";
 
 enum View {
     Lab = "lab",
@@ -27,16 +26,12 @@ const ViewSwitch: React.FC<ViewSwitchProps> = ({ hasProgressed }) => {
             prevView === View.Lab ? View.Simulation : View.Lab
         );
     };
-    const { page, isPlaying, setIsPlaying, handleTimeChange } =
-        useContext(SimulariumContext);
+    const { page } = useContext(AppContext);
 
-    usePageNumber(
-        page,
-        (page) => page === 1 && hasProgressed,
-        () => {
-            setCurrentView(View.Lab);
-        }
-    );
+    if (page === 1 && hasProgressed) {
+        setCurrentView(View.Lab);
+    }
+
     return (
         <div style={{ position: "relative", height: "100%" }}>
             <ProgressionControl onPage={1}>
@@ -53,11 +48,7 @@ const ViewSwitch: React.FC<ViewSwitchProps> = ({ hasProgressed }) => {
             </ProgressionControl>
             <PlayButton />
             {currentView === View.Lab ? <LabView /> : null}
-            <Viewer
-                isPlaying={isPlaying}
-                setIsPlaying={setIsPlaying}
-                handleTimeChange={handleTimeChange}
-            />
+            <Viewer />
         </div>
     );
 };

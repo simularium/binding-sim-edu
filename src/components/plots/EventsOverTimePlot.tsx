@@ -8,7 +8,7 @@ import {
     BASE_PLOT_LAYOUT,
     CONFIG,
 } from "./constants";
-import { SimulariumContext } from "../../simulation/context";
+import { LiveEventsContext, SimulariumContext } from "../../context/context";
 import { A, B, AB } from "../agent-symbols";
 import { MICRO } from "../../constants";
 
@@ -16,16 +16,10 @@ import plotStyles from "./plots.module.css";
 import layoutStyles from "./events-over-time.module.css";
 import ResizeContainer from "../shared/ResizeContainer";
 
-interface PlotProps {
-    bindingEventsOverTime: number[];
-    unbindingEventsOverTime: number[];
-}
-
-const EventsOverTimePlot: React.FC<PlotProps> = ({
-    bindingEventsOverTime,
-    unbindingEventsOverTime,
-}) => {
+const EventsOverTimePlot: React.FC = () => {
     const { timeFactor } = useContext(SimulariumContext);
+    const { bindingEventsOverTime, unbindingEventsOverTime } =
+        useContext(LiveEventsContext);
     const [width, setWidth] = useState<number>(0);
 
     // the two arrays will always be the same length

@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { AgentName } from "../../types";
 
 import styles from "./live-concentration-display.module.css";
-import { SimulariumContext } from "../../simulation/context";
+import { SimulariumContext } from "../../context/context";
 
 interface LiveConcentrationDisplayProps {
     concentration: number;
