@@ -4,34 +4,28 @@ import VisibilityControl from "../shared/VisibilityControl";
 import ProductConcentrationPlot from "../plots/ProductConcentrationPlot";
 import EquilibriumPlot from "../plots/EquilibriumPlot";
 import RecordEquilibriumButton from "../RecordEquilibriumButton";
-import { ProductOverTimeTrace } from "../plots/types";
 
 import styles from "./layout.module.css";
 import { AB } from "../agent-symbols";
 import ResizeContainer from "../shared/ResizeContainer";
-import { SimulariumContext } from "../../context/context";
+import { AnalysisContext, SimulariumContext } from "../../context/context";
 
 interface RightPanelProps {
-    productOverTimeTraces: ProductOverTimeTrace[];
-    currentProductConcentrationArray: number[];
     currentAdjustableAgentConcentration: number;
-    handleRecordEquilibrium: () => void;
-    equilibriumConcentrations: {
-        inputConcentrations: number[];
-        productConcentrations: number[];
-    };
+
     equilibriumFeedback: ReactNode | string;
 }
 
 const RightPanel: React.FC<RightPanelProps> = ({
-    productOverTimeTraces,
-    handleRecordEquilibrium,
-    equilibriumConcentrations,
     equilibriumFeedback,
-    currentProductConcentrationArray,
     currentAdjustableAgentConcentration,
 }) => {
     const { productName } = useContext(SimulariumContext);
+    const {
+        productOverTimeTraces,
+        currentProductConcentrationArray,
+        equilibriumConcentrations,
+    } = useContext(AnalysisContext);
     const [width, setWidth] = useState<number>(0);
     const [height, setHeight] = useState<number>(0);
     let data = productOverTimeTraces;
@@ -70,9 +64,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
                     y={equilibriumConcentrations.productConcentrations}
                 />
                 <div className={styles.recordButton}>
-                    <RecordEquilibriumButton
-                        handleRecordEquilibrium={handleRecordEquilibrium}
-                    />
+                    <RecordEquilibriumButton />
                 </div>
                 <div className={styles.feedback}>{equilibriumFeedback}</div>
             </VisibilityControl>

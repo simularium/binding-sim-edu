@@ -18,7 +18,7 @@ import ResizeContainer from "../shared/ResizeContainer";
 
 const EventsOverTimePlot: React.FC = () => {
     const { timeFactor } = useContext(SimulariumContext);
-    const { bindingEventsOverTime, unbindingEventsOverTime } =
+    const { bindingEventsOverTime, unBindingEventsOverTime } =
         useContext(LiveEventsContext);
     const [width, setWidth] = useState<number>(0);
 
@@ -36,7 +36,7 @@ const EventsOverTimePlot: React.FC = () => {
         }
     };
     checkForNewMax(bindingEventsOverTime);
-    checkForNewMax(unbindingEventsOverTime);
+    checkForNewMax(unBindingEventsOverTime);
     const hideTickLabels = {
         ...AXIS_SETTINGS,
         showticklabels: false,
@@ -112,7 +112,7 @@ const EventsOverTimePlot: React.FC = () => {
                         data={[
                             {
                                 ...plotSettings,
-                                y: unbindingEventsOverTime,
+                                y: unBindingEventsOverTime,
                             },
                         ]}
                         layout={{

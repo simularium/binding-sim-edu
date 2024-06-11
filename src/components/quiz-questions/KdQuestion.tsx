@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { valueType } from "antd/es/statistic/utils";
 
 import QuizForm from "./QuizForm";
@@ -7,12 +7,10 @@ import InputNumber from "../shared/InputNumber";
 import { kds } from "../../constants";
 import { FormState } from "./types";
 import styles from "./popup.module.css";
-import { Module } from "../../types";
-interface KdQuestionProps {
-    reactionType: Module;
-}
+import { AppContext } from "../../context/context";
 
-const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
+const KdQuestion: React.FC = () => {
+    const { currentModule } = useContext(AppContext);
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [formState, setFormState] = useState(FormState.Clear);
     const handleAnswerSelection = (answer: valueType | null) => {
@@ -26,7 +24,7 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
         }
     };
     const handleSubmit = () => {
-        const correctAnswer = kds[reactionType];
+        const correctAnswer = kds[currentModule];
         const tolerance = 1.5;
         if (selectedAnswer === null) {
             // No answer selected

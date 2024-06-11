@@ -10,6 +10,7 @@ import {
     NANO,
 } from "../constants";
 import { AgentName, CurrentConcentration, Module, ProductName } from "../types";
+import { ProductOverTimeTrace } from "../components/plots/types";
 
 interface SimulariumContextType {
     trajectoryName: string;
@@ -57,12 +58,25 @@ export const SimulariumContext = createContext({
 
 interface AnalysisContextType {
     recordedConcentrations: number[];
-    currentProductionConcentration: number;
+    currentProductConcentrationArray: number[];
+    productOverTimeTraces: ProductOverTimeTrace[];
+    handleRecordEquilibrium: () => void;
+    equilibriumConcentrations: {
+        inputConcentrations: number[];
+        productConcentrations: number[];
+    };
 }
 
 export const AnalysisContext = createContext({
     recordedConcentrations: [],
     currentProductionConcentration: 0,
+    currentProductConcentrationArray: [],
+    handleRecordEquilibrium: () => {},
+    productOverTimeTraces: [],
+    equilibriumConcentrations: {
+        inputConcentrations: [],
+        productConcentrations: [],
+    },
 } as AnalysisContextType);
 
 interface LiveEventsContextType {
@@ -70,12 +84,12 @@ interface LiveEventsContextType {
     handleNewInputConcentration: (name: string, value: number) => void;
     handleFinishInputConcentrationChange: (name: string, value: number) => void;
     bindingEventsOverTime: number[];
-    unbindingEventsOverTime: number[];
+    unBindingEventsOverTime: number[];
 }
 export const LiveEventsContext = createContext({
     liveConcentration: {},
     handleNewInputConcentration: () => {},
     handleFinishInputConcentrationChange: () => {},
     bindingEventsOverTime: [],
-    unbindingEventsOverTime: [],
+    unBindingEventsOverTime: [],
 } as LiveEventsContextType);

@@ -1,16 +1,16 @@
+import { useContext } from "react";
+import { AnalysisContext } from "../context/context";
 import { SecondaryButton } from "./shared/ButtonLibrary";
 import ProgressionControl from "./shared/ProgressionControl";
 
-interface RecordEquilibriumButtonProps {
-    handleRecordEquilibrium: () => void;
-}
-
-const RecordEquilibriumButton = ({
-    handleRecordEquilibrium,
-}: RecordEquilibriumButtonProps) => {
+const RecordEquilibriumButton = () => {
+    const { handleRecordEquilibrium } = useContext(AnalysisContext);
     return (
         <ProgressionControl onPage={[3, 6]}>
-            <SecondaryButton onClick={handleRecordEquilibrium} style={{maxWidth: 236, width: "100%"}}>
+            <SecondaryButton
+                onClick={handleRecordEquilibrium}
+                style={{ maxWidth: 236, width: "100%" }}
+            >
                 Record
             </SecondaryButton>
         </ProgressionControl>

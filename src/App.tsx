@@ -37,6 +37,7 @@ import { insertIntoArray, insertValueSorted } from "./utils";
 import PreComputedPlotData from "./simulation/PreComputedPlotData";
 import PreComputedSimulationData from "./simulation/PreComputedSimulationData";
 import LiveSimulationData from "./simulation/LiveSimulationData";
+import usePageNumber from "./hooks/usePageNumber";
 
 const ADJUSTABLE_AGENT = AgentName.B;
 
@@ -218,6 +219,22 @@ function App() {
         }
     };
 
+    usePageNumber(
+        page,
+        setIsPlaying,
+        totalReset,
+        inputConcentration,
+        resetAnalysisState,
+        setTrajectoryPlotData,
+        setProductOverTimeTraces,
+        inputEquilibriumConcentrations,
+        simulariumController,
+        currentProductConcentrationArray,
+        currentModule,
+        setPage,
+        isPlaying
+    );
+
     // User input handlers
 
     const handleTrajectoryChange = (trajectoryInfo: TrajectoryFileInfo) => {
@@ -374,14 +391,11 @@ function App() {
                             setIsPlaying,
                             simulariumController,
                             handleTimeChange,
-
                             timeFactor,
                             timeUnit: simulationData.timeUnit,
                             handleTrajectoryChange,
                             viewportSize,
                             setViewportSize,
-                            recordedConcentrations:
-                                inputEquilibriumConcentrations,
                         }}
                     >
                         <MainLayout
@@ -391,21 +405,15 @@ function App() {
                                     {...content[currentModule][page]}
                                 />
                             }
-                            reactionPanel={
-                                <ReactionDisplay reactionType={currentModule} />
-                            }
+                            reactionPanel={<ReactionDisplay />}
                             leftPanel={
                                 <LiveEventsContext.Provider
                                     value={{
-                                        liveConcentration: liveConcentration,
-                                        handleNewInputConcentration:
-                                            handleNewInputConcentration,
-                                        handleFinishInputConcentrationChange:
-                                            handleFinishInputConcentrationChange,
-                                        bindingEventsOverTime:
-                                            bindingEventsOverTime,
-                                        unbindingEventsOverTime:
-                                            unBindingEventsOverTime,
+                                        liveConcentration,
+                                        handleNewInputConcentration,
+                                        handleFinishInputConcentrationChange,
+                                        bindingEventsOverTime,
+                                        unBindingEventsOverTime,
                                     }}
                                 >
                                     <LeftPanel
@@ -416,7 +424,6 @@ function App() {
                             }
                             centerPanel={
                                 <CenterPanel
-                                    reactionType={currentModule}
                                     hasProgressed={
                                         currentProductConcentrationArray.length >
                                         1
@@ -424,28 +431,35 @@ function App() {
                                 />
                             }
                             rightPanel={
-                                <RightPanel
-                                    productOverTimeTraces={
-                                        productOverTimeTraces
-                                    }
-                                    currentProductConcentrationArray={
-                                        currentProductConcentrationArray
-                                    }
-                                    handleRecordEquilibrium={
-                                        handleRecordEquilibrium
-                                    }
-                                    currentAdjustableAgentConcentration={
-                                        inputConcentration[ADJUSTABLE_AGENT] ||
-                                        0
-                                    }
-                                    equilibriumConcentrations={{
-                                        inputConcentrations:
+                                <AnalysisContext.Provider
+                                    value={{
+                                        recordedConcentrations:
                                             inputEquilibriumConcentrations,
-                                        productConcentrations:
-                                            productEquilibriumConcentrations,
+                                        currentProductConcentrationArray:
+                                            currentProductConcentrationArray,
+                                        productOverTimeTraces:
+                                            productOverTimeTraces,
+                                        handleRecordEquilibrium:
+                                            handleRecordEquilibrium,
+                                        equilibriumConcentrations: {
+                                            inputConcentrations:
+                                                inputEquilibriumConcentrations,
+                                            productConcentrations:
+                                                productEquilibriumConcentrations,
+                                        },
                                     }}
-                                    equilibriumFeedback={equilibriumFeedback}
-                                />
+                                >
+                                    <RightPanel
+                                        currentAdjustableAgentConcentration={
+                                            inputConcentration[
+                                                ADJUSTABLE_AGENT
+                                            ] || 0
+                                        }
+                                        equilibriumFeedback={
+                                            equilibriumFeedback
+                                        }
+                                    />
+                                </AnalysisContext.Provider>
                             }
                         />
                         <AdminUI

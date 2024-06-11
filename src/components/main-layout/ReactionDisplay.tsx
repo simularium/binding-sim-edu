@@ -1,17 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import ReversibleArrows from "../icons/ReversibleArrows";
 import styles from "./layout.module.css";
 import { A, B, C, AC, AB } from "../agent-symbols";
 import { Module } from "../../types";
+import { AppContext } from "../../context/context";
 
-interface ReactionDisplayProps {
-    reactionType: Module;
-}
-
-const ReactionDisplay: React.FC<ReactionDisplayProps> = ({ reactionType }) => {
+const ReactionDisplay: React.FC = () => {
+    const { currentModule } = useContext(AppContext);
     return (
         <div className={styles.reaction}>
-            {reactionType === Module.A_B_AB && (
+            {currentModule === Module.A_B_AB && (
                 <>
                     <A />
                     <span> + </span>
@@ -20,7 +18,7 @@ const ReactionDisplay: React.FC<ReactionDisplayProps> = ({ reactionType }) => {
                     <AB />
                 </>
             )}
-            {reactionType === Module.A_C_AC && (
+            {currentModule === Module.A_C_AC && (
                 <>
                     <A />
                     <span> + </span>
@@ -29,7 +27,7 @@ const ReactionDisplay: React.FC<ReactionDisplayProps> = ({ reactionType }) => {
                     <AC />
                 </>
             )}
-            {reactionType === Module.A_B_C_AB_AC && (
+            {currentModule === Module.A_B_C_AB_AC && (
                 <>
                     <A />
                     <span> + </span>
