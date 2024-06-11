@@ -57,7 +57,6 @@ export const SimulariumContext = createContext({
 } as SimulariumContextType);
 
 interface AnalysisContextType {
-    recordedConcentrations: number[];
     currentProductConcentrationArray: number[];
     productOverTimeTraces: ProductOverTimeTrace[];
     handleRecordEquilibrium: () => void;
@@ -68,7 +67,6 @@ interface AnalysisContextType {
 }
 
 export const AnalysisContext = createContext({
-    recordedConcentrations: [],
     currentProductionConcentration: 0,
     currentProductConcentrationArray: [],
     handleRecordEquilibrium: () => {},
@@ -80,6 +78,7 @@ export const AnalysisContext = createContext({
 } as AnalysisContextType);
 
 interface LiveEventsContextType {
+    recordedConcentrations: number[];
     liveConcentration: CurrentConcentration;
     handleNewInputConcentration: (name: string, value: number) => void;
     handleFinishInputConcentrationChange: (name: string, value: number) => void;
@@ -87,6 +86,7 @@ interface LiveEventsContextType {
     unBindingEventsOverTime: number[];
 }
 export const LiveEventsContext = createContext({
+    recordedConcentrations: [],
     liveConcentration: {},
     handleNewInputConcentration: () => {},
     handleFinishInputConcentrationChange: () => {},

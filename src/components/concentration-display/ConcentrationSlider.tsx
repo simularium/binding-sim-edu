@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useMemo, useRef } from "react";
 import { SliderSingleProps } from "antd";
 
 import Slider from "../shared/Slider";
-import { AnalysisContext } from "../../context/context";
+import { LiveEventsContext } from "../../context/context";
 import styles from "./concentration-slider.module.css";
 import classNames from "classnames";
 
@@ -20,7 +20,7 @@ const Mark: React.FC<{
     disabledNumbers: number[];
     onMouseUp: () => void;
 }> = ({ index, disabledNumbers, onMouseUp }) => {
-    const { recordedConcentrations } = useContext(AnalysisContext);
+    const { recordedConcentrations } = useContext(LiveEventsContext);
 
     const ref = useRef<HTMLDivElement>(null);
     useEffect(() => {

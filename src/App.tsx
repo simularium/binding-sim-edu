@@ -409,6 +409,8 @@ function App() {
                             leftPanel={
                                 <LiveEventsContext.Provider
                                     value={{
+                                        recordedConcentrations:
+                                            inputEquilibriumConcentrations,
                                         liveConcentration,
                                         handleNewInputConcentration,
                                         handleFinishInputConcentrationChange,
@@ -433,8 +435,6 @@ function App() {
                             rightPanel={
                                 <AnalysisContext.Provider
                                     value={{
-                                        recordedConcentrations:
-                                            inputEquilibriumConcentrations,
                                         currentProductConcentrationArray:
                                             currentProductConcentrationArray,
                                         productOverTimeTraces:
