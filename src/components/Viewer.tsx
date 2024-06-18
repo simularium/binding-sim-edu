@@ -8,7 +8,7 @@ import {
 } from "react";
 import SimulariumViewer, { RenderStyle } from "@aics/simularium-viewer";
 import "@aics/simularium-viewer/style/style.css";
-import { SimulariumContext } from "../context/context";
+import { SimulariumContext } from "../context";
 import styles from "./viewer.module.css";
 import useWindowResize from "../hooks/useWindowResize";
 import { LIVE_SIMULATION_NAME } from "../constants";

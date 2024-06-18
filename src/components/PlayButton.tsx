@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
 
-import { SimulariumContext } from "../context/context";
+import { SimulariumContext } from "../context";
 import ProgressionControl from "./shared/ProgressionControl";
 import VisibilityControl from "./shared/VisibilityControl";
 import { OverlayButton } from "./shared/ButtonLibrary";

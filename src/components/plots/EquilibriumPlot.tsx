@@ -9,7 +9,7 @@ import {
     PLOT_COLORS,
 } from "./constants";
 import { getColorIndex } from "./utils";
-import { SimulariumContext } from "../../context/context";
+import { SimulariumContext } from "../../context";
 import { AGENT_AB_COLOR, AGENT_B_COLOR } from "../../constants/colors";
 import { MICRO } from "../../constants";
 

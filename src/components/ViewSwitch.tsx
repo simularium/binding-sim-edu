@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 
 import Viewer from "./Viewer";
-import { AppContext } from "../context/context";
+import { AppContext } from "../context";
 import ProgressionControl from "./shared/ProgressionControl";
 import PlayButton from "./PlayButton";
 import { OverlayButton } from "./shared/ButtonLibrary";
@@ -15,10 +15,13 @@ enum View {
 }
 
 interface ViewSwitchProps {
-    hasProgressed: boolean;
+    currentProductConcentration: number;
 }
 
-const ViewSwitch: React.FC<ViewSwitchProps> = ({ hasProgressed }) => {
+const ViewSwitch: React.FC<ViewSwitchProps> = ({
+    currentProductConcentration,
+}) => {
+    const { page, hasProgressed } = useContext(AppContext);
     const [currentView, setCurrentView] = useState<View>(View.Lab);
 
     const switchView = () => {
@@ -26,9 +29,8 @@ const ViewSwitch: React.FC<ViewSwitchProps> = ({ hasProgressed }) => {
             prevView === View.Lab ? View.Simulation : View.Lab
         );
     };
-    const { page } = useContext(AppContext);
 
-    if (page === 1 && hasProgressed) {
+    if (page === 1 && hasProgressed && currentView === View.Simulation) {
         setCurrentView(View.Lab);
     }
 
@@ -47,7 +49,11 @@ const ViewSwitch: React.FC<ViewSwitchProps> = ({ hasProgressed }) => {
                 </OverlayButton>
             </ProgressionControl>
             <PlayButton />
-            {currentView === View.Lab ? <LabView /> : null}
+            {currentView === View.Lab ? (
+                <LabView
+                    currentProductConcentration={currentProductConcentration}
+                />
+            ) : null}
             <Viewer />
         </div>
     );

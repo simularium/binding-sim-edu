@@ -7,7 +7,7 @@ import {
     AppContext,
     LiveEventsContext,
     SimulariumContext,
-} from "../../context/context";
+} from "../../context";
 import styles from "./concentration.module.css";
 import LiveConcentrationDisplay from "./LiveConcentrationDisplay";
 import ConcentrationSlider from "./ConcentrationSlider";

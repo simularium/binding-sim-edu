@@ -8,11 +8,10 @@ import RecordEquilibriumButton from "../RecordEquilibriumButton";
 import styles from "./layout.module.css";
 import { AB } from "../agent-symbols";
 import ResizeContainer from "../shared/ResizeContainer";
-import { AnalysisContext, SimulariumContext } from "../../context/context";
+import { AnalysisContext, SimulariumContext } from "../../context";
 
 interface RightPanelProps {
     currentAdjustableAgentConcentration: number;
-
     equilibriumFeedback: ReactNode | string;
 }
 

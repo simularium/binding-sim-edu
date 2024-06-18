@@ -25,7 +25,8 @@ const usePageNumber = (
     currentProductConcentrationArray: number[],
     currentModule: Module,
     setPage: (value: number) => void,
-    isPlaying: boolean
+    isPlaying: boolean,
+    setHasProgressed: (value: boolean) => void
 ) => {
     const [trajectoryStatus, setTrajectoryStatus] = useState(
         TrajectoryStatus.INITIAL
@@ -63,6 +64,9 @@ const usePageNumber = (
                     totalReset();
                 }
                 break;
+            case 2:
+                setHasProgressed(true);
+                break;
             case 4:
                 if (uniqMeasuredConcentrations.length > 0 && !isPlaying) {
                     setPage(5);
@@ -99,6 +103,7 @@ const usePageNumber = (
         currentModule,
         setTrajectoryPlotData,
         setProductOverTimeTraces,
+        setHasProgressed,
     ]);
 };
 

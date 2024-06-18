@@ -4,13 +4,17 @@ import EquilibriumQuestion from "../quiz-questions/EquilibriumQuestion";
 import KdQuestion from "../quiz-questions/KdQuestion";
 
 interface CenterPanelProps {
-    hasProgressed: boolean;
+    currentProductConcentration: number;
 }
 
-const CenterPanel: React.FC<CenterPanelProps> = ({ hasProgressed }) => {
+const CenterPanel: React.FC<CenterPanelProps> = ({
+    currentProductConcentration,
+}) => {
     return (
         <>
-            <ViewSwitch hasProgressed={hasProgressed} />
+            <ViewSwitch
+                currentProductConcentration={currentProductConcentration}
+            />
             <EquilibriumQuestion />
             <KdQuestion />
         </>

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AppContext } from "../../context/context";
+import { AppContext } from "../../context";
 import { PrimaryButton } from "./ButtonLibrary";
 
 const NextButton = () => {

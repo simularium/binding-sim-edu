@@ -10,7 +10,7 @@ import {
 } from "./constants";
 import { getColorIndex } from "./utils";
 import { ProductOverTimeTrace } from "./types";
-import { SimulariumContext } from "../../context/context";
+import { SimulariumContext } from "../../context";
 import { AGENT_AB_COLOR } from "../../constants/colors";
 import { MICRO, NANO } from "../../constants";
 

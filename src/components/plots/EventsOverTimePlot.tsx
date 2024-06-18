@@ -8,7 +8,7 @@ import {
     BASE_PLOT_LAYOUT,
     CONFIG,
 } from "./constants";
-import { LiveEventsContext, SimulariumContext } from "../../context/context";
+import { LiveEventsContext, SimulariumContext } from "../../context";
 import { A, B, AB } from "../agent-symbols";
 import { MICRO } from "../../constants";
 

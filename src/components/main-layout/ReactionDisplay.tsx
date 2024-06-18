@@ -3,7 +3,7 @@ import ReversibleArrows from "../icons/ReversibleArrows";
 import styles from "./layout.module.css";
 import { A, B, C, AC, AB } from "../agent-symbols";
 import { Module } from "../../types";
-import { AppContext } from "../../context/context";
+import { AppContext } from "../../context";
 
 const ReactionDisplay: React.FC = () => {
     const { currentModule } = useContext(AppContext);

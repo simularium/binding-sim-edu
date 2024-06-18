@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AppContext } from "../../context/context";
+import { AppContext } from "../../context";
 
 interface VisibilityControlProps {
     excludedPages?: number[];

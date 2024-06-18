@@ -21,14 +21,14 @@ import RightPanel from "./components/main-layout/RightPanel";
 import ReactionDisplay from "./components/main-layout/ReactionDisplay";
 import ContentPanel from "./components/main-layout/ContentPanel";
 import content from "./content";
-import { DEFAULT_VIEWPORT_SIZE, LIVE_SIMULATION_NAME } from "./constants";
+import { LIVE_SIMULATION_NAME } from "./constants";
 import CenterPanel from "./components/main-layout/CenterPanel";
 import {
     AnalysisContext,
     AppContext,
     SimulariumContext,
     LiveEventsContext,
-} from "./context/context";
+} from "./context";
 import NavPanel from "./components/main-layout/NavPanel";
 import AdminUI from "./components/AdminUi";
 import { ProductOverTimeTrace } from "./components/plots/types";
@@ -38,13 +38,22 @@ import PreComputedPlotData from "./simulation/PreComputedPlotData";
 import PreComputedSimulationData from "./simulation/PreComputedSimulationData";
 import LiveSimulationData from "./simulation/LiveSimulationData";
 import usePageNumber from "./hooks/usePageNumber";
+import { DEFAULT_APP_STATE } from "./context/App/default";
+import DEFAULT_SIMULARIUM_STATE from "./context/Simularium/default";
+import { DEFAULT_INPUT_CONCENTRATION } from "./context/Analysis/default";
+import LIVE_EVENTS_DEFAULT_STATE from "./context/LiveEvents/default";
 
 const ADJUSTABLE_AGENT = AgentName.B;
 
 function App() {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(DEFAULT_APP_STATE.page);
+    const [hasProgressed, setHasProgressed] = useState(
+        DEFAULT_APP_STATE.hasProgressed
+    );
     const [time, setTime] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(
+        DEFAULT_SIMULARIUM_STATE.isPlaying
+    );
     /**
      * Simulation state
      * input values for the simulation
@@ -57,23 +66,22 @@ function App() {
             return new PreComputedSimulationData();
         }
     }, [trajectoryName]);
-    const [currentModule, setCurrentModule] = useState(Module.A_B_AB);
+    const [currentModule, setCurrentModule] = useState(
+        DEFAULT_APP_STATE.currentModule
+    );
     const [finalTime, setFinalTime] = useState(-1);
     const productName: ProductName = useMemo(() => {
         return simulationData.getCurrentProduct(currentModule);
     }, [currentModule, simulationData]);
 
     const [inputConcentration, setInputConcentration] =
-        useState<InputConcentration>({
-            [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
-            [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
-        });
+        useState<InputConcentration>(DEFAULT_INPUT_CONCENTRATION);
     const [timeFactor, setTimeFactor] = useState(
-        LiveSimulationData.DEFAULT_TIME_FACTOR
+        DEFAULT_SIMULARIUM_STATE.timeFactor
     );
-    const [viewportSize, setViewportSize] = useState(DEFAULT_VIEWPORT_SIZE);
+    const [viewportSize, setViewportSize] = useState(
+        DEFAULT_SIMULARIUM_STATE.viewportSize
+    );
     /**
      * Analysis state
      * used to create plots and feedback
@@ -81,13 +89,9 @@ function App() {
     const [trajectoryPlotData, setTrajectoryPlotData] =
         useState<ScatterTrace[]>();
     const [liveConcentration, setLiveConcentration] =
-        useState<CurrentConcentration>({
-            [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
-            [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
-            [productName]: 0,
-        });
+        useState<CurrentConcentration>(
+            LIVE_EVENTS_DEFAULT_STATE.liveConcentration
+        );
     const [productOverTimeTraces, setProductOverTimeTraces] = useState<
         ProductOverTimeTrace[]
     >([]);
@@ -162,8 +166,8 @@ function App() {
             ADJUSTABLE_AGENT,
             LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B]
         );
+        setHasProgressed(false);
         setIsPlaying(false);
-        resetAnalysisState();
         setInputEquilibriumConcentrations([]);
         setProductEquilibriumConcentrations([]);
     };
@@ -232,7 +236,8 @@ function App() {
         currentProductConcentrationArray,
         currentModule,
         setPage,
-        isPlaying
+        isPlaying,
+        setHasProgressed
     );
 
     // User input handlers
@@ -376,7 +381,9 @@ function App() {
     };
     return (
         <>
-            <AppContext.Provider value={{ page, setPage, currentModule }}>
+            <AppContext.Provider
+                value={{ page, setPage, currentModule, hasProgressed }}
+            >
                 <div className="app">
                     <SimulariumContext.Provider
                         value={{
@@ -426,9 +433,8 @@ function App() {
                             }
                             centerPanel={
                                 <CenterPanel
-                                    hasProgressed={
-                                        currentProductConcentrationArray.length >
-                                        1
+                                    currentProductConcentration={
+                                        liveConcentration[productName] || 0
                                     }
                                 />
                             }

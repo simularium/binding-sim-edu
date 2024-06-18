@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AnalysisContext } from "../context/context";
+import { AnalysisContext } from "../context";
 import { SecondaryButton } from "./shared/ButtonLibrary";
 import ProgressionControl from "./shared/ProgressionControl";
 

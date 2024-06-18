@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Flex } from "antd";
 import PageIndicator from "../PageIndicator";
 import Dropdown from "../shared/Dropdown";
-import { AppContext } from "../../context/context";
+import { AppContext } from "../../context";
 import content, { moduleNames } from "../../content";
 
 const NavPanel: React.FC = () => {

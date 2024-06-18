@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useMemo, useRef } from "react";
 import { SliderSingleProps } from "antd";
 
 import Slider from "../shared/Slider";
-import { LiveEventsContext } from "../../context/context";
+import { LiveEventsContext } from "../../context";
 import styles from "./concentration-slider.module.css";
 import classNames from "classnames";
 

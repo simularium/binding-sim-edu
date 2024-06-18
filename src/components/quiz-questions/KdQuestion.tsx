@@ -7,7 +7,7 @@ import InputNumber from "../shared/InputNumber";
 import { kds } from "../../constants";
 import { FormState } from "./types";
 import styles from "./popup.module.css";
-import { AppContext } from "../../context/context";
+import { AppContext } from "../../context";
 
 const KdQuestion: React.FC = () => {
     const { currentModule } = useContext(AppContext);
