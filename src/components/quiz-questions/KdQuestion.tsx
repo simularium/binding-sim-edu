@@ -15,6 +15,7 @@ interface KdQuestionProps {
 const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [formState, setFormState] = useState(FormState.Clear);
+
     const handleAnswerSelection = (answer: valueType | null) => {
         setSelectedAnswer(Number(answer));
 
