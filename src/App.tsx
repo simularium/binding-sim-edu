@@ -143,23 +143,26 @@ function App() {
             return null;
         }
         return new PreComputedPlotData(trajectoryPlotData);
-
     }, [trajectoryPlotData]);
 
     const totalReset = () => {
         setLiveConcentration({
-            [AgentName.A]: INITIAL_CONCENTRATIONS[AgentName.A],
-            [AgentName.B]: INITIAL_CONCENTRATIONS[AgentName.B],
+            [AgentName.A]:
+                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
+            [AgentName.B]:
+                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
             [productName]: 0,
         });
         setCurrentModule(Module.A_B_AB);
         setInputConcentration({
-            [AgentName.A]: INITIAL_CONCENTRATIONS[AgentName.A],
-            [AgentName.B]: INITIAL_CONCENTRATIONS[AgentName.B],
+            [AgentName.A]:
+                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
+            [AgentName.B]:
+                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
         });
         handleNewInputConcentration(
             ADJUSTABLE_AGENT,
-            INITIAL_CONCENTRATIONS[AgentName.B]
+            LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B]
         );
         setIsPlaying(false);
         resetAnalysisState();
