@@ -143,7 +143,6 @@ function App() {
             return null;
         }
         return new PreComputedPlotData(trajectoryPlotData);
-
     }, [trajectoryPlotData]);
 
     const totalReset = () => {
@@ -235,7 +234,9 @@ function App() {
     // Special events in page navigation
     // usePageNumber takes a page number, a conditional and a callback
 
-    const finalPageNumber = content[currentModule].length - 1; // -1 for the 0-index
+    // content[currentModule].length has one extra page for the 0th page so that
+    // the page numbers line up with the index.
+    const finalPageNumber = content[currentModule].length - 1;
     usePageNumber(
         page,
         (page) => page === 1 && currentProductConcentrationArray.length > 1,
@@ -243,7 +244,6 @@ function App() {
             totalReset();
         }
     );
-
 
     usePageNumber(
         page,
