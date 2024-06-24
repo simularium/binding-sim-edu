@@ -63,6 +63,13 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         nextButton: true,
         backButton: true,
     },
+    {
+        title: "Antibodies and antigens - high affinity partners ",
+        content:
+            "A pair of molecules’ binding affinity is determined by intermolecular forces. The first Antibody has a lower binding affinity for the Antigen than the second Antibody. Why, do you think, is this the case?",
+        nextButton: true,
+        backButton: true,
+    },
 ];
 
 export const moduleNames = {

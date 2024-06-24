@@ -238,6 +238,9 @@ function App() {
     // Special events in page navigation
     // usePageNumber takes a page number, a conditional and a callback
 
+    // content[currentModule].length has one extra page for the 0th page so that
+    // the page numbers line up with the index.
+    const finalPageNumber = content[currentModule].length - 1;
     usePageNumber(
         page,
         (page) => page === 1 && currentProductConcentrationArray.length > 1,
@@ -268,7 +271,7 @@ function App() {
     usePageNumber(
         page,
         (page) =>
-            page === content[currentModule].length - 1 &&
+            page === finalPageNumber - 1 &&
             trajectoryStatus == TrajectoryStatus.INITIAL,
         async () => {
             setIsPlaying(false);
@@ -468,7 +471,7 @@ function App() {
                             <NavPanel
                                 page={page}
                                 title={moduleNames[currentModule]}
-                                total={content[currentModule].length}
+                                total={finalPageNumber}
                             />
                         }
                         content={
