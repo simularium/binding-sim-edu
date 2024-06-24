@@ -1,5 +1,10 @@
-.nav-bar {
-    height: var(--nav-bar-height);
+:global(.ant-layout-header) {
+    padding: 0 20px;
+}
+
+.nav-bar h2,
+.nav-bar h4 {
+    color: var(--primary-color);
 }
 
 .content-panel {

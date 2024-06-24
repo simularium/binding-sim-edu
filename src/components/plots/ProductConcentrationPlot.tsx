@@ -53,10 +53,9 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         if (data.length === 1 && !hasData.current) {
             const lastValue =
                 productConcentrations[productConcentrations.length - 1];
-            if (lastValue > 0) {
-                hasData.current = true;
-            }
+            hasData.current = lastValue > 0;
         }
+
         const timeArray = productConcentrations.map((_, i) => {
             if (timeUnit === NANO) {
                 return (i * timeFactor) / 1000;
@@ -87,11 +86,12 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         ...BASE_PLOT_LAYOUT,
         width: width,
         height: Math.max(130, height),
+
         xaxis: {
             ...AXIS_SETTINGS,
-            title: `time (${MICRO}s)`,
             range: range,
             rangemode: "tozero" as const,
+            title: `time (${MICRO}s)`,
         },
         yaxis: {
             ...AXIS_SETTINGS,

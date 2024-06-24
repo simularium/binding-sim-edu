@@ -1,7 +1,7 @@
 .container {
     height: 100%;
-    margin-right: 182px;
 }
+
 .progress-bar-wrapper {
     width: 132px;
     height: 43px;
@@ -47,14 +47,14 @@
 }
 
 /* star at the end */
-.container:last-child::after {
+.container::after {
     content: url(../assets/star.svg);
     width: 10px;
     top: 7px;
     position: absolute;
 }
 
-.current .title{
+.current .title {
     font-weight: 700;
 }
 
