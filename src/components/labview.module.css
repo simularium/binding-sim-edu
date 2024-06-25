@@ -1,6 +1,6 @@
 .container {
     position: absolute;
-    background-image: url("src/assets/ipub-bg_3.png");
+    background-image: url("src/assets/ipub-bg_4.png");
     background-color: black;
     background-size: cover;
     background-repeat: no-repeat;
@@ -17,7 +17,7 @@
 
 .cuvette {
     left: 45%;
-    bottom: 10%;
+    bottom: 20px;
     position: absolute;
     width: 136px;
 }
