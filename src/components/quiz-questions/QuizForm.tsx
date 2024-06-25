@@ -75,9 +75,9 @@ const QuizForm: React.FC<QuizFormProps> = ({
             })}
         >
             <div className={styles.header}>
-                <h4 className={styles.title}>
+                <h3 className={styles.title}>
                     {isFormVisible ? title : minimizedTitle}
-                </h4>
+                </h3>
                 <IconButton
                     onClick={toggleFormVisibility}
                     icon={

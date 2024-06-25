@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 
 import Slider from "./shared/Slider";
 import { BG_DARK, LIGHT_GREY } from "../constants/colors";
+import { SimulariumContext } from "../simulation/context";
+import { SliderSingleProps } from "antd";
 
 interface AdminUIProps {
     timeFactor: number;
@@ -9,6 +11,7 @@ interface AdminUIProps {
 }
 
 const AdminUI: React.FC<AdminUIProps> = ({ timeFactor, setTimeFactor }) => {
+    const { page, setPage } = useContext(SimulariumContext);
     const [visible, setVisible] = React.useState<boolean>(false);
 
     useEffect(() => {
@@ -26,21 +29,52 @@ const AdminUI: React.FC<AdminUIProps> = ({ timeFactor, setTimeFactor }) => {
         };
     }, [visible]);
 
+    const pageMarks: SliderSingleProps["marks"] = {};
+    for (let i = 0; i <= 10; i++) {
+        pageMarks[i] = { label: i.toString() };
+    }
     return (
         visible && (
-            <div style={{position: "absolute", bottom: 0, background: LIGHT_GREY, color: BG_DARK}}>
+            <div
+                style={{
+                    position: "absolute",
+                    bottom: 0,
+                    background: LIGHT_GREY,
+                    color: BG_DARK,
+                    width: "25%",
+                }}
+            >
                 <h1>AdminUI</h1>
-                <Slider
-                    min={0}
-                    max={100}
-                    step={1}
-                    initialValue={timeFactor}
-                    onChange={(_, value) => {
-                        setTimeFactor(value);
-                    }}
-                    disabled={false}
-                    name="time factor (ns)"
-                />
+                <div style={{ padding: 12 }}>
+                    <h4>Page number</h4>
+                    <Slider
+                        min={0}
+                        max={10}
+                        step={1}
+                        initialValue={page}
+                        onChange={(_, value): void => {
+                            setPage(value);
+                        }}
+                        marks={pageMarks}
+                        disabled={false}
+                        name="time factor (ns)"
+                    />
+                </div>
+                <div style={{ padding: 12 }}>
+                    <h4>Time factor</h4>
+
+                    <Slider
+                        min={0}
+                        max={100}
+                        step={1}
+                        initialValue={timeFactor}
+                        onChange={(_, value) => {
+                            setTimeFactor(value);
+                        }}
+                        disabled={false}
+                        name="time factor (ns)"
+                    />
+                </div>
             </div>
         )
     );

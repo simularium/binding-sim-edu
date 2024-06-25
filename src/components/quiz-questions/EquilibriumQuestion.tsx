@@ -43,7 +43,7 @@ const EquilibriumQuestion: React.FC = () => {
         { value: "B", label: "B. unbinding reactions stop happening" },
         {
             value: "C",
-            label: "C. the amount of product stays roughly the steady over time",
+            label: "C. the amount of product stays roughly steady over time",
         },
         {
             value: "D",

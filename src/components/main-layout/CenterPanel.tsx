@@ -3,12 +3,16 @@ import ViewSwitch from "../ViewSwitch";
 import EquilibriumQuestion from "../quiz-questions/EquilibriumQuestion";
 import KdQuestion from "../quiz-questions/KdQuestion";
 import { Module } from "../../types";
+import FinalPage from "../FinalPage";
+import VisibilityControl from "../shared/VisibilityControl";
 
 import styles from "./layout.module.css";
 
 interface CenterPanelProps {
     reactionType: Module;
+    hasProgressed: boolean;
 }
+
 export const CenterPanelContext = React.createContext<{
     numberOpen: number;
     setNumberOpen: React.Dispatch<React.SetStateAction<number>>;
@@ -20,12 +24,15 @@ export const CenterPanelContext = React.createContext<{
     lastOpened: "",
     setLastOpened: () => {},
 });
-const CenterPanel: React.FC<CenterPanelProps> = ({ reactionType }) => {
+const CenterPanel: React.FC<CenterPanelProps> = ({
+    reactionType,
+    hasProgressed,
+}) => {
     const [numberOpen, setNumberOpen] = React.useState<number>(0);
     const [lastOpened, setLastOpened] = React.useState<string>("");
     return (
         <>
-            <ViewSwitch />
+            <ViewSwitch hasProgressed={hasProgressed} />
             <CenterPanelContext.Provider
                 value={{ numberOpen, setNumberOpen, lastOpened, setLastOpened }}
             >
@@ -34,6 +41,9 @@ const CenterPanel: React.FC<CenterPanelProps> = ({ reactionType }) => {
                     <KdQuestion reactionType={reactionType} />
                 </div>
             </CenterPanelContext.Provider>
+            <VisibilityControl includedPages={[10]}>
+                <FinalPage />
+            </VisibilityControl>
         </>
     );
 };
