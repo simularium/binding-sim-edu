@@ -20,7 +20,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
     },
     {
         content:
-            "When the reaction first starts, the concentration of each molecule changes rapidly as the two molecules- A and B-  bind to form AB. Eventually, the reaction reaches equilibrium, at which point the concentration of AB stays more or less consistent.",
+            "When the reaction first starts, the concentration of each molecule changes rapidly as the two molecules, A and B, bind to form AB. Eventually, the reaction reaches equilibrium, at which point the concentration of AB stays more or less consistent.",
         callToAction:
             "Watch the Concentration over time plot until you think the reaction has reached equilibrium. Then, press the “Record” button to record the equilibrium concentration.",
     },
@@ -47,7 +47,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         content:
             "We use the constant Kd to compare affinities. Kd is the concentration of B where half the binding sites of A are occupied at equilibrium.",
         callToAction:
-            "Let’s find Kd- Continue to repeat the experiment with different concentrations of B until you have found the point where half of the binding sites of A are occupied.",
+            "Let’s find Kd: Repeat the experiment with different concentrations of B until you have enough information to figure out the concentration of B where half of the binding sites of A would be occupied.",
     },
     {
         content:
@@ -58,18 +58,26 @@ export const highAffinityContentArray: ContentPanelProps[] = [
     },
     {
         title: "Antibodies and antigens - high affinity partners ",
-        content: "The molecules you experimented with had a high affinity- similar to an antibody and an antigen it recognizes. Even if the antigen is present at low concentrations, the antibody stays tightly bound for a long time. This increases the total number of bound complexes at any given time and alerts the immune system of the antigen’s presence.",
+        content:
+            "The molecules you experimented with had a high affinity - similar to an antibody and an antigen it recognizes. Even if the antigen is present at low concentrations, the antibody stays tightly bound for a long time. This increases the total number of bound complexes at any given time and alerts the immune system of the antigen’s presence.",
         nextButton: true,
-        backButton: true
+        backButton: true,
+    },
+    {
+        title: "Antibodies and antigens - high affinity partners ",
+        content:
+            "A pair of molecules’ binding affinity is determined by intermolecular forces. The first Antibody has a lower binding affinity for the Antigen than the second Antibody. Why, do you think, is this the case?",
+        nextButton: true,
+        backButton: true,
     },
 ];
 
 export const moduleNames = {
-    [Module.A_B_AB] : "High Affinity",
-    [Module.A_C_AC] : "Low Affinity",
-    [Module.A_B_C_AB_AC] : "Competitive Binding",
-}
+    [Module.A_B_AB]: "High Affinity",
+    [Module.A_C_AC]: "Low Affinity",
+    [Module.A_B_C_AB_AC]: "Competitive Binding",
+};
 
 export default {
-    [Module.A_B_AB]: highAffinityContentArray
-} as {[key in Module]: ContentPanelProps[]};
+    [Module.A_B_AB]: highAffinityContentArray,
+} as { [key in Module]: ContentPanelProps[] };

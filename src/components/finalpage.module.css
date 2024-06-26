@@ -1,0 +1,31 @@
+.container {
+    position: absolute;
+    gap: 12px;
+    flex-flow: row wrap;
+    width: 100vw;
+    height: calc(100vh - var(--nav-bar-height) - var(--content-height));
+    z-index: 4000;
+    top: 0;
+    background-color: black;
+}
+
+.image-container {
+    flex: 1 1 40%;
+    justify-content: center;
+}
+
+.container img {
+    width: 100%;
+}
+
+@media screen and (max-width: 1200px) {
+    .image-container {
+        max-height: 50%;
+        display: flex;
+        width: 100%;
+    }
+    .container img {
+        height: 100%;
+        width: auto;
+    }
+}

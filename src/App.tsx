@@ -143,23 +143,26 @@ function App() {
             return null;
         }
         return new PreComputedPlotData(trajectoryPlotData);
-
     }, [trajectoryPlotData]);
 
     const totalReset = () => {
         setLiveConcentration({
-            [AgentName.A]: INITIAL_CONCENTRATIONS[AgentName.A],
-            [AgentName.B]: INITIAL_CONCENTRATIONS[AgentName.B],
+            [AgentName.A]:
+                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
+            [AgentName.B]:
+                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
             [productName]: 0,
         });
         setCurrentModule(Module.A_B_AB);
         setInputConcentration({
-            [AgentName.A]: INITIAL_CONCENTRATIONS[AgentName.A],
-            [AgentName.B]: INITIAL_CONCENTRATIONS[AgentName.B],
+            [AgentName.A]:
+                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
+            [AgentName.B]:
+                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
         });
         handleNewInputConcentration(
             ADJUSTABLE_AGENT,
-            INITIAL_CONCENTRATIONS[AgentName.B]
+            LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B]
         );
         setIsPlaying(false);
         resetAnalysisState();
@@ -235,6 +238,9 @@ function App() {
     // Special events in page navigation
     // usePageNumber takes a page number, a conditional and a callback
 
+    // content[currentModule].length has one extra page for the 0th page so that
+    // the page numbers line up with the index.
+    const finalPageNumber = content[currentModule].length - 1;
     usePageNumber(
         page,
         (page) => page === 1 && currentProductConcentrationArray.length > 1,
@@ -265,7 +271,7 @@ function App() {
     usePageNumber(
         page,
         (page) =>
-            page === content[currentModule].length - 1 &&
+            page === finalPageNumber - 1 &&
             trajectoryStatus == TrajectoryStatus.INITIAL,
         async () => {
             setIsPlaying(false);
@@ -465,7 +471,7 @@ function App() {
                             <NavPanel
                                 page={page}
                                 title={moduleNames[currentModule]}
-                                total={content[currentModule].length}
+                                total={finalPageNumber}
                             />
                         }
                         content={
