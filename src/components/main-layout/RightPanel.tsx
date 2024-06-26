@@ -57,7 +57,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
                 <ProductConcentrationPlot
                     data={data}
                     width={width}
-                    height={height / 3}
+                    height={height / 3 - 20}
                 />
             </VisibilityControl>
 
@@ -65,7 +65,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
                 <h3>Equilibrium concentration</h3>
                 <EquilibriumPlot
                     width={width}
-                    height={height / 3}
+                    height={height / 3 - 20}
                     x={equilibriumConcentrations.inputConcentrations}
                     y={equilibriumConcentrations.productConcentrations}
                 />
