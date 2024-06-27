@@ -9,6 +9,7 @@
     width: 100vw;
     left: -50%;
     background-position: center;
+    overflow: hidden;
 }
 
 .container.top {
@@ -16,7 +17,9 @@
 }
 
 .cuvette {
-    left: 48%;
+    left: 0;
+    right: 0;
+    margin: auto;
     bottom: 60px;
     position: absolute;
     width: 95px;
