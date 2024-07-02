@@ -5,7 +5,6 @@ interface CuvetteProps {
 }
 
 const Cuvette: React.FC<CuvetteProps> = ({ color }) => {
-    console.log(color);
     return (
         <svg
             id="Layer_2"
