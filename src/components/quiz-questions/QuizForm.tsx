@@ -41,7 +41,7 @@ const QuizForm: React.FC<QuizFormProps> = ({
     }, [numberOpen, minimizedTitle, setLastOpened, setNumberOpen]);
 
     const closeForm = useCallback(() => {
-        Math.min((setNumberOpen(numberOpen - 1), 0));
+        setNumberOpen(Math.max(numberOpen - 1, 0));
         setIsFormVisible(false);
     }, [setNumberOpen, numberOpen]);
 
