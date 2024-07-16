@@ -44,6 +44,8 @@ const RightPanel: React.FC<RightPanelProps> = ({
             },
         ];
     }
+
+    const plotHeight = height / 3 - 20; // 20px to make room for the title
     return (
         <ResizeContainer
             setWidth={setWidth}
@@ -57,7 +59,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
                 <ProductConcentrationPlot
                     data={data}
                     width={width}
-                    height={height / 3 - 20} // 20px to make room for the title
+                    height={plotHeight}
                 />
             </VisibilityControl>
 
@@ -65,7 +67,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
                 <h3>Equilibrium concentration</h3>
                 <EquilibriumPlot
                     width={width}
-                    height={height / 3 - 20}
+                    height={plotHeight}
                     x={equilibriumConcentrations.inputConcentrations}
                     y={equilibriumConcentrations.productConcentrations}
                 />
