@@ -1,6 +1,6 @@
 .container {
     position: absolute;
-    background-image: url("src/assets/ipub-bg_4.png");
+    background-image: url("../assets/ipub-bg_4.png");
     background-color: black;
     background-size: cover;
     background-repeat: no-repeat;
