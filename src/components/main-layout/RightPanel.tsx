@@ -57,7 +57,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
                 <ProductConcentrationPlot
                     data={data}
                     width={width}
-                    height={height / 3 - 20}
+                    height={height / 3 - 20} // 20px to make room for the title
                 />
             </VisibilityControl>
 
