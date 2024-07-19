@@ -73,7 +73,7 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
                 successMessage="A and B have a high affinity for one another."
                 failureMessage="Visit the “Learn how to derive Kd” button above, then use the Equilibrium concentration plot to answer."
                 formState={formState}
-                minimizedTitle="Q:Kd Value"
+                id="Kd Value"
             />
         </VisibilityControl>
     );

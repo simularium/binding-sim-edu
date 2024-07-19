@@ -68,7 +68,7 @@ const EquilibriumQuestion: React.FC = () => {
                 formState={formState}
                 successMessage="It’s the forward and reverse reaction rates that are equal at equilibrium, not the concentrations of reactants and products. And binding and unbinding events don’t stop happening."
                 failureMessage="Please try again. Look carefully at what is happening in each of the plots to help find the answer."
-                minimizedTitle="Q:Equilibrium"
+                id="Equilibrium"
             />
         </VisibilityControl>
     );

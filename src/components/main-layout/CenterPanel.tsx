@@ -14,13 +14,9 @@ interface CenterPanelProps {
 }
 
 export const CenterPanelContext = React.createContext<{
-    numberOpen: number;
-    setNumberOpen: React.Dispatch<React.SetStateAction<number>>;
-    lastOpened: string;
-    setLastOpened: React.Dispatch<React.SetStateAction<string>>;
+    lastOpened: string | null;
+    setLastOpened: React.Dispatch<React.SetStateAction<string | null>>;
 }>({
-    numberOpen: 0,
-    setNumberOpen: () => {},
     lastOpened: "",
     setLastOpened: () => {},
 });
@@ -28,14 +24,11 @@ const CenterPanel: React.FC<CenterPanelProps> = ({
     reactionType,
     hasProgressed,
 }) => {
-    const [numberOpen, setNumberOpen] = React.useState<number>(0);
-    const [lastOpened, setLastOpened] = React.useState<string>("");
+    const [lastOpened, setLastOpened] = React.useState<string | null>(null);
     return (
         <>
             <ViewSwitch hasProgressed={hasProgressed} />
-            <CenterPanelContext.Provider
-                value={{ numberOpen, setNumberOpen, lastOpened, setLastOpened }}
-            >
+            <CenterPanelContext.Provider value={{ lastOpened, setLastOpened }}>
                 <div className={styles.questionContainer}>
                     <EquilibriumQuestion />
                     <KdQuestion reactionType={reactionType} />

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 
@@ -18,51 +18,33 @@ interface QuizFormProps {
     formState: FormState;
     successMessage: string;
     failureMessage: string;
-    minimizedTitle: string;
+    id: string;
 }
 
 const QuizForm: React.FC<QuizFormProps> = ({
     title,
-    minimizedTitle,
+    id,
     formContent,
     onSubmit,
     formState,
     successMessage,
     failureMessage,
 }) => {
-    const [isFormVisible, setIsFormVisible] = useState(true);
-    const { numberOpen, setNumberOpen, lastOpened, setLastOpened } =
-        React.useContext(CenterPanelContext);
-
-    const openForm = useCallback(() => {
-        setNumberOpen(numberOpen + 1);
-        setLastOpened(minimizedTitle);
-        setIsFormVisible(true);
-    }, [numberOpen, minimizedTitle, setLastOpened, setNumberOpen]);
-
-    const closeForm = useCallback(() => {
-        setNumberOpen(Math.max(numberOpen - 1, 0));
-        setIsFormVisible(false);
-    }, [setNumberOpen, numberOpen]);
+    const { lastOpened, setLastOpened } = React.useContext(CenterPanelContext);
+    const isFormVisible = lastOpened === id;
+    const minimizedTitle = `Q:${id}`;
 
     // open form on mount
     useEffect(() => {
-        openForm();
+        setLastOpened(id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => {
-        if (numberOpen > 1 && isFormVisible && lastOpened !== minimizedTitle) {
-            // Close the form if another form is opened
-            closeForm();
-        }
-    }, [numberOpen, isFormVisible, lastOpened, minimizedTitle, closeForm]);
-
     const toggleFormVisibility = () => {
         if (!isFormVisible) {
-            openForm();
+            setLastOpened(id);
         } else {
-            closeForm();
+            setLastOpened(null);
         }
     };
 
