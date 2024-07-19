@@ -6,27 +6,39 @@ import { Module } from "../../types";
 import FinalPage from "../FinalPage";
 import VisibilityControl from "../shared/VisibilityControl";
 
+import styles from "./layout.module.css";
 
 interface CenterPanelProps {
     reactionType: Module;
     hasProgressed: boolean;
 }
 
+export const CenterPanelContext = React.createContext<{
+    lastOpened: string | null;
+    setLastOpened: React.Dispatch<React.SetStateAction<string | null>>;
+}>({
+    lastOpened: "",
+    setLastOpened: () => {},
+});
 const CenterPanel: React.FC<CenterPanelProps> = ({
     reactionType,
     hasProgressed,
 }) => {
+    const [lastOpened, setLastOpened] = React.useState<string | null>(null);
     return (
         <>
             <ViewSwitch hasProgressed={hasProgressed} />
-            <EquilibriumQuestion />
-            <KdQuestion reactionType={reactionType} />
+            <CenterPanelContext.Provider value={{ lastOpened, setLastOpened }}>
+                <div className={styles.questionContainer}>
+                    <EquilibriumQuestion />
+                    <KdQuestion reactionType={reactionType} />
+                </div>
+            </CenterPanelContext.Provider>
             <VisibilityControl includedPages={[10]}>
                 <FinalPage />
             </VisibilityControl>
         </>
     );
 };
-1;
 
 export default CenterPanel;

@@ -1,16 +1,14 @@
 .container {
     background-color: var(--popup-background-color);
-    position: absolute;
-    bottom: 0;
-    right: 10px;
     color: var(--popup-text-color);
-    width: 332px;
+    max-width: 332px;
     padding: 16px;
     border-radius: 4px 4px 0 0;
 }
 
 .container.collapsed {
     width: 160px;
+    height: min-content;
 }
 
 .container.collapsed .header {

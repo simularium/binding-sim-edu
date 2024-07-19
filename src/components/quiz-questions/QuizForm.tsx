@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 
@@ -7,6 +7,8 @@ import SuccessFeedback from "./SuccessFeedback";
 import FailureFeedback from "./FailureFeedback";
 import styles from "./popup.module.css";
 import { TertiaryButton, IconButton } from "../shared/ButtonLibrary";
+import { BG_DARK } from "../../constants/colors";
+import { CenterPanelContext } from "../main-layout/CenterPanel";
 
 interface QuizFormProps {
     title: string;
@@ -16,22 +18,34 @@ interface QuizFormProps {
     formState: FormState;
     successMessage: string;
     failureMessage: string;
-    minimizedTitle: string;
+    id: string;
 }
 
 const QuizForm: React.FC<QuizFormProps> = ({
     title,
-    minimizedTitle,
+    id,
     formContent,
     onSubmit,
     formState,
     successMessage,
     failureMessage,
 }) => {
-    const [isFormVisible, setIsFormVisible] = useState(true);
+    const { lastOpened, setLastOpened } = React.useContext(CenterPanelContext);
+    const isFormVisible = lastOpened === id;
+    const minimizedTitle = `Q:${id}`;
+
+    // open form on mount
+    useEffect(() => {
+        setLastOpened(id);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const toggleFormVisibility = () => {
-        setIsFormVisible(!isFormVisible);
+        if (!isFormVisible) {
+            setLastOpened(id);
+        } else {
+            setLastOpened(null);
+        }
     };
 
     return formState === FormState.Correct ? (
@@ -48,7 +62,13 @@ const QuizForm: React.FC<QuizFormProps> = ({
                 </h3>
                 <IconButton
                     onClick={toggleFormVisibility}
-                    icon={isFormVisible ? <DownOutlined /> : <UpOutlined />}
+                    icon={
+                        isFormVisible ? (
+                            <DownOutlined style={{ color: BG_DARK }} />
+                        ) : (
+                            <UpOutlined style={{ color: BG_DARK }} />
+                        )
+                    }
                 />
             </div>
             {isFormVisible && (
