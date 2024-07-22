@@ -57,6 +57,11 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
+#### Production deployment
+1. Make a new version: `npm version [patch/minor/major]`
+2. Push the new package.json version: `git push origin main`
+3. Push the new tag: `git push origin [NEW_TAG]`
+
 
 
 ## Questions or Thoughts?
