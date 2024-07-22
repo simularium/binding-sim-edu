@@ -1,10 +1,8 @@
 ---
     name: AWS Deployment
     
-    on:
-      push:
-        branches:
-          - main
+    on: [push]
+
            
     env:
       
@@ -25,6 +23,7 @@
     
     jobs:
       deploy-staging:
+          if: github.ref == 'refs/heads/main'
           runs-on: ubuntu-latest
 
           steps:
