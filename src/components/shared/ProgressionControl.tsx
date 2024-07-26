@@ -54,6 +54,8 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
     const showHighlight =
         (Array.isArray(onPage) && onPage[0] === page) || page === onPage;
 
+    const className = showHighlight ? styles.hintHighlight : "";
+
     return React.Children.map(children, (child) => {
         if (!React.isValidElement(child)) {
             return child;
@@ -62,19 +64,19 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
         if (child.props.onClick) {
             return React.cloneElement(reactElement, {
                 onClick: mergeHandlers(child.props.onClick as BaseHandler),
-                className: showHighlight ? styles.hintHighlight : "",
+                className: className,
             });
         } else if (child.props.onChange) {
             return React.cloneElement(reactElement, {
                 onChange: mergeHandlers(child.props.onChange as BaseHandler),
-                className: showHighlight ? styles.hintHighlight : "",
+                className: className,
             });
         }
 
         return React.cloneElement(reactElement, {
             onClick: progress,
             style: { borderColor: "green" },
-            className: showHighlight ? styles.hintHighlight : "",
+            className: className,
         });
     });
 };
