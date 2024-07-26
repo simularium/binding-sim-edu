@@ -2,13 +2,14 @@
     display: flex;
     width: 100%;
     padding: 8px 6px;
+    margin-bottom: 12px;
 }
 
 .concentration {
     display: flex;
     height: 71px;
     justify-content: space-evenly;
-    padding: 4.5px 8px;
+    padding: 8px 6px 0px 6px;
 }
 
 .concentration :global(.ant-slider) {
