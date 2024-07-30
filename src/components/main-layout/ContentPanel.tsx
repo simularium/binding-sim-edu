@@ -1,11 +1,11 @@
 import React from "react";
 import PointerIcon from "../icons/PointerIcon";
 import NextButton from "../shared/NextButton";
-import styles from "./layout.module.css"
+import styles from "./layout.module.css";
 export interface ContentPanelProps {
-    content: string;
+    content: string | JSX.Element;
     title?: string;
-    callToAction?: string;
+    callToAction?: string | JSX.Element;
     nextButton?: boolean;
     backButton?: boolean;
 }
@@ -23,7 +23,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
                 <p>{content}</p>
                 {callToAction && (
                     <p className={styles.callToActionP}>
-                        <PointerIcon /> {callToAction}
+                        <PointerIcon /> <div>{callToAction}</div>
                     </p>
                 )}
             </div>
