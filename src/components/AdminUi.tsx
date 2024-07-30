@@ -42,6 +42,7 @@ const AdminUI: React.FC<AdminUIProps> = ({ timeFactor, setTimeFactor }) => {
                     background: LIGHT_GREY,
                     color: BG_DARK,
                     width: "25%",
+                    zIndex: 4000,
                 }}
             >
                 <h1>AdminUI</h1>
