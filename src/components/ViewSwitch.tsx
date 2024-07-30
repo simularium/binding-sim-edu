@@ -49,7 +49,7 @@ const ViewSwitch: React.FC<ViewSwitchProps> = ({ hasProgressed }) => {
 
     if (page === 1) {
         const siderWidth = window.innerWidth * 0.25;
-        buttonStyle = { ...buttonStyle, left: -siderWidth + 16 };
+        buttonStyle = { ...buttonStyle, left: -siderWidth + buttonStyle.left };
     }
 
     return (
