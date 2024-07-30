@@ -4,7 +4,7 @@
 }
 
 .base-button:hover,
-.base-button:active{
+.base-button:active {
     color: var(--background-color) !important;
     background: var(--light-purple) !important;
     border-color: var(--light-purple) !important;
@@ -21,11 +21,10 @@
 
 .tertiary {
     composes: base-button;
-    background-color: #000000;
+    background: #000000cc;
     color: var(--primary-color);
     border-color: var(--primary-color);
 }
-
 
 .tertiary :global(.custom-icon),
 .tertiary :global(.custom-icon) {
