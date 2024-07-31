@@ -3,6 +3,7 @@ import { Button as AntdButton } from "antd";
 import classNames from "classnames";
 
 import styles from "./button-library.module.css";
+import { zStacking } from "../../constants/z-stacking";
 
 interface ButtonProps extends React.ComponentProps<typeof AntdButton> {
     rounded?: boolean;
@@ -63,7 +64,7 @@ export const OverlayButton: React.FC<OverlayButtonProps> = (props) => {
     const { style } = props;
     let buttonStyle: React.CSSProperties = {
         position: "absolute",
-        zIndex: 3001,
+        zIndex: zStacking.layer3,
         display: "flex",
     };
     if (style) {

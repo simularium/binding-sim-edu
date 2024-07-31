@@ -34,7 +34,7 @@
 
 .side-panel {
     padding: 10px 12px;
-    z-index: 2000;
+    z-index: var(--layer-1);
 }
 
 .left {

@@ -1,5 +1,6 @@
 import { A, AB, B } from "../components/agent-symbols";
 import { ContentPanelProps } from "../components/main-layout/ContentPanel";
+import Definition from "../components/shared/Definition";
 import { Module } from "../types";
 
 export const highAffinityContentArray: ContentPanelProps[] = [
@@ -15,8 +16,14 @@ export const highAffinityContentArray: ContentPanelProps[] = [
             "Click or tap the animated button to switch your view to a molecular simulation.",
     },
     {
-        content:
-            "Computer simulations can help us explore phenomena that are difficult to experience in reality. In this molecular simulation, the molecules are represented simply as circles.",
+        content: (
+            <>
+                Computer simulations can help us explore phenomena that are
+                difficult to experience in reality. In this{" "}
+                <Definition term="molecular simulation" />, the molecules are
+                represented simply as circles.
+            </>
+        ),
         callToAction: "What happens to the molecules once you press play?",
     },
     {
@@ -24,9 +31,9 @@ export const highAffinityContentArray: ContentPanelProps[] = [
             <>
                 When the reaction first starts, the concentration of each
                 molecule changes rapidly as the two molecules, <A /> and <B />,
-                bind to form <AB />. Eventually, the reaction reaches
-                equilibrium, at which point the concentration of AB stays more
-                or less consistent.
+                bind to form <AB />. Eventually, the reaction reaches{" "}
+                <Definition term="equilibrium" />, at which point the
+                concentration of AB stays more or less consistent.
             </>
         ),
         callToAction:
@@ -40,19 +47,31 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         nextButton: true,
     },
     {
-        content:
-            "The goal of these experiments is to figure out how tightly two molecules bind, or stick to each other. We call this affinity.",
-        callToAction:
-            "Pausing the simulation reveals an interactive slider. With the simulation paused, adjust the concentration of B with the slider and play the simulation again.",
+        content: (
+            <>
+                The goal of these experiments is to figure out how tightly two
+                molecules bind, or stick to each other. We call this{" "}
+                <Definition term={"affinity"} />.
+            </>
+        ),
+        callToAction: (
+            <>
+                Pausing the simulation reveals an interactive slider. With the
+                simulation paused, adjust the concentration of <B /> with the
+                slider and play the simulation again.
+            </>
+        ),
     },
     {
         content: (
             <>
-                We want to understand the affinity of enzyme <A /> and substrate{" "}
-                <B /> regardless of the concentration of substrate. Let’s repeat
-                the experiment with a new concentration of <B />. We will keep
-                the concentration of A constant to avoid introducing more than
-                one variable at a time.
+                We want to understand the affinity of{" "}
+                <Definition term="enzyme" /> <A /> and substrate <B />{" "}
+                regardless of the concentration of{" "}
+                <Definition term="substrate" />. Let’s repeat the experiment
+                with a new concentration of <B />. We will keep the
+                concentration of <A /> constant to avoid introducing more than
+                one <Definition term="variable" /> at a time.
             </>
         ),
         callToAction: (
@@ -66,9 +85,18 @@ export const highAffinityContentArray: ContentPanelProps[] = [
     {
         content: (
             <>
-                We use the constant K<sub>d</sub> to compare affinities. K
-                <sub>d</sub> is the concentration of <B /> where half the
-                binding sites of <A /> are occupied at equilibrium.
+                We use the constant{" "}
+                <Definition
+                    term="KD"
+                    displayValue={
+                        <>
+                            K<sub>d</sub>
+                        </>
+                    }
+                />{" "}
+                to compare affinities. K<sub>d</sub> is the concentration of{" "}
+                <B /> where half the binding sites of <A /> are occupied at
+                equilibrium.
             </>
         ),
         callToAction: (
@@ -94,15 +122,30 @@ export const highAffinityContentArray: ContentPanelProps[] = [
     },
     {
         title: "Antibodies and antigens - high affinity partners ",
-        content:
-            "The molecules you experimented with had a high affinity - similar to an antibody and an antigen it recognizes. Even if the antigen is present at low concentrations, the antibody stays tightly bound for a long time. This increases the total number of bound complexes at any given time and alerts the immune system of the antigen’s presence.",
+        content: (
+            <>
+                The molecules you experimented with had a high affinity -
+                similar to an <Definition term="antibody" /> and an{" "}
+                <Definition term="antigen" /> it recognizes. Even if the antigen
+                is present at low concentrations, the antibody stays tightly
+                bound for a long time. This increases the total number of bound
+                complexes at any given time and alerts the immune system of the
+                antigen’s presence.
+            </>
+        ),
         nextButton: true,
         backButton: true,
     },
     {
         title: "Antibodies and antigens - high affinity partners ",
-        content:
-            "A pair of molecules’ binding affinity is determined by intermolecular forces. The first Antibody has a lower binding affinity for the Antigen than the second Antibody. Why, do you think, is this the case?",
+        content: (
+            <>
+                A pair of molecules’ binding affinity is determined by{" "}
+                <Definition term="intermolecular forces" />. The first Antibody
+                has a lower binding affinity for the Antigen than the second
+                Antibody. Why, do you think, is this the case?"
+            </>
+        ),
         nextButton: true,
         backButton: true,
     },
