@@ -30,6 +30,7 @@
     flex-direction: column;
     gap: 10px;
     max-width: 982px;
+    margin: auto;
 }
 
 .side-panel {
