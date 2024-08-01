@@ -10,13 +10,22 @@ interface GlossaryTermProps {
 
 const Definition: React.FC<GlossaryTermProps> = ({ term, displayValue }) => {
     const termData = terms[term];
-
+    const content = (
+        <>
+            {termData.definition}{" "}
+            {termData.link && (
+                <a
+                    style={{ display: "block" }}
+                    href={termData.link}
+                    target="_blank"
+                >
+                    Learn More
+                </a>
+            )}
+        </>
+    );
     return (
-        <Popover
-            content={termData.definition}
-            trigger="click"
-            placement="bottom"
-        >
+        <Popover content={content} trigger="click" placement="bottom">
             <a href="#">{displayValue || term}</a>
         </Popover>
     );

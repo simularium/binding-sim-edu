@@ -85,10 +85,10 @@ a:active {
 /** Ant Design Overrides (things that can't be styled 
 by the theme or by class names) *
 */
-:global(.ant-popover) {
+.ant-popover {
     max-width: 286px;
 }
 
-:global(.ant-popover-inner) {
+.ant-popover-inner {
     border: 1px solid #6e6e6e;
 }

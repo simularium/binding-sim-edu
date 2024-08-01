@@ -23,7 +23,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
                 <p>{content}</p>
                 {callToAction && (
                     <p className={styles.callToActionP}>
-                        <PointerIcon /> <div>{callToAction}</div>
+                        <PointerIcon /> <span>{callToAction}</span>
                     </p>
                 )}
             </div>
