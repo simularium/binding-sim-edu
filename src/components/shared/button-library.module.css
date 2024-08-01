@@ -21,7 +21,7 @@
 
 .tertiary {
     composes: base-button;
-    background: #000000cc;
+    background-color: #000000cc;
     color: var(--primary-color);
     border-color: var(--primary-color);
 }
