@@ -10,11 +10,21 @@ This app uses the Simularium Viewer to create live binding simulations that user
 
 
 ## Quick Start
-
+### Do once
 1. [Install bun](https://bun.sh/docs/installation)
 2. `bun install` to install dependencies 
-3. type `bun dev` <= starts the server
-4. Open at http://localhost:5173/
+3. locally link the simularium viewer (see [CONTRIBUTING.md](CONTRIBUTING.md) for more info on why)
+   1. clone the [viewer repo](https://github.com/simularium/simularium-viewer) 
+   2. cd into the viewer repo 
+   3. build the viewer: `npm run build`
+   4. type `cat package.json`
+   5. then `bun link`
+   6. cd back to this repo
+   7. type `bun link @aics/simularium-viewer`
+   
+### Do every time
+4. type `bun dev` <= starts the server
+5. Open at http://localhost:5173/
 
 ## Development
 

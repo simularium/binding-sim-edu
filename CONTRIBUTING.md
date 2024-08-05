@@ -39,10 +39,11 @@ Typical steps to contribute:
 ### Locally link the viewer (web workers work in this setup)
 1. clone the [viewer repo](https://github.com/simularium/simularium-viewer) 
 1. cd into the viewer repo 
+1. build the viewer: `npm run build`
 2. type `cat package.json`
-1. then `bun link`
-2. cd back to this repo
-3. type `bun link @aics/simularium-viewer`
+3. then `bun link`
+4. cd back to this repo
+5. type `bun link @aics/simularium-viewer`
 
 ### Start the dev server
 1. type `bun dev` <= starts the server

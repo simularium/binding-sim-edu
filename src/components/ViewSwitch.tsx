@@ -37,12 +37,27 @@ const ViewSwitch: React.FC<ViewSwitchProps> = ({ hasProgressed }) => {
             setCurrentView(View.Lab);
         }
     );
+
+    let buttonStyle = {
+        top: 16,
+        left: 16,
+        // by default, antd animates everything, and this button moves, so we're only animating
+        // the hover color change and not the position change
+        transition:
+            "background 0.2s, color 0.2s, border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1)",
+    };
+
+    if (page === 1) {
+        const siderWidth = window.innerWidth * 0.25;
+        buttonStyle = { ...buttonStyle, left: -siderWidth + buttonStyle.left };
+    }
+
     return (
         <div style={{ position: "relative", height: "100%" }}>
             <ProgressionControl onPage={1}>
                 <OverlayButton
                     onClick={switchView}
-                    style={{ top: 16, left: 16 }}
+                    style={buttonStyle}
                     icon={
                         currentView === View.Lab ? <Molecules /> : <LabIcon />
                     }
