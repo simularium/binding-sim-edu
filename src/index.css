@@ -83,7 +83,7 @@ a:active {
 }
 
 /** Ant Design Overrides (things that can't be styled 
-by the theme or by class names) *
+* by the theme or by class names)
 */
 .ant-popover {
     max-width: 286px;
