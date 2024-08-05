@@ -18,6 +18,7 @@ const Definition: React.FC<GlossaryTermProps> = ({ term, displayValue }) => {
                     style={{ display: "block" }}
                     href={termData.link}
                     target="_blank"
+                    rel="noreferrer noopener"
                 >
                     Learn More
                 </a>
