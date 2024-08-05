@@ -4,6 +4,7 @@
     max-width: 332px;
     padding: 16px;
     border-radius: 4px 4px 0 0;
+    z-index: var(--layer-3);
 }
 
 .container.collapsed {

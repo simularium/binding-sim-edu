@@ -30,7 +30,6 @@
 
 /* dot between modules  */
 .progress-bar-wrapper::before {
-    z-index: 3000;
     content: "";
     position: absolute;
     width: 10px;

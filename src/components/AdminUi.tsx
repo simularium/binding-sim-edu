@@ -4,6 +4,7 @@ import Slider from "./shared/Slider";
 import { BG_DARK, LIGHT_GREY } from "../constants/colors";
 import { SimulariumContext } from "../simulation/context";
 import { SliderSingleProps } from "antd";
+import { zStacking } from "../constants/z-stacking";
 
 interface AdminUIProps {
     timeFactor: number;
@@ -42,7 +43,7 @@ const AdminUI: React.FC<AdminUIProps> = ({ timeFactor, setTimeFactor }) => {
                     background: LIGHT_GREY,
                     color: BG_DARK,
                     width: "25%",
-                    zIndex: 4000,
+                    zIndex: zStacking.top,
                 }}
             >
                 <h1>AdminUI</h1>

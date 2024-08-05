@@ -8,6 +8,7 @@ import {
     MID_GREY_DARKER,
     OVERLAY_GREY,
 } from "../constants/colors";
+import { zStacking } from "../constants/z-stacking";
 
 const customTheme = {
     algorithm: theme.darkAlgorithm,
@@ -62,6 +63,16 @@ const customTheme = {
             colorBgElevated: OVERLAY_GREY,
             controlItemBgHover: OVERLAY_GREY,
             colorText: LIGHT_GREY,
+        },
+        Popover: {
+            colorBgElevated: "#000000CC",
+            colorBorder: "#6E6E6E",
+            fontSize: 12,
+            fontWeight: 400,
+            colorText: LIGHT_GREY,
+            borderRadiusXS: 4,
+            borderRadiusLG: 4,
+            zIndexPopup: zStacking.top,
         },
     },
 };
