@@ -57,7 +57,9 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
                 Referencing the Equilibrium Concentration plot, what is the
                 binding affinity?
             </p>
-            <b>Kd = ?</b>
+            <b>
+                K<sub>d</sub> = ?
+            </b>
             <InputNumber
                 value={selectedAnswer || ""}
                 onChange={handleAnswerSelection}

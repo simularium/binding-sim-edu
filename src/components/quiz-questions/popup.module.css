@@ -58,3 +58,12 @@
     border: solid var(--border-color) 1px;
     border-radius: 4px;
 }
+
+.input-form-content :global(.ant-input-number-input) {
+    color: var(--popup-text-color);
+}
+
+.input-form-content :global(.ant-input-number-input)::placeholder {
+    color: var(--hint-text-color);
+    font-style: italic;
+}
