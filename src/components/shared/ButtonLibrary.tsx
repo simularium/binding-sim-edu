@@ -64,7 +64,7 @@ export const OverlayButton: React.FC<OverlayButtonProps> = (props) => {
     const { style } = props;
     let buttonStyle: React.CSSProperties = {
         position: "absolute",
-        zIndex: zStacking.layer3,
+        zIndex: zStacking.viewerOverlay,
         display: "flex",
     };
     if (style) {

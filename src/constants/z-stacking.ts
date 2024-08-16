@@ -1,8 +1,8 @@
 export const zStacking = {
     top: 500,
-    layer4: 400,
-    layer3: 300,
-    layer2: 200,
-    layer1: 100,
+    fullScreen: 400,
+    viewerOverlay: 300,
+    overSidePanels: 200,
+    sidePanels: 100,
     bottom: 10,
 };
