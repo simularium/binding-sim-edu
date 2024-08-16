@@ -2,7 +2,6 @@ export const terms = {
     affinity: {
         definition:
             "Measure of the strength of an interaction between two molecules. Generally, the more chemical bonds that form between two molecules, the stronger the affinity of those molecules for each other.",
-        link: "[Learn more]",
     },
     KD: {
         definition:
@@ -11,7 +10,7 @@ export const terms = {
     },
     equilibrium: {
         definition:
-            "The state in which the amount of reactants and products of a reaction is not changing over time.",
+            "The state in which the amount of reactants and products of a reaction are not changing over time.",
         link: "https://www.khanacademy.org/science/ap-chemistry-beta/x2eef969c74e0d802:equilibrium/x2eef969c74e0d802:introduction-to-equilibrium/v/dynamic-equilibrium",
     },
     "reaction rate equation": {
