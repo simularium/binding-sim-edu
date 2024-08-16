@@ -2,6 +2,7 @@ import React from "react";
 import { Popover } from "antd";
 
 import { terms } from "../../content/glossary";
+import LinkOut from "../icons/LinkOut";
 
 interface GlossaryTermProps {
     term: keyof typeof terms;
@@ -20,7 +21,7 @@ const Definition: React.FC<GlossaryTermProps> = ({ term, displayValue }) => {
                     target="_blank"
                     rel="noreferrer noopener"
                 >
-                    Learn More
+                    Learn More <LinkOut />
                 </a>
             )}
         </>

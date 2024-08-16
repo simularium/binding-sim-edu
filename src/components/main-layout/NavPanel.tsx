@@ -3,6 +3,7 @@ import { Flex } from "antd";
 import PageIndicator from "../PageIndicator";
 import Dropdown from "../shared/Dropdown";
 import { SimulariumContext } from "../../simulation/context";
+import LinkOut from "../icons/LinkOut";
 
 interface NavPanelProps {
     title: string;
@@ -21,7 +22,9 @@ const NavPanel: React.FC<NavPanelProps> = ({ title, page, total }) => {
                     rel="noopener noreferrer"
                     href="https://allencell.org"
                 >
-                    <h4>Allencell.org</h4>
+                    <h4>
+                        Allencell.org <LinkOut />
+                    </h4>
                 </a>
             ),
         },
