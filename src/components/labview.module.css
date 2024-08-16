@@ -13,7 +13,7 @@
 }
 
 .container.top {
-    z-index: var(--layer-2);
+    z-index: var(--over-side-panel-layer);
 }
 
 .cuvette {
