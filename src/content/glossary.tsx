@@ -2,6 +2,7 @@ export const terms = {
     affinity: {
         definition:
             "Measure of the strength of an interaction between two molecules. Generally, the more chemical bonds that form between two molecules, the stronger the affinity of those molecules for each other.",
+        link: undefined,
     },
     KD: {
         definition:
@@ -16,7 +17,7 @@ export const terms = {
     "reaction rate equation": {
         definition:
             "A mathematical equation for the reaction rate of a reaction in terms of molecular concentrations and reaction rate constants.",
-        link: "[Learn more]",
+        link: undefined,
     },
     "molecular simulation": {
         definition:
