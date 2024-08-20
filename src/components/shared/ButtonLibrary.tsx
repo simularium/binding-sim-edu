@@ -65,6 +65,7 @@ export const OverlayButton: React.FC<OverlayButtonProps> = (props) => {
         position: "absolute",
         zIndex: 3001,
         display: "flex",
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
     };
     if (style) {
         buttonStyle = { ...buttonStyle, ...style };
