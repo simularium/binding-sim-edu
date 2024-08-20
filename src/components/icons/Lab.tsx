@@ -38,15 +38,17 @@ const LabIcon: React.FC = () => {
                             id="solution-2"
                             data-name="solution"
                             d="M20.99,44.3c2.73,1.87,10.3-2.24,10.1-8.72-.08,6.73-.16,25.38-.16,25.38l-9.94,9.16-19.43-5.11s-.45-17.63-.57-24.12c1.57,5.83,15.96,6.24,20,3.41Z"
-                            fill="#d8ccff"
+                            fill="currentColor"
                             stroke-width="0"
+                            opacity={0.95}
                         />
                         <path
                             id="solution-3"
                             data-name="solution"
                             d="M1,40.89c1.57,5.83,15.96,6.24,20,3.41,2.73,1.87,10.3-2.24,10.1-8.72-4.58,5.23-15.93,1.84-18.45-2.03-.2-.31-.67-.28-.77.07-1.16,3.78-5.81,8.79-10.87,7.26Z"
-                            fill="rgba(241, 237, 255, .6)"
+                            fill="currentColor"
                             stroke-width="0"
+                            opacity={0.5}
                         />
                     </g>
                     <g id="Front_face" data-name="Front face">
