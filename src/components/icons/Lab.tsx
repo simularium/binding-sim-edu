@@ -4,18 +4,93 @@ const LabIcon: React.FC = () => {
     return (
         <svg
             className="custom-icon"
-            width="12"
-            height="22"
-            viewBox="0 0 12 22"
+            width="10"
+            height="auto"
+            viewBox="0 -10 40 80"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
         >
-            <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                stroke="currentColor"
-                d="M0 3.04829L0.0566059 3.0577L0.0566067 20.8173H0.0612163L0.0285198 20.8386L7.01425 22L11.5789 18.8439L11.506 18.8327H11.558V1.05637H11.5464L11.5504 1.05361L4.67759 0L0 3.04829ZM0.867836 20.2916L4.5041 17.9219V3.79713L0.867835 3.19257L0.867836 20.2916ZM10.7468 1.60927V18.7163L7.22299 18.1761V4.04568L10.7468 1.60927ZM5.31533 17.8837L6.41176 18.0518V4.11429L5.31533 3.932V17.8837ZM5.31533 3.13772L6.78906 3.38274L9.47219 1.52758L5.31533 0.890331V3.13772ZM4.95739 0.835458L4.86639 0.821508L4.84499 0.835458H4.95739ZM4.5041 1.0576L2.12587 2.60745L4.5041 3.00285V1.0576ZM4.89491 18.6118L6.41176 18.8443V21.1056L2.15439 20.3977L4.89491 18.6118ZM6.81758 21.173L6.73254 21.1589H6.83803L6.81758 21.173ZM7.22299 20.8927V18.9687L9.50071 19.3179L7.22299 20.8927Z"
-            />
+            <g id="Icon_cuvette">
+                <g>
+                    <g id="Back_face" data-name="Back face">
+                        <line
+                            x1="12.1"
+                            y1="56.88"
+                            x2="12.34"
+                            y2="10.32"
+                            fill="none"
+                            opacity=".18"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                        <path
+                            d="M1.57,65.01l9.39-7.56c.72-.58,1.62-.8,2.48-.6l17.49,4.1"
+                            fill="none"
+                            opacity=".18"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                    </g>
+                    <g id="solution">
+                        <path
+                            id="solution-2"
+                            data-name="solution"
+                            d="M20.99,44.3c2.73,1.87,10.3-2.24,10.1-8.72-.08,6.73-.16,25.38-.16,25.38l-9.94,9.16-19.43-5.11s-.45-17.63-.57-24.12c1.57,5.83,15.96,6.24,20,3.41Z"
+                            fill="#d8ccff"
+                            stroke-width="0"
+                        />
+                        <path
+                            id="solution-3"
+                            data-name="solution"
+                            d="M1,40.89c1.57,5.83,15.96,6.24,20,3.41,2.73,1.87,10.3-2.24,10.1-8.72-4.58,5.23-15.93,1.84-18.45-2.03-.2-.31-.67-.28-.77.07-1.16,3.78-5.81,8.79-10.87,7.26Z"
+                            fill="rgba(241, 237, 255, .6)"
+                            stroke-width="0"
+                        />
+                    </g>
+                    <g id="Front_face" data-name="Front face">
+                        <path
+                            d="M1,8.36l.56,55.39c0,.75.47,1.39,1.13,1.56l16.91,4.45c.88.23,1.81,0,2.5-.65l8.02-7.39c.52-.48.82-1.18.82-1.93l.36-54.64"
+                            fill="rgba(255, 255, 255, .13)"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                        />
+                        <line
+                            x1="20.99"
+                            y1="70.12"
+                            x2="20.98"
+                            y2="12.03"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                    </g>
+                    <g id="Top_face" data-name="Top face">
+                        <line
+                            x1="12.34"
+                            y1="9.81"
+                            x2="12.33"
+                            y2="1.72"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                        <path
+                            d="M1.12,7.9L10.78,1.39c.5-.34,1.1-.46,1.68-.35l18.67,3.54c.17.03.21.27.07.38l-9.3,6.54c-.49.34-1.08.47-1.66.36L1.16,8.13c-.11-.02-.13-.18-.04-.24Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                        />
+                    </g>
+                </g>
+            </g>
         </svg>
     );
 };
