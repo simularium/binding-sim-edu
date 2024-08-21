@@ -1,5 +1,6 @@
 :root {
     --primary-color: #b59ff6;
+    --active-color: #9e6aff;
     --light-purple: #d7c8ff;
     --background-color: #141219;
     --border-color: var(--background-color);
@@ -20,6 +21,12 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    --bottom: 10; /* lab view under side panels */
+    --side-panel-layer: 100; /* side panels */
+    --over-side-panel-layer: 200; /* lab view over side panels */
+    --viewer-overlay-layer: 300; /* overlay buttons and quiz questions*/
+    --full-page-layer: 400; /* final page content */
+    --top: 500; /* admin UI and popovers */
 }
 
 body {
@@ -65,7 +72,23 @@ p {
     font-weight: 400;
 }
 
+a {
+    color: var(--primary-color);
+}
+
 a:hover,
-a:focus {
-    color: white;
+a:focus,
+a:active {
+    color: var(--active-color);
+}
+
+/** Ant Design Overrides (things that can't be styled 
+* by the theme or by class names)
+*/
+.ant-popover {
+    max-width: 286px;
+}
+
+.ant-popover-inner {
+    border: 1px solid #6e6e6e;
 }

@@ -5,7 +5,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     height: 100%;
-    z-index: 300;
+    z-index: var(--bottom);
     width: 100vw;
     left: -50%;
     background-position: center;
@@ -13,7 +13,7 @@
 }
 
 .container.top {
-    z-index: 3000;
+    z-index: var(--over-side-panel-layer);
 }
 
 .cuvette {
