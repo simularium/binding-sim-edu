@@ -135,7 +135,8 @@ function App() {
         if (!trajectory) {
             return null;
         }
-        return new BindingSimulator(trajectory, viewportSize.width / 5);
+        const longestAxis = Math.max(viewportSize.width, viewportSize.height);
+        return new BindingSimulator(trajectory, longestAxis / 3);
     }, [currentModule, viewportSize, simulationData]);
 
     const preComputedPlotDataManager = useMemo(() => {

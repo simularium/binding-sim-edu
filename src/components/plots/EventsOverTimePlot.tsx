@@ -83,7 +83,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
     };
 
     return (
-        <div className={plotStyles.plotContainer}>
+        <div className={plotStyles.plotContainer} style={{ marginBottom: 0 }}>
             <h3>Reaction events over time</h3>
             <div className={plotStyles.yLabel}>Count of reactions</div>
             <ResizeContainer className={layoutStyles.plots} setWidth={setWidth}>
