@@ -1,5 +1,6 @@
-import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons/index";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons/index";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 /***
  * NOTE: this currently gives a warning in the console:
@@ -9,6 +10,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
  * https://codepen.io/meganrm/pen/BagJvXZ
  */
 const LinkOut = () => (
-    <FontAwesomeIcon style={{ marginLeft: 6 }} icon={faUpRightFromSquare} />
+    <FontAwesomeIcon
+        style={{ marginLeft: 6 }}
+        icon={faUpRightFromSquare as IconProp}
+    />
 );
 export default LinkOut;
