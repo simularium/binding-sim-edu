@@ -26,7 +26,7 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
     const [selectionStateInfo] = useState({
         highlightedAgents: [],
         hiddenAgents: [],
-        appliedColors: null,
+        appliedColors: [],
     });
     const container = useRef<HTMLDivElement>(null);
     const {
