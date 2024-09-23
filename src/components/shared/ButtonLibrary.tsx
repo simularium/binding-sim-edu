@@ -29,6 +29,7 @@ export const SecondaryButton: React.FC<ButtonProps> = (props) => {
             className={classNames(styles.secondary, props.className, {
                 [styles.rounded]: props.rounded,
             })}
+            size="large"
             {...props}
         />
     );
@@ -38,6 +39,7 @@ export const TertiaryButton: React.FC<ButtonProps> = (props) => {
     return (
         <AntdButton
             {...props}
+            size="large"
             className={classNames(props.className, styles.tertiary)}
         />
     );
@@ -75,5 +77,5 @@ export const OverlayButton: React.FC<OverlayButtonProps> = (props) => {
     if (style) {
         buttonStyle = { ...buttonStyle, ...style };
     }
-    return <TertiaryButton {...props} style={buttonStyle} />;
+    return <TertiaryButton size="large" {...props}  style={buttonStyle} />;
 };
