@@ -13,7 +13,7 @@ export const PrimaryButton: React.FC<ButtonProps> = (props) => {
     return (
         <AntdButton
             type="primary"
-            className={classNames(styles.primary, {
+            className={classNames(styles.primary, props.className, {
                 [styles.rounded]: props.rounded,
             })}
             {...props}
@@ -26,7 +26,7 @@ export const SecondaryButton: React.FC<ButtonProps> = (props) => {
         <AntdButton
             type="default"
             ghost
-            className={classNames(styles.secondary, {
+            className={classNames(styles.secondary, props.className, {
                 [styles.rounded]: props.rounded,
             })}
             {...props}
@@ -35,7 +35,12 @@ export const SecondaryButton: React.FC<ButtonProps> = (props) => {
 };
 
 export const TertiaryButton: React.FC<ButtonProps> = (props) => {
-    return <AntdButton {...props} className={styles.tertiary} />;
+    return (
+        <AntdButton
+            {...props}
+            className={classNames(props.className, styles.tertiary)}
+        />
+    );
 };
 
 interface IconButtonProps extends React.ComponentProps<typeof AntdButton> {
@@ -45,11 +50,11 @@ interface IconButtonProps extends React.ComponentProps<typeof AntdButton> {
 export const IconButton: React.FC<IconButtonProps> = (props) => {
     return (
         <AntdButton
-            className={styles.icon}
             shape="circle"
             size="small"
             ghost
             {...props}
+            className={classNames(styles.icon, props.className)}
             icon={props.icon}
         />
     );
