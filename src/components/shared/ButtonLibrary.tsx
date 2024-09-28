@@ -77,5 +77,5 @@ export const OverlayButton: React.FC<OverlayButtonProps> = (props) => {
     if (style) {
         buttonStyle = { ...buttonStyle, ...style };
     }
-    return <TertiaryButton size="large" {...props}  style={buttonStyle} />;
+    return <TertiaryButton size="large" {...props} style={buttonStyle} />;
 };
