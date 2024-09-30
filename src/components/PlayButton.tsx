@@ -14,13 +14,13 @@ const PlayButton: React.FC = () => {
     };
 
     return (
-        <VisibilityControl excludedPages={[1]}>
+        <VisibilityControl excludedPages={[1, 10, 11]}>
             <ProgressionControl onPage={[2, 5]}>
                 <OverlayButton
                     onClick={handleClick}
-                    style={{ bottom: 14, left: 16}}
+                    style={{ bottom: 14, left: 16 }}
                     icon={
-                        isPlaying ? <PauseOutlined /> : <CaretRightOutlined /> 
+                        isPlaying ? <PauseOutlined /> : <CaretRightOutlined />
                     }
                 />
             </ProgressionControl>

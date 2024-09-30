@@ -9,17 +9,14 @@ import LabIcon from "./icons/Lab";
 import Molecules from "./icons/Molecules";
 import LabView from "./LabView";
 import usePageNumber from "../hooks/usePageNumber";
+import VisibilityControl from "./shared/VisibilityControl";
 
 enum View {
     Lab = "lab",
     Simulation = "simulation",
 }
 
-interface ViewSwitchProps {
-    hasProgressed: boolean;
-}
-
-const ViewSwitch: React.FC<ViewSwitchProps> = ({ hasProgressed }) => {
+const ViewSwitch: React.FC = () => {
     const [currentView, setCurrentView] = useState<View>(View.Lab);
 
     const switchView = () => {
@@ -32,8 +29,9 @@ const ViewSwitch: React.FC<ViewSwitchProps> = ({ hasProgressed }) => {
 
     usePageNumber(
         page,
-        (page) => page === 1 && hasProgressed,
+        (page) => page === 1 && currentView === View.Simulation,
         () => {
+            // reset home
             setCurrentView(View.Lab);
         }
     );
@@ -54,18 +52,24 @@ const ViewSwitch: React.FC<ViewSwitchProps> = ({ hasProgressed }) => {
 
     return (
         <div style={{ position: "relative", height: "100%" }}>
-            <ProgressionControl onPage={1}>
-                <OverlayButton
-                    onClick={switchView}
-                    style={buttonStyle}
-                    icon={
-                        currentView === View.Lab ? <Molecules /> : <LabIcon />
-                    }
-                >
-                    Switch to {currentView === View.Lab ? "molecular" : "lab"}{" "}
-                    view
-                </OverlayButton>
-            </ProgressionControl>
+            <VisibilityControl excludedPages={[9, 10, 11]}>
+                <ProgressionControl onPage={1}>
+                    <OverlayButton
+                        onClick={switchView}
+                        style={buttonStyle}
+                        icon={
+                            currentView === View.Lab ? (
+                                <Molecules />
+                            ) : (
+                                <LabIcon />
+                            )
+                        }
+                    >
+                        Switch to{" "}
+                        {currentView === View.Lab ? "molecular" : "lab"} view
+                    </OverlayButton>
+                </ProgressionControl>
+            </VisibilityControl>
             <PlayButton />
             {currentView === View.Lab ? <LabView /> : null}
             <Viewer

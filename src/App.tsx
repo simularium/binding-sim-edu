@@ -22,7 +22,7 @@ import LeftPanel from "./components/main-layout/LeftPanel";
 import RightPanel from "./components/main-layout/RightPanel";
 import ReactionDisplay from "./components/main-layout/ReactionDisplay";
 import ContentPanel from "./components/main-layout/ContentPanel";
-import content, { moduleNames } from "./content";
+import content, { PAGE_NUMBER_3D_EXAMPLE, moduleNames } from "./content";
 import { DEFAULT_VIEWPORT_SIZE, LIVE_SIMULATION_NAME } from "./constants";
 import CenterPanel from "./components/main-layout/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
@@ -272,7 +272,7 @@ function App() {
     usePageNumber(
         page,
         (page) =>
-            page === finalPageNumber - 1 &&
+            page === PAGE_NUMBER_3D_EXAMPLE[currentModule] &&
             trajectoryStatus == TrajectoryStatus.INITIAL,
         async () => {
             setIsPlaying(false);
@@ -287,6 +287,16 @@ function App() {
             );
             setProductOverTimeTraces([]);
             setTrajectoryStatus(TrajectoryStatus.LOADED);
+        }
+    );
+
+    usePageNumber(
+        page,
+        (page) => page === finalPageNumber,
+        () => {
+            if (simulariumController.getFile()) {
+                simulariumController.clearFile();
+            }
         }
     );
 
@@ -453,6 +463,8 @@ function App() {
                         maxConcentration:
                             simulationData.getMaxConcentration(currentModule),
                         getAgentColor: simulationData.getAgentColor,
+                        exampleTrajectoryPageNumber:
+                            PAGE_NUMBER_3D_EXAMPLE[currentModule],
                         isPlaying,
                         setIsPlaying,
                         simulariumController,
@@ -476,7 +488,10 @@ function App() {
                             />
                         }
                         content={
-                            <ContentPanel {...content[currentModule][page]} />
+                            <ContentPanel
+                                {...content[currentModule][page]}
+                                title={moduleNames[currentModule]}
+                            />
                         }
                         reactionPanel={
                             <ReactionDisplay reactionType={currentModule} />
@@ -499,15 +514,13 @@ function App() {
                             />
                         }
                         centerPanel={
-                            <CenterPanel
-                                reactionType={currentModule}
-                                hasProgressed={
-                                    currentProductConcentrationArray.length > 1
-                                }
-                            />
+                            <CenterPanel reactionType={currentModule} />
                         }
                         rightPanel={
                             <RightPanel
+                                showHelpPanel={
+                                    equilibriumFeedback === "Not yet!"
+                                }
                                 productOverTimeTraces={productOverTimeTraces}
                                 currentProductConcentrationArray={
                                     currentProductConcentrationArray

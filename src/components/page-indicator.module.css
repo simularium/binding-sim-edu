@@ -21,27 +21,20 @@
     font-size: 12px;
 }
 
-.page-number {
-    composes: text-format;
-    height: 12px;
-    font-size: 10px;
-    font-weight: 700;
-}
-
 /* dot between modules  */
 .progress-bar-wrapper::before {
     content: "";
     position: absolute;
     width: 10px;
     height: 10px;
-    top: 19px; /* aligned by eye after rest of layout created */
+    top: 23px; /* aligned by eye after rest of layout created */
     left: -2px;
     border-radius: 50%;
     background-color: var(--dark-gray);
 }
 
 .progress-bar {
-    margin: auto;
+    margin-top: 8px;
     line-height: 7.5px;
 }
 

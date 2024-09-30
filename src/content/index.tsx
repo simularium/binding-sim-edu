@@ -9,7 +9,6 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         content: "",
     },
     {
-        title: "Experiment 1 - High affinity",
         content:
             "Congratulations! You’ve just joined a biology lab. Your mentor has asked you to measure the strength of the binding interaction between two types of molecules. These molecules are too small to see, even under a microscope. But what if we could somehow see what the molecules in the tube are doing? What do you think you’d see?",
         callToAction:
@@ -121,7 +120,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         nextButton: true,
     },
     {
-        title: "Antibodies and antigens - high affinity partners ",
+        title: "Real-world example: Antibodies and antigens, high affinity binders",
         content: (
             <>
                 The molecules you experimented with had a high affinity -
@@ -134,10 +133,9 @@ export const highAffinityContentArray: ContentPanelProps[] = [
             </>
         ),
         nextButton: true,
-        backButton: true,
     },
     {
-        title: "Antibodies and antigens - high affinity partners ",
+        title: "Real-world example: Affinity is determined by intermolecular forces",
         content: (
             <>
                 A pair of molecules’ binding affinity is determined by{" "}
@@ -146,7 +144,12 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 Antibody. Why, do you think, is this the case?
             </>
         ),
-        nextButton: true,
+        backButton: true,
+        finishButton: true,
+    },
+    {
+        content:
+            "Congratulations, you’ve completed the High Affinity portion of this learning module!",
         backButton: true,
     },
 ];
@@ -155,6 +158,12 @@ export const moduleNames = {
     [Module.A_B_AB]: "High Affinity",
     [Module.A_C_AC]: "Low Affinity",
     [Module.A_B_C_AB_AC]: "Competitive Binding",
+};
+
+export const PAGE_NUMBER_3D_EXAMPLE = {
+    [Module.A_B_AB]: 9,
+    [Module.A_C_AC]: 9,
+    [Module.A_B_C_AB_AC]: 9,
 };
 
 export default {

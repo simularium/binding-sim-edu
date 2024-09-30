@@ -64,7 +64,7 @@ export default class LiveSimulation implements ISimulationData {
     };
     static INITIAL_CONCENTRATIONS = {
         [AgentName.A]: 10,
-        [AgentName.B]: 10,
+        [AgentName.B]: 6,
         [AgentName.C]: 10,
     };
     PRODUCT = {
