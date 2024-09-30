@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Flex } from "antd";
 import PointerIcon from "../icons/PointerIcon";
 import NextButton from "../shared/NextButton";
 import BackButton from "../shared/BackButton";
 
 import styles from "./layout.module.css";
+import { SimulariumContext } from "../../simulation/context";
 
 export interface ContentPanelProps {
     content: string | JSX.Element;
@@ -24,10 +25,17 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
     finishButton,
 }) => {
     const showButton = nextButton || finishButton;
+    const { exampleTrajectoryPageNumber, page } = useContext(SimulariumContext);
+    let header;
+    if (page < exampleTrajectoryPageNumber) {
+        header = `${page} of ${exampleTrajectoryPageNumber - 1} - ${title}`;
+    } else {
+        header = title;
+    }
     return (
         <>
             <div className={styles.contentPanelText}>
-                {title && <h3>{title}</h3>}
+                <h3>{header}</h3>
                 <p>{content}</p>
                 {callToAction && (
                     <p className={styles.callToActionP}>

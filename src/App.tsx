@@ -488,7 +488,10 @@ function App() {
                             />
                         }
                         content={
-                            <ContentPanel {...content[currentModule][page]} />
+                            <ContentPanel
+                                {...content[currentModule][page]}
+                                title={moduleNames[currentModule]}
+                            />
                         }
                         reactionPanel={
                             <ReactionDisplay reactionType={currentModule} />

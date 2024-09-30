@@ -55,10 +55,6 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
                             )}
                             showInfo={false}
                         />
-
-                        <div className={styles.pageNumber}>
-                            {isActiveModule ? `${page} / ${total}` : ""}
-                        </div>
                     </div>
                 );
             })}

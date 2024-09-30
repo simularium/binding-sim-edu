@@ -9,7 +9,6 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         content: "",
     },
     {
-        title: "Experiment 1 - High affinity",
         content:
             "Congratulations! You’ve just joined a biology lab. Your mentor has asked you to measure the strength of the binding interaction between two types of molecules. These molecules are too small to see, even under a microscope. But what if we could somehow see what the molecules in the tube are doing? What do you think you’d see?",
         callToAction:
@@ -121,7 +120,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         nextButton: true,
     },
     {
-        title: "Antibodies and antigens - high affinity partners ",
+        title: "Real-world example: Antibodies and antigens, high affinity binders",
         content: (
             <>
                 The molecules you experimented with had a high affinity -
@@ -136,7 +135,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         nextButton: true,
     },
     {
-        title: "Antibodies and antigens - high affinity partners ",
+        title: "Real-world example: Affinity is determined by intermolecular forces",
         content: (
             <>
                 A pair of molecules’ binding affinity is determined by{" "}
