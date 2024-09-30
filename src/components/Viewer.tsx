@@ -6,11 +6,13 @@ import {
     useRef,
     useState,
 } from "react";
+import classNames from "classnames";
 import SimulariumViewer, {
     RenderStyle,
     TimeData,
 } from "@aics/simularium-viewer";
 import "@aics/simularium-viewer/style/style.css";
+
 import { SimulariumContext } from "../simulation/context";
 import styles from "./viewer.module.css";
 import useWindowResize from "../hooks/useWindowResize";
@@ -28,6 +30,7 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         hiddenAgents: [],
         appliedColors: [],
     });
+    const [heightResized, setHeightResized] = useState(false);
     const container = useRef<HTMLDivElement>(null);
     const {
         viewportSize,
@@ -35,6 +38,8 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         simulariumController,
         handleTrajectoryChange,
         trajectoryName,
+        page,
+        exampleTrajectoryPageNumber,
     } = useContext(SimulariumContext);
 
     const setViewportToContainerSize = useCallback(() => {
@@ -56,13 +61,30 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
     }, [setViewportToContainerSize, container.current?.offsetWidth]);
 
     useWindowResize(setViewportToContainerSize);
+    useEffect(() => {
+        if (page === exampleTrajectoryPageNumber && !heightResized) {
+            setViewportToContainerSize();
+            setHeightResized(true);
+        }
+    }, [
+        page,
+        setViewportToContainerSize,
+        heightResized,
+        exampleTrajectoryPageNumber,
+    ]);
 
     if (!simulariumController) {
         return null;
     }
 
     return (
-        <div className={styles.container} key="viewer" ref={container}>
+        <div
+            className={classNames([styles.container], {
+                [styles.example]: page === exampleTrajectoryPageNumber,
+            })}
+            key="viewer"
+            ref={container}
+        >
             <SimulariumViewer
                 lockedCamera={trajectoryName === LIVE_SIMULATION_NAME}
                 disableCache={trajectoryName === LIVE_SIMULATION_NAME}

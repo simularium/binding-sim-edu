@@ -1,10 +1,12 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useContext } from "react";
 import { Layout } from "antd";
 const { Header, Sider, Content } = Layout;
 
 import VisibilityControl from "../shared/VisibilityControl";
 
 import styles from "./layout.module.css";
+import classNames from "classnames";
+import { SimulariumContext } from "../../simulation/context";
 interface MainLayoutProps {
     header: ReactNode;
     leftPanel: ReactNode;
@@ -22,19 +24,39 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     centerPanel,
     reactionPanel,
 }) => {
+    const { page, exampleTrajectoryPageNumber } = useContext(SimulariumContext);
+
     return (
         <Layout>
             <Header className={styles.navBar}>{header}</Header>
-            <Content className={styles.contentPanel}>{content}</Content>
-            <VisibilityControl excludedPages={[10]}>
+            <Content
+                className={classNames([
+                    styles.contentPanel,
+                    {
+                        [styles.finalPage]: page === 11,
+                    },
+                ])}
+            >
+                {content}
+            </Content>
+            <VisibilityControl
+                excludedPages={[exampleTrajectoryPageNumber, 10, 11]}
+            >
                 <Header className={styles.reactionPanel}>
                     {reactionPanel}
                 </Header>
             </VisibilityControl>
             <Layout>
-                <VisibilityControl excludedPages={[10]}>
+                <VisibilityControl excludedPages={[10, 11]}>
                     <Sider
-                        className={[styles.sidePanel, styles.left].join(" ")}
+                        className={classNames([
+                            styles.sidePanel,
+                            styles.left,
+                            {
+                                [styles.example]:
+                                    page === exampleTrajectoryPageNumber,
+                            },
+                        ])}
                         width={"25%"}
                     >
                         {leftPanel}
@@ -42,9 +64,16 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 </VisibilityControl>
 
                 <Content className={styles.centerPanel}>{centerPanel}</Content>
-                <VisibilityControl excludedPages={[10]}>
+                <VisibilityControl excludedPages={[10, 11]}>
                     <Sider
-                        className={[styles.sidePanel, styles.right].join(" ")}
+                        className={classNames([
+                            styles.sidePanel,
+                            styles.right,
+                            {
+                                [styles.example]:
+                                    page === exampleTrajectoryPageNumber,
+                            },
+                        ])}
                         width={"25%"}
                     >
                         {rightPanel}

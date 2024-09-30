@@ -51,7 +51,7 @@ const AdminUI: React.FC<AdminUIProps> = ({ timeFactor, setTimeFactor }) => {
                     <h4>Page number</h4>
                     <Slider
                         min={0}
-                        max={10}
+                        max={11}
                         step={1}
                         initialValue={page}
                         onChange={(_, value): void => {

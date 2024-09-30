@@ -2,12 +2,14 @@ import React from "react";
 import PointerIcon from "../icons/PointerIcon";
 import NextButton from "../shared/NextButton";
 import styles from "./layout.module.css";
+
 export interface ContentPanelProps {
     content: string | JSX.Element;
     title?: string;
     callToAction?: string | JSX.Element;
     nextButton?: boolean;
     backButton?: boolean;
+    finishButton?: boolean;
 }
 
 const ContentPanel: React.FC<ContentPanelProps> = ({
@@ -15,7 +17,9 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
     title,
     callToAction,
     nextButton,
+    finishButton,
 }) => {
+    const showButton = nextButton || finishButton;
     return (
         <>
             <div className={styles.contentPanelText}>
@@ -27,7 +31,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
                     </p>
                 )}
             </div>
-            {nextButton && <NextButton />}
+            {showButton && <NextButton isFinish={finishButton} />}
         </>
     );
 };

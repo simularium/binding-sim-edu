@@ -10,7 +10,6 @@ import styles from "./layout.module.css";
 
 interface CenterPanelProps {
     reactionType: Module;
-    hasProgressed: boolean;
 }
 
 export const CenterPanelContext = React.createContext<{
@@ -20,14 +19,11 @@ export const CenterPanelContext = React.createContext<{
     lastOpened: "",
     setLastOpened: () => {},
 });
-const CenterPanel: React.FC<CenterPanelProps> = ({
-    reactionType,
-    hasProgressed,
-}) => {
+const CenterPanel: React.FC<CenterPanelProps> = ({ reactionType }) => {
     const [lastOpened, setLastOpened] = React.useState<string | null>(null);
     return (
         <>
-            <ViewSwitch hasProgressed={hasProgressed} />
+            <ViewSwitch />
             <CenterPanelContext.Provider value={{ lastOpened, setLastOpened }}>
                 <div className={styles.questionContainer}>
                     <EquilibriumQuestion />

@@ -146,8 +146,12 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 Antibody. Why, do you think, is this the case?
             </>
         ),
-        nextButton: true,
         backButton: true,
+        finishButton: true,
+    },
+    {
+        content:
+            "Congratulations, you’ve completed the High Affinity portion of this learning module!",
     },
 ];
 
@@ -155,6 +159,12 @@ export const moduleNames = {
     [Module.A_B_AB]: "High Affinity",
     [Module.A_C_AC]: "Low Affinity",
     [Module.A_B_C_AB_AC]: "Competitive Binding",
+};
+
+export const PAGE_NUMBER_3D_EXAMPLE = {
+    [Module.A_B_AB]: 9,
+    [Module.A_C_AC]: 9,
+    [Module.A_B_C_AB_AC]: 9,
 };
 
 export default {
