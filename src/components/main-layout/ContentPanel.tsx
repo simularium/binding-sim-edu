@@ -1,4 +1,5 @@
 import React from "react";
+import { Flex } from "antd";
 import PointerIcon from "../icons/PointerIcon";
 import NextButton from "../shared/NextButton";
 import BackButton from "../shared/BackButton";
@@ -34,8 +35,10 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
                     </p>
                 )}
             </div>
-            {backButton && <BackButton />}
-            {showButton && <NextButton isFinish={finishButton} />}
+            <Flex gap={10}>
+                {backButton && <BackButton />}
+                {showButton && <NextButton isFinish={finishButton} />}
+            </Flex>
         </>
     );
 };

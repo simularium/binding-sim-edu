@@ -57,7 +57,9 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
 
     // resize on container change
     useEffect(() => {
-        setViewportToContainerSize();
+        setTimeout(() => {
+            setViewportToContainerSize();
+        }, 100);
     }, [setViewportToContainerSize, container.current?.offsetWidth]);
 
     useWindowResize(setViewportToContainerSize);

@@ -134,7 +134,6 @@ export const highAffinityContentArray: ContentPanelProps[] = [
             </>
         ),
         nextButton: true,
-        backButton: true,
     },
     {
         title: "Antibodies and antigens - high affinity partners ",
@@ -152,6 +151,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
     {
         content:
             "Congratulations, you’ve completed the High Affinity portion of this learning module!",
+        backButton: true,
     },
 ];
 

@@ -13,6 +13,7 @@ export const PrimaryButton: React.FC<ButtonProps> = (props) => {
     return (
         <AntdButton
             type="primary"
+            size="large"
             className={classNames(styles.primary, props.className, {
                 [styles.rounded]: props.rounded,
             })}
