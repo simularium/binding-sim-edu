@@ -518,6 +518,9 @@ function App() {
                         }
                         rightPanel={
                             <RightPanel
+                                showHelpPanel={
+                                    equilibriumFeedback === "Not yet!"
+                                }
                                 productOverTimeTraces={productOverTimeTraces}
                                 currentProductConcentrationArray={
                                     currentProductConcentrationArray

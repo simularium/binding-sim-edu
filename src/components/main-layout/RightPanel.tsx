@@ -10,6 +10,7 @@ import styles from "./layout.module.css";
 import { AB } from "../agent-symbols";
 import ResizeContainer from "../shared/ResizeContainer";
 import { SimulariumContext } from "../../simulation/context";
+import HelpPopup from "../HelpPopup";
 
 interface RightPanelProps {
     productOverTimeTraces: ProductOverTimeTrace[];
@@ -21,6 +22,7 @@ interface RightPanelProps {
         productConcentrations: number[];
     };
     equilibriumFeedback: ReactNode | string;
+    showHelpPanel: boolean;
 }
 
 const RightPanel: React.FC<RightPanelProps> = ({
@@ -30,6 +32,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
     equilibriumFeedback,
     currentProductConcentrationArray,
     currentAdjustableAgentConcentration,
+    showHelpPanel,
 }) => {
     const { productName } = useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
@@ -56,11 +59,18 @@ const RightPanel: React.FC<RightPanelProps> = ({
                 <h3>
                     Concentration over time for <AB name={productName} />
                 </h3>
-                <ProductConcentrationPlot
-                    data={data}
-                    width={width}
-                    height={plotHeight}
-                />
+                <HelpPopup
+                    content={
+                        "Use this plot to help determine when the reaction reaches equilibrium."
+                    }
+                    initialOpen={showHelpPanel}
+                >
+                    <ProductConcentrationPlot
+                        data={data}
+                        width={width}
+                        height={plotHeight}
+                    />
+                </HelpPopup>
             </VisibilityControl>
 
             <VisibilityControl excludedPages={[0, 1, 2, 9]}>
