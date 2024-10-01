@@ -48,6 +48,12 @@ const agentC: InputAgent = {
     color: AGENT_C_COLOR,
 };
 
+const kds = {
+    [Module.A_B_AB]: 1,
+    [Module.A_C_AC]: 10,
+    [Module.A_B_C_AB_AC]: 5,
+};
+
 export default class LiveSimulation implements ISimulationData {
     static NAME_TO_FUNCTION_MAP = {
         [AgentName.A]: AgentFunction.Fixed,
@@ -64,7 +70,7 @@ export default class LiveSimulation implements ISimulationData {
     };
     static INITIAL_CONCENTRATIONS = {
         [AgentName.A]: 10,
-        [AgentName.B]: 6,
+        [AgentName.B]: 4,
         [AgentName.C]: 10,
     };
     PRODUCT = {
@@ -154,5 +160,8 @@ export default class LiveSimulation implements ISimulationData {
                     ],
             };
         }, {});
+    };
+    getKd = (module: Module): number => {
+        return kds[module];
     };
 }

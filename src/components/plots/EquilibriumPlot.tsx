@@ -20,6 +20,7 @@ interface PlotProps {
     height: number;
     width: number;
     colors: string[];
+    kd: number;
 }
 
 const EquilibriumPlot: React.FC<PlotProps> = ({
@@ -28,6 +29,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
     height,
     width,
     colors,
+    kd,
 }) => {
     const { maxConcentration } = useContext(SimulariumContext);
 
@@ -67,7 +69,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         height: Math.max(130, height),
         xaxis: {
             ...AXIS_SETTINGS,
-            range: [0, 2],
+            range: [0, kd * 2],
             title: `[B] ${MICRO}M`,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,

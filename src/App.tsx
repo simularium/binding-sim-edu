@@ -561,7 +561,9 @@ function App() {
                             />
                         }
                         centerPanel={
-                            <CenterPanel reactionType={currentModule} />
+                            <CenterPanel
+                                kd={simulationData.getKd(currentModule)}
+                            />
                         }
                         rightPanel={
                             <RightPanel
@@ -587,6 +589,7 @@ function App() {
                                         productEquilibriumConcentrations,
                                     timeToEquilibrium: timeToReachEquilibrium,
                                     colors: dataColors,
+                                    kd: simulationData.getKd(currentModule),
                                 }}
                                 equilibriumFeedback={equilibriumFeedback}
                             />
