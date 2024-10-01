@@ -32,7 +32,12 @@ import { ProductOverTimeTrace } from "./components/plots/types";
 import MainLayout from "./components/main-layout/Layout";
 import usePageNumber from "./hooks/usePageNumber";
 import fetch3DTrajectory from "./utils/fetch3DTrajectory";
-import { getColorIndex, insertValueSorted, updateArrayInState } from "./utils";
+import {
+    getColorIndex,
+    indexToTime,
+    insertValueSorted,
+    updateArrayInState,
+} from "./utils";
 import PreComputedPlotData from "./simulation/PreComputedPlotData";
 import PreComputedSimulationData from "./simulation/PreComputedSimulationData";
 import LiveSimulationData from "./simulation/LiveSimulationData";
@@ -459,8 +464,11 @@ function App() {
                 ADJUSTABLE_AGENT
             ];
 
-        const currentTime =
-            (bindingEventsOverTime.length * 10 * timeFactor) / 1000;
+        const currentTime = indexToTime(
+            currentProductConcentrationArray.length,
+            timeFactor,
+            simulationData.timeUnit
+        );
         const { newArray, index } = insertValueSorted(
             recordedReactantConcentrations,
             reactantConcentration

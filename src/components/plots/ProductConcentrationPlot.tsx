@@ -11,10 +11,10 @@ import {
 import { ProductOverTimeTrace } from "./types";
 import { SimulariumContext } from "../../simulation/context";
 import { AGENT_AB_COLOR } from "../../constants/colors";
-import { MICRO, NANO } from "../../constants";
+import { MICRO } from "../../constants";
 
 import plotStyles from "./plots.module.css";
-import { getColorIndex } from "../../utils";
+import { getColorIndex, indexToTime } from "../../utils";
 
 interface ProductConcentrationPlotProps {
     data: ProductOverTimeTrace[];
@@ -62,13 +62,9 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
             hasData.current = lastValue > 0;
         }
 
-        const timeArray = productConcentrations.map((_, i) => {
-            if (timeUnit === NANO) {
-                return (i * timeFactor) / 1000;
-            } else {
-                return i * timeFactor;
-            }
-        });
+        const timeArray = productConcentrations.map((_, i) =>
+            indexToTime(i, timeFactor, timeUnit)
+        );
         return {
             x: timeArray,
             y: productConcentrations,
