@@ -33,7 +33,7 @@ const agentB: InputAgent = {
     radius: 0.7,
     partners: [0],
     kOn: 0.6,
-    kOff: 0.2,
+    kOff: 0.5,
     color: AGENT_B_COLOR,
 };
 

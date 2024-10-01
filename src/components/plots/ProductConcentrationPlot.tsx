@@ -8,26 +8,32 @@ import {
     CONFIG,
     PLOT_COLORS,
 } from "./constants";
-import { getColorIndex } from "./utils";
 import { ProductOverTimeTrace } from "./types";
 import { SimulariumContext } from "../../simulation/context";
 import { AGENT_AB_COLOR } from "../../constants/colors";
 import { MICRO, NANO } from "../../constants";
 
 import plotStyles from "./plots.module.css";
+import { getColorIndex } from "../../utils";
 
 interface ProductConcentrationPlotProps {
     data: ProductOverTimeTrace[];
     width: number;
     height: number;
+    colors: string[];
+    dotsX: number[];
+    dotsY: number[];
 }
 
 const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
     data,
     width,
     height,
+    colors,
+    dotsX = [],
+    dotsY = [],
 }) => {
-    const { timeFactor, maxConcentration, productName, timeUnit } =
+    const { timeFactor, productName, timeUnit, maxConcentration } =
         useContext(SimulariumContext);
     const hasData = useRef(false);
     if (data.length === 0) {
@@ -76,6 +82,20 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
             },
         };
     });
+
+    if (dotsX.length > 0) {
+        traces.push({
+            x: dotsX,
+            y: dotsY,
+            name: "",
+            type: "scatter" as const,
+            mode: "markers" as const,
+            marker: {
+                color: colors,
+                size: 8,
+            },
+        });
+    }
     /**
      * When there is no data, we want to show the axis at 0, 0, but plotly
      * defaults to -1.5 to 1.5 with no data, even when the range is set to
@@ -86,7 +106,6 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         ...BASE_PLOT_LAYOUT,
         width: width,
         height: Math.max(130, height),
-
         xaxis: {
             ...AXIS_SETTINGS,
             range: range,

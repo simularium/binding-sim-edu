@@ -6,9 +6,7 @@ import {
     BASE_PLOT_LAYOUT,
     CONFIG,
     GRAY_COLOR,
-    PLOT_COLORS,
 } from "./constants";
-import { getColorIndex } from "./utils";
 import { SimulariumContext } from "../../simulation/context";
 import { AGENT_AB_COLOR, AGENT_B_COLOR } from "../../constants/colors";
 import { MICRO } from "../../constants";
@@ -21,13 +19,18 @@ interface PlotProps {
     y: number[];
     height: number;
     width: number;
+    colors: string[];
 }
 
-const EquilibriumPlot: React.FC<PlotProps> = ({ x, y, height, width }) => {
+const EquilibriumPlot: React.FC<PlotProps> = ({
+    x,
+    y,
+    height,
+    width,
+    colors,
+}) => {
     const { maxConcentration } = useContext(SimulariumContext);
-    const colors = x.map(
-        (value) => PLOT_COLORS[getColorIndex(value, maxConcentration)]
-    );
+
     const maxPlusBuffer = maxConcentration + 1;
 
     const horizontalDottedLine = {
@@ -64,7 +67,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y, height, width }) => {
         height: Math.max(130, height),
         xaxis: {
             ...AXIS_SETTINGS,
-            range: [0, maxPlusBuffer],
+            range: [0, 2],
             title: `[B] ${MICRO}M`,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,
