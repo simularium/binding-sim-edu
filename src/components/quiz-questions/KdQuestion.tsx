@@ -54,12 +54,13 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
 
     const formContent = (
         <div className={styles.inputFormContent}>
-            <p>
+            <p id="kd question">
                 Referencing the Equilibrium Concentration plot, what is the
                 binding affinity? (K<sub>d</sub> = ?)
             </p>
             <Flex gap={8} align="baseline" style={{ maxWidth: 230 }}>
                 <InputNumber
+                    aria-labelledby="kd question"
                     value={selectedAnswer || ""}
                     onChange={handleAnswerSelection}
                     placeholder="Type approximate value..."
