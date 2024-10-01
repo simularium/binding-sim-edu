@@ -446,7 +446,7 @@ function App() {
             setEquilibriumFeedbackTimeout("Not yet!");
             return false;
         }
-        // this will always be defined, for the current run, but since there are
+        // this will always be defined for the current run, but since there are
         // different agents in each module, typescript fears it will be undefined
         const currentInputConcentration = inputConcentration[ADJUSTABLE_AGENT];
         if (currentInputConcentration === undefined) {
