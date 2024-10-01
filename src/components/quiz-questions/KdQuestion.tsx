@@ -69,7 +69,7 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
     return (
         <VisibilityControl includedPages={[8]}>
             <QuizForm
-                title="You reached the point where half of the binding sites of A are occupied."
+                title="You have now measured enough points to estimate the value of B where half of the binding sites of A are occupied."
                 formContent={formContent}
                 onSubmit={handleSubmit}
                 successMessage="A and B have a high affinity for one another."

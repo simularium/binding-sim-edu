@@ -110,7 +110,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
     {
         content: (
             <>
-                How do the different substrate concentrations of <A /> affect
+                How do the different substrate concentrations of <B /> affect
                 the reaction? Are there any similarities between the reactions
                 when they reach equilibrium? Are there any differences?
             </>
