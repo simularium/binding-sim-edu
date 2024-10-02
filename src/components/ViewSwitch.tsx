@@ -36,9 +36,9 @@ const ViewSwitch: React.FC = () => {
         }
     );
 
-    let buttonStyle = {
+    let buttonStyle: React.CSSProperties = {
         top: 16,
-        left: 16,
+        right: 16,
         // by default, antd animates everything, and this button moves, so we're only animating
         // the hover color change and not the position change
         transition:
@@ -46,8 +46,11 @@ const ViewSwitch: React.FC = () => {
     };
 
     if (page === 1) {
-        const siderWidth = window.innerWidth * 0.25;
-        buttonStyle = { ...buttonStyle, left: -siderWidth + buttonStyle.left };
+        buttonStyle = {
+            ...buttonStyle,
+            right: "50%",
+            transform: "translateX(50%)",
+        };
     }
 
     return (
@@ -65,8 +68,7 @@ const ViewSwitch: React.FC = () => {
                             )
                         }
                     >
-                        Switch to{" "}
-                        {currentView === View.Lab ? "molecular" : "lab"} view
+                        {currentView === View.Lab ? "Molecular" : "Lab"} view
                     </OverlayButton>
                 </ProgressionControl>
             </VisibilityControl>
