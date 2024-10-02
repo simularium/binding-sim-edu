@@ -100,9 +100,9 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         ),
         callToAction: (
             <>
-                Let’s find K<sub>d</sub>:Let’s find Kd - Repeat the experiment
-                by pausing, adjusting the concentration of <B /> and recording
-                the equilibrium point until you have enough data.
+                Let’s find K<sub>d</sub> - Repeat the experiment by pausing,
+                adjusting the concentration of <B /> and recording the
+                equilibrium point until you have enough data.
             </>
         ),
     },
