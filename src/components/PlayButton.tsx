@@ -13,14 +13,20 @@ const PlayButton: React.FC = () => {
         setIsPlaying(!isPlaying);
     };
 
+    const iconStyle = { fontSize: 26 };
+
     return (
         <VisibilityControl excludedPages={[1, 10, 11]}>
             <ProgressionControl onPage={[2, 5]}>
                 <OverlayButton
                     onClick={handleClick}
-                    style={{ top: 14, left: 16, fontSize: 26 }}
+                    style={{ top: 14, left: 16 }}
                     icon={
-                        isPlaying ? <PauseOutlined /> : <CaretRightOutlined />
+                        isPlaying ? (
+                            <PauseOutlined style={iconStyle} />
+                        ) : (
+                            <CaretRightOutlined style={iconStyle} />
+                        )
                     }
                 />
             </ProgressionControl>
