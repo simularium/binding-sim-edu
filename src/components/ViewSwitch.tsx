@@ -38,7 +38,7 @@ const ViewSwitch: React.FC = () => {
 
     let buttonStyle: React.CSSProperties = {
         top: 16,
-        left: 16,
+        right: 16,
         // by default, antd animates everything, and this button moves, so we're only animating
         // the hover color change and not the position change
         transition:
@@ -48,8 +48,8 @@ const ViewSwitch: React.FC = () => {
     if (page === 1) {
         buttonStyle = {
             ...buttonStyle,
-            left: "50%",
-            transform: "translateX(-50%)",
+            right: "50%",
+            transform: "translateX(50%)",
         };
     }
 
