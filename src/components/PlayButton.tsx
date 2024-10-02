@@ -18,7 +18,7 @@ const PlayButton: React.FC = () => {
             <ProgressionControl onPage={[2, 5]}>
                 <OverlayButton
                     onClick={handleClick}
-                    style={{ top: 14, left: 16 }}
+                    style={{ top: 14, left: 16, fontSize: 26 }}
                     icon={
                         isPlaying ? <PauseOutlined /> : <CaretRightOutlined />
                     }
