@@ -100,10 +100,9 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         ),
         callToAction: (
             <>
-                Let’s find K<sub>d</sub>: Repeat the experiment with different
-                concentrations of <B /> until you have enough information to
-                figure out the concentration of <B /> where half of the binding
-                sites of <A /> would be occupied.
+                Let’s find K<sub>d</sub> - Repeat the experiment by pausing,
+                adjusting the concentration of <B /> and recording the
+                equilibrium point until you have enough data.
             </>
         ),
     },
