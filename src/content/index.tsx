@@ -96,6 +96,10 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 to compare affinities. K<sub>d</sub> is the concentration of{" "}
                 <B /> where half the binding sites of <A /> are occupied at
                 equilibrium.
+                <div>
+                    K<sub>d</sub> = [<B />] at equilibrium when 50% of <A /> is
+                    bound to <B />
+                </div>
             </>
         ),
         callToAction: (
