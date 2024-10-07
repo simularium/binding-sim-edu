@@ -1,4 +1,4 @@
-import { SecondaryButton } from "./shared/ButtonLibrary";
+import { PillButton } from "./shared/ButtonLibrary";
 import ProgressionControl from "./shared/ProgressionControl";
 
 interface RecordEquilibriumButtonProps {
@@ -10,9 +10,7 @@ const RecordEquilibriumButton = ({
 }: RecordEquilibriumButtonProps) => {
     return (
         <ProgressionControl onPage={[3, 6]}>
-            <SecondaryButton onClick={handleRecordEquilibrium} style={{maxWidth: 236, width: "100%"}}>
-                Record
-            </SecondaryButton>
+            <PillButton onClick={handleRecordEquilibrium}>Record</PillButton>
         </ProgressionControl>
     );
 };
