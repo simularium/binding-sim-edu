@@ -27,7 +27,12 @@ const Definition: React.FC<GlossaryTermProps> = ({ term, displayValue }) => {
         </>
     );
     return (
-        <Popover content={content} trigger="click" placement="bottom">
+        <Popover
+            content={content}
+            trigger={["click", "hover"]}
+            mouseEnterDelay={0.1}
+            placement="bottom"
+        >
             <a href="#!">{displayValue || term}</a>
         </Popover>
     );

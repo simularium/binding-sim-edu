@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { valueType } from "antd/es/statistic/utils";
+import { Flex } from "antd";
 
 import QuizForm from "./QuizForm";
 import VisibilityControl from "../shared/VisibilityControl";
@@ -51,23 +52,25 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd }) => {
 
     const formContent = (
         <div className={styles.inputFormContent}>
-            <p>
+            <p id="kd question">
                 Referencing the Equilibrium Concentration plot, what is the
-                binding affinity?
+                binding affinity? (K<sub>d</sub> = ?)
             </p>
-            <b>
-                K<sub>d</sub> = ?
-            </b>
-            <InputNumber
-                value={selectedAnswer || ""}
-                onChange={handleAnswerSelection}
-            />
+            <Flex gap={8} align="baseline" style={{ maxWidth: 230 }}>
+                <InputNumber
+                    aria-labelledby="kd question"
+                    value={selectedAnswer || ""}
+                    onChange={handleAnswerSelection}
+                    placeholder="Type approximate value..."
+                />
+                <span> {MICRO}M</span>
+            </Flex>
         </div>
     );
     return (
         <VisibilityControl includedPages={[8]}>
             <QuizForm
-                title="You reached the point where half of the binding sites of A are occupied."
+                title="You have now measured enough points to estimate the value of B where half of the binding sites of A are occupied."
                 formContent={formContent}
                 onSubmit={handleSubmit}
                 successMessage="A and B have a high affinity for one another."
