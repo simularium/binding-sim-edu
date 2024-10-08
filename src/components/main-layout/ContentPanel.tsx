@@ -6,11 +6,17 @@ import BackButton from "../shared/BackButton";
 
 import styles from "./layout.module.css";
 import { SimulariumContext } from "../../simulation/context";
+import { PillButton } from "../shared/ButtonLibrary";
 
 export interface ContentPanelProps {
     content: string | JSX.Element;
     title?: string;
     callToAction?: string | JSX.Element;
+    modal?: {
+        buttonText: string;
+        content: string | JSX.Element;
+    };
+    moreInfo?: string | JSX.Element;
     nextButton?: boolean;
     backButton?: boolean;
     finishButton?: boolean;
@@ -23,6 +29,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
     backButton,
     nextButton,
     finishButton,
+    moreInfo,
 }) => {
     const showButton = nextButton || finishButton;
     const { exampleTrajectoryPageNumber, page } = useContext(SimulariumContext);
@@ -37,6 +44,14 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
             <div className={styles.contentPanelText}>
                 <h3>{header}</h3>
                 <p>{content}</p>
+                {
+                    <Flex gap={12} align="center">
+                        <PillButton size="small" ghost className="inline-pill">
+                            Learn how to derive K<sub>d</sub>
+                        </PillButton>
+                        {moreInfo && <span>{moreInfo}</span>}
+                    </Flex>
+                }
                 {callToAction && (
                     <p className={styles.callToActionP}>
                         <PointerIcon /> <span>{callToAction}</span>

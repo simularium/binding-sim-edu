@@ -3,6 +3,7 @@ import { A, AB, B } from "../components/agent-symbols";
 import { ContentPanelProps } from "../components/main-layout/ContentPanel";
 import Definition from "../components/shared/Definition";
 import { Module } from "../types";
+import { PillButton } from "../components/shared/ButtonLibrary";
 
 export const highAffinityContentArray: ContentPanelProps[] = [
     // making the content array 1 indexed to match the page numbers
@@ -98,13 +99,44 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 experiment by finding the concentration of <B /> at equilibrium
                 where half the binding sites of <A /> are occupied. (Which is
                 where [<AB />] = [<A />
-                ])
-                <Flex>
-                    <div>
-                        K<sub>d</sub> = [<B />] at equilibrium when 50% of <A />{" "}
-                        is bound to <B />
-                    </div>
-                </Flex>
+                ]).
+            </>
+        ),
+        modal: {
+            buttonText: "Learn how to derive Kd",
+            content: (
+                <>
+                    <p>
+                        The dissociation constant (K<sub>d</sub>) is a measure
+                        of the propensity of a complex to fall apart into its
+                        smaller components. A reaction with a high K<sub>d</sub>{" "}
+                        means the components have a low affinity and are more
+                        likely to fall apart. A low K<sub>d</sub> means the
+                        components have a high affinity and spend more time as a
+                        complex.
+                    </p>
+                    <p>
+                        In this experiment, K<sub>d</sub> is the concentration
+                        of
+                        <B /> at equilibrium when 50% of <A /> is bound to <B />
+                        .
+                    </p>
+                    <p>
+                        <a
+                            href="https://www.khanacademy.org/science/ap-chemistry-beta/x2eef969c74e0d802:equilibrium/x2eef969c74e0d802:magnitude-and-properties-of-the-equilibrium-constant/v/magnitude-of-the-equilibrium-constant"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            Learn more about K<sub>d</sub> on Khan Academy
+                        </a>
+                    </p>
+                </>
+            ),
+        },
+        moreInfo: (
+            <>
+                K<sub>d</sub> = [<B />] (at equilibrium when 50% of <A /> is
+                bound to <B />)
             </>
         ),
         callToAction: (
