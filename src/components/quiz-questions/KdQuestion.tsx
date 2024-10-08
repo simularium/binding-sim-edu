@@ -7,6 +7,7 @@ import VisibilityControl from "../shared/VisibilityControl";
 import InputNumber from "../shared/InputNumber";
 import { FormState } from "./types";
 import styles from "./popup.module.css";
+import { MICRO } from "../../constants";
 interface KdQuestionProps {
     kd: number;
 }
