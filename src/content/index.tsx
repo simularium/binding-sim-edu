@@ -33,7 +33,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 molecule changes rapidly as the two molecules, <A /> and <B />,
                 bind to form <AB />. Eventually, the reaction reaches{" "}
                 <Definition term="equilibrium" />, at which point the
-                concentration of AB stays more or less consistent.
+                concentration of <AB /> stays more or less consistent.
             </>
         ),
         callToAction:
@@ -94,9 +94,9 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                         </>
                     }
                 />{" "}
-                to compare affinities. K<sub>d</sub> is the concentration of{" "}
-                <B /> at equilibrium where half the binding sites of <A /> are
-                occupied.
+                to compare affinities. K<sub>d</sub> can by determined in this
+                experiment by finding the concentration of <B /> at equilibrium
+                where half the binding sites of <A /> are occupied.
                 <Flex>
                     <div>
                         K<sub>d</sub> = [<B />] at equilibrium when 50% of <A />{" "}
