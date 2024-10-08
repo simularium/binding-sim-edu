@@ -96,7 +96,9 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 />{" "}
                 to compare affinities. K<sub>d</sub> can by determined in this
                 experiment by finding the concentration of <B /> at equilibrium
-                where half the binding sites of <A /> are occupied.
+                where half the binding sites of <A /> are occupied. (Which is
+                where [<AB />] = [<A />
+                ])
                 <Flex>
                     <div>
                         K<sub>d</sub> = [<B />] at equilibrium when 50% of <A />{" "}
