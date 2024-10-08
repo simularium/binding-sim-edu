@@ -69,11 +69,18 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
             type: "scatter" as const,
             mode: "lines" as const,
             name: inputConcentration.toString(),
+            text: inputConcentration.toString(),
             line: {
                 color: PLOT_COLORS[
                     getColorIndex(inputConcentration, maxConcentration)
                 ],
             },
+            hovertemplate:
+                "time: <b>%{x:.1f}</b><br>" +
+                "[AB]: <b>%{y:.1f}</b><br>" +
+                "Initial [B]: </b>" +
+                `<b>${inputConcentration.toString()} </b>` +
+                "<extra></extra>",
         };
     });
     /**
