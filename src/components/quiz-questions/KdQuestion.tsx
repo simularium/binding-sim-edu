@@ -5,15 +5,14 @@ import { Flex } from "antd";
 import QuizForm from "./QuizForm";
 import VisibilityControl from "../shared/VisibilityControl";
 import InputNumber from "../shared/InputNumber";
-import { MICRO, kds } from "../../constants";
 import { FormState } from "./types";
 import styles from "./popup.module.css";
-import { Module } from "../../types";
+import { MICRO } from "../../constants";
 interface KdQuestionProps {
-    reactionType: Module;
+    kd: number;
 }
 
-const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
+const KdQuestion: React.FC<KdQuestionProps> = ({ kd }) => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [formState, setFormState] = useState(FormState.Clear);
 
@@ -28,7 +27,7 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType }) => {
         }
     };
     const handleSubmit = () => {
-        const correctAnswer = kds[reactionType];
+        const correctAnswer = kd;
         const tolerance = 1.5;
         if (selectedAnswer === null) {
             // No answer selected
