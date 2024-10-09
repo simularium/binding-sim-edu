@@ -28,11 +28,7 @@ const VisibilityControl: React.FC<VisibilityControlProps> = ({
     } else if (excludedPages) {
         shouldRender = !excludedPages.includes(page);
     }
-    if (
-        notInBonusMaterial !== undefined &&
-        notInBonusMaterial &&
-        page >= exampleTrajectoryPageNumber
-    ) {
+    if (notInBonusMaterial && page >= exampleTrajectoryPageNumber) {
         shouldRender = false;
     }
 
