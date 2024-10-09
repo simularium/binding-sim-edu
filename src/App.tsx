@@ -457,12 +457,10 @@ function App() {
         if (currentInputConcentration === undefined) {
             return false;
         }
-        const productConcentration =
-            clientSimulator.getCurrentConcentrations(productName)[productName];
-        const reactantConcentration =
-            clientSimulator.getCurrentConcentrations(productName)[
-                ADJUSTABLE_AGENT
-            ];
+        const concentrations =
+            clientSimulator.getCurrentConcentrations(productName);
+        const productConcentration = concentrations[productName];
+        const reactantConcentration = concentrations[ADJUSTABLE_AGENT];
 
         const currentTime = indexToTime(
             currentProductConcentrationArray.length,
