@@ -30,6 +30,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
     nextButton,
     finishButton,
     moreInfo,
+    modal,
 }) => {
     const showButton = nextButton || finishButton;
     const { exampleTrajectoryPageNumber, page } = useContext(SimulariumContext);
@@ -44,14 +45,14 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
             <div className={styles.contentPanelText}>
                 <h3>{header}</h3>
                 <p>{content}</p>
-                {
+                {modal && (
                     <Flex gap={12} align="center">
                         <PillButton size="small" ghost className="inline-pill">
-                            Learn how to derive K<sub>d</sub>
+                            {modal.buttonText}
                         </PillButton>
                         {moreInfo && <span>{moreInfo}</span>}
                     </Flex>
-                }
+                )}
                 {callToAction && (
                     <p className={styles.callToActionP}>
                         <PointerIcon /> <span>{callToAction}</span>
