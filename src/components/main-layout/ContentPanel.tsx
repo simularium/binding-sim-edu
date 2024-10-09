@@ -11,10 +11,6 @@ export interface ContentPanelProps {
     content: string | JSX.Element;
     title?: string;
     callToAction?: string | JSX.Element;
-    modal?: {
-        buttonText: string;
-        content: string | JSX.Element;
-    };
     moreInfo?: string | JSX.Element;
     nextButton?: boolean;
     backButton?: boolean;
