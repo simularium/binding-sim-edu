@@ -75,6 +75,7 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
                 color: PLOT_COLORS[
                     getColorIndex(inputConcentration, maxConcentration)
                 ],
+                width: 1,
             },
         };
     });
