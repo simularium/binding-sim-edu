@@ -1,17 +1,17 @@
 export const terms = {
     affinity: {
         definition:
-            "Measure of the strength of an interaction between two molecules. Generally, the more chemical bonds that form between two molecules, the stronger the affinity of those molecules for each other.",
+            "The strength of an interaction between two molecules. Two molecules that have high affinity stay bound to each other for longer than two molecules that have low affinity for each other.",
         link: undefined,
     },
     KD: {
         definition:
-            "The equilibrium constant. The balance of products and reactants at equilibrium, defined mathematically as the ratio of the dissociation and association rate constants, which quantitatively measures affinity.",
+            "The dissociation constant defines the propensity of a complex to fall apart into its smaller components. A reaction with a high Kd means the components have a low affinity, and are more likely to fall apart. A low Kd means the components have a high affinity, and spend more time as a complex.",
         link: "https://www.khanacademy.org/science/ap-chemistry-beta/x2eef969c74e0d802:equilibrium/x2eef969c74e0d802:magnitude-and-properties-of-the-equilibrium-constant/v/magnitude-of-the-equilibrium-constant",
     },
     equilibrium: {
         definition:
-            "The state in which the amount of reactants and products of a reaction are not changing over time.",
+            "The state in which the rate of the forward reaction is the same as the reverse reaction",
         link: "https://www.khanacademy.org/science/ap-chemistry-beta/x2eef969c74e0d802:equilibrium/x2eef969c74e0d802:introduction-to-equilibrium/v/dynamic-equilibrium",
     },
     "reaction rate equation": {

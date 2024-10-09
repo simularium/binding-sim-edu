@@ -49,9 +49,9 @@ export const TertiaryButton: React.FC<ButtonProps> = (props) => {
 export const PillButton: React.FC<ButtonProps> = (props) => {
     return (
         <AntdButton
+            size="large"
             {...props}
             shape="round"
-            size="large"
             className={classNames(props.className, styles.tertiary)}
         />
     );

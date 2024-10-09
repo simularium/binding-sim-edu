@@ -10,6 +10,7 @@ import styles from "./layout.module.css";
 
 interface CenterPanelProps {
     reactionType: Module;
+    canDetermineEquilibrium: boolean;
 }
 
 export const CenterPanelContext = React.createContext<{
@@ -19,7 +20,10 @@ export const CenterPanelContext = React.createContext<{
     lastOpened: "",
     setLastOpened: () => {},
 });
-const CenterPanel: React.FC<CenterPanelProps> = ({ reactionType }) => {
+const CenterPanel: React.FC<CenterPanelProps> = ({
+    reactionType,
+    canDetermineEquilibrium,
+}) => {
     const [lastOpened, setLastOpened] = React.useState<string | null>(null);
     return (
         <>
@@ -27,10 +31,13 @@ const CenterPanel: React.FC<CenterPanelProps> = ({ reactionType }) => {
             <CenterPanelContext.Provider value={{ lastOpened, setLastOpened }}>
                 <div className={styles.questionContainer}>
                     <EquilibriumQuestion />
-                    <KdQuestion reactionType={reactionType} />
+                    <KdQuestion
+                        reactionType={reactionType}
+                        canAnswer={canDetermineEquilibrium}
+                    />
                 </div>
             </CenterPanelContext.Provider>
-            <VisibilityControl includedPages={[10]}>
+            <VisibilityControl includedPages={[9]}>
                 <FinalPage />
             </VisibilityControl>
         </>

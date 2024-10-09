@@ -32,7 +32,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 molecule changes rapidly as the two molecules, <A /> and <B />,
                 bind to form <AB />. Eventually, the reaction reaches{" "}
                 <Definition term="equilibrium" />, at which point the
-                concentration of AB stays more or less consistent.
+                concentration of <AB /> stays more or less consistent.
             </>
         ),
         callToAction:
@@ -93,9 +93,15 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                         </>
                     }
                 />{" "}
-                to compare affinities. K<sub>d</sub> is the concentration of{" "}
-                <B /> where half the binding sites of <A /> are occupied at
-                equilibrium.
+                to compare affinities. K<sub>d</sub> can by determined in this
+                experiment by finding the concentration of <B /> at equilibrium
+                where half the binding sites of <A /> are occupied.
+            </>
+        ),
+        moreInfo: (
+            <>
+                K<sub>d</sub> = [<B />] (at equilibrium when 50% of <A /> is
+                bound to <B />)
             </>
         ),
         callToAction: (
@@ -105,18 +111,6 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 equilibrium point until you have enough data.
             </>
         ),
-    },
-    {
-        content: (
-            <>
-                How do the different substrate concentrations of <B /> affect
-                the reaction? Are there any similarities between the reactions
-                when they reach equilibrium? Are there any differences?
-            </>
-        ),
-        callToAction:
-            "Test your knowledge and calculate the binding affinity below before moving on.",
-        nextButton: true,
     },
     {
         title: "Real-world example: Antibodies and antigens, high affinity binders",
@@ -160,7 +154,7 @@ export const moduleNames = {
 };
 
 export const PAGE_NUMBER_3D_EXAMPLE = {
-    [Module.A_B_AB]: 9,
+    [Module.A_B_AB]: 8,
     [Module.A_C_AC]: 9,
     [Module.A_B_C_AB_AC]: 9,
 };
