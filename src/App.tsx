@@ -287,11 +287,16 @@ function App() {
 
     usePageNumber(
         page,
-        (page) => page === finalPageNumber,
-        () => {
-            if (simulariumController.getFile()) {
-                simulariumController.clearFile();
+        (page) =>
+            page < PAGE_NUMBER_3D_EXAMPLE[currentModule] &&
+            trajectoryStatus == TrajectoryStatus.LOADED,
+        async () => {
+            setIsPlaying(false);
+            resetAnalysisState();
+            if (simulariumController.getFile() !== LIVE_SIMULATION_NAME) {
+                setTrajectoryName(LIVE_SIMULATION_NAME);
             }
+            setTrajectoryStatus(TrajectoryStatus.INITIAL);
         }
     );
 
