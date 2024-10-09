@@ -25,6 +25,10 @@
     margin: 0;
 }
 
+.content-panel .more-info {
+    font-size: 12px;
+}
+
 .call-to-action-p {
     display: flex;
     gap: 8px;

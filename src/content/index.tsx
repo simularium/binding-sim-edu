@@ -1,9 +1,7 @@
-import { Flex } from "antd";
 import { A, AB, B } from "../components/agent-symbols";
 import { ContentPanelProps } from "../components/main-layout/ContentPanel";
 import Definition from "../components/shared/Definition";
 import { Module } from "../types";
-import { PillButton } from "../components/shared/ButtonLibrary";
 
 export const highAffinityContentArray: ContentPanelProps[] = [
     // making the content array 1 indexed to match the page numbers
@@ -97,9 +95,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 />{" "}
                 to compare affinities. K<sub>d</sub> can by determined in this
                 experiment by finding the concentration of <B /> at equilibrium
-                where half the binding sites of <A /> are occupied. (Which is
-                where [<AB />] = [<A />
-                ]).
+                where half the binding sites of <A /> are occupied.
             </>
         ),
         modal: {
@@ -148,18 +144,6 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         ),
     },
     {
-        content: (
-            <>
-                How do the different substrate concentrations of <B /> affect
-                the reaction? Are there any similarities between the reactions
-                when they reach equilibrium? Are there any differences?
-            </>
-        ),
-        callToAction:
-            "Test your knowledge and calculate the binding affinity below before moving on.",
-        nextButton: true,
-    },
-    {
         title: "Real-world example: Antibodies and antigens, high affinity binders",
         content: (
             <>
@@ -201,7 +185,7 @@ export const moduleNames = {
 };
 
 export const PAGE_NUMBER_3D_EXAMPLE = {
-    [Module.A_B_AB]: 9,
+    [Module.A_B_AB]: 8,
     [Module.A_C_AC]: 9,
     [Module.A_B_C_AB_AC]: 9,
 };
