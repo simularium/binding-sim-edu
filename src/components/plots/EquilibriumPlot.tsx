@@ -33,10 +33,8 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
 }) => {
     const { maxConcentration } = useContext(SimulariumContext);
 
-    const maxPlusBuffer = maxConcentration + 1;
-
     const horizontalDottedLine = {
-        x: [0, maxPlusBuffer],
+        x: [0, kd * 2],
         y: [5, 5],
         mode: "lines",
         line: {
