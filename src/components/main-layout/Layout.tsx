@@ -33,21 +33,19 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 className={classNames([
                     styles.contentPanel,
                     {
-                        [styles.finalPage]: page === 11,
+                        [styles.finalPage]: page === 10,
                     },
                 ])}
             >
                 {content}
             </Content>
-            <VisibilityControl
-                excludedPages={[exampleTrajectoryPageNumber, 10, 11]}
-            >
+            <VisibilityControl notInBonusMaterial>
                 <Header className={styles.reactionPanel}>
                     {reactionPanel}
                 </Header>
             </VisibilityControl>
             <Layout>
-                <VisibilityControl excludedPages={[10, 11]}>
+                <VisibilityControl excludedPages={[9, 10]}>
                     <Sider
                         className={classNames([
                             styles.sidePanel,
@@ -64,7 +62,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 </VisibilityControl>
 
                 <Content className={styles.centerPanel}>{centerPanel}</Content>
-                <VisibilityControl excludedPages={[10, 11]}>
+                <VisibilityControl excludedPages={[9, 10]}>
                     <Sider
                         className={classNames([
                             styles.sidePanel,
