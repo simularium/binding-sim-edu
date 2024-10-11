@@ -32,10 +32,16 @@ import { ProductOverTimeTrace } from "./components/plots/types";
 import MainLayout from "./components/main-layout/Layout";
 import usePageNumber from "./hooks/usePageNumber";
 import fetch3DTrajectory from "./utils/fetch3DTrajectory";
-import { insertIntoArray, insertValueSorted } from "./utils";
+import {
+    getColorIndex,
+    indexToTime,
+    insertValueSorted,
+    updateArrayInState,
+} from "./utils";
 import PreComputedPlotData from "./simulation/PreComputedPlotData";
 import PreComputedSimulationData from "./simulation/PreComputedSimulationData";
 import LiveSimulationData from "./simulation/LiveSimulationData";
+import { PLOT_COLORS } from "./components/plots/constants";
 
 const ADJUSTABLE_AGENT = AgentName.B;
 
@@ -90,6 +96,8 @@ function App() {
                 LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
             [productName]: 0,
         });
+    const [recordedInputConcentration, setRecordedInputConcentration] =
+        useState<number[]>([]);
     const [productOverTimeTraces, setProductOverTimeTraces] = useState<
         ProductOverTimeTrace[]
     >([]);
@@ -99,8 +107,12 @@ function App() {
     const [unBindingEventsOverTime, setUnBindingEventsOverTime] = useState<
         number[]
     >([]);
-    const [inputEquilibriumConcentrations, setInputEquilibriumConcentrations] =
+    const [recordedReactantConcentrations, setRecordedReactantConcentration] =
         useState<number[]>([]);
+    const [timeToReachEquilibrium, setTimeToReachEquilibrium] = useState<
+        number[]
+    >([]);
+    const [dataColors, setDataColors] = useState<string[]>([]);
     const [
         productEquilibriumConcentrations,
         setProductEquilibriumConcentrations,
@@ -113,10 +125,19 @@ function App() {
         setCurrentProductConcentrationArray,
     ] = useState<number[]>([]);
 
-    const resetAnalysisState = () => {
+    const resetCurrentRunAnalysisState = () => {
         setBindingEventsOverTime([]);
         setUnBindingEventsOverTime([]);
         setCurrentProductConcentrationArray([]);
+    };
+
+    const clearAllAnalysisState = () => {
+        resetCurrentRunAnalysisState();
+        setRecordedInputConcentration([]);
+        setProductOverTimeTraces([]);
+        setRecordedReactantConcentration([]);
+        setTimeToReachEquilibrium([]);
+        setDataColors([]);
     };
 
     // SIMULATION INITIALIZATION
@@ -129,7 +150,7 @@ function App() {
         setInputConcentration(
             simulationData.getInitialConcentrations(activeAgents)
         );
-        resetAnalysisState();
+        resetCurrentRunAnalysisState();
         const trajectory =
             simulationData.createAgentsFromConcentrations(activeAgents);
         if (!trajectory) {
@@ -166,9 +187,7 @@ function App() {
             LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B]
         );
         setIsPlaying(false);
-        resetAnalysisState();
-        setInputEquilibriumConcentrations([]);
-        setProductEquilibriumConcentrations([]);
+        clearAllAnalysisState();
     };
 
     useEffect(() => {
@@ -213,8 +232,8 @@ function App() {
     // Ongoing check to see if they've measured enough values to determine Kd
     const halfFilled = inputConcentration.A ? inputConcentration.A / 2 : 5;
     const uniqMeasuredConcentrations = useMemo(
-        () => uniq(inputEquilibriumConcentrations),
-        [inputEquilibriumConcentrations]
+        () => uniq(productEquilibriumConcentrations),
+        [productEquilibriumConcentrations]
     );
     const hasAValueAboveKd = useMemo(
         () =>
@@ -272,7 +291,8 @@ function App() {
         async () => {
             setIsPlaying(false);
             setTrajectoryStatus(TrajectoryStatus.LOADING);
-            resetAnalysisState();
+            totalReset();
+
             await fetch3DTrajectory(
                 PreComputedSimulationData.EXAMPLE_TRAJECTORY_URLS[
                     currentModule
@@ -407,7 +427,7 @@ function App() {
         const agentId = LiveSimulationData.AVAILABLE_AGENTS[agentName].id;
         clientSimulator.changeConcentration(agentId, value);
         simulariumController.gotoTime(time + 1);
-        resetAnalysisState();
+        resetCurrentRunAnalysisState();
     };
 
     const setEquilibriumFeedbackTimeout = (message: ReactNode | string) => {
@@ -421,25 +441,58 @@ function App() {
         if (!clientSimulator) {
             return false;
         }
-        const productConcentration =
-            clientSimulator.getCurrentConcentrations(productName)[productName];
-        const reactantConcentration = inputConcentration[ADJUSTABLE_AGENT] || 0;
 
         if (!clientSimulator.isMixed()) {
             setEquilibriumFeedbackTimeout("Not yet!");
             return false;
         }
+        // this will always be defined for the current run, but since there are
+        // different agents in each module, typescript fears it will be undefined
+        const currentInputConcentration = inputConcentration[ADJUSTABLE_AGENT];
+        if (currentInputConcentration === undefined) {
+            return false;
+        }
+        const concentrations =
+            clientSimulator.getCurrentConcentrations(productName);
+        const productConcentration = concentrations[productName];
+        const reactantConcentration = concentrations[ADJUSTABLE_AGENT];
+
+        const currentTime = indexToTime(
+            currentProductConcentrationArray.length,
+            timeFactor,
+            simulationData.timeUnit
+        );
         const { newArray, index } = insertValueSorted(
-            inputEquilibriumConcentrations,
+            recordedReactantConcentrations,
             reactantConcentration
         );
-        setInputEquilibriumConcentrations(newArray as number[]);
-        const newProductArray = insertIntoArray(
+        setRecordedReactantConcentration(newArray);
+        updateArrayInState(
             productEquilibriumConcentrations,
             index,
-            productConcentration
+            productConcentration,
+            setProductEquilibriumConcentrations
         );
-        setProductEquilibriumConcentrations(newProductArray as number[]);
+        updateArrayInState(
+            recordedInputConcentration,
+            index,
+            currentInputConcentration,
+            setRecordedInputConcentration
+        );
+        updateArrayInState(
+            timeToReachEquilibrium,
+            index,
+            currentTime,
+            setTimeToReachEquilibrium
+        );
+        const color =
+            PLOT_COLORS[
+                getColorIndex(
+                    currentInputConcentration,
+                    simulationData.getMaxConcentration(currentModule)
+                )
+            ];
+        updateArrayInState(dataColors, index, color, setDataColors);
         setEquilibriumFeedbackTimeout(
             <>
                 Great! <CheckCircleOutlined />
@@ -471,7 +524,7 @@ function App() {
                         handleTrajectoryChange,
                         viewportSize,
                         setViewportSize,
-                        recordedConcentrations: inputEquilibriumConcentrations,
+                        recordedConcentrations: recordedInputConcentration,
                     }}
                 >
                     <MainLayout
@@ -518,7 +571,7 @@ function App() {
                         }
                         centerPanel={
                             <CenterPanel
-                                reactionType={currentModule}
+                                kd={simulationData.getKd(currentModule)}
                                 canDetermineEquilibrium={
                                     canDetermineEquilibrium
                                 }
@@ -539,11 +592,16 @@ function App() {
                                 currentAdjustableAgentConcentration={
                                     inputConcentration[ADJUSTABLE_AGENT] || 0
                                 }
-                                equilibriumConcentrations={{
+                                equilibriumData={{
                                     inputConcentrations:
-                                        inputEquilibriumConcentrations,
+                                        recordedInputConcentration,
+                                    reactantConcentrations:
+                                        recordedReactantConcentrations,
                                     productConcentrations:
                                         productEquilibriumConcentrations,
+                                    timeToEquilibrium: timeToReachEquilibrium,
+                                    colors: dataColors,
+                                    kd: simulationData.getKd(currentModule),
                                 }}
                                 equilibriumFeedback={equilibriumFeedback}
                             />

@@ -2,14 +2,13 @@ import React from "react";
 import ViewSwitch from "../ViewSwitch";
 import EquilibriumQuestion from "../quiz-questions/EquilibriumQuestion";
 import KdQuestion from "../quiz-questions/KdQuestion";
-import { Module } from "../../types";
 import FinalPage from "../FinalPage";
 import VisibilityControl from "../shared/VisibilityControl";
 
 import styles from "./layout.module.css";
 
 interface CenterPanelProps {
-    reactionType: Module;
+    kd: number;
     canDetermineEquilibrium: boolean;
 }
 
@@ -20,8 +19,9 @@ export const CenterPanelContext = React.createContext<{
     lastOpened: "",
     setLastOpened: () => {},
 });
+
 const CenterPanel: React.FC<CenterPanelProps> = ({
-    reactionType,
+    kd,
     canDetermineEquilibrium,
 }) => {
     const [lastOpened, setLastOpened] = React.useState<string | null>(null);
@@ -32,7 +32,7 @@ const CenterPanel: React.FC<CenterPanelProps> = ({
                 <div className={styles.questionContainer}>
                     <EquilibriumQuestion />
                     <KdQuestion
-                        reactionType={reactionType}
+                        kd={kd}
                         canAnswer={canDetermineEquilibrium}
                     />
                 </div>

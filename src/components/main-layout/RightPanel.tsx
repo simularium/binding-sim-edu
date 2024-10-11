@@ -17,9 +17,13 @@ interface RightPanelProps {
     currentProductConcentrationArray: number[];
     currentAdjustableAgentConcentration: number;
     handleRecordEquilibrium: () => void;
-    equilibriumConcentrations: {
+    equilibriumData: {
         inputConcentrations: number[];
+        reactantConcentrations: number[];
         productConcentrations: number[];
+        timeToEquilibrium: number[];
+        colors: string[];
+        kd: number;
     };
     equilibriumFeedback: ReactNode | string;
     showHelpPanel: boolean;
@@ -28,7 +32,7 @@ interface RightPanelProps {
 const RightPanel: React.FC<RightPanelProps> = ({
     productOverTimeTraces,
     handleRecordEquilibrium,
-    equilibriumConcentrations,
+    equilibriumData,
     equilibriumFeedback,
     currentProductConcentrationArray,
     currentAdjustableAgentConcentration,
@@ -69,17 +73,21 @@ const RightPanel: React.FC<RightPanelProps> = ({
                         data={data}
                         width={width}
                         height={plotHeight}
+                        dotsX={equilibriumData.timeToEquilibrium}
+                        dotsY={equilibriumData.productConcentrations}
+                        colors={equilibriumData.colors}
                     />
                 </HelpPopup>
             </VisibilityControl>
-
             <VisibilityControl excludedPages={[0, 1, 2]} notInBonusMaterial>
-                <h3>Equilibrium concentration</h3>
+                <h3>Equilibrium concentrations</h3>
                 <EquilibriumPlot
                     width={width}
                     height={plotHeight}
-                    x={equilibriumConcentrations.inputConcentrations}
-                    y={equilibriumConcentrations.productConcentrations}
+                    x={equilibriumData.reactantConcentrations}
+                    y={equilibriumData.productConcentrations}
+                    colors={equilibriumData.colors}
+                    kd={equilibriumData.kd}
                 />
                 <div className={styles.recordButton}>
                     <RecordEquilibriumButton
