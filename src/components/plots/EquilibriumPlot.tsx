@@ -55,6 +55,12 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         </div>
     );
 
+    const lineOptions = {
+        color: AGENT_A_COLOR,
+        width: 0.5,
+        dash: "dot" as Dash,
+    };
+
     const horizontalLine = {
         x: [0, kd * 2],
         y: [5, 5],
@@ -63,14 +69,8 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         hovertemplate: "50% bound",
         hoverlabel: {
             bgcolor: AGENT_A_COLOR,
-            strokecolor: AGENT_A_COLOR,
         },
-
-        line: {
-            color: AGENT_A_COLOR,
-            width: 0.5,
-            dash: "dot" as Dash,
-        },
+        line: lineOptions,
     };
     const horizontalLineMax = {
         x: [0, kd * 2],
@@ -79,11 +79,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         name: "Initial [A]",
         hoverlabel: { bgcolor: AGENT_A_COLOR },
         hovertemplate: "Initial [A]",
-        line: {
-            color: AGENT_A_COLOR,
-            width: 0.5,
-            dash: "dot" as Dash,
-        },
+        line: lineOptions,
     };
     const trace = [
         horizontalLine,
