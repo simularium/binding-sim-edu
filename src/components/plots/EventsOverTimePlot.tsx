@@ -100,7 +100,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                             {
                                 ...plotSettings,
                                 y: bindingEventsOverTime,
-                                hovertemplate: `%{y} binding events <br /> at %{x} ${MICRO}s<extra></extra>`,
+                                hovertemplate: `%{y} binding events <br> at %{x} ${MICRO}s<extra></extra>`,
                             },
                         ]}
                         layout={layout}
@@ -120,7 +120,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                             {
                                 ...plotSettings,
                                 y: unbindingEventsOverTime,
-                                hovertemplate: `%{y} unbinding events <br /> at %{x} ${MICRO}s<extra></extra>`,
+                                hovertemplate: `%{y} unbinding events <br> at %{x} ${MICRO}s<extra></extra>`,
                             },
                         ]}
                         layout={{
