@@ -1,0 +1,25 @@
+.container {
+    position: absolute;
+    bottom: 14px;
+    right: 26%;
+    display: flex;
+}
+
+.scale-bar {
+    width: 10px;
+    height: 166px;
+    opacity: 0.8;
+    background: linear-gradient(0deg, #ffffff 0%, #fee34d 100%);
+}
+
+.labels {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    left: -2px;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+.label {
+    top: "0%";
+}
