@@ -8,14 +8,13 @@ import InputNumber from "../shared/InputNumber";
 import { FormState } from "./types";
 import styles from "./popup.module.css";
 import { MICRO } from "../../constants";
-interface KdQuestionProps {
 
-const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
+interface KdQuestionProps {
     kd: number;
     canAnswer: boolean;
 }
 
-const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType, canAnswer }) => {
+const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [formState, setFormState] = useState(FormState.Clear);
 
