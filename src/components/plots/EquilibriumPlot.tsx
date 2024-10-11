@@ -81,7 +81,6 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
                 color: GRAY_COLOR,
                 shape: "spline" as const,
                 width: 1,
-                // dash: "dot" as Dash,
             },
             hovertemplate: "[B]: <b>%{x:.1f}</b><br>[AB]: <b>%{y:.1f}</b>",
         },
@@ -110,8 +109,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
                 color: AGENT_AB_COLOR,
             },
             tickmode: "array" as const,
-            tickvals: [0, 5, 10],
-            ticktext: ["0", "5", "10"],
+            tickvals: [0, maxConcentration / 2, maxConcentration],
         },
     };
     return (
