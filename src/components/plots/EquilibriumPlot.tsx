@@ -102,7 +102,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         },
         yaxis: {
             ...AXIS_SETTINGS,
-            range: [0, maxConcentration + 0.25],
+            range: [0, maxConcentration + 0.25], // the line gets cut off without the extra 0.25
             title: `[AB] ${MICRO}M`,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,
