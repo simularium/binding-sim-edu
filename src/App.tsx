@@ -466,7 +466,7 @@ function App() {
             recordedReactantConcentrations,
             reactantConcentration
         );
-        setRecordedReactantConcentration(newArray as number[]);
+        setRecordedReactantConcentration(newArray);
         updateArrayInState(
             productEquilibriumConcentrations,
             index,
