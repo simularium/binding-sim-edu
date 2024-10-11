@@ -30,7 +30,7 @@ const agentB: InputAgent = {
     id: 1,
     name: AgentName.B,
     initialConcentration: 0,
-    radius: 0.7,
+    radius: 1,
     partners: [0],
     kOn: 0.6,
     kOff: 0.5,
