@@ -9,6 +9,7 @@ import styles from "./layout.module.css";
 
 interface CenterPanelProps {
     kd: number;
+    canDetermineEquilibrium: boolean;
 }
 
 export const CenterPanelContext = React.createContext<{
@@ -18,7 +19,11 @@ export const CenterPanelContext = React.createContext<{
     lastOpened: "",
     setLastOpened: () => {},
 });
-const CenterPanel: React.FC<CenterPanelProps> = ({ kd }) => {
+
+const CenterPanel: React.FC<CenterPanelProps> = ({
+    kd,
+    canDetermineEquilibrium,
+}) => {
     const [lastOpened, setLastOpened] = React.useState<string | null>(null);
     return (
         <>
@@ -26,10 +31,13 @@ const CenterPanel: React.FC<CenterPanelProps> = ({ kd }) => {
             <CenterPanelContext.Provider value={{ lastOpened, setLastOpened }}>
                 <div className={styles.questionContainer}>
                     <EquilibriumQuestion />
-                    <KdQuestion kd={kd} />
+                    <KdQuestion
+                        kd={kd}
+                        canAnswer={canDetermineEquilibrium}
+                    />
                 </div>
             </CenterPanelContext.Provider>
-            <VisibilityControl includedPages={[10]}>
+            <VisibilityControl includedPages={[9]}>
                 <FinalPage />
             </VisibilityControl>
         </>

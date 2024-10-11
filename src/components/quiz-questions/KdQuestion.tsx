@@ -9,10 +9,13 @@ import { FormState } from "./types";
 import styles from "./popup.module.css";
 import { MICRO } from "../../constants";
 interface KdQuestionProps {
+
+const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
     kd: number;
+    canAnswer: boolean;
 }
 
-const KdQuestion: React.FC<KdQuestionProps> = ({ kd }) => {
+const KdQuestion: React.FC<KdQuestionProps> = ({ reactionType, canAnswer }) => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [formState, setFormState] = useState(FormState.Clear);
 
@@ -54,24 +57,27 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd }) => {
     const formContent = (
         <div className={styles.inputFormContent}>
             <p id="kd question">
-                Referencing the Equilibrium Concentration plot, what is the
-                binding affinity? (K<sub>d</sub> = ?)
+                You have now measured enough points to estimate the value of B
+                where half of the binding sites of A are occupied.
             </p>
-            <Flex gap={8} align="baseline" style={{ maxWidth: 230 }}>
+            <b>
+                K<sub>d</sub> = ?
+            </b>
+            <Flex gap={8} align="baseline" style={{ maxWidth: 130 }}>
                 <InputNumber
                     aria-labelledby="kd question"
                     value={selectedAnswer || ""}
                     onChange={handleAnswerSelection}
-                    placeholder="Type approximate value..."
+                    placeholder="Type value..."
                 />
                 <span> {MICRO}M</span>
             </Flex>
         </div>
     );
     return (
-        <VisibilityControl includedPages={[8]}>
+        <VisibilityControl conditionalRender={canAnswer} notInBonusMaterial>
             <QuizForm
-                title="You have now measured enough points to estimate the value of B where half of the binding sites of A are occupied."
+                title="What is the binding affinity?"
                 formContent={formContent}
                 onSubmit={handleSubmit}
                 successMessage="A and B have a high affinity for one another."

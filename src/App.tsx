@@ -282,11 +282,6 @@ function App() {
             page === 4 && uniqMeasuredConcentrations.length > 0 && !isPlaying,
         () => setPage(5)
     );
-    usePageNumber(
-        page,
-        (page) => canDetermineEquilibrium && page === 7,
-        () => setPage(8)
-    );
 
     usePageNumber(
         page,
@@ -544,6 +539,14 @@ function App() {
                             <ContentPanel
                                 title={moduleNames[currentModule]}
                                 {...content[currentModule][page]}
+                                finishButton={
+                                    (canDetermineEquilibrium &&
+                                        page <
+                                            PAGE_NUMBER_3D_EXAMPLE[
+                                                currentModule
+                                            ]) ||
+                                    content[currentModule][page].finishButton
+                                }
                             />
                         }
                         reactionPanel={
@@ -569,6 +572,9 @@ function App() {
                         centerPanel={
                             <CenterPanel
                                 kd={simulationData.getKd(currentModule)}
+                                canDetermineEquilibrium={
+                                    canDetermineEquilibrium
+                                }
                             />
                         }
                         rightPanel={

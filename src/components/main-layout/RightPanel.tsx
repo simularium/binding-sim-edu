@@ -79,9 +79,8 @@ const RightPanel: React.FC<RightPanelProps> = ({
                     />
                 </HelpPopup>
             </VisibilityControl>
-
-            <VisibilityControl excludedPages={[0, 1, 2, 9]}>
-                <h3>Concentrations at equilibrium </h3>
+            <VisibilityControl excludedPages={[0, 1, 2]} notInBonusMaterial>
+                <h3>Equilibrium concentrations</h3>
                 <EquilibriumPlot
                     width={width}
                     height={plotHeight}
