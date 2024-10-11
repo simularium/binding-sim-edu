@@ -11,6 +11,7 @@ export interface ContentPanelProps {
     content: string | JSX.Element;
     title?: string;
     callToAction?: string | JSX.Element;
+    moreInfo?: string | JSX.Element;
     nextButton?: boolean;
     backButton?: boolean;
     finishButton?: boolean;
@@ -23,6 +24,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
     backButton,
     nextButton,
     finishButton,
+    moreInfo,
 }) => {
     const showButton = nextButton || finishButton;
     const { exampleTrajectoryPageNumber, page } = useContext(SimulariumContext);
@@ -37,6 +39,11 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
             <div className={styles.contentPanelText}>
                 <h3>{header}</h3>
                 <p>{content}</p>
+
+                {moreInfo && (
+                    <span className={styles.moreInfo}>{moreInfo}</span>
+                )}
+
                 {callToAction && (
                     <p className={styles.callToActionP}>
                         <PointerIcon /> <span>{callToAction}</span>
