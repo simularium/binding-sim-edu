@@ -37,6 +37,24 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
 }) => {
     const { maxConcentration } = useContext(SimulariumContext);
 
+    const hintOverlay = (
+        <div
+            style={{
+                position: "absolute",
+                width: 91,
+                fontSize: 11,
+                fontStyle: "italic",
+                textAlign: "center",
+                color: "#A0A0A0",
+                right: "50%",
+                top: "50%",
+                transform: "translate(50%, -50%)",
+            }}
+        >
+            Record point of equilibrium to plot a value
+        </div>
+    );
+
     const horizontalLine = {
         x: [0, kd * 2],
         y: [5, 5],
@@ -114,7 +132,12 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
     };
     return (
         <div className={plotStyles.plotContainer}>
-            <Plot data={trace} layout={layout} config={CONFIG} />
+            {x.length === 0 && hintOverlay}
+            <Plot
+                data={x.length ? trace : []}
+                layout={layout}
+                config={CONFIG}
+            />
         </div>
     );
 };
