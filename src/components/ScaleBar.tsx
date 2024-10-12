@@ -15,7 +15,7 @@ const ScaleBar: React.FC = () => {
         <div className={styles.container}>
             <div className={styles.labels}>
                 {labelArray.map((i) => (
-                    <div key={i} className={styles.label}>
+                    <div key={i}>
                         {i} {MICRO}M -{" "}
                     </div>
                 ))}
