@@ -55,7 +55,7 @@ const ViewSwitch: React.FC = () => {
 
     return (
         <div style={{ position: "relative", height: "100%" }}>
-            <VisibilityControl excludedPages={[9, 10, 11]}>
+            <VisibilityControl notInBonusMaterial>
                 <ProgressionControl onPage={1}>
                     <OverlayButton
                         onClick={switchView}
