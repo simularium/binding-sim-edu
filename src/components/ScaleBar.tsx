@@ -12,7 +12,7 @@ const ScaleBar: React.FC = () => {
         labelArray.push(i);
     }
     return (
-        <div className={styles.container}>
+        <div className={styles.container} role="img" aria-label={`Color key for the cuvette. The lowest concentration (white) is 0 ${MICRO}M and the highest concentration (yellow) is ${maxConcentration} ${MICRO}M.`}>
             <div className={styles.labels}>
                 {labelArray.map((i) => (
                     <div key={i}>
