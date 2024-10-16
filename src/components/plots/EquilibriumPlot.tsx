@@ -81,7 +81,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         hovertemplate: "Initial [A]",
         line: lineOptions,
     };
-    const trace = [
+    const traces = [
         horizontalLine,
         horizontalLineMax,
         {
@@ -89,14 +89,15 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
             y,
             type: "scatter" as const,
             mode: "lines+markers" as const,
-            name: "",
+            name: "collected data",
             marker: { color: colors },
             line: {
                 color: GRAY_COLOR,
                 shape: "spline" as const,
                 width: 1,
             },
-            hovertemplate: "[B]: <b>%{x:.1f}</b><br>[AB]: <b>%{y:.1f}</b>",
+            hovertemplate:
+                "[B]: <b>%{x:.1f}</b><br>[AB]: <b>%{y:.1f}</b><extra></extra>",
         },
     ];
 
@@ -130,7 +131,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         <div className={plotStyles.plotContainer}>
             {x.length === 0 && hintOverlay}
             <Plot
-                data={x.length ? trace : []}
+                data={x.length ? traces : []}
                 layout={layout}
                 config={CONFIG}
             />
