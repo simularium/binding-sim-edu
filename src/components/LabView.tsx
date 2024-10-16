@@ -5,6 +5,8 @@ import { SimulariumContext } from "../simulation/context";
 import Cuvette from "./icons/Cuvette";
 import styles from "./labview.module.css";
 import classNames from "classnames";
+import ScaleBar from "./ScaleBar";
+import VisibilityControl from "./shared/VisibilityControl";
 
 const LabView: React.FC = () => {
     const { currentProductionConcentration, maxConcentration, page } =
@@ -22,6 +24,9 @@ const LabView: React.FC = () => {
                 { [styles.top]: page === 1 },
             ])}
         >
+            <VisibilityControl excludedPages={[1]}>
+                <ScaleBar />
+            </VisibilityControl>
             <div className={styles.cuvette}>
                 <Cuvette color={colorGradient.colorAt(position)} />
             </div>
