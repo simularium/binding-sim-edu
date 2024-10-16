@@ -77,6 +77,12 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
                 ],
                 width: 1,
             },
+            hovertemplate:
+                "time: <b>%{x:.1f}</b><br>" +
+                "[AB]: <b>%{y:.1f}</b><br>" +
+                "Initial [B]: </b>" +
+                `<b>${inputConcentration.toString()} </b>` +
+                "<extra></extra>",
         };
     });
 
