@@ -6,9 +6,11 @@ import BackButton from "../shared/BackButton";
 
 import styles from "./layout.module.css";
 import { SimulariumContext } from "../../simulation/context";
+import { Section } from "../../types";
 
 export interface ContentPanelProps {
     content: string | JSX.Element;
+    section: Section;
     title?: string;
     callToAction?: string | JSX.Element;
     moreInfo?: string | JSX.Element;

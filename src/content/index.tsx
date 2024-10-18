@@ -1,18 +1,20 @@
 import { A, AB, B } from "../components/agent-symbols";
 import { ContentPanelProps } from "../components/main-layout/ContentPanel";
 import Definition from "../components/shared/Definition";
-import { Module } from "../types";
+import { Module, Section } from "../types";
 
 export const highAffinityContentArray: ContentPanelProps[] = [
     // making the content array 1 indexed to match the page numbers
     {
         content: "",
+        section: Section.Introduction,
     },
     {
         content:
             "Congratulations! You’ve just joined a biology lab. Your mentor has asked you to measure the strength of the binding interaction between two types of molecules. These molecules are too small to see, even under a microscope. But what if we could somehow see what the molecules in the tube are doing? What do you think you’d see?",
         callToAction:
             "Click or tap the animated button to switch your view to a molecular simulation.",
+        section: Section.Introduction,
     },
     {
         content: (
@@ -24,6 +26,41 @@ export const highAffinityContentArray: ContentPanelProps[] = [
             </>
         ),
         callToAction: "What happens to the molecules once you press play?",
+        section: Section.Introduction,
+    },
+    {
+        content: (
+            <>
+                As the simulation plays, the molecules move by a random walk.
+                Watch what happens when they bump into each other. What do you
+                think the "events over time" graph is showing?
+            </>
+        ),
+        callToAction:
+            "After you've observed the simulation, click the 'lab view' to see what the cuvette looks like now.",
+        section: Section.Introduction,
+    },
+    {
+        content: (
+            <>
+                The clear liquid is turning yellow as the simulation progresses.
+                Can you estimate the concentration of <AB />?
+            </>
+        ),
+        callToAction: "Click the 'molecular view' to switch back.",
+        section: Section.Introduction,
+    },
+    {
+        content: (
+            <>
+                Now we're going to use this simulation to make measurements.
+                We're going to increase the timestep so the experiments are
+                fast.
+            </>
+        ),
+        callToAction:
+            "Click the 'Start experiment' button to reset the simulation and begin by pressing play!",
+        section: Section.Introduction,
     },
     {
         content: (
@@ -37,6 +74,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         ),
         callToAction:
             "Watch the Concentration over time plot until you think the reaction has reached equilibrium. Then, press the “Record” button to record the equilibrium concentration.",
+        section: Section.Experiment,
     },
     {
         content:
@@ -44,6 +82,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         callToAction:
             "Test your knowledge and answer the question below before moving on.",
         nextButton: true,
+        section: Section.Experiment,
     },
     {
         content: (
@@ -60,6 +99,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 slider and play the simulation again.
             </>
         ),
+        section: Section.Experiment,
     },
     {
         content: (
@@ -80,6 +120,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 their equilibrium concentrations.
             </>
         ),
+        section: Section.Experiment,
     },
     {
         content: (
@@ -111,6 +152,14 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 equilibrium point until you have enough data.
             </>
         ),
+        section: Section.Experiment,
+    },
+    {
+        content:
+            "Congratulations, you’ve completed the High Affinity experiment!",
+        backButton: true,
+        nextButton: true,
+        section: Section.BonusContent,
     },
     {
         title: "Real-world example: Antibodies and antigens, high affinity binders",
@@ -126,6 +175,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
             </>
         ),
         nextButton: true,
+        section: Section.BonusContent,
     },
     {
         title: "Real-world example: Affinity is determined by intermolecular forces",
@@ -139,11 +189,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         ),
         backButton: true,
         finishButton: true,
-    },
-    {
-        content:
-            "Congratulations, you’ve completed the High Affinity portion of this learning module!",
-        backButton: true,
+        section: Section.BonusContent,
     },
 ];
 

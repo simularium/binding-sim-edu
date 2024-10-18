@@ -13,6 +13,12 @@ export const enum Module {
     A_B_C_AB_AC = 3,
 }
 
+export const enum Section {
+    Introduction = 1,
+    Experiment = 2,
+    BonusContent = 3,
+}
+
 export enum AgentFunction {
     Fixed = "Fixed",
     Adjustable = "Adjustable",
