@@ -6,17 +6,20 @@ import BackButton from "../shared/BackButton";
 
 import styles from "./layout.module.css";
 import { SimulariumContext } from "../../simulation/context";
-import { Section } from "../../types";
+import { Section, LayoutType } from "../../types";
 
 export interface ContentPanelProps {
     content: string | JSX.Element;
     section: Section;
+    layout: LayoutType;
+    visualContent?: JSX.Element;
     title?: string;
+    actionButton?: JSX.Element;
     callToAction?: string | JSX.Element;
     moreInfo?: string | JSX.Element;
     nextButton?: boolean;
     backButton?: boolean;
-    finishButton?: boolean;
+    nextButtonText?: string;
 }
 
 const ContentPanel: React.FC<ContentPanelProps> = ({
@@ -25,10 +28,11 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
     callToAction,
     backButton,
     nextButton,
-    finishButton,
+    nextButtonText,
     moreInfo,
+    actionButton,
 }) => {
-    const showButton = nextButton || finishButton;
+    const showButton = nextButton;
     const { exampleTrajectoryPageNumber, page } = useContext(SimulariumContext);
     let header;
     if (page < exampleTrajectoryPageNumber) {
@@ -45,16 +49,16 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
                 {moreInfo && (
                     <span className={styles.moreInfo}>{moreInfo}</span>
                 )}
-
                 {callToAction && (
                     <p className={styles.callToActionP}>
                         <PointerIcon /> <span>{callToAction}</span>
                     </p>
                 )}
+                {actionButton && actionButton}
             </div>
             <Flex gap={10}>
                 {backButton && <BackButton />}
-                {showButton && <NextButton isFinish={finishButton} />}
+                {showButton && <NextButton text={nextButtonText} />}
             </Flex>
         </>
     );

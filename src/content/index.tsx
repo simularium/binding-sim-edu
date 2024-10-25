@@ -1,13 +1,16 @@
+import FinalPage from "../components/FinalPage";
+import StartExperiment from "../components/StartExperiment";
 import { A, AB, B } from "../components/agent-symbols";
 import { ContentPanelProps } from "../components/main-layout/ContentPanel";
 import Definition from "../components/shared/Definition";
-import { Module, Section } from "../types";
+import { LayoutType, Module, Section } from "../types";
 
 export const highAffinityContentArray: ContentPanelProps[] = [
     // making the content array 1 indexed to match the page numbers
     {
         content: "",
         section: Section.Introduction,
+        layout: LayoutType.FullScreen,
     },
     {
         content:
@@ -15,6 +18,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         callToAction:
             "Click or tap the animated button to switch your view to a molecular simulation.",
         section: Section.Introduction,
+        layout: LayoutType.SimulationWindow,
     },
     {
         content: (
@@ -27,18 +31,20 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         ),
         callToAction: "What happens to the molecules once you press play?",
         section: Section.Introduction,
+        layout: LayoutType.SimulationWindow,
     },
     {
         content: (
             <>
                 As the simulation plays, the molecules move by a random walk.
                 Watch what happens when they bump into each other. What do you
-                think the "events over time" graph is showing?
+                think the "Reaction events over time" graph is showing?
             </>
         ),
         callToAction:
-            "After you've observed the simulation, click the 'lab view' to see what the cuvette looks like now.",
+            "After you've observed the simulation, click 'Lab view' to see what the cuvette looks like now.",
         section: Section.Introduction,
+        layout: LayoutType.SimulationWindow,
     },
     {
         content: (
@@ -47,8 +53,9 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 Can you estimate the concentration of <AB />?
             </>
         ),
-        callToAction: "Click the 'molecular view' to switch back.",
+        callToAction: "Click 'Molecular view' to switch back.",
         section: Section.Introduction,
+        layout: LayoutType.SimulationWindow,
     },
     {
         content: (
@@ -58,9 +65,23 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 fast.
             </>
         ),
+        actionButton: <StartExperiment />,
         callToAction:
             "Click the 'Start experiment' button to reset the simulation and begin by pressing play!",
         section: Section.Introduction,
+        layout: LayoutType.SimulationWindow,
+    },
+    {
+        content: (
+            <>
+                Now we're going to use this simulation to make measurements.
+                We're going to increase the timestep so the experiments are
+                fast.
+            </>
+        ),
+        callToAction: "Begin by pressing play!",
+        section: Section.Experiment,
+        layout: LayoutType.SimulationWindow,
     },
     {
         content: (
@@ -75,14 +96,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         callToAction:
             "Watch the Concentration over time plot until you think the reaction has reached equilibrium. Then, press the “Record” button to record the equilibrium concentration.",
         section: Section.Experiment,
-    },
-    {
-        content:
-            "The reaction reached equilibrium. What did you observe in the Concentration over time plot?",
-        callToAction:
-            "Test your knowledge and answer the question below before moving on.",
-        nextButton: true,
-        section: Section.Experiment,
+        layout: LayoutType.SimulationWindow,
     },
     {
         content: (
@@ -94,12 +108,13 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         ),
         callToAction: (
             <>
-                Pausing the simulation reveals an interactive slider. With the
-                simulation paused, adjust the concentration of <B /> with the
-                slider and play the simulation again.
+                If you haven’t already done so, pause the simulation and use the
+                now visible interactive slider under “Agent concentrations” to
+                adjust the concentration of B and play the simulation again.
             </>
         ),
         section: Section.Experiment,
+        layout: LayoutType.SimulationWindow,
     },
     {
         content: (
@@ -121,6 +136,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
             </>
         ),
         section: Section.Experiment,
+        layout: LayoutType.SimulationWindow,
     },
     {
         content: (
@@ -153,13 +169,16 @@ export const highAffinityContentArray: ContentPanelProps[] = [
             </>
         ),
         section: Section.Experiment,
+        layout: LayoutType.SimulationWindow,
     },
     {
         content:
             "Congratulations, you’ve completed the High Affinity experiment!",
         backButton: true,
         nextButton: true,
+        nextButtonText: "View examples",
         section: Section.BonusContent,
+        layout: LayoutType.FullScreen,
     },
     {
         title: "Real-world example: Antibodies and antigens, high affinity binders",
@@ -176,6 +195,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         ),
         nextButton: true,
         section: Section.BonusContent,
+        layout: LayoutType.SimulationWindow,
     },
     {
         title: "Real-world example: Affinity is determined by intermolecular forces",
@@ -188,8 +208,11 @@ export const highAffinityContentArray: ContentPanelProps[] = [
             </>
         ),
         backButton: true,
-        finishButton: true,
+        nextButton: true,
+        nextButtonText: "Finish",
+        visualContent: <FinalPage />,
         section: Section.BonusContent,
+        layout: LayoutType.WideScreen,
     },
 ];
 
@@ -200,7 +223,7 @@ export const moduleNames = {
 };
 
 export const PAGE_NUMBER_3D_EXAMPLE = {
-    [Module.A_B_AB]: 8,
+    [Module.A_B_AB]: 12,
     [Module.A_C_AC]: 9,
     [Module.A_B_C_AB_AC]: 9,
 };

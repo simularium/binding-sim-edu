@@ -8,11 +8,15 @@ import { IconButton } from "../shared/ButtonLibrary";
 const SuccessFeedback: React.FC<FeedbackProps> = ({
     title = "That's correct!",
     message,
+    resetForm,
 }) => {
     const [isVisible, setIsVisible] = React.useState(true);
     useEffect(() => {
         const timeout = setTimeout(() => {
             setIsVisible(false);
+            if (resetForm) {
+                resetForm();
+            }
         }, 3000);
         return () => {
             clearTimeout(timeout);

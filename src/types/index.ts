@@ -19,6 +19,12 @@ export const enum Section {
     BonusContent = 3,
 }
 
+export const enum LayoutType {
+    FullScreen = "full-screen",
+    WideScreen = "wide-screen",
+    SimulationWindow = "simulation-window",
+}
+
 export enum AgentFunction {
     Fixed = "Fixed",
     Adjustable = "Adjustable",

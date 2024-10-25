@@ -2,14 +2,12 @@ import React from "react";
 import ViewSwitch from "../ViewSwitch";
 import EquilibriumQuestion from "../quiz-questions/EquilibriumQuestion";
 import KdQuestion from "../quiz-questions/KdQuestion";
-import FinalPage from "../FinalPage";
-import VisibilityControl from "../shared/VisibilityControl";
-
 import styles from "./layout.module.css";
 
 interface CenterPanelProps {
     kd: number;
     canDetermineEquilibrium: boolean;
+    overlay?: JSX.Element;
 }
 
 export const CenterPanelContext = React.createContext<{
@@ -23,6 +21,7 @@ export const CenterPanelContext = React.createContext<{
 const CenterPanel: React.FC<CenterPanelProps> = ({
     kd,
     canDetermineEquilibrium,
+    overlay,
 }) => {
     const [lastOpened, setLastOpened] = React.useState<string | null>(null);
     return (
@@ -31,15 +30,10 @@ const CenterPanel: React.FC<CenterPanelProps> = ({
             <CenterPanelContext.Provider value={{ lastOpened, setLastOpened }}>
                 <div className={styles.questionContainer}>
                     <EquilibriumQuestion />
-                    <KdQuestion
-                        kd={kd}
-                        canAnswer={canDetermineEquilibrium}
-                    />
+                    <KdQuestion kd={kd} canAnswer={canDetermineEquilibrium} />
                 </div>
             </CenterPanelContext.Provider>
-            <VisibilityControl includedPages={[9]}>
-                <FinalPage />
-            </VisibilityControl>
+            {overlay && overlay}
         </>
     );
 };

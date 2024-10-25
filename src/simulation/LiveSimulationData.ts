@@ -62,7 +62,8 @@ export default class LiveSimulation implements ISimulationData {
         [ProductName.AB]: AgentFunction.Complex,
         [ProductName.AC]: AgentFunction.Complex,
     };
-    static DEFAULT_TIME_FACTOR: number = 85;
+    static INITIAL_TIME_FACTOR: number = 30;
+    static DEFAULT_TIME_FACTOR: number = 90;
     static AVAILABLE_AGENTS = {
         [AgentName.A]: agentA,
         [AgentName.B]: agentB,

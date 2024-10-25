@@ -16,6 +16,7 @@ import {
     Module,
     ProductName,
     ScatterTrace,
+    Section,
     TrajectoryStatus,
 } from "./types";
 import LeftPanel from "./components/main-layout/LeftPanel";
@@ -79,7 +80,7 @@ function App() {
                 LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
         });
     const [timeFactor, setTimeFactor] = useState(
-        LiveSimulationData.DEFAULT_TIME_FACTOR
+        LiveSimulationData.INITIAL_TIME_FACTOR
     );
     const [viewportSize, setViewportSize] = useState(DEFAULT_VIEWPORT_SIZE);
     /**
@@ -188,6 +189,7 @@ function App() {
         );
         setIsPlaying(false);
         clearAllAnalysisState();
+        setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
     };
 
     useEffect(() => {
@@ -247,7 +249,7 @@ function App() {
             1,
         [halfFilled, uniqMeasuredConcentrations]
     );
-    const canDetermineEquilibrium = useMemo(() => {
+    const canDetermineKd = useMemo(() => {
         return (
             hasAValueAboveKd &&
             hasAValueBelowKd &&
@@ -271,16 +273,10 @@ function App() {
 
     usePageNumber(
         page,
-        (page) => page === 5,
-        () => setIsPlaying(false)
-    );
-
-    // if they hit pause instead of clicking "Next", we still want to progress
-    usePageNumber(
-        page,
-        (page) =>
-            page === 4 && uniqMeasuredConcentrations.length > 0 && !isPlaying,
-        () => setPage(5)
+        (page) => page === 9 && uniqMeasuredConcentrations.length > 1,
+        () => {
+            setPage(page + 1);
+        }
     );
 
     usePageNumber(
@@ -329,13 +325,25 @@ function App() {
 
     // User input handlers
 
+    const handleStartExperiment = () => {
+        simulariumController.pause();
+        totalReset();
+        setTimeFactor(LiveSimulationData.DEFAULT_TIME_FACTOR);
+        setPage(page + 1);
+    };
+
     const handleTrajectoryChange = (trajectoryInfo: TrajectoryFileInfo) => {
         setTrajectoryName(trajectoryInfo.trajectoryTitle || "");
         if (trajectoryInfo.trajectoryTitle === LIVE_SIMULATION_NAME) {
             // 2d trajectory
             // switch to orthographic camera
             simulariumController.setCameraType(true);
-            setTimeFactor(LiveSimulationData.DEFAULT_TIME_FACTOR);
+            const { section } = content[currentModule][page];
+            if (section === Section.Experiment) {
+                setTimeFactor(LiveSimulationData.DEFAULT_TIME_FACTOR);
+            } else {
+                setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
+            }
             setFinalTime(-1);
         } else {
             // 3d trajectory
@@ -499,6 +507,10 @@ function App() {
             </>
         );
     };
+    const lastPageOfExperiment =
+        content[currentModule][page].section === Section.Experiment &&
+        content[currentModule][page + 1].section === Section.BonusContent;
+
     return (
         <>
             <div className="app">
@@ -510,6 +522,8 @@ function App() {
                             liveConcentration[productName] || 0,
                         maxConcentration:
                             simulationData.getMaxConcentration(currentModule),
+                        handleStartExperiment,
+                        section: content[currentModule][page].section,
                         getAgentColor: simulationData.getAgentColor,
                         exampleTrajectoryPageNumber:
                             PAGE_NUMBER_3D_EXAMPLE[currentModule],
@@ -528,6 +542,7 @@ function App() {
                     }}
                 >
                     <MainLayout
+                        layout={content[currentModule][page].layout}
                         header={
                             <NavPanel
                                 page={page}
@@ -539,13 +554,15 @@ function App() {
                             <ContentPanel
                                 title={moduleNames[currentModule]}
                                 {...content[currentModule][page]}
-                                finishButton={
-                                    (canDetermineEquilibrium &&
-                                        page <
-                                            PAGE_NUMBER_3D_EXAMPLE[
-                                                currentModule
-                                            ]) ||
-                                    content[currentModule][page].finishButton
+                                nextButton={
+                                    canDetermineKd ||
+                                    content[currentModule][page].nextButton
+                                }
+                                nextButtonText={
+                                    lastPageOfExperiment
+                                        ? "Finish"
+                                        : content[currentModule][page]
+                                              .nextButtonText
                                 }
                             />
                         }
@@ -572,8 +589,9 @@ function App() {
                         centerPanel={
                             <CenterPanel
                                 kd={simulationData.getKd(currentModule)}
-                                canDetermineEquilibrium={
-                                    canDetermineEquilibrium
+                                canDetermineEquilibrium={canDetermineKd}
+                                overlay={
+                                    content[currentModule][page].visualContent
                                 }
                             />
                         }
