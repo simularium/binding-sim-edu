@@ -309,6 +309,10 @@ function App() {
     );
 
     useEffect(() => {
+        const nextPage = content[currentModule][page + 1];
+        if (!nextPage) {
+            return;
+        }
         const url = content[currentModule][page + 1].trajectoryUrl;
         if (trajectoryStatus === TrajectoryStatus.INITIAL && url) {
             const changeTrajectory = async () => {
