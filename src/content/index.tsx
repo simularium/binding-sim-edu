@@ -3,9 +3,10 @@ import StartExperiment from "../components/StartExperiment";
 import { A, AB, B } from "../components/agent-symbols";
 import { ContentPanelProps } from "../components/main-layout/ContentPanel";
 import Definition from "../components/shared/Definition";
-import { LayoutType, Module, Section } from "../types";
+import { MICRO } from "../constants";
+import { LayoutType, Module, PageContent, Section } from "../types";
 
-export const highAffinityContentArray: ContentPanelProps[] = [
+export const highAffinityContentArray: PageContent[] = [
     // making the content array 1 indexed to match the page numbers
     {
         content: "",
@@ -49,8 +50,9 @@ export const highAffinityContentArray: ContentPanelProps[] = [
     {
         content: (
             <>
-                The clear liquid is turning yellow as the simulation progresses.
-                Can you estimate the concentration of <AB />?
+                The clear liquid is slowly turning yellow as the simulation
+                progresses. Can you estimate the concentration of <AB /> after
+                about 20 simulated {MICRO}seconds have elapsed?
             </>
         ),
         callToAction: "Click 'Molecular view' to switch back.",
@@ -58,6 +60,7 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         layout: LayoutType.SimulationWindow,
     },
     {
+        title: "Start the Experiment",
         content: (
             <>
                 Now we're going to use this simulation to make measurements.
@@ -79,7 +82,9 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 fast.
             </>
         ),
-        callToAction: "Begin by pressing play!",
+        actionButton: <StartExperiment />,
+        callToAction:
+            "Click the 'Start experiment' button to reset the simulation and begin by pressing play!",
         section: Section.Experiment,
         layout: LayoutType.SimulationWindow,
     },
@@ -196,6 +201,8 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         nextButton: true,
         section: Section.BonusContent,
         layout: LayoutType.SimulationWindow,
+        trajectoryUrl:
+            "https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/binding-affinity_antibodies.simularium",
     },
     {
         title: "Real-world example: Affinity is determined by intermolecular forces",
@@ -213,6 +220,12 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         visualContent: <FinalPage />,
         section: Section.BonusContent,
         layout: LayoutType.WideScreen,
+    },
+    {
+        title: "",
+        content: <>Next Up: Low affinity binding!</>,
+        section: Section.BonusContent,
+        layout: LayoutType.FullScreen,
     },
 ];
 

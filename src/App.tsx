@@ -263,6 +263,8 @@ function App() {
     // content[currentModule].length has one extra page for the 0th page so that
     // the page numbers line up with the index.
     const finalPageNumber = content[currentModule].length - 1;
+
+    // clicked the home button
     usePageNumber(
         page,
         (page) => page === 1 && currentProductConcentrationArray.length > 1,
@@ -271,35 +273,45 @@ function App() {
         }
     );
 
+    // they have recorded a single value, changed the slider and pressed play
     usePageNumber(
         page,
-        (page) => page === 9 && uniqMeasuredConcentrations.length > 1,
+        (page) =>
+            page === 8 &&
+            isPlaying &&
+            recordedInputConcentration.length > 0 &&
+            recordedInputConcentration[0] !==
+                inputConcentration[ADJUSTABLE_AGENT],
         () => {
             setPage(page + 1);
         }
     );
 
-    usePageNumber(
-        page,
-        (page) =>
-            page === PAGE_NUMBER_3D_EXAMPLE[currentModule] &&
-            trajectoryStatus == TrajectoryStatus.INITIAL,
-        async () => {
-            setIsPlaying(false);
-            setTrajectoryStatus(TrajectoryStatus.LOADING);
-            totalReset();
+    useEffect(() => {
+        const url = content[currentModule][page + 1].trajectoryUrl;
+        if (trajectoryStatus === TrajectoryStatus.INITIAL && url) {
+            const changeTrajectory = async () => {
+                setIsPlaying(false);
+                setTrajectoryStatus(TrajectoryStatus.LOADING);
+                totalReset();
 
-            await fetch3DTrajectory(
-                PreComputedSimulationData.EXAMPLE_TRAJECTORY_URLS[
-                    currentModule
-                ],
-                simulariumController,
-                setTrajectoryPlotData
-            );
-            setProductOverTimeTraces([]);
-            setTrajectoryStatus(TrajectoryStatus.LOADED);
+                await fetch3DTrajectory(
+                    url,
+                    simulariumController,
+                    setTrajectoryPlotData
+                );
+                setTrajectoryStatus(TrajectoryStatus.LOADED);
+            };
+            changeTrajectory();
         }
-    );
+    }, [
+        page,
+        trajectoryStatus,
+        currentModule,
+        simulariumController,
+        isPlaying,
+        totalReset,
+    ]);
 
     usePageNumber(
         page,
@@ -552,10 +564,12 @@ function App() {
                         }
                         content={
                             <ContentPanel
-                                title={moduleNames[currentModule]}
                                 {...content[currentModule][page]}
+                                currentModule={currentModule}
                                 nextButton={
-                                    canDetermineKd ||
+                                    (canDetermineKd &&
+                                        content[currentModule][page].section ===
+                                            Section.Experiment) ||
                                     content[currentModule][page].nextButton
                                 }
                                 nextButtonText={
@@ -626,6 +640,7 @@ function App() {
                         }
                     />
                     <AdminUI
+                        totalPages={finalPageNumber}
                         timeFactor={timeFactor}
                         setTimeFactor={setTimeFactor}
                     />

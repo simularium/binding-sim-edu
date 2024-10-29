@@ -71,7 +71,7 @@ const Concentration: React.FC<AgentProps> = ({
                             <Flex
                                 className={classNames(styles.concentration, {
                                     [glowStyle.hintHighlight]:
-                                        page === 5 &&
+                                        page === 8 &&
                                         adjustableAgent === agent &&
                                         !isPlaying,
                                 })}

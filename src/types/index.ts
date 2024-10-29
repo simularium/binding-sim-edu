@@ -13,7 +13,7 @@ export const enum Module {
     A_B_C_AB_AC = 3,
 }
 
-export const enum Section {
+export enum Section {
     Introduction = 1,
     Experiment = 2,
     BonusContent = 3,
@@ -67,6 +67,21 @@ export interface InputAgent {
     kOff?: number;
     count?: number;
     color: string;
+}
+
+export interface PageContent {
+    content: string | JSX.Element;
+    section: Section;
+    layout: LayoutType;
+    visualContent?: JSX.Element;
+    title?: string;
+    actionButton?: JSX.Element;
+    callToAction?: string | JSX.Element;
+    moreInfo?: string | JSX.Element;
+    nextButton?: boolean;
+    backButton?: boolean;
+    nextButtonText?: string;
+    trajectoryUrl?: string;
 }
 
 export interface ScatterTrace {

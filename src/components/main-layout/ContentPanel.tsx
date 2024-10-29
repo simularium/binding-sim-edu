@@ -6,20 +6,12 @@ import BackButton from "../shared/BackButton";
 
 import styles from "./layout.module.css";
 import { SimulariumContext } from "../../simulation/context";
-import { Section, LayoutType } from "../../types";
+import { Section, PageContent, Module } from "../../types";
+import useModule from "../../hooks/useModule";
+import { moduleNames } from "../../content";
 
-export interface ContentPanelProps {
-    content: string | JSX.Element;
-    section: Section;
-    layout: LayoutType;
-    visualContent?: JSX.Element;
-    title?: string;
-    actionButton?: JSX.Element;
-    callToAction?: string | JSX.Element;
-    moreInfo?: string | JSX.Element;
-    nextButton?: boolean;
-    backButton?: boolean;
-    nextButtonText?: string;
+export interface ContentPanelProps extends PageContent {
+    currentModule: Module;
 }
 
 const ContentPanel: React.FC<ContentPanelProps> = ({
@@ -31,12 +23,31 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
     nextButtonText,
     moreInfo,
     actionButton,
+    section,
+    currentModule,
 }) => {
     const showButton = nextButton;
-    const { exampleTrajectoryPageNumber, page } = useContext(SimulariumContext);
+    const { page } = useContext(SimulariumContext);
+
+    const { totalMainContentPages } = useModule(currentModule);
+    const moduleName = moduleNames[currentModule];
     let header;
-    if (page < exampleTrajectoryPageNumber) {
-        header = `${page} of ${exampleTrajectoryPageNumber - 1} - ${title}`;
+    const module = <span style={{ fontWeight: 300 }}>{moduleName}</span>;
+    if (section !== Section.BonusContent) {
+        const pageInfo = `${page} of ${totalMainContentPages}`;
+        if (title) {
+            header = (
+                <>
+                    {pageInfo} - {module} - {title}
+                </>
+            );
+        } else {
+            header = (
+                <>
+                    {pageInfo} - {module} - {Section[section]}
+                </>
+            );
+        }
     } else {
         header = title;
     }

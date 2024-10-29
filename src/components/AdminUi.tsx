@@ -7,11 +7,16 @@ import { SliderSingleProps } from "antd";
 import { zStacking } from "../constants/z-stacking";
 
 interface AdminUIProps {
+    totalPages: number;
     timeFactor: number;
     setTimeFactor: (value: number) => void;
 }
 
-const AdminUI: React.FC<AdminUIProps> = ({ timeFactor, setTimeFactor }) => {
+const AdminUI: React.FC<AdminUIProps> = ({
+    timeFactor,
+    setTimeFactor,
+    totalPages,
+}) => {
     const { page, setPage } = useContext(SimulariumContext);
     const [visible, setVisible] = React.useState<boolean>(false);
 
@@ -29,9 +34,8 @@ const AdminUI: React.FC<AdminUIProps> = ({ timeFactor, setTimeFactor }) => {
             window.removeEventListener("keydown", handleKeyDown);
         };
     }, [visible]);
-
     const pageMarks: SliderSingleProps["marks"] = {};
-    for (let i = 0; i <= 10; i++) {
+    for (let i = 0; i <= totalPages; i++) {
         pageMarks[i] = { label: i.toString() };
     }
     return (
@@ -51,7 +55,7 @@ const AdminUI: React.FC<AdminUIProps> = ({ timeFactor, setTimeFactor }) => {
                     <h4>Page number</h4>
                     <Slider
                         min={0}
-                        max={11}
+                        max={totalPages}
                         step={1}
                         initialValue={page}
                         onChange={(_, value): void => {
