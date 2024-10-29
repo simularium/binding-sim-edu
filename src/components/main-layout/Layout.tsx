@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext } from "react";
+import React, { ReactNode } from "react";
 import { Layout } from "antd";
 const { Header, Sider, Content } = Layout;
 
@@ -6,7 +6,6 @@ import VisibilityControl from "../shared/VisibilityControl";
 
 import styles from "./layout.module.css";
 import classNames from "classnames";
-import { SimulariumContext } from "../../simulation/context";
 import { LayoutType } from "../../types";
 interface MainLayoutProps {
     layout: LayoutType;
@@ -27,8 +26,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     centerPanel,
     reactionPanel,
 }) => {
-    const { page, exampleTrajectoryPageNumber } = useContext(SimulariumContext);
-
     return (
         <Layout>
             <Header className={styles.navBar}>{header}</Header>
@@ -57,7 +54,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                             styles.left,
                             {
                                 [styles.example]:
-                                    page === exampleTrajectoryPageNumber,
+                                    layout === LayoutType.PreComputedSimulation,
                             },
                         ])}
                         width={"25%"}
@@ -76,7 +73,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                             styles.right,
                             {
                                 [styles.example]:
-                                    page === exampleTrajectoryPageNumber,
+                                    layout === LayoutType.PreComputedSimulation,
                             },
                         ])}
                         width={"25%"}

@@ -19,7 +19,7 @@ export const highAffinityContentArray: PageContent[] = [
         callToAction:
             "Click or tap the animated button to switch your view to a molecular simulation.",
         section: Section.Introduction,
-        layout: LayoutType.SimulationWindow,
+        layout: LayoutType.LiveSimulation,
     },
     {
         content: (
@@ -32,7 +32,7 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         callToAction: "What happens to the molecules once you press play?",
         section: Section.Introduction,
-        layout: LayoutType.SimulationWindow,
+        layout: LayoutType.LiveSimulation,
     },
     {
         content: (
@@ -45,7 +45,7 @@ export const highAffinityContentArray: PageContent[] = [
         callToAction:
             "After you've observed the simulation, click 'Lab view' to see what the cuvette looks like now.",
         section: Section.Introduction,
-        layout: LayoutType.SimulationWindow,
+        layout: LayoutType.LiveSimulation,
     },
     {
         content: (
@@ -57,7 +57,7 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         callToAction: "Click 'Molecular view' to switch back.",
         section: Section.Introduction,
-        layout: LayoutType.SimulationWindow,
+        layout: LayoutType.LiveSimulation,
     },
     {
         title: "Start the Experiment",
@@ -72,7 +72,7 @@ export const highAffinityContentArray: PageContent[] = [
         callToAction:
             "Click the 'Start experiment' button to reset the simulation and begin by pressing play!",
         section: Section.Introduction,
-        layout: LayoutType.SimulationWindow,
+        layout: LayoutType.LiveSimulation,
     },
     {
         content: (
@@ -86,7 +86,7 @@ export const highAffinityContentArray: PageContent[] = [
         callToAction:
             "Click the 'Start experiment' button to reset the simulation and begin by pressing play!",
         section: Section.Experiment,
-        layout: LayoutType.SimulationWindow,
+        layout: LayoutType.LiveSimulation,
     },
     {
         content: (
@@ -101,7 +101,7 @@ export const highAffinityContentArray: PageContent[] = [
         callToAction:
             "Watch the Concentration over time plot until you think the reaction has reached equilibrium. Then, press the “Record” button to record the equilibrium concentration.",
         section: Section.Experiment,
-        layout: LayoutType.SimulationWindow,
+        layout: LayoutType.LiveSimulation,
     },
     {
         content: (
@@ -119,7 +119,7 @@ export const highAffinityContentArray: PageContent[] = [
             </>
         ),
         section: Section.Experiment,
-        layout: LayoutType.SimulationWindow,
+        layout: LayoutType.LiveSimulation,
     },
     {
         content: (
@@ -141,7 +141,7 @@ export const highAffinityContentArray: PageContent[] = [
             </>
         ),
         section: Section.Experiment,
-        layout: LayoutType.SimulationWindow,
+        layout: LayoutType.LiveSimulation,
     },
     {
         content: (
@@ -174,7 +174,7 @@ export const highAffinityContentArray: PageContent[] = [
             </>
         ),
         section: Section.Experiment,
-        layout: LayoutType.SimulationWindow,
+        layout: LayoutType.LiveSimulation,
     },
     {
         content:
@@ -200,7 +200,7 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         nextButton: true,
         section: Section.BonusContent,
-        layout: LayoutType.SimulationWindow,
+        layout: LayoutType.PreComputedSimulation,
         trajectoryUrl:
             "https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/binding-affinity_antibodies.simularium",
     },
@@ -233,12 +233,6 @@ export const moduleNames = {
     [Module.A_B_AB]: "High Affinity",
     [Module.A_C_AC]: "Low Affinity",
     [Module.A_B_C_AB_AC]: "Competitive Binding",
-};
-
-export const PAGE_NUMBER_3D_EXAMPLE = {
-    [Module.A_B_AB]: 12,
-    [Module.A_C_AC]: 9,
-    [Module.A_B_C_AB_AC]: 9,
 };
 
 export default {

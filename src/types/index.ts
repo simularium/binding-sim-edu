@@ -22,7 +22,8 @@ export enum Section {
 export const enum LayoutType {
     FullScreen = "full-screen",
     WideScreen = "wide-screen",
-    SimulationWindow = "simulation-window",
+    LiveSimulation = "live-simulation-window",
+    PreComputedSimulation = "pre-computed-simulation",
 }
 
 export enum AgentFunction {
