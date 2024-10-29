@@ -32,10 +32,11 @@ const useModule = (currentModule: Module) => {
     }, [currentModule, totalBonusPages, totalPages]);
 
     return {
-        totalPages,
-        totalBonusPages,
-        totalMainContentPages,
-        exampleTrajectoryPageNumber,
+        totalPages: moduleInfo.current.totalPages,
+        totalBonusPages: moduleInfo.current.totalBonusPages,
+        totalMainContentPages: moduleInfo.current.totalMainContentPages,
+        exampleTrajectoryPageNumber:
+            moduleInfo.current.exampleTrajectoryPageNumber,
     };
 };
 

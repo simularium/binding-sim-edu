@@ -313,7 +313,7 @@ function App() {
         if (!nextPage) {
             return;
         }
-        const url = content[currentModule][page + 1].trajectoryUrl;
+        const url = nextPage.trajectoryUrl;
         if (trajectoryStatus === TrajectoryStatus.INITIAL && url) {
             const changeTrajectory = async () => {
                 setIsPlaying(false);
