@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { uniq } from "lodash";
 import {
     SimulariumController,
@@ -43,6 +43,7 @@ import PreComputedPlotData from "./simulation/PreComputedPlotData";
 import PreComputedSimulationData from "./simulation/PreComputedSimulationData";
 import LiveSimulationData from "./simulation/LiveSimulationData";
 import { PLOT_COLORS } from "./components/plots/constants";
+import useModule from "./hooks/useModule";
 
 const ADJUSTABLE_AGENT = AgentName.B;
 
@@ -132,14 +133,14 @@ function App() {
         setCurrentProductConcentrationArray([]);
     };
 
-    const clearAllAnalysisState = () => {
+    const clearAllAnalysisState = useCallback(() => {
         resetCurrentRunAnalysisState();
         setRecordedInputConcentration([]);
         setProductOverTimeTraces([]);
         setRecordedReactantConcentration([]);
         setTimeToReachEquilibrium([]);
         setDataColors([]);
-    };
+    }, []);
 
     // SIMULATION INITIALIZATION
     const simulariumController = useMemo(() => {
@@ -167,30 +168,6 @@ function App() {
         }
         return new PreComputedPlotData(trajectoryPlotData);
     }, [trajectoryPlotData]);
-
-    const totalReset = () => {
-        setLiveConcentration({
-            [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
-            [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
-            [productName]: 0,
-        });
-        setCurrentModule(Module.A_B_AB);
-        setInputConcentration({
-            [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
-            [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
-        });
-        handleNewInputConcentration(
-            ADJUSTABLE_AGENT,
-            LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B]
-        );
-        setIsPlaying(false);
-        clearAllAnalysisState();
-        setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
-    };
 
     useEffect(() => {
         if (!clientSimulator) {
@@ -256,7 +233,51 @@ function App() {
             uniqMeasuredConcentrations.length >= 3
         );
     }, [hasAValueAboveKd, hasAValueBelowKd, uniqMeasuredConcentrations]);
-
+    const handleNewInputConcentration = useCallback(
+        (name: string, value: number) => {
+            if (value === 0) {
+                // this is available on the slider, but we only want it visible
+                // as an axis marker, not as a selection
+                return;
+            }
+            if (!clientSimulator) {
+                return;
+            }
+            // this is called when the user changes the slider
+            // it updates the simulation to have the new value and clears
+            // the collected data
+            const agentName =
+                name as keyof typeof LiveSimulationData.AVAILABLE_AGENTS;
+            const agentId = LiveSimulationData.AVAILABLE_AGENTS[agentName].id;
+            clientSimulator.changeConcentration(agentId, value);
+            simulariumController.gotoTime(time + 1);
+            resetCurrentRunAnalysisState();
+        },
+        [clientSimulator, time, simulariumController]
+    );
+    const totalReset = useCallback(() => {
+        setLiveConcentration({
+            [AgentName.A]:
+                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
+            [AgentName.B]:
+                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
+            [productName]: 0,
+        });
+        setCurrentModule(Module.A_B_AB);
+        setInputConcentration({
+            [AgentName.A]:
+                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
+            [AgentName.B]:
+                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
+        });
+        handleNewInputConcentration(
+            ADJUSTABLE_AGENT,
+            LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B]
+        );
+        setIsPlaying(false);
+        clearAllAnalysisState();
+        setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
+    }, [clearAllAnalysisState, handleNewInputConcentration, productName]);
     // Special events in page navigation
     // usePageNumber takes a page number, a conditional and a callback
 
@@ -430,26 +451,6 @@ function App() {
         });
     };
 
-    const handleNewInputConcentration = (name: string, value: number) => {
-        if (value === 0) {
-            // this is available on the slider, but we only want it visible
-            // as an axis marker, not as a selection
-            return;
-        }
-        if (!clientSimulator) {
-            return;
-        }
-        // this is called when the user changes the slider
-        // it updates the simulation to have the new value and clears
-        // the collected data
-        const agentName =
-            name as keyof typeof LiveSimulationData.AVAILABLE_AGENTS;
-        const agentId = LiveSimulationData.AVAILABLE_AGENTS[agentName].id;
-        clientSimulator.changeConcentration(agentId, value);
-        simulariumController.gotoTime(time + 1);
-        resetCurrentRunAnalysisState();
-    };
-
     const setEquilibriumFeedbackTimeout = (message: ReactNode | string) => {
         setEquilibriumFeedback(message);
         setTimeout(() => {
@@ -519,9 +520,9 @@ function App() {
             </>
         );
     };
-    const lastPageOfExperiment =
-        content[currentModule][page].section === Section.Experiment &&
-        content[currentModule][page + 1].section === Section.BonusContent;
+
+    const { totalMainContentPages } = useModule(currentModule);
+    const lastPageOfExperiment = page === totalMainContentPages;
 
     return (
         <>
