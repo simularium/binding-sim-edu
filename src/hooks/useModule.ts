@@ -4,7 +4,7 @@ import { Module, Section } from "../types";
 
 const useModule = (currentModule: Module) => {
     const contentData = content[currentModule];
-    const totalPages = contentData.length;
+    const totalPages = contentData.length - 1;
     const totalBonusPages = contentData.filter(
         (page) => page.section === Section.BonusContent
     ).length;
@@ -21,7 +21,7 @@ const useModule = (currentModule: Module) => {
 
     useEffect(() => {
         const contentData = content[currentModule];
-        moduleInfo.current.totalPages = contentData.length;
+        moduleInfo.current.totalPages = contentData.length - 1;
         moduleInfo.current.totalBonusPages = contentData.filter(
             (page) => page.section === Section.BonusContent
         ).length;
