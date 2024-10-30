@@ -77,7 +77,7 @@ export const highAffinityContentArray: PageContent[] = [
     {
         content: (
             <>
-                Now we're going to use this simulation to make measurements.
+                Now, let's use this simulation to make measurements.
                 We're going to increase the timestep so the experiments are
                 fast.
             </>
