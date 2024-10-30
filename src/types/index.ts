@@ -85,6 +85,14 @@ export interface PageContent {
     trajectoryUrl?: string;
 }
 
+export enum UiElement {
+    Concentration = "Concentration",
+    EventsOverTimePlot = "EventsOverTimePlot",
+    ConcentrationOverTimePlot = "ConcentrationOverTimePlot",
+    EquilibriumPlot = "EquilibriumPlot",
+    ReactionDisplay = "ReactionDisplay",
+}
+
 export interface ScatterTrace {
     x: number[];
     y: number[];
