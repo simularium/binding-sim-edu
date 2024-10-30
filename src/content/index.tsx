@@ -114,7 +114,7 @@ export const highAffinityContentArray: PageContent[] = [
         callToAction: (
             <>
                 If you haven’t already done so, pause the simulation and use the
-                now visible interactive slider under “Agent concentrations” to
+                now-visible interactive slider under “Agent concentrations” to
                 adjust the concentration of B and play the simulation again.
             </>
         ),
