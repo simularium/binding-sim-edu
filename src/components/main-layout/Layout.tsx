@@ -33,7 +33,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 className={classNames([
                     styles.contentPanel,
                     {
-                        [styles.finalPage]: layout === LayoutType.FullScreen,
+                        [styles.finalPage]:
+                            layout === LayoutType.FullScreenOverlay,
                     },
                 ])}
             >
@@ -46,7 +47,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
             </VisibilityControl>
             <Layout>
                 <VisibilityControl
-                    conditionalRender={layout !== LayoutType.WideScreen}
+                    conditionalRender={layout !== LayoutType.NoSidePanels}
                 >
                     <Sider
                         className={classNames([
@@ -65,7 +66,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
 
                 <Content className={styles.centerPanel}>{centerPanel}</Content>
                 <VisibilityControl
-                    conditionalRender={layout !== LayoutType.WideScreen}
+                    conditionalRender={layout !== LayoutType.NoSidePanels}
                 >
                     <Sider
                         className={classNames([

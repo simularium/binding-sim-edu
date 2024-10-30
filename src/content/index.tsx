@@ -11,7 +11,7 @@ export const highAffinityContentArray: PageContent[] = [
     {
         content: "",
         section: Section.Introduction,
-        layout: LayoutType.FullScreen,
+        layout: LayoutType.FullScreenOverlay,
     },
     {
         content:
@@ -77,9 +77,8 @@ export const highAffinityContentArray: PageContent[] = [
     {
         content: (
             <>
-                Now, let's use this simulation to make measurements.
-                We're going to increase the timestep so the experiments are
-                fast.
+                Now, let's use this simulation to make measurements. We're going
+                to increase the timestep so the experiments are fast.
             </>
         ),
         actionButton: <StartExperiment />,
@@ -183,7 +182,7 @@ export const highAffinityContentArray: PageContent[] = [
         nextButton: true,
         nextButtonText: "View examples",
         section: Section.BonusContent,
-        layout: LayoutType.FullScreen,
+        layout: LayoutType.FullScreenOverlay,
     },
     {
         title: "Real-world example: Antibodies and antigens, high affinity binders",
@@ -219,13 +218,13 @@ export const highAffinityContentArray: PageContent[] = [
         nextButtonText: "Finish",
         visualContent: <FinalPage />,
         section: Section.BonusContent,
-        layout: LayoutType.WideScreen,
+        layout: LayoutType.NoSidePanels,
     },
     {
         title: "",
         content: <>Next Up: Low affinity binding!</>,
         section: Section.BonusContent,
-        layout: LayoutType.FullScreen,
+        layout: LayoutType.FullScreenOverlay,
     },
 ];
 
