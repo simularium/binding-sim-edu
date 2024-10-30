@@ -1,35 +1,31 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import content from "../content";
 import { Module, Section } from "../types";
 
 const useModule = (currentModule: Module) => {
-    const contentData = content[currentModule];
-    const totalPages = contentData.length - 1;
-    const totalBonusPages = contentData.filter(
-        (page) => page.section === Section.BonusContent
-    ).length;
-    const totalMainContentPages = totalPages - totalBonusPages;
-    const exampleTrajectoryPageNumber = contentData.findIndex(
-        (page) => page.trajectoryUrl !== undefined
-    );
     const moduleInfo = useRef({
-        totalPages,
-        totalBonusPages,
-        totalMainContentPages,
-        exampleTrajectoryPageNumber,
+        totalPages: 0,
+        totalBonusPages: 0,
+        totalMainContentPages: 0,
+        exampleTrajectoryPageNumber: -1,
     });
 
-    useEffect(() => {
+    const updateModuleInfo = useCallback(() => {
         const contentData = content[currentModule];
         moduleInfo.current.totalPages = contentData.length - 1;
         moduleInfo.current.totalBonusPages = contentData.filter(
             (page) => page.section === Section.BonusContent
         ).length;
-        moduleInfo.current.totalMainContentPages = totalPages - totalBonusPages;
+        moduleInfo.current.totalMainContentPages =
+            moduleInfo.current.totalPages - moduleInfo.current.totalBonusPages;
         moduleInfo.current.exampleTrajectoryPageNumber = contentData.findIndex(
             (page) => page.trajectoryUrl !== undefined
         );
-    }, [currentModule, totalBonusPages, totalPages]);
+    }, [currentModule]);
+
+    useEffect(() => {
+        updateModuleInfo();
+    }, [updateModuleInfo]);
 
     return {
         totalPages: moduleInfo.current.totalPages,
