@@ -34,6 +34,10 @@ const Concentration: React.FC<AgentProps> = ({
     const { isPlaying, maxConcentration, page, getAgentColor } =
         useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
+
+    const MARGINS = 64.2;
+    // on super small screens this can result in a negative number
+    const widthMinusMargins = Math.max(width - MARGINS, 0);
     const getComponent = (
         agent: AgentName,
         currentConcentrationOfAgent: number
@@ -51,12 +55,29 @@ const Concentration: React.FC<AgentProps> = ({
                 />
             );
         } else {
+            let percentage;
+            const startingConcentration = concentration[agent];
+            if (startingConcentration !== undefined) {
+                percentage =
+                    (startingConcentration / maxConcentration) *
+                    widthMinusMargins;
+            }
             return (
-                <LiveConcentrationDisplay
-                    width={width}
-                    agent={agent}
-                    concentration={currentConcentrationOfAgent}
-                />
+                <>
+                    {percentage && (
+                        <div
+                            className={styles.concentrationMarker}
+                            style={{
+                                left: percentage,
+                            }}
+                        />
+                    )}
+                    <LiveConcentrationDisplay
+                        width={widthMinusMargins}
+                        agent={agent}
+                        concentration={currentConcentrationOfAgent}
+                    />
+                </>
             );
         }
     };
