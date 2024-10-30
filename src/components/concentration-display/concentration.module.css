@@ -48,3 +48,8 @@
     border-right: 5px solid transparent;
     border-top: 9px solid var(--primary-color);
 }
+
+.concentration-label {
+    left: 18px;
+    top: 19px;
+}

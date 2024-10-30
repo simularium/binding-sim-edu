@@ -15,6 +15,7 @@ import { MICRO } from "../../constants";
 import ResizeContainer from "../shared/ResizeContainer";
 import glowStyle from "../shared/progression-control.module.css";
 import styles from "./concentration.module.css";
+import numberStyles from "./concentration-slider.module.css";
 
 interface AgentProps {
     adjustableAgent: AgentName;
@@ -62,6 +63,16 @@ const Concentration: React.FC<AgentProps> = ({
                     (startingConcentration / maxConcentration) *
                     widthMinusMargins;
             }
+            const numberLabel = (
+                <div
+                    className={classNames([
+                        numberStyles.numberLabel,
+                        styles.concentrationLabel,
+                    ])}
+                >
+                    {concentration[agent]}
+                </div>
+            );
             return (
                 <>
                     {percentage && (
@@ -70,7 +81,11 @@ const Concentration: React.FC<AgentProps> = ({
                             style={{
                                 left: percentage,
                             }}
-                        />
+                        >
+                            {agent === adjustableAgent &&
+                                concentration[agent] !== maxConcentration &&
+                                numberLabel}
+                        </div>
                     )}
                     <LiveConcentrationDisplay
                         width={widthMinusMargins}
