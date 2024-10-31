@@ -109,7 +109,12 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         return null;
     }
 
-    const hintOverlay = <>Play, scroll or click + drag to interact</>;
+    const hintOverlay = (
+        <div className={styles.hintOverlay}>
+            Play, scroll or click + drag to interact
+        </div>
+    );
+
     const showHintOverlay =
         !userHasInteracted && trajectoryName !== LIVE_SIMULATION_NAME;
     return (
@@ -120,9 +125,7 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
             key="viewer"
             ref={container}
         >
-            {showHintOverlay && (
-                <div className={styles.hintOverlay}>{hintOverlay}</div>
-            )}
+            {showHintOverlay && hintOverlay}
             <SimulariumViewer
                 lockedCamera={trajectoryName === LIVE_SIMULATION_NAME}
                 disableCache={trajectoryName === LIVE_SIMULATION_NAME}
