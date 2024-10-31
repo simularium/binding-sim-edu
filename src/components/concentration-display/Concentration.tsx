@@ -44,7 +44,11 @@ const Concentration: React.FC<AgentProps> = ({
         HighlightState.Initial
     );
 
-    if (page === 8 && !isPlaying && highlightState === HighlightState.Initial) {
+    if (
+        page === PROMPT_TO_ADJUST_B &&
+        !isPlaying &&
+        highlightState === HighlightState.Initial
+    ) {
         setHighlightState(HighlightState.Show);
     }
 
