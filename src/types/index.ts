@@ -20,8 +20,8 @@ export enum Section {
 }
 
 export const enum LayoutType {
-    FullScreen = "full-screen",
-    WideScreen = "wide-screen",
+    FullScreenOverlay = "full-screen",
+    NoSidePanels = "no-side-panels",
     LiveSimulation = "live-simulation-window",
     PreComputedSimulation = "pre-computed-simulation",
 }
