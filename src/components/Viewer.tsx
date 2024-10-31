@@ -31,6 +31,11 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         appliedColors: [],
     });
     const [heightResized, setHeightResized] = useState(false);
+    const [userHasInteracted, setUserHasInteracted] = useState(false);
+    const [firstMousePosition, setFirstMousePosition] = useState({
+        x: 0,
+        y: 0,
+    });
     const container = useRef<HTMLDivElement>(null);
     const {
         viewportSize,
@@ -54,6 +59,15 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         setViewportToContainerSize();
     }, [setViewportToContainerSize]);
 
+    useEffect(() => {
+        if (userHasInteracted) {
+            const el = container.current;
+            el?.removeEventListener("mousedown", () => {});
+            el?.removeEventListener("mouseup", () => {});
+            el?.removeEventListener("wheel", () => {});
+        }
+    }, [userHasInteracted]);
+
     // resize on container change
     useEffect(() => {
         setTimeout(() => {
@@ -69,10 +83,35 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         }
     }, [page, setViewportToContainerSize, heightResized, trajectoryName]);
 
+    useEffect(() => {
+        const el = container.current;
+        el?.addEventListener("mousedown", (event) => {
+            if (!userHasInteracted) {
+                setFirstMousePosition({
+                    x: event.clientX,
+                    y: event.clientY,
+                });
+            }
+        });
+        container.current?.addEventListener("mouseup", (event) => {
+            if (
+                firstMousePosition.x !== event.clientX &&
+                firstMousePosition.y !== event.clientY
+            ) {
+                setUserHasInteracted(true);
+            }
+        });
+
+        el?.addEventListener("wheel", () => setUserHasInteracted(true));
+    }, []);
+
     if (!simulariumController) {
         return null;
     }
 
+    const hintOverlay = <>Play, scroll or click + drag to interact</>;
+    const showHintOverlay =
+        !userHasInteracted && trajectoryName !== LIVE_SIMULATION_NAME;
     return (
         <div
             className={classNames([styles.container], {
@@ -81,6 +120,9 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
             key="viewer"
             ref={container}
         >
+            {showHintOverlay && (
+                <div className={styles.hintOverlay}>{hintOverlay}</div>
+            )}
             <SimulariumViewer
                 lockedCamera={trajectoryName === LIVE_SIMULATION_NAME}
                 disableCache={trajectoryName === LIVE_SIMULATION_NAME}
