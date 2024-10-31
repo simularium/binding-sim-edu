@@ -33,17 +33,22 @@ const QuizForm: React.FC<QuizFormProps> = ({
     resetForm,
 }) => {
     const { lastOpened, setLastOpened } = React.useContext(CenterPanelContext);
-    const isFormVisible = lastOpened === id;
+    const [show, setShow] = React.useState(false);
+
+    const isFormMaximized = lastOpened === id;
     const minimizedTitle = `Q:${id}`;
 
     // open form on mount
     useEffect(() => {
         setLastOpened(id);
+        setTimeout(() => {
+            setShow(true);
+        }, 1000);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const toggleFormVisibility = () => {
-        if (!isFormVisible) {
+        if (!isFormMaximized) {
             setLastOpened(id);
         } else {
             setLastOpened(null);
@@ -58,17 +63,19 @@ const QuizForm: React.FC<QuizFormProps> = ({
     ) : (
         <div
             className={classNames(styles.container, {
-                [styles.collapsed]: !isFormVisible,
+                [styles.collapsed]: !isFormMaximized,
+                [styles.inView]: show,
+                [styles.belowView]: !show,
             })}
         >
             <div className={styles.header}>
                 <h3 className={styles.title}>
-                    {isFormVisible ? title : minimizedTitle}
+                    {isFormMaximized ? title : minimizedTitle}
                 </h3>
                 <IconButton
                     onClick={toggleFormVisibility}
                     icon={
-                        isFormVisible ? (
+                        isFormMaximized ? (
                             <DownOutlined style={{ color: BG_DARK }} />
                         ) : (
                             <UpOutlined style={{ color: BG_DARK }} />
@@ -76,7 +83,7 @@ const QuizForm: React.FC<QuizFormProps> = ({
                     }
                 />
             </div>
-            {isFormVisible && (
+            {isFormMaximized && (
                 <>
                     {formContent}
                     {formState === FormState.Incorrect && (

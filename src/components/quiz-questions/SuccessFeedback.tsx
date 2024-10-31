@@ -4,6 +4,7 @@ import { CheckCircleOutlined, CloseOutlined } from "@ant-design/icons";
 import { FeedbackProps } from "./types";
 import styles from "./popup.module.css";
 import { IconButton } from "../shared/ButtonLibrary";
+import classNames from "classnames";
 
 const SuccessFeedback: React.FC<FeedbackProps> = ({
     title = "That's correct!",
@@ -17,27 +18,32 @@ const SuccessFeedback: React.FC<FeedbackProps> = ({
             if (resetForm) {
                 resetForm();
             }
-        }, 3000);
+        }, 6000);
         return () => {
             clearTimeout(timeout);
         };
-    }, []);
-
+    }, [resetForm]);
     return (
-        isVisible && (
-            <div className={styles.container}>
-                <div className={styles.header}>
-                    <h2 className={styles.title}>
-                        {title} <CheckCircleOutlined />
-                    </h2>
-                    <IconButton
-                        onClick={() => setIsVisible(false)}
-                        icon={<CloseOutlined />}
-                    />
-                </div>
-                <p>{message}</p>
+        <div
+            className={classNames([
+                styles.container,
+                {
+                    [styles.inView]: isVisible,
+                    [styles.belowView]: !isVisible,
+                },
+            ])}
+        >
+            <div className={styles.header}>
+                <h2 className={styles.title}>
+                    {title} <CheckCircleOutlined />
+                </h2>
+                <IconButton
+                    onClick={() => setIsVisible(false)}
+                    icon={<CloseOutlined />}
+                />
             </div>
-        )
+            <p>{message}</p>
+        </div>
     );
 };
 

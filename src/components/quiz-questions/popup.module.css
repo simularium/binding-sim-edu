@@ -2,13 +2,25 @@
     background-color: var(--popup-background-color);
     color: var(--popup-text-color);
     max-width: 332px;
+    min-width: 320px;
     padding: 16px;
     border-radius: 4px 4px 0 0;
     z-index: var(--viewer-overlay-layer);
+    position: absolute;
+    transition: bottom 0.5s ease-in-out;
+}
+
+.below-view {
+    bottom: -400px;
+}
+
+.in-view {
+    bottom: 0;
 }
 
 .container.collapsed {
     width: 160px;
+    min-width: 0;
     height: min-content;
 }
 
