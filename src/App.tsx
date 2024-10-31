@@ -24,7 +24,11 @@ import RightPanel from "./components/main-layout/RightPanel";
 import ReactionDisplay from "./components/main-layout/ReactionDisplay";
 import ContentPanel from "./components/main-layout/ContentPanel";
 import content, { moduleNames } from "./content";
-import { DEFAULT_VIEWPORT_SIZE, LIVE_SIMULATION_NAME } from "./constants";
+import {
+    PROMPT_TO_ADJUST_B,
+    DEFAULT_VIEWPORT_SIZE,
+    LIVE_SIMULATION_NAME,
+} from "./constants";
 import CenterPanel from "./components/main-layout/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
 import NavPanel from "./components/main-layout/NavPanel";
@@ -298,7 +302,7 @@ function App() {
     usePageNumber(
         page,
         (page) =>
-            page === 8 &&
+            page === PROMPT_TO_ADJUST_B &&
             isPlaying &&
             recordedInputConcentration.length > 0 &&
             recordedInputConcentration[0] !==
