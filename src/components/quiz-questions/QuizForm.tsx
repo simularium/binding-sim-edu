@@ -19,6 +19,7 @@ interface QuizFormProps {
     successMessage: string;
     failureMessage: string;
     id: string;
+    resetForm: () => void;
 }
 
 const QuizForm: React.FC<QuizFormProps> = ({
@@ -29,6 +30,7 @@ const QuizForm: React.FC<QuizFormProps> = ({
     formState,
     successMessage,
     failureMessage,
+    resetForm,
 }) => {
     const { lastOpened, setLastOpened } = React.useContext(CenterPanelContext);
     const isFormVisible = lastOpened === id;
@@ -47,9 +49,12 @@ const QuizForm: React.FC<QuizFormProps> = ({
             setLastOpened(null);
         }
     };
+    if (formState === FormState.Finished) {
+        return null;
+    }
 
     return formState === FormState.Correct ? (
-        <SuccessFeedback message={successMessage} />
+        <SuccessFeedback message={successMessage} resetForm={resetForm} />
     ) : (
         <div
             className={classNames(styles.container, {
@@ -75,7 +80,10 @@ const QuizForm: React.FC<QuizFormProps> = ({
                 <>
                     {formContent}
                     {formState === FormState.Incorrect && (
-                        <FailureFeedback message={failureMessage} />
+                        <FailureFeedback
+                            message={failureMessage}
+                            resetForm={resetForm}
+                        />
                     )}
                     <TertiaryButton
                         onClick={onSubmit}

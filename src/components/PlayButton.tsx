@@ -16,8 +16,8 @@ const PlayButton: React.FC = () => {
     const iconStyle = { fontSize: 26 };
 
     return (
-        <VisibilityControl excludedPages={[1, 10, 11]}>
-            <ProgressionControl onPage={[2, 5]}>
+        <VisibilityControl excludedPages={[1]}>
+            <ProgressionControl onPage={[2, 6]}>
                 <OverlayButton
                     onClick={handleClick}
                     style={{ top: 14, left: 16 }}

@@ -59,7 +59,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
             setHeight={setHeight}
             style={{ height: "100%" }}
         >
-            <VisibilityControl excludedPages={[0, 1, 2]}>
+            <VisibilityControl notInIntroduction>
                 <h3>
                     Concentration over time for <AB name={productName} />
                 </h3>
@@ -79,7 +79,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
                     />
                 </HelpPopup>
             </VisibilityControl>
-            <VisibilityControl excludedPages={[0, 1, 2]} notInBonusMaterial>
+            <VisibilityControl notInIntroduction notInBonusMaterial>
                 <h3>Equilibrium concentrations</h3>
                 <EquilibriumPlot
                     width={width}

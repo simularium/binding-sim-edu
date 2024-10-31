@@ -6,15 +6,12 @@ import BackButton from "../shared/BackButton";
 
 import styles from "./layout.module.css";
 import { SimulariumContext } from "../../simulation/context";
+import { Section, PageContent, Module } from "../../types";
+import useModule from "../../hooks/useModule";
+import { moduleNames } from "../../content";
 
-export interface ContentPanelProps {
-    content: string | JSX.Element;
-    title?: string;
-    callToAction?: string | JSX.Element;
-    moreInfo?: string | JSX.Element;
-    nextButton?: boolean;
-    backButton?: boolean;
-    finishButton?: boolean;
+export interface ContentPanelProps extends PageContent {
+    currentModule: Module;
 }
 
 const ContentPanel: React.FC<ContentPanelProps> = ({
@@ -23,14 +20,34 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
     callToAction,
     backButton,
     nextButton,
-    finishButton,
+    nextButtonText,
     moreInfo,
+    actionButton,
+    section,
+    currentModule,
 }) => {
-    const showButton = nextButton || finishButton;
-    const { exampleTrajectoryPageNumber, page } = useContext(SimulariumContext);
+    const showButton = nextButton;
+    const { page } = useContext(SimulariumContext);
+
+    const { totalMainContentPages } = useModule(currentModule);
+    const moduleName = moduleNames[currentModule];
     let header;
-    if (page < exampleTrajectoryPageNumber) {
-        header = `${page} of ${exampleTrajectoryPageNumber - 1} - ${title}`;
+    const module = <span style={{ fontWeight: 300 }}>{moduleName}</span>;
+    if (section !== Section.BonusContent) {
+        const pageInfo = `${page} of ${totalMainContentPages}`;
+        if (title) {
+            header = (
+                <>
+                    {pageInfo} - {module} - {title}
+                </>
+            );
+        } else {
+            header = (
+                <>
+                    {pageInfo} - {module} - {Section[section]}
+                </>
+            );
+        }
     } else {
         header = title;
     }
@@ -43,16 +60,16 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
                 {moreInfo && (
                     <span className={styles.moreInfo}>{moreInfo}</span>
                 )}
-
                 {callToAction && (
                     <p className={styles.callToActionP}>
                         <PointerIcon /> <span>{callToAction}</span>
                     </p>
                 )}
+                {actionButton && actionButton}
             </div>
             <Flex gap={10}>
                 {backButton && <BackButton />}
-                {showButton && <NextButton isFinish={finishButton} />}
+                {showButton && <NextButton text={nextButtonText} />}
             </Flex>
         </>
     );

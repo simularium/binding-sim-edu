@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext } from "react";
+import React, { ReactNode } from "react";
 import { Layout } from "antd";
 const { Header, Sider, Content } = Layout;
 
@@ -6,8 +6,9 @@ import VisibilityControl from "../shared/VisibilityControl";
 
 import styles from "./layout.module.css";
 import classNames from "classnames";
-import { SimulariumContext } from "../../simulation/context";
+import { LayoutType } from "../../types";
 interface MainLayoutProps {
+    layout: LayoutType;
     header: ReactNode;
     leftPanel: ReactNode;
     rightPanel: ReactNode;
@@ -17,6 +18,7 @@ interface MainLayoutProps {
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({
+    layout,
     header,
     leftPanel,
     rightPanel,
@@ -24,8 +26,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     centerPanel,
     reactionPanel,
 }) => {
-    const { page, exampleTrajectoryPageNumber } = useContext(SimulariumContext);
-
     return (
         <Layout>
             <Header className={styles.navBar}>{header}</Header>
@@ -33,7 +33,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 className={classNames([
                     styles.contentPanel,
                     {
-                        [styles.finalPage]: page === 10,
+                        [styles.finalPage]:
+                            layout === LayoutType.FullScreenOverlay,
                     },
                 ])}
             >
@@ -45,14 +46,16 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 </Header>
             </VisibilityControl>
             <Layout>
-                <VisibilityControl excludedPages={[9, 10]}>
+                <VisibilityControl
+                    conditionalRender={layout !== LayoutType.NoSidePanels}
+                >
                     <Sider
                         className={classNames([
                             styles.sidePanel,
                             styles.left,
                             {
                                 [styles.example]:
-                                    page === exampleTrajectoryPageNumber,
+                                    layout === LayoutType.PreComputedSimulation,
                             },
                         ])}
                         width={"25%"}
@@ -62,14 +65,16 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 </VisibilityControl>
 
                 <Content className={styles.centerPanel}>{centerPanel}</Content>
-                <VisibilityControl excludedPages={[9, 10]}>
+                <VisibilityControl
+                    conditionalRender={layout !== LayoutType.NoSidePanels}
+                >
                     <Sider
                         className={classNames([
                             styles.sidePanel,
                             styles.right,
                             {
                                 [styles.example]:
-                                    page === exampleTrajectoryPageNumber,
+                                    layout === LayoutType.PreComputedSimulation,
                             },
                         ])}
                         width={"25%"}

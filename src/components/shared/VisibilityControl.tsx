@@ -1,12 +1,15 @@
 import React, { useContext } from "react";
 import { SimulariumContext } from "../../simulation/context";
+import { Section } from "../../types";
 
 interface VisibilityControlProps {
-    excludedPages?: number[];
     children: React.ReactNode;
+    startPage?: number;
+    excludedPages?: number[];
     includedPages?: number[];
     conditionalRender?: boolean;
     notInBonusMaterial?: boolean;
+    notInIntroduction?: boolean;
 }
 
 const VisibilityControl: React.FC<VisibilityControlProps> = ({
@@ -15,8 +18,10 @@ const VisibilityControl: React.FC<VisibilityControlProps> = ({
     includedPages,
     conditionalRender,
     notInBonusMaterial,
+    notInIntroduction,
+    startPage,
 }) => {
-    const { page, exampleTrajectoryPageNumber } = useContext(SimulariumContext);
+    const { page, section } = useContext(SimulariumContext);
     if (conditionalRender === false) {
         return null;
     }
@@ -28,7 +33,13 @@ const VisibilityControl: React.FC<VisibilityControlProps> = ({
     } else if (excludedPages) {
         shouldRender = !excludedPages.includes(page);
     }
-    if (notInBonusMaterial && page >= exampleTrajectoryPageNumber) {
+    if (startPage && page < startPage) {
+        shouldRender = false;
+    }
+    if (notInBonusMaterial && section === Section.BonusContent) {
+        shouldRender = false;
+    }
+    if (notInIntroduction && section === Section.Introduction) {
         shouldRender = false;
     }
 

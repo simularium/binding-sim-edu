@@ -39,7 +39,6 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         handleTrajectoryChange,
         trajectoryName,
         page,
-        exampleTrajectoryPageNumber,
     } = useContext(SimulariumContext);
 
     const setViewportToContainerSize = useCallback(() => {
@@ -64,16 +63,11 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
 
     useWindowResize(setViewportToContainerSize);
     useEffect(() => {
-        if (page === exampleTrajectoryPageNumber && !heightResized) {
+        if (trajectoryName !== LIVE_SIMULATION_NAME && !heightResized) {
             setViewportToContainerSize();
             setHeightResized(true);
         }
-    }, [
-        page,
-        setViewportToContainerSize,
-        heightResized,
-        exampleTrajectoryPageNumber,
-    ]);
+    }, [page, setViewportToContainerSize, heightResized, trajectoryName]);
 
     if (!simulariumController) {
         return null;
@@ -82,7 +76,7 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
     return (
         <div
             className={classNames([styles.container], {
-                [styles.example]: page === exampleTrajectoryPageNumber,
+                [styles.example]: trajectoryName !== LIVE_SIMULATION_NAME,
             })}
             key="viewer"
             ref={container}
