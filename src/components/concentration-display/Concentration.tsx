@@ -87,6 +87,11 @@ const Concentration: React.FC<AgentProps> = ({
             );
         }
     };
+
+    const showHighlight =
+        highlightState === HighlightState.Show &&
+        page === PROMPT_TO_ADJUST_B &&
+        !isPlaying;
     return (
         <>
             <h3>
@@ -101,9 +106,8 @@ const Concentration: React.FC<AgentProps> = ({
                             <Flex
                                 className={classNames(styles.concentration, {
                                     [glowStyle.hintHighlight]:
-                                        page === PROMPT_TO_ADJUST_B &&
-                                        adjustableAgent === agent &&
-                                        !isPlaying,
+                                        showHighlight &&
+                                        adjustableAgent === agent,
                                 })}
                                 vertical
                                 key={agent}
