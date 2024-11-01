@@ -59,15 +59,6 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         setViewportToContainerSize();
     }, [setViewportToContainerSize]);
 
-    useEffect(() => {
-        if (userHasInteracted) {
-            const el = container.current;
-            el?.removeEventListener("mousedown", () => {});
-            el?.removeEventListener("mouseup", () => {});
-            el?.removeEventListener("wheel", () => {});
-        }
-    }, [userHasInteracted]);
-
     // resize on container change
     useEffect(() => {
         setTimeout(() => {
@@ -76,34 +67,55 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
     }, [setViewportToContainerSize, container.current?.offsetWidth]);
 
     useWindowResize(setViewportToContainerSize);
+
+    const is3DTrajectory = trajectoryName !== LIVE_SIMULATION_NAME;
+
     useEffect(() => {
-        if (trajectoryName !== LIVE_SIMULATION_NAME && !heightResized) {
+        if (is3DTrajectory && !heightResized) {
             setViewportToContainerSize();
             setHeightResized(true);
         }
-    }, [page, setViewportToContainerSize, heightResized, trajectoryName]);
+    }, [page, setViewportToContainerSize, heightResized, is3DTrajectory]);
 
     useEffect(() => {
+        console.log("is3DTrajectory", is3DTrajectory);
+        if (!is3DTrajectory) {
+            return;
+        }
         const el = container.current;
-        el?.addEventListener("mousedown", (event) => {
+        if (!el) {
+            return;
+        }
+        const handleMouseDown = (event: MouseEvent) => {
             if (!userHasInteracted) {
                 setFirstMousePosition({
                     x: event.clientX,
                     y: event.clientY,
                 });
             }
-        });
-        container.current?.addEventListener("mouseup", (event) => {
+        };
+        const handleMouseUp = (event: MouseEvent) => {
             if (
                 firstMousePosition.x !== event.clientX &&
                 firstMousePosition.y !== event.clientY
             ) {
                 setUserHasInteracted(true);
             }
-        });
+        };
 
-        el?.addEventListener("wheel", () => setUserHasInteracted(true));
-    }, []);
+        const handleWheel = () => setUserHasInteracted(true);
+
+        if (!userHasInteracted) {
+            el.addEventListener("mousedown", handleMouseDown);
+            el.addEventListener("mouseup", handleMouseUp);
+            el.addEventListener("wheel", handleWheel);
+        }
+        return () => {
+            el.removeEventListener("mousedown", handleMouseDown);
+            el.removeEventListener("mouseup", handleMouseUp);
+            el.removeEventListener("wheel", handleWheel);
+        };
+    }, [is3DTrajectory, userHasInteracted, firstMousePosition]);
 
     if (!simulariumController) {
         return null;
@@ -115,12 +127,11 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         </div>
     );
 
-    const showHintOverlay =
-        !userHasInteracted && trajectoryName !== LIVE_SIMULATION_NAME;
+    const showHintOverlay = !userHasInteracted && is3DTrajectory;
     return (
         <div
             className={classNames([styles.container], {
-                [styles.example]: trajectoryName !== LIVE_SIMULATION_NAME,
+                [styles.example]: is3DTrajectory,
             })}
             key="viewer"
             ref={container}
