@@ -38,7 +38,15 @@
 }
 
 .icon {
+    width: 12px !important;
+    min-width: 12px !important;
+    height: 12px !important;
     border: none;
+}
+
+.icon:hover {
+    color: var(--background-color) !important;
+    background: var(--primary-color) !important;
 }
 
 .rounded {

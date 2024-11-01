@@ -31,6 +31,11 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         appliedColors: [],
     });
     const [heightResized, setHeightResized] = useState(false);
+    const [userHasInteracted, setUserHasInteracted] = useState(false);
+    const [firstMousePosition, setFirstMousePosition] = useState({
+        x: 0,
+        y: 0,
+    });
     const container = useRef<HTMLDivElement>(null);
     const {
         viewportSize,
@@ -62,25 +67,75 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
     }, [setViewportToContainerSize, container.current?.offsetWidth]);
 
     useWindowResize(setViewportToContainerSize);
+
+    const is3DTrajectory = trajectoryName !== LIVE_SIMULATION_NAME;
+
     useEffect(() => {
-        if (trajectoryName !== LIVE_SIMULATION_NAME && !heightResized) {
+        if (is3DTrajectory && !heightResized) {
             setViewportToContainerSize();
             setHeightResized(true);
         }
-    }, [page, setViewportToContainerSize, heightResized, trajectoryName]);
+    }, [page, setViewportToContainerSize, heightResized, is3DTrajectory]);
+
+    useEffect(() => {
+        if (!is3DTrajectory) {
+            return;
+        }
+        const el = container.current;
+        if (!el) {
+            return;
+        }
+        const handleMouseDown = (event: MouseEvent) => {
+            if (!userHasInteracted) {
+                setFirstMousePosition({
+                    x: event.clientX,
+                    y: event.clientY,
+                });
+            }
+        };
+        const handleMouseUp = (event: MouseEvent) => {
+            if (
+                firstMousePosition.x !== event.clientX &&
+                firstMousePosition.y !== event.clientY
+            ) {
+                setUserHasInteracted(true);
+            }
+        };
+
+        const handleWheel = () => setUserHasInteracted(true);
+
+        if (!userHasInteracted) {
+            el.addEventListener("mousedown", handleMouseDown);
+            el.addEventListener("mouseup", handleMouseUp);
+            el.addEventListener("wheel", handleWheel);
+        }
+        return () => {
+            el.removeEventListener("mousedown", handleMouseDown);
+            el.removeEventListener("mouseup", handleMouseUp);
+            el.removeEventListener("wheel", handleWheel);
+        };
+    }, [is3DTrajectory, userHasInteracted, firstMousePosition]);
 
     if (!simulariumController) {
         return null;
     }
 
+    const hintOverlay = (
+        <div className={styles.hintOverlay}>
+            Play, scroll or click + drag to interact
+        </div>
+    );
+
+    const showHintOverlay = !userHasInteracted && is3DTrajectory;
     return (
         <div
             className={classNames([styles.container], {
-                [styles.example]: trajectoryName !== LIVE_SIMULATION_NAME,
+                [styles.example]: is3DTrajectory,
             })}
             key="viewer"
             ref={container}
         >
+            {showHintOverlay && hintOverlay}
             <SimulariumViewer
                 lockedCamera={trajectoryName === LIVE_SIMULATION_NAME}
                 disableCache={trajectoryName === LIVE_SIMULATION_NAME}
