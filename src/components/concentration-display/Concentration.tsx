@@ -7,6 +7,7 @@ import {
     AgentName,
     CurrentConcentration,
     InputConcentration,
+    UiElement,
 } from "../../types";
 import { SimulariumContext } from "../../simulation/context";
 import LiveConcentrationDisplay from "./LiveConcentrationDisplay";
@@ -15,6 +16,7 @@ import { PROMPT_TO_ADJUST_B, MICRO } from "../../constants";
 import ResizeContainer from "../shared/ResizeContainer";
 import glowStyle from "../shared/progression-control.module.css";
 import styles from "./concentration.module.css";
+import InfoText from "../shared/InfoText";
 
 interface AgentProps {
     adjustableAgent: AgentName;
@@ -87,7 +89,10 @@ const Concentration: React.FC<AgentProps> = ({
     };
     return (
         <>
-            <h3>Agent Concentrations</h3>
+            <h3>
+                Agent Concentrations{" "}
+                <InfoText uiElement={UiElement.Concentration} />
+            </h3>
             <Flex className={styles.container} vertical>
                 {map(
                     liveConcentration,

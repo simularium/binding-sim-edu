@@ -2,7 +2,8 @@ import React from "react";
 import ReversibleArrows from "../icons/ReversibleArrows";
 import styles from "./layout.module.css";
 import { A, B, C, AC, AB } from "../agent-symbols";
-import { Module } from "../../types";
+import { Module, UiElement } from "../../types";
+import InfoText from "../shared/InfoText";
 
 interface ReactionDisplayProps {
     reactionType: Module;
@@ -41,6 +42,7 @@ const ReactionDisplay: React.FC<ReactionDisplayProps> = ({ reactionType }) => {
                     <AC />
                 </>
             )}
+            <InfoText uiElement={UiElement.ReactionDisplay} />
         </div>
     );
 };
