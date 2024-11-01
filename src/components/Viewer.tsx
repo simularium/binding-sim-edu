@@ -78,7 +78,6 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
     }, [page, setViewportToContainerSize, heightResized, is3DTrajectory]);
 
     useEffect(() => {
-        console.log("is3DTrajectory", is3DTrajectory);
         if (!is3DTrajectory) {
             return;
         }
