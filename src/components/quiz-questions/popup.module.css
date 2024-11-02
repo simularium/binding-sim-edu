@@ -1,13 +1,19 @@
 .container {
-    background-color: var(--popup-background-color);
-    color: var(--popup-text-color);
+    position: relative;
     max-width: 332px;
     min-width: 320px;
+}
+
+.question {
+    transition: bottom 0.5s ease-in-out;
+    position: absolute;
+    right: 0;
+    background-color: var(--popup-background-color);
+    color: var(--popup-text-color);
     padding: 16px;
+    width: 100%;
     border-radius: 4px 4px 0 0;
     z-index: var(--viewer-overlay-layer);
-    position: absolute;
-    transition: bottom 0.5s ease-in-out;
 }
 
 .below-view {
@@ -18,13 +24,13 @@
     bottom: 0;
 }
 
-.container.collapsed {
+.collapsed {
     width: 160px;
     min-width: 0;
     height: min-content;
 }
 
-.container.collapsed .header {
+.collapsed .header {
     margin-bottom: 0px;
 }
 

@@ -97,7 +97,7 @@ the side panels size them down  */
     align-items: flex-end;
     justify-content: flex-end;
     gap: 10px;
-    margin-left: 65px; /* So the questions dont cover the play button */
+    width: 100%;
 }
 
 .record-button {

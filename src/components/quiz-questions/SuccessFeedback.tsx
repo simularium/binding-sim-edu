@@ -5,44 +5,44 @@ import { FeedbackProps } from "./types";
 import styles from "./popup.module.css";
 import { IconButton } from "../shared/ButtonLibrary";
 import classNames from "classnames";
+import { BG_DARK } from "../../constants/colors";
 
 const SuccessFeedback: React.FC<FeedbackProps> = ({
     title = "That's correct!",
     message,
-    resetForm,
 }) => {
     const [isVisible, setIsVisible] = React.useState(true);
     useEffect(() => {
         const timeout = setTimeout(() => {
             setIsVisible(false);
-            if (resetForm) {
-                resetForm();
-            }
         }, 6000);
         return () => {
             clearTimeout(timeout);
         };
-    }, [resetForm]);
+    }, []);
     return (
-        <div
-            className={classNames([
-                styles.container,
-                {
-                    [styles.inView]: isVisible,
-                    [styles.belowView]: !isVisible,
-                },
-            ])}
-        >
-            <div className={styles.header}>
-                <h2 className={styles.title}>
-                    {title} <CheckCircleOutlined />
-                </h2>
-                <IconButton
-                    onClick={() => setIsVisible(false)}
-                    icon={<CloseOutlined />}
-                />
+        <div className={styles.container}>
+            <div
+                className={classNames([
+                    styles.question,
+                    {
+                        [styles.inView]: isVisible,
+                        [styles.belowView]: !isVisible,
+                    },
+                ])}
+            >
+                <div className={styles.header}>
+                    <h2 className={styles.title}>
+                        {title} <CheckCircleOutlined />
+                    </h2>
+                    <IconButton
+                        onClick={() => setIsVisible(false)}
+                        icon={<CloseOutlined />}
+                        style={{ color: BG_DARK }}
+                    />
+                </div>
+                <p>{message}</p>
             </div>
-            <p>{message}</p>
         </div>
     );
 };

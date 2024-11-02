@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import QuizForm from "./QuizForm";
 import VisibilityControl from "../shared/VisibilityControl";
 import { FormState } from "./types";
 import RadioComponent from "../shared/Radio";
+import { PROMPT_TO_ADJUST_B } from "../../constants";
+import { SimulariumContext } from "../../simulation/context";
 
 const EquilibriumQuestion: React.FC = () => {
+    const { page } = useContext(SimulariumContext);
     const [selectedAnswer, setSelectedAnswer] = useState("");
     const [formState, setFormState] = useState(FormState.Clear);
 
@@ -58,9 +61,15 @@ const EquilibriumQuestion: React.FC = () => {
             onChange={(e) => handleAnswerSelection(e.target.value)}
         />
     );
-
+    // Hide the question if the user has already answered correctly, and moved on
+    // to the next page
+    const hide = page > PROMPT_TO_ADJUST_B && formState === FormState.Correct;
     return (
-        <VisibilityControl startPage={8} notInBonusMaterial>
+        <VisibilityControl
+            startPage={PROMPT_TO_ADJUST_B}
+            conditionalRender={!hide}
+            notInBonusMaterial
+        >
             <QuizForm
                 title="Which of the following is true about the reaction at equilibrium?"
                 formContent={formContent}
@@ -69,7 +78,6 @@ const EquilibriumQuestion: React.FC = () => {
                 successMessage="It’s the forward and reverse reaction rates that are equal at equilibrium, not the concentrations of reactants and products. And binding and unbinding events don’t stop happening."
                 failureMessage="Please try again. Look carefully at what is happening in each of the plots to help find the answer."
                 id="Equilibrium"
-                resetForm={() => setFormState(FormState.Finished)}
             />
         </VisibilityControl>
     );
