@@ -11,15 +11,20 @@ const SuccessFeedback: React.FC<FeedbackProps> = ({
     title = "That's correct!",
     message,
 }) => {
+    const [hasBeenSeen, setHasBeenSeen] = React.useState(false);
     const [isVisible, setIsVisible] = React.useState(true);
     useEffect(() => {
         const timeout = setTimeout(() => {
             setIsVisible(false);
+            setHasBeenSeen(true);
         }, 6000);
         return () => {
             clearTimeout(timeout);
         };
     }, []);
+    if (hasBeenSeen) {
+        return null;
+    }
     return (
         <div className={styles.container}>
             <div
