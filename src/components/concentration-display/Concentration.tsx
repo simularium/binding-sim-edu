@@ -56,7 +56,7 @@ const Concentration: React.FC<AgentProps> = ({
                 />
             );
         } else {
-            let percentage;
+            let percentage: number | undefined = undefined;
             const startingConcentration = concentration[agent];
             if (startingConcentration !== undefined) {
                 percentage =
