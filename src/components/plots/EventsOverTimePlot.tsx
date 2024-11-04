@@ -15,6 +15,8 @@ import { MICRO } from "../../constants";
 import plotStyles from "./plots.module.css";
 import layoutStyles from "./events-over-time.module.css";
 import ResizeContainer from "../shared/ResizeContainer";
+import InfoText from "../shared/InfoText";
+import { UiElement } from "../../types";
 
 interface PlotProps {
     bindingEventsOverTime: number[];
@@ -84,7 +86,10 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
 
     return (
         <div className={plotStyles.plotContainer} style={{ marginBottom: 0 }}>
-            <h3>Reaction events over time</h3>
+            <h3>
+                Reaction events over time{" "}
+                <InfoText uiElement={UiElement.EventsOverTimePlot} />
+            </h3>
             <div className={plotStyles.yLabel}>Count of reactions</div>
             <ResizeContainer className={layoutStyles.plots} setWidth={setWidth}>
                 <Flex vertical style={{ marginBottom: 10 }}>
@@ -100,6 +105,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                             {
                                 ...plotSettings,
                                 y: bindingEventsOverTime,
+                                hovertemplate: `%{y} binding events <br> at %{x} ${MICRO}s<extra></extra>`,
                             },
                         ]}
                         layout={layout}
@@ -119,6 +125,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                             {
                                 ...plotSettings,
                                 y: unbindingEventsOverTime,
+                                hovertemplate: `%{y} unbinding events <br> at %{x} ${MICRO}s<extra></extra>`,
                             },
                         ]}
                         layout={{

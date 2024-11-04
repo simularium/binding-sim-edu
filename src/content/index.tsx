@@ -1,20 +1,25 @@
-import { Flex } from "antd";
 import { A, AB, B } from "../components/agent-symbols";
 import { ContentPanelProps } from "../components/main-layout/ContentPanel";
 import Definition from "../components/shared/Definition";
-import { Module } from "../types";
-import { PillButton } from "../components/shared/ButtonLibrary";
+import FinalPage from "../components/FinalPage";
+import StartExperiment from "../components/StartExperiment";
+import { MICRO } from "../constants";
+import { LayoutType, Module, PageContent, Section } from "../types";
 
-export const highAffinityContentArray: ContentPanelProps[] = [
+export const highAffinityContentArray: PageContent[] = [
     // making the content array 1 indexed to match the page numbers
     {
         content: "",
+        section: Section.Introduction,
+        layout: LayoutType.FullScreenOverlay,
     },
     {
         content:
             "Congratulations! You’ve just joined a biology lab. Your mentor has asked you to measure the strength of the binding interaction between two types of molecules. These molecules are too small to see, even under a microscope. But what if we could somehow see what the molecules in the tube are doing? What do you think you’d see?",
         callToAction:
             "Click or tap the animated button to switch your view to a molecular simulation.",
+        section: Section.Introduction,
+        layout: LayoutType.LiveSimulation,
     },
     {
         content: (
@@ -26,6 +31,61 @@ export const highAffinityContentArray: ContentPanelProps[] = [
             </>
         ),
         callToAction: "What happens to the molecules once you press play?",
+        section: Section.Introduction,
+        layout: LayoutType.LiveSimulation,
+    },
+    {
+        content: (
+            <>
+                As the simulation plays, the molecules move by a random walk.
+                Watch what happens when they bump into each other. What do you
+                think the "Reaction events over time" graph is showing?
+            </>
+        ),
+        callToAction:
+            "After you've observed the simulation, click 'Lab view' to see what the cuvette looks like now.",
+        section: Section.Introduction,
+        layout: LayoutType.LiveSimulation,
+    },
+    {
+        content: (
+            <>
+                The clear liquid is slowly turning yellow as the simulation
+                progresses. Can you estimate the concentration of <AB /> after
+                about 20 simulated {MICRO}seconds have elapsed?
+            </>
+        ),
+        callToAction: "Click 'Molecular view' to switch back.",
+        section: Section.Introduction,
+        layout: LayoutType.LiveSimulation,
+    },
+    {
+        title: "Start the Experiment",
+        content: (
+            <>
+                Now we're going to use this simulation to make measurements.
+                We're going to increase the timestep so the experiments are
+                fast.
+            </>
+        ),
+        actionButton: <StartExperiment />,
+        callToAction:
+            "Click the 'Start experiment' button to reset the simulation and begin by pressing play!",
+        section: Section.Introduction,
+        layout: LayoutType.LiveSimulation,
+    },
+    {
+        content: (
+            <>
+                Now, let's use this simulation to make measurements. We're going
+                to increase the timestep so the experiments are fast.
+            </>
+        ),
+        actionButton: <StartExperiment />,
+        callToAction:
+            "Click the 'Start experiment' button to reset the simulation and begin by pressing play!",
+        section: Section.Experiment,
+        layout: LayoutType.LiveSimulation,
     },
     {
         content: (
@@ -39,13 +99,8 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         ),
         callToAction:
             "Watch the Concentration over time plot until you think the reaction has reached equilibrium. Then, press the “Record” button to record the equilibrium concentration.",
-    },
-    {
-        content:
-            "The reaction reached equilibrium. What did you observe in the Concentration over time plot?",
-        callToAction:
-            "Test your knowledge and answer the question below before moving on.",
-        nextButton: true,
+        section: Section.Experiment,
+        layout: LayoutType.LiveSimulation,
     },
     {
         content: (
@@ -57,11 +112,13 @@ export const highAffinityContentArray: ContentPanelProps[] = [
         ),
         callToAction: (
             <>
-                Pausing the simulation reveals an interactive slider. With the
-                simulation paused, adjust the concentration of <B /> with the
-                slider and play the simulation again.
+                If you haven’t already done so, pause the simulation and use the
+                now-visible interactive slider under “Agent concentrations” to
+                adjust the concentration of B and play the simulation again.
             </>
         ),
+        section: Section.Experiment,
+        layout: LayoutType.LiveSimulation,
     },
     {
         content: (
@@ -82,6 +139,8 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 their equilibrium concentrations.
             </>
         ),
+        section: Section.Experiment,
+        layout: LayoutType.LiveSimulation,
     },
     {
         content: (
@@ -97,13 +156,11 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 />{" "}
                 to compare affinities. K<sub>d</sub> can by determined in this
                 experiment by finding the concentration of <B /> at equilibrium
-                where half the binding sites of <A /> are occupied. (Which is
-                where [<AB />] = [<A />
-                ]).
+                where half the binding sites of <A /> are occupied.
             </>
         ),
         modal: {
-            buttonText: "Learn how to derive Kd",
+            title: "Learn how to derive Kd",
             content: (
                 <>
                     <p>
@@ -146,18 +203,17 @@ export const highAffinityContentArray: ContentPanelProps[] = [
                 equilibrium point until you have enough data.
             </>
         ),
+        section: Section.Experiment,
+        layout: LayoutType.LiveSimulation,
     },
     {
-        content: (
-            <>
-                How do the different substrate concentrations of <B /> affect
-                the reaction? Are there any similarities between the reactions
-                when they reach equilibrium? Are there any differences?
-            </>
-        ),
-        callToAction:
-            "Test your knowledge and calculate the binding affinity below before moving on.",
+        content:
+            "Congratulations, you’ve completed the High Affinity experiment!",
+        backButton: true,
         nextButton: true,
+        nextButtonText: "View examples",
+        section: Section.BonusContent,
+        layout: LayoutType.FullScreenOverlay,
     },
     {
         title: "Real-world example: Antibodies and antigens, high affinity binders",
@@ -173,6 +229,10 @@ export const highAffinityContentArray: ContentPanelProps[] = [
             </>
         ),
         nextButton: true,
+        section: Section.BonusContent,
+        layout: LayoutType.PreComputedSimulation,
+        trajectoryUrl:
+            "https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/binding-affinity_antibodies.simularium",
     },
     {
         title: "Real-world example: Affinity is determined by intermolecular forces",
@@ -185,12 +245,17 @@ export const highAffinityContentArray: ContentPanelProps[] = [
             </>
         ),
         backButton: true,
-        finishButton: true,
+        nextButton: true,
+        nextButtonText: "Finish",
+        visualContent: <FinalPage />,
+        section: Section.BonusContent,
+        layout: LayoutType.NoSidePanels,
     },
     {
-        content:
-            "Congratulations, you’ve completed the High Affinity portion of this learning module!",
-        backButton: true,
+        title: "",
+        content: <>Next Up: Low affinity binding!</>,
+        section: Section.BonusContent,
+        layout: LayoutType.FullScreenOverlay,
     },
 ];
 
@@ -198,12 +263,6 @@ export const moduleNames = {
     [Module.A_B_AB]: "High Affinity",
     [Module.A_C_AC]: "Low Affinity",
     [Module.A_B_C_AB_AC]: "Competitive Binding",
-};
-
-export const PAGE_NUMBER_3D_EXAMPLE = {
-    [Module.A_B_AB]: 9,
-    [Module.A_C_AC]: 9,
-    [Module.A_B_C_AB_AC]: 9,
 };
 
 export default {

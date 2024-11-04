@@ -60,7 +60,7 @@ const EquilibriumQuestion: React.FC = () => {
     );
 
     return (
-        <VisibilityControl includedPages={[4, 5, 6, 7, 8]}>
+        <VisibilityControl startPage={8} notInBonusMaterial>
             <QuizForm
                 title="Which of the following is true about the reaction at equilibrium?"
                 formContent={formContent}
@@ -69,6 +69,7 @@ const EquilibriumQuestion: React.FC = () => {
                 successMessage="It’s the forward and reverse reaction rates that are equal at equilibrium, not the concentrations of reactants and products. And binding and unbinding events don’t stop happening."
                 failureMessage="Please try again. Look carefully at what is happening in each of the plots to help find the answer."
                 id="Equilibrium"
+                resetForm={() => setFormState(FormState.Finished)}
             />
         </VisibilityControl>
     );

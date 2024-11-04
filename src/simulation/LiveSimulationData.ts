@@ -30,10 +30,10 @@ const agentB: InputAgent = {
     id: 1,
     name: AgentName.B,
     initialConcentration: 0,
-    radius: 0.7,
+    radius: 1,
     partners: [0],
     kOn: 0.6,
-    kOff: 0.2,
+    kOff: 0.5,
     color: AGENT_B_COLOR,
 };
 
@@ -48,6 +48,12 @@ const agentC: InputAgent = {
     color: AGENT_C_COLOR,
 };
 
+const kds = {
+    [Module.A_B_AB]: 1,
+    [Module.A_C_AC]: 10,
+    [Module.A_B_C_AB_AC]: 5,
+};
+
 export default class LiveSimulation implements ISimulationData {
     static NAME_TO_FUNCTION_MAP = {
         [AgentName.A]: AgentFunction.Fixed,
@@ -56,7 +62,8 @@ export default class LiveSimulation implements ISimulationData {
         [ProductName.AB]: AgentFunction.Complex,
         [ProductName.AC]: AgentFunction.Complex,
     };
-    static DEFAULT_TIME_FACTOR: number = 85;
+    static INITIAL_TIME_FACTOR: number = 30;
+    static DEFAULT_TIME_FACTOR: number = 90;
     static AVAILABLE_AGENTS = {
         [AgentName.A]: agentA,
         [AgentName.B]: agentB,
@@ -64,7 +71,7 @@ export default class LiveSimulation implements ISimulationData {
     };
     static INITIAL_CONCENTRATIONS = {
         [AgentName.A]: 10,
-        [AgentName.B]: 6,
+        [AgentName.B]: 4,
         [AgentName.C]: 10,
     };
     PRODUCT = {
@@ -154,5 +161,8 @@ export default class LiveSimulation implements ISimulationData {
                     ],
             };
         }, {});
+    };
+    getKd = (module: Module): number => {
+        return kds[module];
     };
 }

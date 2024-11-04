@@ -6,11 +6,13 @@ import {
     BASE_PLOT_LAYOUT,
     CONFIG,
     GRAY_COLOR,
-    PLOT_COLORS,
 } from "./constants";
-import { getColorIndex } from "./utils";
 import { SimulariumContext } from "../../simulation/context";
-import { AGENT_AB_COLOR, AGENT_B_COLOR } from "../../constants/colors";
+import {
+    AGENT_AB_COLOR,
+    AGENT_A_COLOR,
+    AGENT_B_COLOR,
+} from "../../constants/colors";
 import { MICRO } from "../../constants";
 
 import plotStyles from "./plots.module.css";
@@ -21,39 +23,81 @@ interface PlotProps {
     y: number[];
     height: number;
     width: number;
+    colors: string[];
+    kd: number;
 }
 
-const EquilibriumPlot: React.FC<PlotProps> = ({ x, y, height, width }) => {
+const EquilibriumPlot: React.FC<PlotProps> = ({
+    x,
+    y,
+    height,
+    width,
+    colors,
+    kd,
+}) => {
     const { maxConcentration } = useContext(SimulariumContext);
-    const colors = x.map(
-        (value) => PLOT_COLORS[getColorIndex(value, maxConcentration)]
-    );
-    const maxPlusBuffer = maxConcentration + 1;
 
-    const horizontalDottedLine = {
-        x: [0, maxPlusBuffer],
+    const hintOverlay = (
+        <div
+            style={{
+                position: "absolute",
+                width: 91,
+                fontSize: 11,
+                fontStyle: "italic",
+                textAlign: "center",
+                color: "#A0A0A0",
+                right: "50%",
+                top: "50%",
+                transform: "translate(50%, -50%)",
+            }}
+        >
+            Record point of equilibrium to plot a value
+        </div>
+    );
+
+    const lineOptions = {
+        color: AGENT_A_COLOR,
+        width: 0.5,
+        dash: "dot" as Dash,
+    };
+
+    const horizontalLine = {
+        x: [0, kd * 2],
         y: [5, 5],
         mode: "lines",
-        line: {
-            color: GRAY_COLOR,
-            width: 1,
+        name: "50% bound",
+        hovertemplate: "50% bound",
+        hoverlabel: {
+            bgcolor: AGENT_A_COLOR,
         },
+        line: lineOptions,
     };
-    const trace = [
-        horizontalDottedLine,
+    const horizontalLineMax = {
+        x: [0, kd * 2],
+        y: [10, 10],
+        mode: "lines",
+        name: "Initial [A]",
+        hoverlabel: { bgcolor: AGENT_A_COLOR },
+        hovertemplate: "Initial [A]",
+        line: lineOptions,
+    };
+    const traces = [
+        horizontalLine,
+        horizontalLineMax,
         {
             x,
             y,
             type: "scatter" as const,
             mode: "lines+markers" as const,
-            name: "equilibrium",
+            name: "collected data",
             marker: { color: colors },
             line: {
                 color: GRAY_COLOR,
                 shape: "spline" as const,
                 width: 1,
-                dash: "dot" as Dash,
             },
+            hovertemplate:
+                "[B]: <b>%{x:.1f}</b><br>[AB]: <b>%{y:.1f}</b><extra></extra>",
         },
     ];
 
@@ -64,7 +108,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y, height, width }) => {
         height: Math.max(130, height),
         xaxis: {
             ...AXIS_SETTINGS,
-            range: [0, maxPlusBuffer],
+            range: [0, kd * 2],
             title: `[B] ${MICRO}M`,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,
@@ -73,17 +117,24 @@ const EquilibriumPlot: React.FC<PlotProps> = ({ x, y, height, width }) => {
         },
         yaxis: {
             ...AXIS_SETTINGS,
-            range: [0, maxConcentration],
+            range: [0, maxConcentration + 0.25], // the line gets cut off without the extra 0.25
             title: `[AB] ${MICRO}M`,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,
                 color: AGENT_AB_COLOR,
             },
+            tickmode: "array" as const,
+            tickvals: [0, maxConcentration / 2, maxConcentration],
         },
     };
     return (
         <div className={plotStyles.plotContainer}>
-            <Plot data={trace} layout={layout} config={CONFIG} />
+            {x.length === 0 && hintOverlay}
+            <Plot
+                data={x.length ? traces : []}
+                layout={layout}
+                config={CONFIG}
+            />
         </div>
     );
 };

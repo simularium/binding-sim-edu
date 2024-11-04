@@ -1,0 +1,21 @@
+.container {
+    position: absolute;
+    bottom: 14px;
+    right: 26%;
+    display: flex;
+}
+
+.scale-bar {
+    width: 10px;
+    height: 166px;
+    opacity: 0.8;
+}
+
+.labels {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    left: -2px;
+    align-items: flex-end;
+    justify-content: space-between;
+}

@@ -81,4 +81,7 @@ export default class PreComputedSimulationData implements ISimulationData {
     createAgentsFromConcentrations = (): InputAgent[] | null => {
         return null;
     };
+    getKd = (): number => {
+        return 0;
+    };
 }

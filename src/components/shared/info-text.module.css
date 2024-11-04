@@ -1,0 +1,10 @@
+.icon {
+    margin-left: 4px;
+    color: var(--primary-color);
+}
+
+/* will apply to all popovers in the app. */
+:global(.ant-popover-arrow)::after {
+    border: 1px solid var(--dark-gray) !important;
+    border-radius: 0 !important;
+}
