@@ -5,6 +5,7 @@ import FinalPage from "../components/FinalPage";
 import StartExperiment from "../components/StartExperiment";
 import { MICRO } from "../constants";
 import { LayoutType, Module, PageContent, Section } from "../types";
+import KdDerivation from "../components/modals/KdDerivation";
 
 export const highAffinityContentArray: PageContent[] = [
     // making the content array 1 indexed to match the page numbers
@@ -161,34 +162,7 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         modal: {
             title: "Learn how to derive Kd",
-            content: (
-                <>
-                    <p>
-                        The dissociation constant (K<sub>d</sub>) is a measure
-                        of the propensity of a complex to fall apart into its
-                        smaller components. A reaction with a high K<sub>d</sub>{" "}
-                        means the components have a low affinity and are more
-                        likely to fall apart. A low K<sub>d</sub> means the
-                        components have a high affinity and spend more time as a
-                        complex.
-                    </p>
-                    <p>
-                        In this experiment, K<sub>d</sub> is the concentration
-                        of
-                        <B /> at equilibrium when 50% of <A /> is bound to <B />
-                        .
-                    </p>
-                    <p>
-                        <a
-                            href="https://www.khanacademy.org/science/ap-chemistry-beta/x2eef969c74e0d802:equilibrium/x2eef969c74e0d802:magnitude-and-properties-of-the-equilibrium-constant/v/magnitude-of-the-equilibrium-constant"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            Learn more about K<sub>d</sub> on Khan Academy
-                        </a>
-                    </p>
-                </>
-            ),
+            content: <KdDerivation />,
         },
         moreInfo: (
             <>

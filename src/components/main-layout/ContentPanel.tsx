@@ -6,10 +6,10 @@ import BackButton from "../shared/BackButton";
 
 import styles from "./layout.module.css";
 import { SimulariumContext } from "../../simulation/context";
-import { PillButton } from "../shared/ButtonLibrary";
 import { Section, PageContent, Module } from "../../types";
 import useModule from "../../hooks/useModule";
 import { moduleNames } from "../../content";
+import CustomModal from "../shared/CustomModal";
 
 export interface ContentPanelProps extends PageContent {
     currentModule: Module;
@@ -60,15 +60,12 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
                 <p>{content}</p>
                 {modal && (
                     <Flex gap={12} align="center">
-                        <PillButton size="small" ghost className="inline-pill">
-                            {modal.title}
-                        </PillButton>
+                        <CustomModal
+                            title={modal.title}
+                            content={modal.content}
+                        />
                         {moreInfo && <span>{moreInfo}</span>}
                     </Flex>
-                )}
-
-                {moreInfo && (
-                    <span className={styles.moreInfo}>{moreInfo}</span>
                 )}
                 {callToAction && (
                     <p className={styles.callToActionP}>
