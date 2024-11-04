@@ -17,13 +17,10 @@ const LiveConcentrationDisplay: React.FC<LiveConcentrationDisplayProps> = ({
     width,
 }) => {
     const { maxConcentration, getAgentColor } = useContext(SimulariumContext);
-    const MARGINS = 64.2;
-    // on super small screens this can result in a negative number
-    const widthMinusMargins = Math.max(width - MARGINS, 0);
     // the steps have a 2px gap, so we are adjusting the
     // size of the step based on the total number we want
     const steps = Math.min(maxConcentration, 10);
-    const size = widthMinusMargins / steps - 2;
+    const size = width / steps - 2;
     return (
         <div className={styles.container}>
             <Progress
@@ -33,7 +30,7 @@ const LiveConcentrationDisplay: React.FC<LiveConcentrationDisplayProps> = ({
                 steps={steps}
                 showInfo={false}
                 strokeColor={getAgentColor(agent)}
-                style={{ width: widthMinusMargins }}
+                style={{ width }}
                 size={[size, 4]}
             />
             <Flex justify="space-between" className={styles.labels}>
