@@ -83,6 +83,10 @@ export interface PageContent {
     backButton?: boolean;
     nextButtonText?: string;
     trajectoryUrl?: string;
+    modal?: {
+        title: string;
+        content: string | JSX.Element;
+    };
 }
 
 export enum UiElement {
