@@ -1,5 +1,4 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
-import { uniq } from "lodash";
 import {
     SimulariumController,
     TimeData,
@@ -214,10 +213,18 @@ function App() {
 
     // Ongoing check to see if they've measured enough values to determine Kd
     const halfFilled = inputConcentration.A ? inputConcentration.A / 2 : 5;
-    const uniqMeasuredConcentrations = useMemo(
-        () => uniq(productEquilibriumConcentrations),
-        [productEquilibriumConcentrations]
-    );
+    const uniqMeasuredConcentrations = useMemo(() => {
+        const uniqInputs = [];
+        const uniqOutputs = [];
+        for (let i = 0; i < recordedInputConcentration.length; i++) {
+            if (uniqInputs.indexOf(recordedInputConcentration[i]) === -1) {
+                uniqInputs.push(recordedInputConcentration[i]);
+                uniqOutputs.push(productEquilibriumConcentrations[i]);
+            }
+        }
+        return uniqOutputs;
+    }, [recordedInputConcentration, productEquilibriumConcentrations]);
+
     const hasAValueAboveKd = useMemo(
         () =>
             uniqMeasuredConcentrations.filter((c) => c > halfFilled).length >=
