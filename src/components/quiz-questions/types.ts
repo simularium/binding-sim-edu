@@ -7,6 +7,5 @@ export enum FormState {
 
 export interface FeedbackProps {
     title?: string;
-    message?: string;
-    resetForm?: () => void;
+    message?: string | JSX.Element;
 }

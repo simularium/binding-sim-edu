@@ -79,10 +79,19 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
                 title="What is the binding affinity?"
                 formContent={formContent}
                 onSubmit={handleSubmit}
-                successMessage="A and B have a high affinity for one another."
+                successMessage={
+                    <>
+                        {selectedAnswer} {MICRO}M is considered a{" "}
+                        <strong>
+                            low K<sub>d</sub>
+                        </strong>
+                        , which means A and B have a{" "}
+                        <strong>high affinity</strong> for one another because
+                        it takes a low amount of B to create the complex.
+                    </>
+                }
                 failureMessage="Visit the “Learn how to derive Kd” button above, then use the Equilibrium concentration plot to answer."
                 formState={formState}
-                resetForm={() => setFormState(FormState.Finished)}
                 id="Kd Value"
             />
         </VisibilityControl>

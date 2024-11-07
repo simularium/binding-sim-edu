@@ -10,6 +10,7 @@
     height: 71px;
     justify-content: space-evenly;
     padding: 8px 6px 0px 6px;
+    border-radius: 4px;
 }
 
 .concentration :global(.ant-slider) {
