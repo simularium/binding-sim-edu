@@ -51,8 +51,7 @@ export const highAffinityContentArray: PageContent[] = [
         content: (
             <>
                 The clear liquid is slowly turning yellow as the simulation
-                progresses. Can you estimate the concentration of <AB /> after
-                about 20 simulated {MICRO}seconds have elapsed?
+                progresses. Can you estimate the concentration of <AB /> ?
             </>
         ),
         callToAction: "Click 'Molecular view' to switch back.",
