@@ -3,7 +3,6 @@ import StartExperiment from "../components/StartExperiment";
 import { A, AB, B } from "../components/agent-symbols";
 import { ContentPanelProps } from "../components/main-layout/ContentPanel";
 import Definition from "../components/shared/Definition";
-import { MICRO } from "../constants";
 import { LayoutType, Module, PageContent, Section } from "../types";
 
 export const highAffinityContentArray: PageContent[] = [
