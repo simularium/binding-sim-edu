@@ -33,7 +33,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 className={classNames([
                     styles.contentPanel,
                     {
-                        [styles.finalPage]:
+                        [styles.overlay]:
                             layout === LayoutType.FullScreenOverlay,
                     },
                 ])}

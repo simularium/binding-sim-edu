@@ -15,7 +15,7 @@
     border-bottom: 1px solid var(--app-border-color);
 }
 
-.content-panel.final-page {
+.content-panel.overlay {
     height: 100vh;
     border-bottom: none;
 }

@@ -1,4 +1,4 @@
-import FinalPage from "../components/FinalPage";
+import BindingDiagrams from "../components/BindingDiagrams";
 import StartExperiment from "../components/StartExperiment";
 import { A, AB, B } from "../components/agent-symbols";
 import { ContentPanelProps } from "../components/main-layout/ContentPanel";
@@ -214,7 +214,7 @@ export const highAffinityContentArray: PageContent[] = [
         backButton: true,
         nextButton: true,
         nextButtonText: "Finish",
-        visualContent: <FinalPage />,
+        visualContent: <BindingDiagrams />,
         section: Section.BonusContent,
         layout: LayoutType.NoSidePanels,
     },
