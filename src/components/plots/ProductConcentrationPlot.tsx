@@ -113,7 +113,7 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
             },
             font: {
                 family: "sans-serif",
-                size: 12,
+                size: 11,
                 color: AXIS_COLOR,
             },
         },
