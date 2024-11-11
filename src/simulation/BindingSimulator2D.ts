@@ -200,7 +200,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     currentFrame: number;
     agents: StoredAgent[] = [];
     system: System;
-    distanceFactor: number;
+    distanceFactor: number = 40;
     timeFactor: number;
     static: boolean = false;
     initialState: boolean = true;
@@ -212,7 +212,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     numberAgentOnLeft: number = 0;
     numberAgentOnRight: number = 0;
     _isMixed: boolean = false;
-    size: number;
+    size: number = 500;
     constructor(
         agents: InputAgent[],
         size: number,
@@ -356,10 +356,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         // 1 mole = 10^6 micromoles
         // 10 ^(-24 - 6 + 23) = 10^-7
         const depth = 1.0;
-        const size = this.size;
-        const volume =
-            size * this.distanceFactor * (size * this.distanceFactor) * depth;
+        const size = 4000;
+        const volume = size * size * depth;
         const count = concentration * volume * 10 ** -7 * 6.022;
+        console.log("count", count);
         return count;
     }
 
@@ -369,16 +369,15 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         // 1 nm^3 = 10^-24 L
         // 1 mole = 6.022 x 10^23 particles (count)
         const depth = 1.0;
-        const size = this.size;
-        const volume =
-            size * this.distanceFactor * (size * this.distanceFactor) * depth;
+        const size = 4000;
+        const volume = size * size * depth;
         const concentration = count / (volume * 10 ** -7 * 6.022);
         return concentration;
     }
 
     private getRandomPointOnSide(side: number, total: number) {
         const size = this.size;
-        const buffer = size / 20;
+        const buffer = size / 20; // give some space between
         const dFromSide = random(0 + buffer, size / 2, true);
         let dAlongSide = random(-size / 2, size / 2, true);
 
@@ -748,7 +747,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             },
             typeMapping: typeMapping,
             spatialUnits: {
-                magnitude: this.distanceFactor,
+                magnitude: 1,
                 name: "nm",
             },
             timeUnits: {

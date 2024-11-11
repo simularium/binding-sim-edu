@@ -35,7 +35,10 @@ interface ISimulationData {
     getInitialConcentrations: (
         activeAgents: AgentName[]
     ) => CurrentConcentration;
-    createAgentsFromConcentrations: () => InputAgent[] | null;
+    createAgentsFromConcentrations: (
+        activeAgents?: AgentName[],
+        size?: number
+    ) => InputAgent[] | null;
 }
 
 export default ISimulationData;

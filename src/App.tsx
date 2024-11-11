@@ -153,17 +153,17 @@ function App() {
 
     const clientSimulator = useMemo(() => {
         const activeAgents = simulationData.getActiveAgents(currentModule);
-        setInputConcentration(
-            simulationData.getInitialConcentrations(activeAgents)
-        );
         resetCurrentRunAnalysisState();
-        const trajectory =
-            simulationData.createAgentsFromConcentrations(activeAgents);
+        const longestAxis = Math.max(viewportSize.width, viewportSize.height);
+        const area = longestAxis ** 2;
+        const trajectory = simulationData.createAgentsFromConcentrations(
+            activeAgents,
+            area
+        );
         if (!trajectory) {
             return null;
         }
-        const longestAxis = Math.max(viewportSize.width, viewportSize.height);
-        return new BindingSimulator(trajectory, longestAxis / 3);
+        return new BindingSimulator(trajectory, longestAxis / 5);
     }, [currentModule, viewportSize, simulationData]);
 
     const preComputedPlotDataManager = useMemo(() => {

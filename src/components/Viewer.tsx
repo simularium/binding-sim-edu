@@ -137,7 +137,7 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         >
             {showHintOverlay && hintOverlay}
             <SimulariumViewer
-                lockedCamera={trajectoryName === LIVE_SIMULATION_NAME}
+                // lockedCamera={trajectoryName === LIVE_SIMULATION_NAME}
                 disableCache={trajectoryName === LIVE_SIMULATION_NAME}
                 renderStyle={RenderStyle.WEBGL2_PREFERRED}
                 height={viewportSize.height}

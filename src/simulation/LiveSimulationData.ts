@@ -117,7 +117,8 @@ export default class LiveSimulation implements ISimulationData {
     };
 
     createAgentsFromConcentrations = (
-        activeAgents?: AgentName[]
+        activeAgents?: AgentName[],
+        area?: number
     ): InputAgent[] => {
         return (activeAgents ?? []).map((agentName: AgentName) => {
             const agent = {
@@ -132,6 +133,12 @@ export default class LiveSimulation implements ISimulationData {
                 LiveSimulation.INITIAL_CONCENTRATIONS[
                     agentName as keyof typeof LiveSimulation.INITIAL_CONCENTRATIONS
                 ];
+            const DEFAULT_AREA = 240000;
+            // circle area/400000 = new circle area/new area
+            if (area) {
+                agent.radius =
+                    agent.radius * Math.pow(area / DEFAULT_AREA, 0.333);
+            }
             return agent;
         });
     };
