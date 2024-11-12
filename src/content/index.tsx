@@ -122,12 +122,12 @@ export const highAffinityContentArray: PageContent[] = [
         content: (
             <>
                 We want to understand the affinity of{" "}
-                <Definition term="enzyme" /> <A /> and substrate <B />{" "}
-                regardless of the concentration of{" "}
-                <Definition term="substrate" />. Let’s repeat the experiment
-                with a new concentration of <B />. We will keep the
-                concentration of <A /> constant to avoid introducing more than
-                one <Definition term="variable" /> at a time.
+                <Definition term="enzyme" /> <A /> and{" "}
+                <Definition term="substrate" /> <B /> regardless of the
+                concentration of substrate. Let’s repeat the experiment with a
+                new concentration of <B />. We will keep the concentration of{" "}
+                <A /> constant to avoid introducing more than one{" "}
+                <Definition term="variable" /> at a time.
             </>
         ),
         callToAction: (
@@ -190,7 +190,7 @@ export const highAffinityContentArray: PageContent[] = [
                 similar to an <Definition term="antibody" /> and an{" "}
                 <Definition term="antigen" /> it recognizes. Even if the antigen
                 is present at low concentrations, the antibody stays tightly
-                bound for a long time. This increases the total number of bound
+                bound for a long time. This increases the total number of
                 complexes at any given time and alerts the immune system of the
                 antigen’s presence.
             </>
