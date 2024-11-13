@@ -3,9 +3,11 @@ import React, { useContext, useRef } from "react";
 import Plot from "react-plotly.js";
 
 import {
+    AXIS_COLOR,
     AXIS_SETTINGS,
     BASE_PLOT_LAYOUT,
     CONFIG,
+    GRAY_COLOR,
     PLOT_COLORS,
 } from "./constants";
 import { ProductOverTimeTrace } from "./types";
@@ -70,7 +72,7 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
             y: productConcentrations,
             type: "scatter" as const,
             mode: "lines" as const,
-            name: inputConcentration.toString(),
+            name: `${inputConcentration.toString()} ${MICRO}M`,
             line: {
                 color: PLOT_COLORS[
                     getColorIndex(inputConcentration, maxConcentration)
@@ -86,29 +88,35 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         };
     });
 
-    if (dotsX.length > 0) {
-        traces.push({
-            x: dotsX,
-            y: dotsY,
-            name: "",
-            type: "scatter" as const,
-            mode: "markers" as const,
-            marker: {
-                color: colors,
-                size: 8,
-            },
-        });
-    }
     /**
      * When there is no data, we want to show the axis at 0, 0, but plotly
      * defaults to -1.5 to 1.5 with no data, even when the range is set to
      * [0,  "auto"]
      */
     const range = hasData.current ? [0, "auto"] : [0, 1];
-    const layout = {
+    const layout: Partial<Plotly.Layout> = {
         ...BASE_PLOT_LAYOUT,
         width: width,
         height: Math.max(130, height),
+        legend: {
+            title: {
+                text: "Initial [B]",
+                // TODO: uncomment out next line once PR is merged to update @types/plotly.js
+                // https://github.com/DefinitelyTyped/DefinitelyTyped/pull/71118
+                // side: "top right" as const,
+                // not supported in @types/plotly.js but is a valid option
+                font: {
+                    family: "sans-serif",
+                    size: 11,
+                    color: GRAY_COLOR,
+                },
+            },
+            font: {
+                family: "sans-serif",
+                size: 11,
+                color: AXIS_COLOR,
+            },
+        },
         xaxis: {
             ...AXIS_SETTINGS,
             range: range,
@@ -125,7 +133,30 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
                 color: AGENT_AB_COLOR,
             },
         },
+        shapes: [],
     };
+    if (dotsX.length > 0) {
+        const CIRCLE_RADIUS = 4;
+        const shapes = dotsX.map((x, i) => {
+            return {
+                type: "circle" as const,
+                xanchor: x,
+                yanchor: dotsY[i],
+                fillcolor: colors[i],
+                layer: "above" as const,
+                xsizemode: "pixel" as const,
+                ysizemode: "pixel" as const,
+                line: {
+                    width: 0,
+                },
+                x0: -CIRCLE_RADIUS,
+                x1: CIRCLE_RADIUS,
+                y0: -CIRCLE_RADIUS,
+                y1: CIRCLE_RADIUS,
+            };
+        });
+        layout.shapes = shapes;
+    }
     return (
         <div className={plotStyles.plotContainer}>
             <Plot data={traces} layout={layout} config={CONFIG} />
