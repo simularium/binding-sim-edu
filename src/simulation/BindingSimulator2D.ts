@@ -125,7 +125,8 @@ class BindingInstance extends Circle {
     }
 
     public oneStep(
-        size: number,
+        width: number,
+        height: number,
         timeFactor: number = LiveSimulationData.DEFAULT_TIME_FACTOR
     ) {
         if (this.bound) {
@@ -139,21 +140,22 @@ class BindingInstance extends Circle {
         let yStep = random(-amplitude, amplitude, true);
         const posX = this.pos.x + xStep;
         const posY = this.pos.y + yStep;
-        const edge = size / 2;
+        const xEdge = width / 2;
+        const yEdge = height / 2;
 
-        if (posX > edge + this.r) {
-            const over = posX - edge;
+        if (posX > xEdge + this.r) {
+            const over = posX - xEdge;
             xStep = xStep - over;
         }
-        if (posX < -edge - this.r) {
-            const over = posX + edge;
+        if (posX < -xEdge - this.r) {
+            const over = posX + xEdge;
             xStep = xStep - over;
         }
-        if (posY > edge + this.r) {
-            yStep = yStep - size;
+        if (posY > yEdge + this.r) {
+            yStep = yStep - height;
         }
-        if (posY < -edge - this.r) {
-            yStep = size + yStep;
+        if (posY < -yEdge - this.r) {
+            yStep = height + yStep;
         }
         this.setPosition(this.pos.x + xStep, this.pos.y + yStep);
         if (this.child) {
@@ -212,14 +214,17 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     numberAgentOnLeft: number = 0;
     numberAgentOnRight: number = 0;
     _isMixed: boolean = false;
-    size: number = 500;
+    width: number; // number in nm
+    height: number; // number in nm
     constructor(
         agents: InputAgent[],
-        size: number,
+        width: number,
+        height: number,
         timeFactor: number = LiveSimulationData.DEFAULT_TIME_FACTOR
     ) {
-        this.size = size;
         this.system = new System();
+        this.width = width;
+        this.height = height;
         this.createBoundingLines();
         this.distanceFactor = 40;
         this.timeFactor = timeFactor;
@@ -287,9 +292,9 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
         // checking the rightmost third of the simulation
         // and the left most third of the simulation
-        if (agentInstance.pos.x < -this.size / 3) {
+        if (agentInstance.pos.x < -this.width / 3) {
             this.numberAgentOnLeft++;
-        } else if (agentInstance.pos.x > this.size / 3) {
+        } else if (agentInstance.pos.x > this.width / 3) {
             this.numberAgentOnRight++;
         }
     }
@@ -331,12 +336,13 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     private createBoundingLines() {
-        const size = this.size;
+        const xAxis = this.width;
+        const yAxis = this.height;
         const points = [
-            [-size / 2, -size / 2],
-            [-size / 2, size / 2],
-            [size / 2, size / 2],
-            [size / 2, -size / 2],
+            [-xAxis / 2, -yAxis / 2],
+            [-xAxis / 2, yAxis / 2],
+            [xAxis / 2, yAxis / 2],
+            [xAxis / 2, -yAxis / 2],
         ];
         points.forEach((point, index) => {
             const nextPoint = points[(index + 1) % points.length];
@@ -356,8 +362,8 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         // 1 mole = 10^6 micromoles
         // 10 ^(-24 - 6 + 23) = 10^-7
         const depth = 1.0;
-        const size = 4000;
-        const volume = size * size * depth;
+        const area = this.width * this.height * this.distanceFactor ** 2;
+        const volume = area * depth;
         const count = concentration * volume * 10 ** -7 * 6.022;
         console.log("count", count);
         return count;
@@ -369,32 +375,34 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         // 1 nm^3 = 10^-24 L
         // 1 mole = 6.022 x 10^23 particles (count)
         const depth = 1.0;
-        const size = 4000;
-        const volume = size * size * depth;
+        const area = this.width * this.height * this.distanceFactor ** 2;
+        const volume = area * depth;
         const concentration = count / (volume * 10 ** -7 * 6.022);
         return concentration;
     }
 
-    private getRandomPointOnSide(side: number, total: number) {
-        const size = this.size;
-        const buffer = size / 20; // give some space between
-        const dFromSide = random(0 + buffer, size / 2, true);
-        let dAlongSide = random(-size / 2, size / 2, true);
+    private getRandomPointOnSide(side: number, totalNumberOfAgents: number) {
+        const width = this.width;
+        const height = this.height;
+        const buffer = width / 20; // give some space between
+        const dFromSide = random(0 + buffer, width / 2, true);
+        let verticalPosition = random(-height / 2, height / 2, true);
 
-        if (total > 2 && side === 1) {
-            dAlongSide = random(0, size / 2, true);
-        } else if (total > 2 && side === 2) {
-            dAlongSide = random(-size / 2, 0, true);
+        // to put more than one agent set on the same side
+        if (totalNumberOfAgents > 2 && side === 1) {
+            verticalPosition = random(0, height / 2, true);
+        } else if (totalNumberOfAgents > 2 && side === 2) {
+            verticalPosition = random(-height / 2, 0, true);
         }
         switch (side) {
             case 0:
-                return [-dFromSide, dAlongSide];
+                return [-dFromSide, verticalPosition];
             case 1:
-                return [dFromSide, dAlongSide];
+                return [dFromSide, verticalPosition];
             case 2:
-                return [dFromSide, dAlongSide];
+                return [dFromSide, verticalPosition];
             default:
-                return [dFromSide, dAlongSide];
+                return [dFromSide, verticalPosition];
         }
     }
 
@@ -603,7 +611,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.clearMixCounts();
 
         for (let i = 0; i < this.instances.length; ++i) {
-            this.instances[i].oneStep(this.size, this.timeFactor);
+            this.instances[i].oneStep(this.width, this.height, this.timeFactor);
             this.countNumberOfInstancesOnEachSide(this.instances[i]);
         }
         // reset to zero for every tenth time point
@@ -704,7 +712,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
     public getInfo(): TrajectoryFileInfo {
         const typeMapping: EncodedTypeMapping = {};
-        const size = this.size;
         for (let i = 0; i < this.agents.length; ++i) {
             typeMapping[this.agents[i].id] = {
                 name: `${this.agents[i].name}`,
@@ -733,8 +740,8 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             totalSteps: 1000,
             // bounding volume dimensions
             size: {
-                x: size,
-                y: size,
+                x: this.width,
+                y: this.height,
                 z: 1,
             },
             cameraDefault: {
@@ -747,7 +754,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             },
             typeMapping: typeMapping,
             spatialUnits: {
-                magnitude: 1,
+                magnitude: this.distanceFactor,
                 name: "nm",
             },
             timeUnits: {

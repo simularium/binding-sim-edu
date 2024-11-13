@@ -154,17 +154,31 @@ function App() {
     const clientSimulator = useMemo(() => {
         const activeAgents = simulationData.getActiveAgents(currentModule);
         resetCurrentRunAnalysisState();
-        const longestAxis = Math.max(viewportSize.width, viewportSize.height);
-        const area = longestAxis ** 2;
+        const dimensions = LiveSimulationData.calculateDimensions(
+            viewportSize.width,
+            viewportSize.height
+        );
+        if (simulariumController && simulariumController.visGeometry) {
+            simulariumController.visGeometry?.resetBounds([
+                dimensions.width,
+                dimensions.height,
+                0,
+            ]);
+        }
+        const area = viewportSize.width * viewportSize.height;
         const trajectory = simulationData.createAgentsFromConcentrations(
             activeAgents,
-            area
+            dimensions.width * dimensions.height
         );
         if (!trajectory) {
             return null;
         }
-        return new BindingSimulator(trajectory, longestAxis / 5);
-    }, [currentModule, viewportSize, simulationData]);
+        return new BindingSimulator(
+            trajectory,
+            dimensions.width,
+            dimensions.height
+        );
+    }, [currentModule, viewportSize, simulationData, simulariumController]);
 
     const preComputedPlotDataManager = useMemo(() => {
         if (!trajectoryPlotData) {

@@ -147,6 +147,7 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
                 simulariumController={simulariumController}
                 onJsonDataArrived={() => {}}
                 showCameraControls={false}
+                showBounds={false}
                 onTrajectoryFileInfoChanged={handleTrajectoryChange}
                 selectionStateInfo={selectionStateInfo}
                 onUIDisplayDataChanged={() => {}}

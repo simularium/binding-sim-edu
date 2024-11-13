@@ -21,7 +21,7 @@ const agentA: InputAgent = {
     id: 0,
     name: AgentName.A,
     initialConcentration: 0,
-    radius: 3,
+    radius: 2.5,
     partners: [1, 2],
     color: AGENT_A_COLOR,
 };
@@ -64,6 +64,12 @@ export default class LiveSimulation implements ISimulationData {
     };
     static INITIAL_TIME_FACTOR: number = 30;
     static DEFAULT_TIME_FACTOR: number = 90;
+
+    static DEFAULT_VIEWPORT_WIDTH = 500;
+    static DEFAULT_VIEWPORT_HEIGHT = 500;
+    static DEFAULT_BB_WIDTH = 140;
+    static DEFAULT_BB_HEIGHT = 140;
+
     static AVAILABLE_AGENTS = {
         [AgentName.A]: agentA,
         [AgentName.B]: agentB,
@@ -73,6 +79,36 @@ export default class LiveSimulation implements ISimulationData {
         [AgentName.A]: 10,
         [AgentName.B]: 4,
         [AgentName.C]: 10,
+    };
+    static calculateDimensions = (
+        viewportWidth: number,
+        viewportHeight: number
+    ): { width: number; height: number } => {
+        let width = LiveSimulation.DEFAULT_BB_WIDTH;
+        let height = LiveSimulation.DEFAULT_BB_HEIGHT;
+
+        if (viewportWidth === viewportHeight) {
+            return { width, height };
+        }
+        const aspectRatio = viewportWidth / viewportHeight;
+        if (aspectRatio > 1) {
+            // width is greater than height
+            if (viewportWidth > LiveSimulation.DEFAULT_VIEWPORT_WIDTH) {
+                // if the width is greater than the default height
+                // then increase the width
+                width = aspectRatio * width;
+            } else {
+                //
+                height = height / aspectRatio;
+            }
+        } else {
+            if (viewportHeight > LiveSimulation.DEFAULT_VIEWPORT_HEIGHT) {
+                height = height / aspectRatio;
+            } else {
+                width = width * aspectRatio;
+            }
+        }
+        return { width, height };
     };
     PRODUCT = {
         [Module.A_B_AB]: ProductName.AB,
@@ -133,11 +169,12 @@ export default class LiveSimulation implements ISimulationData {
                 LiveSimulation.INITIAL_CONCENTRATIONS[
                     agentName as keyof typeof LiveSimulation.INITIAL_CONCENTRATIONS
                 ];
-            const DEFAULT_AREA = 240000;
-            // circle area/400000 = new circle area/new area
+            const DEFAULT_AREA =
+                LiveSimulation.DEFAULT_BB_WIDTH *
+                LiveSimulation.DEFAULT_BB_HEIGHT;
             if (area) {
                 agent.radius =
-                    agent.radius * Math.pow(area / DEFAULT_AREA, 0.333);
+                    agent.radius * Math.pow(area / DEFAULT_AREA, 0.5);
             }
             return agent;
         });
