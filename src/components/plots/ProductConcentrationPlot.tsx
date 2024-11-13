@@ -94,7 +94,7 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
      * [0,  "auto"]
      */
     const range = hasData.current ? [0, "auto"] : [0, 1];
-    const layout = {
+    const layout: Partial<Plotly.Layout> = {
         ...BASE_PLOT_LAYOUT,
         width: width,
         height: Math.max(130, height),
@@ -133,7 +133,7 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
                 color: AGENT_AB_COLOR,
             },
         },
-        shapes: [] as Partial<Plotly.Shape>[],
+        shapes: [],
     };
     if (dotsX.length > 0) {
         const CIRCLE_RADIUS = 4;
