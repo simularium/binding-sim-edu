@@ -249,10 +249,12 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             // if this is called from the constructor, the count will be undefined
             // if it's called from update concentration
             // the count will already be set
+            console.log("initial count", agent.count);
             if (agent.count === undefined) {
                 agent.count = this.convertConcentrationToCount(
                     agent.initialConcentration
                 );
+                console.log("calc count", agent.count);
             }
             if (agent.radius > largestRadius) {
                 // use the largest agent to check if the system is mixed
@@ -365,7 +367,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         const area = this.width * this.height * this.distanceFactor ** 2;
         const volume = area * depth;
         const count = concentration * volume * 10 ** -7 * 6.022;
-        console.log("count", count);
         return count;
     }
 

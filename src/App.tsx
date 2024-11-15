@@ -184,6 +184,7 @@ function App() {
             activeAgents,
             longestAxis ** 2
         );
+
         if (currentProductConcentrationArray.length > 1) {
             addProductionTrace(inputConcentration[ADJUSTABLE_AGENT] || 0);
         }
@@ -292,6 +293,7 @@ function App() {
             const agentName =
                 name as keyof typeof LiveSimulationData.AVAILABLE_AGENTS;
             const agentId = LiveSimulationData.AVAILABLE_AGENTS[agentName].id;
+            console.log(agentId, value);
             clientSimulator.changeConcentration(agentId, value);
             simulariumController.gotoTime(time + 1);
             resetCurrentRunAnalysisState();

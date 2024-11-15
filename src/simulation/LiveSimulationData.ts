@@ -21,7 +21,7 @@ const agentA: InputAgent = {
     id: 0,
     name: AgentName.A,
     initialConcentration: 0,
-    radius: 2.5,
+    radius: 3,
     partners: [1, 2],
     color: AGENT_A_COLOR,
 };
@@ -175,6 +175,7 @@ export default class LiveSimulation implements ISimulationData {
             if (area) {
                 agent.radius =
                     agent.radius * Math.pow(area / DEFAULT_AREA, 0.5);
+                console.log(agent.radius);
             }
             return agent;
         });
