@@ -87,6 +87,7 @@ export interface PageContent {
 
 export enum UiElement {
     Concentration = "Concentration",
+    ConcentrationBonus = "ConcentrationBonus",
     EventsOverTimePlot = "EventsOverTimePlot",
     ConcentrationOverTimePlot = "ConcentrationOverTimePlot",
     EquilibriumPlot = "EquilibriumPlot",

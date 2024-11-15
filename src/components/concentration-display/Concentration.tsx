@@ -7,6 +7,7 @@ import {
     AgentName,
     CurrentConcentration,
     InputConcentration,
+    Section,
     UiElement,
 } from "../../types";
 import { SimulariumContext } from "../../simulation/context";
@@ -41,7 +42,7 @@ const Concentration: React.FC<AgentProps> = ({
     liveConcentration,
     onChangeComplete,
 }) => {
-    const { isPlaying, maxConcentration, page, getAgentColor } =
+    const { isPlaying, maxConcentration, page, getAgentColor, section } =
         useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
 
@@ -133,7 +134,13 @@ const Concentration: React.FC<AgentProps> = ({
         <>
             <h3>
                 Agent Concentrations{" "}
-                <InfoText uiElement={UiElement.Concentration} />
+                <InfoText
+                    uiElement={
+                        section === Section.BonusContent
+                            ? UiElement.ConcentrationBonus
+                            : UiElement.Concentration
+                    }
+                />
             </h3>
             <Flex className={styles.container} vertical>
                 {map(
