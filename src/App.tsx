@@ -146,6 +146,21 @@ function App() {
         setDataColors([]);
     }, []);
 
+    const addProductionTrace = useCallback(
+        (previousConcentration: number) => {
+            const traces = productOverTimeTraces;
+            if (currentProductConcentrationArray.length > 1) {
+                const newTrace = {
+                    inputConcentration: previousConcentration,
+                    productConcentrations: currentProductConcentrationArray,
+                };
+                setProductOverTimeTraces([...traces, newTrace]);
+                setCurrentProductConcentrationArray([]);
+            }
+        },
+        [productOverTimeTraces, currentProductConcentrationArray]
+    );
+
     // SIMULATION INITIALIZATION
     const simulariumController = useMemo(() => {
         return new SimulariumController({});
@@ -165,11 +180,14 @@ function App() {
                 0,
             ]);
         }
-        const area = viewportSize.width * viewportSize.height;
+        const longestAxis = Math.max(dimensions.width, dimensions.height);
         const trajectory = simulationData.createAgentsFromConcentrations(
             activeAgents,
-            dimensions.width * dimensions.height
+            longestAxis ** 2
         );
+        if (currentProductConcentrationArray.length > 1) {
+            addProductionTrace(inputConcentration[ADJUSTABLE_AGENT] || 0);
+        }
         if (!trajectory) {
             return null;
         }
@@ -365,18 +383,6 @@ function App() {
             }
         }
     );
-
-    const addProductionTrace = (previousConcentration: number) => {
-        const traces = productOverTimeTraces;
-        if (currentProductConcentrationArray.length > 1) {
-            const newTrace = {
-                inputConcentration: previousConcentration,
-                productConcentrations: currentProductConcentrationArray,
-            };
-            setProductOverTimeTraces([...traces, newTrace]);
-            setCurrentProductConcentrationArray([]);
-        }
-    };
 
     // User input handlers
 
