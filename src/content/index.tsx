@@ -1,7 +1,6 @@
 import BindingDiagrams from "../components/BindingDiagrams";
 import StartExperiment from "../components/StartExperiment";
 import { A, AB, B } from "../components/agent-symbols";
-import { ContentPanelProps } from "../components/main-layout/ContentPanel";
 import Definition from "../components/shared/Definition";
 import { LayoutType, Module, PageContent, Section } from "../types";
 
@@ -61,9 +60,8 @@ export const highAffinityContentArray: PageContent[] = [
         title: "Start the Experiment",
         content: (
             <>
-                Now we're going to use this simulation to make measurements.
-                We're going to increase the timestep so the experiments are
-                fast.
+                Now, let's use this simulation to make measurements. We're going
+                to increase the timestep so the experiments are fast.
             </>
         ),
         actionButton: <StartExperiment />,
@@ -234,4 +232,4 @@ export const moduleNames = {
 
 export default {
     [Module.A_B_AB]: highAffinityContentArray,
-} as { [key in Module]: ContentPanelProps[] };
+} as { [key in Module]: PageContent[] };
