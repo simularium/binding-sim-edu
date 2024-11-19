@@ -71,6 +71,7 @@ export const highAffinityContentArray: PageContent[] = [
         layout: LayoutType.LiveSimulation,
     },
     {
+        title: "Start the Experiment",
         content: (
             <>
                 Now, let's use this simulation to make measurements. We're going

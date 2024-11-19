@@ -13,6 +13,8 @@ export interface ContentPanelProps {
     currentModule: Module;
 }
 
+// these three states are used to avoid flashing the content before the
+// opacity transition starts
 enum RenderState {
     NewContent = 1,
     StartFade = 2,
@@ -24,47 +26,46 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
     currentModule,
 }) => {
     const [renderState, setRenderState] = useState(RenderState.NewContent);
-    const contentVisibleRef = useRef(false);
     const previousContentRef = useRef(pageContent);
 
-    const setVisible = (type: RenderState) => {
-        if (type >= RenderState.StartFade) {
-            if (contentVisibleRef.current === false) {
-                contentVisibleRef.current = true;
-            }
-        } else {
-            contentVisibleRef.current = false;
-        }
-        setRenderState(type);
-    };
-
     useEffect(() => {
-        contentVisibleRef.current = false;
+        // There are pages that have the same written content, so flashing the
+        // panel is more distracting than helpful. However, since this Ref is defaulted
+        // to the first page content, this check will always be true on the first page, and
+        // will keep the content from being rendered, so it needs to be excluded
+        if (!contentJustChanged && page !== 1) {
+            previousContentRef.current = pageContent;
+            return;
+        }
         const count: number = 1;
+        const FADE_TIME = 100;
         let timer: NodeJS.Timeout;
-        console.log("visible", contentVisibleRef.current);
         const updateRenderState = (count: number) => {
-            previousContentRef.current = { ...pageContent };
-            console.log("count", count);
-            setVisible(count);
+            previousContentRef.current = pageContent;
+            setRenderState(count);
             count = count + 1;
+
             if (count <= RenderState.FullyVisible) {
-                timer = setTimeout(() => updateRenderState(count), 100);
+                timer = setTimeout(() => updateRenderState(count), FADE_TIME);
             } else {
                 return () => clearTimeout(timer);
             }
         };
-        timer = setTimeout(() => updateRenderState(count), 100);
+        timer = setTimeout(() => updateRenderState(count), FADE_TIME);
         return () => clearTimeout(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageContent.content]);
 
     const contentJustChanged = !isEqual(
         previousContentRef.current.content,
         pageContent.content
     );
+    // This allows us to fade out the previous content when it's been change.
+    // it will momentarily render the previous content before fading out
     const contentToUse = contentJustChanged
         ? previousContentRef.current
         : pageContent;
+
     const {
         content,
         title,
@@ -75,13 +76,11 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
         moreInfo,
         actionButton,
         section,
+        layout,
     } = contentToUse;
 
-    const showButton = nextButton;
     const { page } = useContext(SimulariumContext);
-
     const pageNumber = contentJustChanged ? page - 1 : page;
-
     const containerClassNames = classNames([
         styles.contentPanelWrapper,
         {
@@ -94,11 +93,11 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
         <ContentPanel
             pageNumber={pageNumber}
             title={title}
-            layout={pageContent.layout}
+            layout={layout}
             content={content}
             callToAction={callToAction}
             backButton={backButton}
-            nextButton={showButton}
+            nextButton={nextButton}
             nextButtonText={nextButtonText}
             moreInfo={moreInfo}
             actionButton={actionButton}
