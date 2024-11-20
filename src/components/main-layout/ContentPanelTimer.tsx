@@ -27,6 +27,10 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
 }) => {
     const [renderState, setRenderState] = useState(RenderState.NewContent);
     const previousContentRef = useRef(pageContent);
+    const contentJustChanged = !isEqual(
+        previousContentRef.current.content,
+        pageContent.content
+    );
 
     useEffect(() => {
         // There are pages that have the same written content, so flashing the
@@ -56,28 +60,11 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageContent.content]);
 
-    const contentJustChanged = !isEqual(
-        previousContentRef.current.content,
-        pageContent.content
-    );
     // This allows us to fade out the previous content when it's been changed.
     // it will momentarily render the previous content before fading out
     const contentToUse = contentJustChanged
         ? previousContentRef.current
         : pageContent;
-
-    const {
-        content,
-        title,
-        callToAction,
-        backButton,
-        nextButton,
-        nextButtonText,
-        moreInfo,
-        actionButton,
-        section,
-        layout,
-    } = contentToUse;
 
     const { page } = useContext(SimulariumContext);
     const pageNumber = contentJustChanged ? page - 1 : page;
@@ -91,17 +78,8 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
 
     return (
         <ContentPanel
+            {...contentToUse}
             pageNumber={pageNumber}
-            title={title}
-            layout={layout}
-            content={content}
-            callToAction={callToAction}
-            backButton={backButton}
-            nextButton={nextButton}
-            nextButtonText={nextButtonText}
-            moreInfo={moreInfo}
-            actionButton={actionButton}
-            section={section}
             currentModule={currentModule}
             containerClass={containerClassNames}
         />
