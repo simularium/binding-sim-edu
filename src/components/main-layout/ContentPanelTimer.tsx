@@ -60,7 +60,7 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
         previousContentRef.current.content,
         pageContent.content
     );
-    // This allows us to fade out the previous content when it's been change.
+    // This allows us to fade out the previous content when it's been changed.
     // it will momentarily render the previous content before fading out
     const contentToUse = contentJustChanged
         ? previousContentRef.current
