@@ -16,8 +16,8 @@ export interface ContentPanelProps {
 // these three states are used to avoid flashing the content before the
 // opacity transition starts
 enum RenderState {
-    NewContent = 1,
-    StartFade = 2,
+    NoRender = 1,
+    RenderFadeIn = 2,
     FullyVisible = 3,
 }
 
@@ -25,7 +25,7 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
     pageContent,
     currentModule,
 }) => {
-    const [renderState, setRenderState] = useState(RenderState.NewContent);
+    const [renderState, setRenderState] = useState(RenderState.NoRender);
     const previousContentRef = useRef(pageContent);
     const contentJustChanged = !isEqual(
         previousContentRef.current.content,
@@ -42,7 +42,7 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
             return;
         }
         const count: number = 1;
-        const FADE_TIME = 100;
+        const FADE_TIME = 150;
         let timer: NodeJS.Timeout;
         const updateRenderState = (count: number) => {
             previousContentRef.current = pageContent;
@@ -73,7 +73,7 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
         {
             [styles.fadeOut]: contentJustChanged,
         },
-        { [styles.loaded]: renderState >= RenderState.StartFade },
+        { [styles.loaded]: renderState >= RenderState.RenderFadeIn },
     ]);
 
     return (
