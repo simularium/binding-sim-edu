@@ -41,10 +41,9 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
             previousContentRef.current = pageContent;
             return;
         }
-        const initialState: number = 1;
         const FADE_TIME = 150;
         const updateRenderState = (
-            currentRenderState: number
+            currentRenderState: RenderState
         ): NodeJS.Timeout | null => {
             previousContentRef.current = pageContent;
             setRenderState(currentRenderState);
@@ -59,7 +58,7 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
             }
         };
         const timer = setTimeout(
-            () => updateRenderState(initialState),
+            () => updateRenderState(RenderState.NoRender),
             FADE_TIME
         );
         return () => clearTimeout(timer);
