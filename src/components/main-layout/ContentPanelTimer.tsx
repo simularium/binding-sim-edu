@@ -41,21 +41,27 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
             previousContentRef.current = pageContent;
             return;
         }
-        const count: number = 1;
+        const initialState: number = 1;
         const FADE_TIME = 150;
-        let timer: NodeJS.Timeout;
-        const updateRenderState = (count: number) => {
+        const updateRenderState = (
+            currentRenderState: number
+        ): NodeJS.Timeout | null => {
             previousContentRef.current = pageContent;
-            setRenderState(count);
-            count = count + 1;
-
-            if (count <= RenderState.FullyVisible) {
-                timer = setTimeout(() => updateRenderState(count), FADE_TIME);
+            setRenderState(currentRenderState);
+            currentRenderState += 1;
+            if (currentRenderState <= RenderState.FullyVisible) {
+                return setTimeout(
+                    () => updateRenderState(currentRenderState),
+                    FADE_TIME
+                );
             } else {
-                return () => clearTimeout(timer);
+                return null;
             }
         };
-        timer = setTimeout(() => updateRenderState(count), FADE_TIME);
+        const timer = setTimeout(
+            () => updateRenderState(initialState),
+            FADE_TIME
+        );
         return () => clearTimeout(timer);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageContent.content]);
