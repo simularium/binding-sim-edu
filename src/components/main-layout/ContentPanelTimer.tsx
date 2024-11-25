@@ -41,6 +41,7 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
             previousContentRef.current = pageContent;
             return;
         }
+        // must be the same as the css transition time
         const FADE_TIME = 150;
         const updateRenderState = (
             currentRenderState: RenderState
