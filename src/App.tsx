@@ -21,7 +21,7 @@ import {
 import LeftPanel from "./components/main-layout/LeftPanel";
 import RightPanel from "./components/main-layout/RightPanel";
 import ReactionDisplay from "./components/main-layout/ReactionDisplay";
-import ContentPanel from "./components/main-layout/ContentPanel";
+import ContentPanelTimer from "./components/main-layout/ContentPanelTimer";
 import content, { moduleNames } from "./content";
 import {
     PROMPT_TO_ADJUST_B,
@@ -577,21 +577,21 @@ function App() {
                             />
                         }
                         content={
-                            <ContentPanel
-                                {...content[currentModule][page]}
-                                currentModule={currentModule}
-                                nextButton={
-                                    (canDetermineKd &&
-                                        content[currentModule][page].section ===
-                                            Section.Experiment) ||
-                                    content[currentModule][page].nextButton
-                                }
-                                nextButtonText={
-                                    lastPageOfExperiment
+                            <ContentPanelTimer
+                                pageContent={{
+                                    ...content[currentModule][page],
+                                    nextButton:
+                                        (canDetermineKd &&
+                                            content[currentModule][page]
+                                                .section ===
+                                                Section.Experiment) ||
+                                        content[currentModule][page].nextButton,
+                                    nextButtonText: lastPageOfExperiment
                                         ? "Finish"
                                         : content[currentModule][page]
-                                              .nextButtonText
-                                }
+                                              .nextButtonText,
+                                }}
+                                currentModule={currentModule}
                             />
                         }
                         reactionPanel={
