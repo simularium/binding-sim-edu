@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import classNames from "classnames";
+import { isEqual } from "lodash";
 
-import styles from "./layout.module.css";
 import { SimulariumContext } from "../../simulation/context";
 import { PageContent, Module } from "../../types";
 
-import classNames from "classnames";
-import { isEqual } from "lodash";
 import ContentPanel from "./ContentPanel";
+import styles from "./layout.module.css";
 
 export interface ContentPanelProps {
     pageContent: PageContent;

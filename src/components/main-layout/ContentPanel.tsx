@@ -1,14 +1,14 @@
 import React from "react";
 import { Flex } from "antd";
+
+import useModule from "../../hooks/useModule";
+import { Section, PageContent, Module } from "../../types";
+import { moduleNames } from "../../content";
 import PointerIcon from "../icons/PointerIcon";
 import NextButton from "../shared/NextButton";
 import BackButton from "../shared/BackButton";
 
 import styles from "./layout.module.css";
-import { Section, PageContent, Module } from "../../types";
-import useModule from "../../hooks/useModule";
-import { moduleNames } from "../../content";
-
 export interface ContentPanelProps extends PageContent {
     currentModule: Module;
     pageNumber: number;
