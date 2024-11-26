@@ -101,10 +101,7 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         legend: {
             title: {
                 text: "Initial [B]",
-                // TODO: uncomment out next line once PR is merged to update @types/plotly.js
-                // https://github.com/DefinitelyTyped/DefinitelyTyped/pull/71118
-                // side: "top right" as const,
-                // not supported in @types/plotly.js but is a valid option
+                side: "top right" as const,
                 font: {
                     family: "sans-serif",
                     size: 11,
