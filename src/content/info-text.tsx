@@ -2,7 +2,9 @@ import { UiElement } from "../types";
 
 const infoText = {
     [UiElement.Concentration]:
-        "When the simulation is running, this shows the live concentration of each agent. The purple arrow indicates the starting concentration of the reactants. When the simulation is paused, the variable agent can be adjusted to a new concentration.",
+        "When the simulation is running, this shows the live concentration of each agent. The white arrow indicates the starting concentration of the reactants. When the simulation is paused, the variable agent can be adjusted to a new concentration.",
+    [UiElement.ConcentrationBonus]:
+        "When the trajectory is playing, this shows the live concentration of each agent.",
     [UiElement.EventsOverTimePlot]:
         "In the lab it is impossible to count each reaction event between individual molecules because the molecules are so small and the reactions happen so fast. Instead, scientists measure populations of molecules with a proxy readout, like a color change. But with a simulation, we can track each reaction event and plot them here.",
     [UiElement.ConcentrationOverTimePlot]:

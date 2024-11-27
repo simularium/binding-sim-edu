@@ -1,5 +1,4 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
-import { uniq } from "lodash";
 import {
     SimulariumController,
     TimeData,
@@ -22,7 +21,7 @@ import {
 import LeftPanel from "./components/main-layout/LeftPanel";
 import RightPanel from "./components/main-layout/RightPanel";
 import ReactionDisplay from "./components/main-layout/ReactionDisplay";
-import ContentPanel from "./components/main-layout/ContentPanel";
+import ContentPanelTimer from "./components/main-layout/ContentPanelTimer";
 import content, { moduleNames } from "./content";
 import {
     PROMPT_TO_ADJUST_B,
@@ -214,10 +213,18 @@ function App() {
 
     // Ongoing check to see if they've measured enough values to determine Kd
     const halfFilled = inputConcentration.A ? inputConcentration.A / 2 : 5;
-    const uniqMeasuredConcentrations = useMemo(
-        () => uniq(productEquilibriumConcentrations),
-        [productEquilibriumConcentrations]
-    );
+    const uniqMeasuredConcentrations = useMemo(() => {
+        const uniqInputs = [];
+        const uniqOutputs = [];
+        for (let i = 0; i < recordedInputConcentration.length; i++) {
+            if (uniqInputs.indexOf(recordedInputConcentration[i]) === -1) {
+                uniqInputs.push(recordedInputConcentration[i]);
+                uniqOutputs.push(productEquilibriumConcentrations[i]);
+            }
+        }
+        return uniqOutputs;
+    }, [recordedInputConcentration, productEquilibriumConcentrations]);
+
     const hasAValueAboveKd = useMemo(
         () =>
             uniqMeasuredConcentrations.filter((c) => c > halfFilled).length >=
@@ -570,21 +577,21 @@ function App() {
                             />
                         }
                         content={
-                            <ContentPanel
-                                {...content[currentModule][page]}
-                                currentModule={currentModule}
-                                nextButton={
-                                    (canDetermineKd &&
-                                        content[currentModule][page].section ===
-                                            Section.Experiment) ||
-                                    content[currentModule][page].nextButton
-                                }
-                                nextButtonText={
-                                    lastPageOfExperiment
+                            <ContentPanelTimer
+                                pageContent={{
+                                    ...content[currentModule][page],
+                                    nextButton:
+                                        (canDetermineKd &&
+                                            content[currentModule][page]
+                                                .section ===
+                                                Section.Experiment) ||
+                                        content[currentModule][page].nextButton,
+                                    nextButtonText: lastPageOfExperiment
                                         ? "Finish"
                                         : content[currentModule][page]
-                                              .nextButtonText
-                                }
+                                              .nextButtonText,
+                                }}
+                                currentModule={currentModule}
                             />
                         }
                         reactionPanel={

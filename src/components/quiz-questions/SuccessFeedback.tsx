@@ -4,29 +4,39 @@ import { CheckCircleOutlined, CloseOutlined } from "@ant-design/icons";
 import { FeedbackProps } from "./types";
 import styles from "./popup.module.css";
 import { IconButton } from "../shared/ButtonLibrary";
+import classNames from "classnames";
+import { BG_DARK } from "../../constants/colors";
 
 const SuccessFeedback: React.FC<FeedbackProps> = ({
     title = "That's correct!",
     message,
-    resetForm,
 }) => {
+    const [hasBeenSeen, setHasBeenSeen] = React.useState(false);
     const [isVisible, setIsVisible] = React.useState(true);
     useEffect(() => {
         const timeout = setTimeout(() => {
             setIsVisible(false);
-            if (resetForm) {
-                resetForm();
-            }
-        }, 3000);
+            setHasBeenSeen(true);
+        }, 6000);
         return () => {
             clearTimeout(timeout);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
+    if (hasBeenSeen) {
+        return null;
+    }
     return (
-        isVisible && (
-            <div className={styles.container}>
+        <div className={styles.container}>
+            <div
+                className={classNames([
+                    styles.question,
+                    {
+                        [styles.inView]: isVisible,
+                        [styles.belowView]: !isVisible,
+                    },
+                ])}
+            >
                 <div className={styles.header}>
                     <h2 className={styles.title}>
                         {title} <CheckCircleOutlined />
@@ -34,11 +44,12 @@ const SuccessFeedback: React.FC<FeedbackProps> = ({
                     <IconButton
                         onClick={() => setIsVisible(false)}
                         icon={<CloseOutlined />}
+                        style={{ color: BG_DARK }}
                     />
                 </div>
                 <p>{message}</p>
             </div>
-        )
+        </div>
     );
 };
 

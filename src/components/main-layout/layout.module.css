@@ -10,12 +10,11 @@
 .content-panel {
     height: var(--content-height);
     padding: 16px 20px;
-    display: flex;
-    justify-content: space-between;
+
     border-bottom: 1px solid var(--app-border-color);
 }
 
-.content-panel.final-page {
+.content-panel.overlay {
     height: 100vh;
     border-bottom: none;
 }
@@ -41,6 +40,22 @@
     max-width: 982px;
     margin-right: auto;
     margin-left: auto;
+}
+
+.content-panel-wrapper {
+    display: flex;
+    justify-content: space-between;
+    opacity: 0;
+    transition: opacity ease-in-out 0.15s;
+}
+
+.content-panel-wrapper.loaded {
+    opacity: 1;
+}
+
+.content-panel-wrapper.fade-out {
+    opacity: 0;
+    transition: opacity ease-in-out 0.1s;
 }
 
 .side-panel {
@@ -97,7 +112,7 @@ the side panels size them down  */
     align-items: flex-end;
     justify-content: flex-end;
     gap: 10px;
-    margin-left: 65px; /* So the questions dont cover the play button */
+    width: 100%;
 }
 
 .record-button {

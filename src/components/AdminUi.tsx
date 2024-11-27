@@ -18,8 +18,8 @@ const AdminUI: React.FC<AdminUIProps> = ({
     totalPages,
 }) => {
     const { page, setPage } = useContext(SimulariumContext);
-    const [visible, setVisible] = React.useState<boolean>(false);
-
+    const isDev = process.env.NODE_ENV === "development";
+    const [visible, setVisible] = React.useState<boolean>(isDev);
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             // control-option-1 (mac) or ctrl-alt-1 (windows)

@@ -1,11 +1,9 @@
+import BindingDiagrams from "../components/BindingDiagrams";
 import { A, AB, B } from "../components/agent-symbols";
-import { ContentPanelProps } from "../components/main-layout/ContentPanel";
 import Definition from "../components/shared/Definition";
-import FinalPage from "../components/FinalPage";
 import StartExperiment from "../components/StartExperiment";
-import { MICRO } from "../constants";
-import { LayoutType, Module, PageContent, Section } from "../types";
 import KdDerivation from "../components/modals/KdDerivation";
+import { LayoutType, Module, PageContent, Section } from "../types";
 
 export const highAffinityContentArray: PageContent[] = [
     // making the content array 1 indexed to match the page numbers
@@ -52,8 +50,7 @@ export const highAffinityContentArray: PageContent[] = [
         content: (
             <>
                 The clear liquid is slowly turning yellow as the simulation
-                progresses. Can you estimate the concentration of <AB /> after
-                about 20 simulated {MICRO}seconds have elapsed?
+                progresses. Can you estimate the concentration of <AB /> ?
             </>
         ),
         callToAction: "Click 'Molecular view' to switch back.",
@@ -64,9 +61,8 @@ export const highAffinityContentArray: PageContent[] = [
         title: "Start the Experiment",
         content: (
             <>
-                Now we're going to use this simulation to make measurements.
-                We're going to increase the timestep so the experiments are
-                fast.
+                Now, let's use this simulation to make measurements. We're going
+                to increase the timestep so the experiments are fast.
             </>
         ),
         actionButton: <StartExperiment />,
@@ -76,6 +72,7 @@ export const highAffinityContentArray: PageContent[] = [
         layout: LayoutType.LiveSimulation,
     },
     {
+        title: "Start the Experiment",
         content: (
             <>
                 Now, let's use this simulation to make measurements. We're going
@@ -125,12 +122,12 @@ export const highAffinityContentArray: PageContent[] = [
         content: (
             <>
                 We want to understand the affinity of{" "}
-                <Definition term="enzyme" /> <A /> and substrate <B />{" "}
-                regardless of the concentration of{" "}
-                <Definition term="substrate" />. Let’s repeat the experiment
-                with a new concentration of <B />. We will keep the
-                concentration of <A /> constant to avoid introducing more than
-                one <Definition term="variable" /> at a time.
+                <Definition term="enzyme" /> <A /> and{" "}
+                <Definition term="substrate" /> <B /> regardless of the
+                concentration of substrate. Let’s repeat the experiment with a
+                new concentration of <B />. We will keep the concentration of{" "}
+                <A /> constant to avoid introducing more than one{" "}
+                <Definition term="variable" /> at a time.
             </>
         ),
         callToAction: (
@@ -197,7 +194,7 @@ export const highAffinityContentArray: PageContent[] = [
                 similar to an <Definition term="antibody" /> and an{" "}
                 <Definition term="antigen" /> it recognizes. Even if the antigen
                 is present at low concentrations, the antibody stays tightly
-                bound for a long time. This increases the total number of bound
+                bound for a long time. This increases the total number of
                 complexes at any given time and alerts the immune system of the
                 antigen’s presence.
             </>
@@ -221,7 +218,7 @@ export const highAffinityContentArray: PageContent[] = [
         backButton: true,
         nextButton: true,
         nextButtonText: "Finish",
-        visualContent: <FinalPage />,
+        visualContent: <BindingDiagrams />,
         section: Section.BonusContent,
         layout: LayoutType.NoSidePanels,
     },
@@ -241,4 +238,4 @@ export const moduleNames = {
 
 export default {
     [Module.A_B_AB]: highAffinityContentArray,
-} as { [key in Module]: ContentPanelProps[] };
+} as { [key in Module]: PageContent[] };

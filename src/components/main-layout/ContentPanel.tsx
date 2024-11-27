@@ -1,21 +1,23 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Flex } from "antd";
+
+import useModule from "../../hooks/useModule";
+import { Section, PageContent, Module } from "../../types";
+import { moduleNames } from "../../content";
 import PointerIcon from "../icons/PointerIcon";
 import NextButton from "../shared/NextButton";
 import BackButton from "../shared/BackButton";
-
-import styles from "./layout.module.css";
-import { SimulariumContext } from "../../simulation/context";
-import { Section, PageContent, Module } from "../../types";
-import useModule from "../../hooks/useModule";
-import { moduleNames } from "../../content";
 import CustomModal from "../shared/CustomModal";
 
+import styles from "./layout.module.css";
 export interface ContentPanelProps extends PageContent {
     currentModule: Module;
+    pageNumber: number;
+    containerClass?: string;
 }
 
 const ContentPanel: React.FC<ContentPanelProps> = ({
+    pageNumber,
     content,
     title,
     callToAction,
@@ -27,16 +29,15 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
     actionButton,
     section,
     currentModule,
+    containerClass,
 }) => {
     const showButton = nextButton;
-    const { page } = useContext(SimulariumContext);
-
     const { totalMainContentPages } = useModule(currentModule);
     const moduleName = moduleNames[currentModule];
     let header;
     const module = <span style={{ fontWeight: 300 }}>{moduleName}</span>;
     if (section !== Section.BonusContent) {
-        const pageInfo = `${page} of ${totalMainContentPages}`;
+        const pageInfo = `${pageNumber} of ${totalMainContentPages}`;
         if (title) {
             header = (
                 <>
@@ -54,7 +55,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
         header = title;
     }
     return (
-        <>
+        <div className={containerClass}>
             <div className={styles.contentPanelText}>
                 <h3>{header}</h3>
                 <p>{content}</p>
@@ -78,7 +79,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
                 {backButton && <BackButton />}
                 {showButton && <NextButton text={nextButtonText} />}
             </Flex>
-        </>
+        </div>
     );
 };
 
