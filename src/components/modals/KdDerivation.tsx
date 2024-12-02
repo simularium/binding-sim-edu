@@ -1,7 +1,7 @@
 import React from "react";
-import { B, A, AB } from "../agent-symbols";
 import { Descriptions, Flex } from "antd";
 
+import { B, A, AB } from "../agent-symbols";
 import { GRAY_COLOR } from "../plots/constants";
 import Fraction from "../shared/Fraction";
 
@@ -206,15 +206,23 @@ const KdDerivation: React.FC = () => {
                 <p>
                     The dissociation constant (K<sub>d</sub>) is a measure of
                     the propensity of a complex to fall apart into its smaller
-                    components. A reaction with a high K<sub>d</sub> means the
-                    components have a low affinity and are more likely to fall
-                    apart. A low K<sub>d</sub> means the components have a high
-                    affinity and spend more time as a complex.
+                    components. As is show below, K<sub>d</sub> equals
+                    concentration of <B /> at equilibrium when 50% of <A /> is
+                    bound to <B />. You can think of it as{" "}
+                    <em>
+                        "how little <B /> do I need to bind to half of <A />
+                        ?"
+                    </em>{" "}
+                    Which is why a lower value means a stronger affinity. A
+                    reaction with a <strong>high</strong> K<sub>d</sub> means
+                    you need a lot of <B /> so the components have a{" "}
+                    <strong>low</strong> affinity and are more likely to fall
+                    apart. A <strong>low</strong> K<sub>d</sub> means you don't
+                    need very much <B /> so the components have a{" "}
+                    <strong>high</strong> affinity and spend more time as a
+                    complex.
                 </p>
-                <p>
-                    In this experiment, K<sub>d</sub> is the concentration of{" "}
-                    <B /> at equilibrium when 50% of <A /> is bound to <B />.
-                </p>
+
                 <p>
                     <a
                         href="https://www.khanacademy.org/science/ap-chemistry-beta/x2eef969c74e0d802:equilibrium/x2eef969c74e0d802:magnitude-and-properties-of-the-equilibrium-constant/v/magnitude-of-the-equilibrium-constant"
@@ -229,17 +237,15 @@ const KdDerivation: React.FC = () => {
                 <h3>
                     Derivation of K<sub>d</sub>
                 </h3>
-                {reactionSteps.map((step, index) => (
-                    <Descriptions key={index}>
-                        <h3>
-                            {index + 1}. {step.title}
-                        </h3>
-                        <div>
-                            {/* {step.subtitle && <p>{step.subtitle}</p>} */}
-                            <span>{step.content}</span>
-                        </div>
-                    </Descriptions>
-                ))}
+                <Descriptions layout="horizontal" column={1}>
+                    {reactionSteps.map((step, index) => (
+                        <Descriptions.Item key={index} label={step.title}>
+                            <div>
+                                <span>{step.content}</span>
+                            </div>
+                        </Descriptions.Item>
+                    ))}
+                </Descriptions>
             </div>
         </Flex>
     );
