@@ -1,223 +1,52 @@
-import React from "react";
-import { Descriptions, Flex } from "antd";
+import React, { useState } from "react";
+import { Flex, Steps } from "antd";
 
-import { B, A, AB } from "../agent-symbols";
-import { GRAY_COLOR } from "../plots/constants";
-import Fraction from "../shared/Fraction";
+import { B, A } from "../agent-symbols";
 
-const variables = {
-    kd: (
-        <>
-            K<sub>d</sub>
-        </>
-    ),
-    kForward: (
-        <em>
-            k<sub>fwd</sub>
-        </em>
-    ),
-    kReverse: (
-        <em>
-            k<sub>rev</sub>
-        </em>
-    ),
-    rateForward: (
-        <>
-            rate <sub>fwd</sub>
-        </>
-    ),
-    rateReverse: (
-        <>
-            rate <sub>rev</sub>
-        </>
-    ),
-};
-
-const units = {
-    forward: (
-        <>
-            mM<sup>2</sup> / s
-        </>
-    ),
-    reverse: <>mM / s</>,
-    constant: <>mM</>,
-};
-
-const unitStyle = { color: GRAY_COLOR };
-
-const definitions = {
-    kd: <Fraction top={variables.kReverse} bottom={variables.kForward} />,
-    forwardRate: (
-        <>
-            {variables.kForward} [
-            <A />
-            ][
-            <B />] <span style={unitStyle}>{units.forward}</span>
-        </>
-    ),
-    reverseRate: (
-        <>
-            {variables.kReverse} [<AB />]{" "}
-            <span style={unitStyle}>{units.reverse}</span>
-        </>
-    ),
-};
-const reactionSteps = [
-    {
-        title: "Definition of the dissociation constant",
-        content: (
-            <Flex gap={4} align="center">
-                <span>{variables.kd}</span> = {definitions.kd}
-            </Flex>
-        ),
-    },
-    {
-        title: "Reaction rate equations",
-        content: (
-            <Flex gap={20}>
-                <div>
-                    {variables.rateReverse} = {definitions.reverseRate}
-                </div>
-                <div>
-                    {variables.rateForward} = {definitions.forwardRate}
-                </div>
-            </Flex>
-        ),
-    },
-
-    {
-        title: "At equilibrium the rates are equal",
-        content: (
-            <>
-                {variables.rateReverse} = {variables.rateForward}
-            </>
-        ),
-    },
-    {
-        title: "Replace rates with equations",
-        content: (
-            <>
-                {definitions.reverseRate} = {definitions.forwardRate}
-            </>
-        ),
-    },
-    {
-        title: <>Rearrange</>,
-        content: (
-            <Flex align="center" gap={4}>
-                <Fraction
-                    top={variables.kReverse}
-                    bottom={variables.kForward}
-                />
-                =
-                <Fraction
-                    top={
-                        <>
-                            [<A />
-                            ][
-                            <B />]
-                        </>
-                    }
-                    bottom={
-                        <>
-                            [<AB />]
-                        </>
-                    }
-                />
-                <span style={unitStyle}>{units.constant}</span>
-            </Flex>
-        ),
-    },
-    {
-        title: <>Replace rate constants with {variables.kd}</>,
-        content: (
-            <Flex align="center" gap={4}>
-                <span>{variables.kd} = </span>
-                <Fraction
-                    top={
-                        <>
-                            [<A />
-                            ][
-                            <B />]
-                        </>
-                    }
-                    bottom={
-                        <>
-                            [<AB />]
-                        </>
-                    }
-                />
-            </Flex>
-        ),
-    },
-    {
-        title: (
-            <>
-                When 50% of <A /> is bound:
-            </>
-        ),
-        subtitle:
-            "The concentration of the complex is equal to the concentration of A",
-        content: (
-            <>
-                [<A />] = [<AB />]
-            </>
-        ),
-    },
-    {
-        title: (
-            <>
-                Therefore, Kd is equal to the concentration of B at equilibrium,
-                when 50% of A is bound
-            </>
-        ),
-        subtitle:
-            "Use the previous equation to replace the concentration of the complex with the concentration of A",
-        content: (
-            <Flex align="center" gap={4}>
-                <span>{variables.kd} = </span>
-                <Fraction
-                    top={
-                        <>
-                            [<A />
-                            ][
-                            <B />]
-                        </>
-                    }
-                    bottom={
-                        <>
-                            [<A />]
-                        </>
-                    }
-                />{" "}
-                ={" "}
-                <span>
-                    [<B />]
-                </span>
-            </Flex>
-        ),
-    },
-];
+import styles from "./kd-derivation.module.css";
+import { SecondaryButton } from "../shared/ButtonLibrary";
+import {
+    variables,
+    reactionSteps,
+    getEquationFromStep,
+} from "./KdDerivationContent";
 
 const KdDerivation: React.FC = () => {
+    const [current, setCurrent] = useState(0);
+
+    const next = () => {
+        if (current >= reactionSteps.length - 1) {
+            return setCurrent(0);
+        }
+        setCurrent(current + 1);
+    };
     return (
-        <Flex vertical>
+        <Flex vertical className={styles.container}>
             <div>
                 <p>
-                    The dissociation constant (K<sub>d</sub>) is a measure of
-                    the propensity of a complex to fall apart into its smaller
-                    components. As is show below, K<sub>d</sub> equals
+                    The dissociation constant {variables.kd} is a measure of the
+                    propensity of a complex to fall apart into its smaller
+                    components. As is shown below, {variables.kd} equals
                     concentration of <B /> at equilibrium when 50% of <A /> is
                     bound to <B />. You can think of it as{" "}
                     <em>
                         "how little <B /> do I need to bind to half of <A />
                         ?"
                     </em>{" "}
-                    Which is why a lower value means a stronger affinity. A
-                    reaction with a <strong>high</strong> K<sub>d</sub> means
+                    <ul>
+                        <li>
+                            <strong>high</strong> {variables.kd} ={" "}
+                            <strong>low</strong> affinity
+                        </li>
+                        <li>
+                            <strong>low</strong> {variables.kd} ={" "}
+                            <strong>high</strong> affinity
+                        </li>
+                    </ul>
+                    A reaction with a <strong>high</strong> {variables.kd} means
                     you need a lot of <B /> so the components have a{" "}
                     <strong>low</strong> affinity and are more likely to fall
-                    apart. A <strong>low</strong> K<sub>d</sub> means you don't
+                    apart. A <strong>low</strong> {variables.kd} means you don't
                     need very much <B /> so the components have a{" "}
                     <strong>high</strong> affinity and spend more time as a
                     complex.
@@ -229,23 +58,42 @@ const KdDerivation: React.FC = () => {
                         target="_blank"
                         rel="noreferrer"
                     >
-                        Learn more about K<sub>d</sub> on Khan Academy
+                        Learn more about {variables.kd} on Khan Academy
                     </a>
                 </p>
             </div>
             <div>
-                <h3>
-                    Derivation of K<sub>d</sub>
-                </h3>
-                <Descriptions layout="horizontal" column={1}>
-                    {reactionSteps.map((step, index) => (
-                        <Descriptions.Item key={index} label={step.title}>
-                            <div>
-                                <span>{step.content}</span>
-                            </div>
-                        </Descriptions.Item>
-                    ))}
-                </Descriptions>
+                <Flex className={styles.titleSection}>
+                    <h3 className={styles.title}>
+                        Derivation of {variables.kd}
+                    </h3>
+                    <Flex
+                        align="center"
+                        gap={4}
+                        className={styles.mainEquation}
+                    >
+                        <span>{variables.kd}</span> ={" "}
+                        {getEquationFromStep(current)}
+                    </Flex>
+                    <SecondaryButton
+                        style={{ margin: "0 8px" }}
+                        onClick={() => next()}
+                    >
+                        {current < reactionSteps.length - 1
+                            ? "Next"
+                            : "Restart"}
+                    </SecondaryButton>
+                </Flex>
+                <Steps
+                    className={styles.steps}
+                    direction="vertical"
+                    current={current}
+                    size="small"
+                    items={reactionSteps.map((step) => ({
+                        title: step.title,
+                        description: step.content,
+                    }))}
+                ></Steps>
             </div>
         </Flex>
     );
