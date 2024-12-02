@@ -41,6 +41,12 @@ const CustomModal: React.FC<CustomModalProps> = ({ title, content }) => {
                 onCancel={handleCancel}
                 className={styles.container}
                 style={{ width: "auto" }}
+                okText="Close"
+                footer={(_, { OkBtn }) => (
+                    <>
+                        <OkBtn />
+                    </>
+                )}
             >
                 {content}
             </Modal>
