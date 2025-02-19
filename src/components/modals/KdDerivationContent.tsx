@@ -61,6 +61,8 @@ const definitions = {
     ),
 };
 
+// NOTE: This content is not used in the simplified version of the modal
+// but might be used in the future
 const definitionList = [
     {
         title: "Definition of the dissociation constant",
@@ -85,6 +87,8 @@ const definitionList = [
     },
 ];
 
+// NOTE: This content is not used in the simplified version of the modal
+// but might be used in the future
 const equilibriumState = [
     {
         title: "At equilibrium the rates are equal",
