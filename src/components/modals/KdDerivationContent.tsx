@@ -1,4 +1,3 @@
-import React from "react";
 import { Flex } from "antd";
 import { A, B, AB } from "../agent-symbols";
 import Fraction from "../shared/Fraction";
