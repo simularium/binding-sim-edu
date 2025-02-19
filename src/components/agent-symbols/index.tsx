@@ -6,8 +6,16 @@ import {
     AGENT_C_COLOR,
 } from "../../constants/colors";
 
-export const A: React.FC = () => {
-    return <span style={{ color: AGENT_A_COLOR }}>A</span>;
+interface AgentProps {
+    className?: string;
+}
+
+export const A: React.FC<AgentProps> = ({ className }) => {
+    return (
+        <span className={className} style={{ color: AGENT_A_COLOR }}>
+            A
+        </span>
+    );
 };
 
 export const B: React.FC = () => {

@@ -1,3 +1,4 @@
+import React from "react";
 import { Flex } from "antd";
 import { A, B, AB } from "../agent-symbols";
 import Fraction from "../shared/Fraction";
@@ -60,7 +61,8 @@ const definitions = {
         </>
     ),
 };
-const reactionSteps = [
+
+const definitionList = [
     {
         title: "Definition of the dissociation constant",
         content: (
@@ -82,7 +84,9 @@ const reactionSteps = [
             </Flex>
         ),
     },
+];
 
+const equilibriumState = [
     {
         title: "At equilibrium the rates are equal",
         content: (
@@ -99,6 +103,9 @@ const reactionSteps = [
             </>
         ),
     },
+];
+
+const reactionSteps = [
     {
         title: (
             <>
@@ -181,10 +188,7 @@ const reactionSteps = [
 ];
 
 const getEquationFromStep = (step: number) => {
-    console.log(step);
-    if (step < 4) {
-        return definitions.kd;
-    } else if (step < 5) {
+    if (step < 1) {
         return (
             <Fraction
                 top={
@@ -201,21 +205,30 @@ const getEquationFromStep = (step: number) => {
                 }
             />
         );
-    } else if (step === 5) {
+    } else if (step === 1) {
+        const AGENT_A_CLASS = "agent-symbol-A";
+        const agentA = (
+            <span
+                className={AGENT_A_CLASS}
+                style={{ transition: "opacity .7s" }}
+            >
+                [<A />]
+            </span>
+        );
+        setTimeout(() => {
+            document.querySelectorAll(`.${AGENT_A_CLASS}`).forEach((el) => {
+                return ((el as HTMLElement).style.opacity = "0");
+            });
+        }, 1000);
+
         return (
             <Fraction
                 top={
                     <>
-                        [<A />
-                        ][
-                        <B />]
+                        {agentA}[<B />]
                     </>
                 }
-                bottom={
-                    <>
-                        [<A />]
-                    </>
-                }
+                bottom={agentA}
             />
         );
     } else {
@@ -227,4 +240,11 @@ const getEquationFromStep = (step: number) => {
     }
 };
 
-export { variables, units, definitions, reactionSteps, getEquationFromStep };
+export {
+    variables,
+    units,
+    reactionSteps,
+    getEquationFromStep,
+    definitionList,
+    equilibriumState,
+};
