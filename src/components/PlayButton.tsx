@@ -22,7 +22,6 @@ const PlayButton: React.FC = () => {
                 onPage={{
                     [Module.A_B_AB]: [2, 6],
                     [Module.A_C_AC]: [],
-                    [Module.A_B_C_AB_AC]: [],
                 }}
             >
                 <OverlayButton
