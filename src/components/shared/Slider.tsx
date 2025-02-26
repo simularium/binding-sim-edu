@@ -28,7 +28,7 @@ const Slider: React.FC<SliderProps> = ({
     className,
     disabledNumbers,
     onChangeComplete,
-    overRideValue,
+    overrideValue,
 }) => {
     const [value, setValue] = useState(initialValue);
     const handleSliderChange = (newValue: number) => {
