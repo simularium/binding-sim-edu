@@ -8,8 +8,8 @@ import { OverlayButton } from "./shared/ButtonLibrary";
 import LabIcon from "./icons/Lab";
 import Molecules from "./icons/Molecules";
 import LabView from "./LabView";
-import usePageNumber from "../hooks/usePageNumber";
 import VisibilityControl from "./shared/VisibilityControl";
+import { Module } from "../types";
 
 enum View {
     Lab = "lab",
@@ -24,17 +24,19 @@ const ViewSwitch: React.FC = () => {
             prevView === View.Lab ? View.Simulation : View.Lab
         );
     };
-    const { page, isPlaying, setIsPlaying, handleTimeChange } =
+    const { page, isPlaying, setIsPlaying, handleTimeChange, module } =
         useContext(SimulariumContext);
 
-    usePageNumber(
-        page,
-        (page) => page === 1 && currentView === View.Simulation,
-        () => {
-            // reset home
-            setCurrentView(View.Lab);
-        }
-    );
+    const isFirstPageOfFirstModule = page === 1 && module === 1;
+    const isFirstPageOfSecondModule = page === 1 && module === 2;
+    if (currentView === View.Simulation && isFirstPageOfFirstModule) {
+        // reset home
+        setCurrentView(View.Lab);
+    }
+    if (currentView === View.Lab && isFirstPageOfSecondModule) {
+        // reset home
+        setCurrentView(View.Simulation);
+    }
 
     let buttonStyle: React.CSSProperties = {
         top: 16,
@@ -45,7 +47,7 @@ const ViewSwitch: React.FC = () => {
             "background 0.2s, color 0.2s, border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1)",
     };
 
-    if (page === 1) {
+    if (isFirstPageOfFirstModule) {
         buttonStyle = {
             ...buttonStyle,
             right: "50%",
@@ -56,7 +58,7 @@ const ViewSwitch: React.FC = () => {
     return (
         <div style={{ position: "relative", height: "100%" }}>
             <VisibilityControl notInBonusMaterial>
-                <ProgressionControl onPage={[1, 3, 4]}>
+                <ProgressionControl onPage={{ [Module.A_B_AB]: [1, 3, 4] }}>
                     <OverlayButton
                         onClick={switchView}
                         style={buttonStyle}

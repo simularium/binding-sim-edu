@@ -7,6 +7,7 @@ import styles from "./labview.module.css";
 import classNames from "classnames";
 import ScaleBar from "./ScaleBar";
 import VisibilityControl from "./shared/VisibilityControl";
+import { Module } from "../types";
 
 const LabView: React.FC = () => {
     const { currentProductionConcentration, maxConcentration, page } =
@@ -24,7 +25,7 @@ const LabView: React.FC = () => {
                 { [styles.top]: page === 1 },
             ])}
         >
-            <VisibilityControl excludedPages={[1]}>
+            <VisibilityControl excludedPages={{ [Module.A_B_AB]: [1] }}>
                 <ScaleBar />
             </VisibilityControl>
             <div className={styles.cuvette}>

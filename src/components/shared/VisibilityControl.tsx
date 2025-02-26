@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { SimulariumContext } from "../../simulation/context";
-import { Section } from "../../types";
+import { Module, Section } from "../../types";
 
 interface VisibilityControlProps {
     children: React.ReactNode;
     startPage?: number;
-    excludedPages?: number[];
-    includedPages?: number[];
+    excludedPages?: { [key in Module]?: number[] };
+    includedPages?: { [key in Module]?: number[] };
     conditionalRender?: boolean;
     notInBonusMaterial?: boolean;
     notInIntroduction?: boolean;
@@ -21,7 +21,7 @@ const VisibilityControl: React.FC<VisibilityControlProps> = ({
     notInIntroduction,
     startPage,
 }) => {
-    const { page, section } = useContext(SimulariumContext);
+    const { page, section, module } = useContext(SimulariumContext);
     if (conditionalRender === false) {
         return null;
     }
@@ -29,9 +29,9 @@ const VisibilityControl: React.FC<VisibilityControlProps> = ({
     let shouldRender = true;
 
     if (includedPages) {
-        shouldRender = includedPages.includes(page);
+        shouldRender = includedPages[module]?.includes(page) ?? false;
     } else if (excludedPages) {
-        shouldRender = !excludedPages.includes(page);
+        shouldRender = !excludedPages[module]?.includes(page);
     }
     if (startPage && page < startPage) {
         shouldRender = false;

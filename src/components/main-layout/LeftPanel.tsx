@@ -4,6 +4,7 @@ import {
     AgentName,
     CurrentConcentration,
     InputConcentration,
+    Module,
 } from "../../types";
 import VisibilityControl from "../shared/VisibilityControl";
 import EventsOverTimePlot from "../plots/EventsOverTimePlot";
@@ -28,9 +29,20 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
     unbindingEventsOverTime,
     adjustableAgent,
 }) => {
+    const concentrationExcludedPages = {
+        [Module.A_B_AB]: [0, 1],
+        [Module.A_C_AC]: [],
+        [Module.A_B_C_AB_AC]: [],
+    };
+
+    const eventsOverTimeExcludedPages = {
+        [Module.A_B_AB]: [0, 1, 2],
+        [Module.A_C_AC]: [],
+        [Module.A_B_C_AB_AC]: [],
+    };
     return (
         <>
-            <VisibilityControl excludedPages={[0, 1]}>
+            <VisibilityControl excludedPages={concentrationExcludedPages}>
                 <Concentration
                     concentration={inputConcentration}
                     liveConcentration={liveConcentration}
@@ -39,7 +51,10 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
                     adjustableAgent={adjustableAgent}
                 />
             </VisibilityControl>
-            <VisibilityControl excludedPages={[0, 1, 2]} notInBonusMaterial>
+            <VisibilityControl
+                excludedPages={eventsOverTimeExcludedPages}
+                notInBonusMaterial
+            >
                 <EventsOverTimePlot
                     bindingEventsOverTime={bindingEventsOverTime}
                     unbindingEventsOverTime={unbindingEventsOverTime}
