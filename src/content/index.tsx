@@ -3,7 +3,7 @@ import StartExperiment from "../components/StartExperiment";
 import { A, AB, B } from "../components/agent-symbols";
 import Definition from "../components/shared/Definition";
 import { LayoutType, Module, PageContent, Section } from "../types";
-
+export const FIRST_PAGE = 1;
 export const highAffinityContentArray: PageContent[] = [
     // making the content array 1 indexed to match the page numbers
     {
@@ -233,4 +233,5 @@ export const moduleNames = {
 
 export default {
     [Module.A_B_AB]: highAffinityContentArray,
+    [Module.A_C_AC]: highAffinityContentArray, // THIS IS TO AVOID ERRORS BUT CHANGE IS IN A DIFFERENT PR
 } as { [key in Module]: PageContent[] };

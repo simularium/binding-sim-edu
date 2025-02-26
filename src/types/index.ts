@@ -30,7 +30,8 @@ export enum AgentFunction {
     Fixed = "Fixed",
     Adjustable = "Adjustable",
     Competitor = "Competitor",
-    Complex = "Complex",
+    Complex_1 = "Complex_1",
+    Complex_2 = "Complex_2",
 }
 
 export enum AgentName {

@@ -17,7 +17,7 @@ const AdminUI: React.FC<AdminUIProps> = ({
     setTimeFactor,
     totalPages,
 }) => {
-    const { page, setPage } = useContext(SimulariumContext);
+    const { page, setPage, module, setModule } = useContext(SimulariumContext);
     const isDev = process.env.NODE_ENV === "development";
     const [visible, setVisible] = React.useState<boolean>(isDev);
     useEffect(() => {
@@ -37,6 +37,10 @@ const AdminUI: React.FC<AdminUIProps> = ({
     const pageMarks: SliderSingleProps["marks"] = {};
     for (let i = 0; i <= totalPages; i++) {
         pageMarks[i] = { label: i.toString() };
+    }
+    const moduleMarks: SliderSingleProps["marks"] = {};
+    for (let i = 0; i <= 3; i++) {
+        moduleMarks[i] = { label: i.toString() };
     }
     return (
         visible && (
@@ -62,6 +66,19 @@ const AdminUI: React.FC<AdminUIProps> = ({
                             setPage(value);
                         }}
                         marks={pageMarks}
+                        disabled={false}
+                        name="time factor (ns)"
+                    />
+                    <h4>Module number</h4>
+                    <Slider
+                        min={1}
+                        max={3}
+                        step={1}
+                        initialValue={module}
+                        onChange={(_, value): void => {
+                            setModule(value);
+                        }}
+                        marks={moduleMarks}
                         disabled={false}
                         name="time factor (ns)"
                     />

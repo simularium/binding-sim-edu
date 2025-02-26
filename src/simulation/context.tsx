@@ -16,6 +16,8 @@ interface SimulariumContextType {
     productName: ProductName;
     maxConcentration: number;
     module: Module;
+    moduleLength: number;
+    setModule: (value: Module) => void;
     getAgentColor: (agentName: AgentName) => string;
     currentProductionConcentration: number;
     isPlaying: boolean;
@@ -38,6 +40,8 @@ export const SimulariumContext = createContext({
     trajectoryName: LIVE_SIMULATION_NAME,
     productName: ProductName.AB,
     module: Module.A_B_AB,
+    setModule: () => {},
+    moduleLength: 0,
     maxConcentration: 10,
     getAgentColor: () => "",
     currentProductionConcentration: 0,

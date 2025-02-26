@@ -559,6 +559,8 @@ function App() {
                         handleTimeChange,
                         page,
                         module: currentModule,
+                        setModule: setCurrentModule,
+                        moduleLength: totalMainContentPages,
                         setPage,
                         timeFactor,
                         timeUnit: simulationData.timeUnit,
