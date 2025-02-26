@@ -32,8 +32,8 @@ const agentB: InputAgent = {
     initialConcentration: 0,
     radius: 1,
     partners: [0],
-    kOn: 0.6,
-    kOff: 0.5,
+    kOn: 0.9,
+    kOff: 0.01,
     color: AGENT_B_COLOR,
 };
 
@@ -41,16 +41,16 @@ const agentC: InputAgent = {
     id: 2,
     name: AgentName.C,
     initialConcentration: 0,
-    radius: 1,
+    radius: 0.4,
     partners: [0],
-    kOn: 0.5,
-    kOff: 0.8,
+    kOn: 0.3,
+    kOff: 0.9,
     color: AGENT_C_COLOR,
 };
 
 const kds = {
-    [Module.A_B_AB]: 1,
-    [Module.A_C_AC]: 10,
+    [Module.A_B_AB]: 0.75,
+    [Module.A_C_AC]: 74,
     [Module.A_B_C_AB_AC]: 5,
 };
 
@@ -59,8 +59,13 @@ export default class LiveSimulation implements ISimulationData {
         [AgentName.A]: AgentFunction.Fixed,
         [AgentName.B]: AgentFunction.Adjustable,
         [AgentName.C]: AgentFunction.Competitor,
-        [ProductName.AB]: AgentFunction.Complex,
-        [ProductName.AC]: AgentFunction.Complex,
+        [ProductName.AB]: AgentFunction.Complex_1,
+        [ProductName.AC]: AgentFunction.Complex_2,
+    };
+    static ADJUSTABLE_AGENT_MAP = {
+        [Module.A_B_AB]: AgentName.B,
+        [Module.A_C_AC]: AgentName.C,
+        [Module.A_B_C_AB_AC]: AgentName.B,
     };
     static INITIAL_TIME_FACTOR: number = 30;
     static DEFAULT_TIME_FACTOR: number = 90;
@@ -72,8 +77,9 @@ export default class LiveSimulation implements ISimulationData {
     static INITIAL_CONCENTRATIONS = {
         [AgentName.A]: 10,
         [AgentName.B]: 4,
-        [AgentName.C]: 10,
+        [AgentName.C]: 40,
     };
+
     PRODUCT = {
         [Module.A_B_AB]: ProductName.AB,
         [Module.A_C_AC]: ProductName.AC,
@@ -107,10 +113,10 @@ export default class LiveSimulation implements ISimulationData {
                 maxConcentration = 10;
                 break;
             case Module.A_C_AC:
-                maxConcentration = 20; //TODO: adjust these as needed
+                maxConcentration = 100;
                 break;
             case Module.A_B_C_AB_AC:
-                maxConcentration = 20; //TODO: adjust these as needed
+                maxConcentration = 20;
                 break;
         }
         return maxConcentration;
