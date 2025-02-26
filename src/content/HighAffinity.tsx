@@ -151,7 +151,7 @@ export const highAffinityContentArray: PageContent[] = [
                         </>
                     }
                 />{" "}
-                to compare affinities. K<sub>d</sub> can by determined in this
+                to compare affinities. K<sub>d</sub> can be determined in this
                 experiment by finding the concentration of <B /> at equilibrium
                 where half the binding sites of <A /> are occupied.
             </>
