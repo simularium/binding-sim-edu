@@ -12,11 +12,10 @@ import {
 } from "./constants";
 import { ProductOverTimeTrace } from "./types";
 import { SimulariumContext } from "../../simulation/context";
-import { AGENT_AB_COLOR } from "../../constants/colors";
 import { MICRO } from "../../constants";
+import { getColorIndex, indexToTime } from "../../utils";
 
 import plotStyles from "./plots.module.css";
-import { getColorIndex, indexToTime } from "../../utils";
 
 interface ProductConcentrationPlotProps {
     data: ProductOverTimeTrace[];
@@ -35,8 +34,14 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
     dotsX = [],
     dotsY = [],
 }) => {
-    const { timeFactor, productName, timeUnit, maxConcentration } =
-        useContext(SimulariumContext);
+    const {
+        timeFactor,
+        timeUnit,
+        maxConcentration,
+        productName,
+        adjustableAgentName,
+        getAgentColor,
+    } = useContext(SimulariumContext);
     const hasData = useRef(false);
     if (data.length === 0) {
         hasData.current = false;
@@ -81,8 +86,8 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
             },
             hovertemplate:
                 "time: <b>%{x:.1f}</b><br>" +
-                "[AB]: <b>%{y:.1f}</b><br>" +
-                "Initial [B]: </b>" +
+                `[${productName}]: <b>%{y:.1f}</b><br>` +
+                `Initial [${adjustableAgentName}]: </b>` +
                 `<b>${inputConcentration.toString()} </b>` +
                 "<extra></extra>",
         };
@@ -100,7 +105,7 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         height: Math.max(130, height),
         legend: {
             title: {
-                text: "Initial [B]",
+                text: `Initial [${adjustableAgentName}]`,
                 side: "top right" as const,
                 font: {
                     family: "sans-serif",
@@ -127,7 +132,7 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
             rangemode: "tozero" as const,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,
-                color: AGENT_AB_COLOR,
+                color: getAgentColor(productName),
             },
         },
         shapes: [],
