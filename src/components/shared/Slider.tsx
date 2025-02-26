@@ -13,7 +13,7 @@ interface SliderProps {
     marks?: SliderSingleProps["marks"];
     className?: string;
     disabledNumbers?: number[];
-    overRideValue?: number;
+    overrideValue?: number;
 }
 
 const Slider: React.FC<SliderProps> = ({
