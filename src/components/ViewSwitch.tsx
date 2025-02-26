@@ -10,6 +10,7 @@ import Molecules from "./icons/Molecules";
 import LabView from "./LabView";
 import usePageNumber from "../hooks/usePageNumber";
 import VisibilityControl from "./shared/VisibilityControl";
+import { Module } from "../types";
 
 enum View {
     Lab = "lab",
@@ -56,7 +57,7 @@ const ViewSwitch: React.FC = () => {
     return (
         <div style={{ position: "relative", height: "100%" }}>
             <VisibilityControl notInBonusMaterial>
-                <ProgressionControl onPage={[1, 3, 4]}>
+                <ProgressionControl onPage={{ [Module.A_B_AB]: [1, 3, 4] }}>
                     <OverlayButton
                         onClick={switchView}
                         style={buttonStyle}
