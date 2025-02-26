@@ -42,11 +42,9 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
             setFormState(FormState.Clear);
             return;
         }
-
-        if (
-            selectedAnswer <= correctAnswer + tolerance &&
-            selectedAnswer >= correctAnswer - tolerance
-        ) {
+        const closeness =
+            Math.abs(selectedAnswer - correctAnswer) / correctAnswer;
+        if (closeness <= tolerance) {
             setFormState(FormState.Correct);
         } else {
             setFormState(FormState.Incorrect);

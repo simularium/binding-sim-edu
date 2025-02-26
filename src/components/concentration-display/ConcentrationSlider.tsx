@@ -62,10 +62,11 @@ const ConcentrationSlider: React.FC<SliderProps> = ({
 }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const disabledNumbers = [0];
-
+    const stepSize = useRef(0);
     const marks = useMemo(() => {
+        stepSize.current = (max - min) / 5;
         const marks: SliderSingleProps["marks"] = {};
-        for (let index = min; index <= max; index = index + 2) {
+        for (let index = min; index <= max; index = index + stepSize.current) {
             marks[index] = {
                 label: (
                     <Mark
@@ -87,7 +88,7 @@ const ConcentrationSlider: React.FC<SliderProps> = ({
             name={name}
             min={min}
             max={max}
-            step={2}
+            step={stepSize.current}
             onChange={onChange}
             onChangeComplete={onChangeComplete}
             marks={marks}

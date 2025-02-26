@@ -7,12 +7,12 @@ import RecordEquilibriumButton from "../RecordEquilibriumButton";
 import { ProductOverTimeTrace } from "../plots/types";
 
 import styles from "./layout.module.css";
-import { AB } from "../agent-symbols";
+import { AB, AC } from "../agent-symbols";
 import ResizeContainer from "../shared/ResizeContainer";
 import { SimulariumContext } from "../../simulation/context";
 import HelpPopup from "../HelpPopup";
 import InfoText from "../shared/InfoText";
-import { UiElement } from "../../types";
+import { ProductName, UiElement } from "../../types";
 
 interface RightPanelProps {
     productOverTimeTraces: ProductOverTimeTrace[];
@@ -63,7 +63,8 @@ const RightPanel: React.FC<RightPanelProps> = ({
         >
             <VisibilityControl notInIntroduction>
                 <h3>
-                    Concentration over time for <AB name={productName} />{" "}
+                    Concentration over time for{" "}
+                    {productName === ProductName.AB ? <AB /> : <AC />}{" "}
                     <InfoText uiElement={UiElement.ConcentrationOverTimePlot} />
                 </h3>
                 <HelpPopup
