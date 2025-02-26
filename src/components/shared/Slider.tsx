@@ -13,6 +13,7 @@ interface SliderProps {
     marks?: SliderSingleProps["marks"];
     className?: string;
     disabledNumbers?: number[];
+    overRideValue?: number;
 }
 
 const Slider: React.FC<SliderProps> = ({
@@ -27,6 +28,7 @@ const Slider: React.FC<SliderProps> = ({
     className,
     disabledNumbers,
     onChangeComplete,
+    overRideValue,
 }) => {
     const [value, setValue] = useState(initialValue);
     const handleSliderChange = (newValue: number) => {
@@ -55,7 +57,7 @@ const Slider: React.FC<SliderProps> = ({
             max={max}
             style={{ width: "100%" }}
             step={step}
-            value={value}
+            value={overRideValue ?? value}
             onChange={handleSliderChange}
             onChangeComplete={handleSliderChangeComplete}
             disabled={disabled}
