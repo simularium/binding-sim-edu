@@ -20,7 +20,7 @@ interface SimulariumContextType {
     module: Module;
     moduleLength: number;
     setModule: (value: Module) => void;
-    getAgentColor: (agentName: AgentName) => string;
+    getAgentColor: (agentName: AgentName | ProductName) => string;
     currentProductionConcentration: number;
     isPlaying: boolean;
     setIsPlaying: (value: boolean) => void;

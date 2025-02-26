@@ -1,6 +1,5 @@
 import Rainbow from "rainbowvis.js";
 import { useContext, useMemo } from "react";
-import { AGENT_AB_COLOR } from "../constants/colors";
 import { SimulariumContext } from "../simulation/context";
 import Cuvette from "./icons/Cuvette";
 import styles from "./labview.module.css";
@@ -10,13 +9,19 @@ import VisibilityControl from "./shared/VisibilityControl";
 import { Module } from "../types";
 
 const LabView: React.FC = () => {
-    const { currentProductionConcentration, maxConcentration, page } =
-        useContext(SimulariumContext);
+    const {
+        currentProductionConcentration,
+        maxConcentration,
+        page,
+        getAgentColor,
+        productName,
+    } = useContext(SimulariumContext);
+    const color = getAgentColor(productName);
     const colorGradient = useMemo(() => {
         const rainbow = new Rainbow();
-        rainbow.setSpectrum("#FFFFFF", AGENT_AB_COLOR);
+        rainbow.setSpectrum("#FFFFFF", color);
         return rainbow;
-    }, []);
+    }, [color]);
     const position = (currentProductionConcentration / maxConcentration) * 100;
     return (
         <div
@@ -26,7 +31,7 @@ const LabView: React.FC = () => {
             ])}
         >
             <VisibilityControl excludedPages={{ [Module.A_B_AB]: [1] }}>
-                <ScaleBar />
+                <ScaleBar productColor={color} />
             </VisibilityControl>
             <div className={styles.cuvette}>
                 <Cuvette color={colorGradient.colorAt(position)} />
