@@ -9,13 +9,15 @@ import {
     LIVE_SIMULATION_NAME,
     NANO,
 } from "../constants";
-import { AgentName, ProductName, Section } from "../types";
+import { AgentName, Module, ProductName, Section } from "../types";
 
 interface SimulariumContextType {
     trajectoryName: string;
     productName: ProductName;
+    adjustableAgentName: AgentName;
+    fixedAgentStartingConcentration: number;
     maxConcentration: number;
-    getAgentColor: (agentName: AgentName) => string;
+    getAgentColor: (agentName: AgentName | ProductName) => string;
     currentProductionConcentration: number;
     isPlaying: boolean;
     setIsPlaying: (value: boolean) => void;
@@ -24,6 +26,9 @@ interface SimulariumContextType {
     handleStartExperiment: () => void;
     section: Section;
     setPage: (value: number) => void;
+    module: Module;
+    setCurrentModule: (value: Module) => void;
+    moduleLength: number;
     page: number;
     timeFactor: number;
     timeUnit: string;
@@ -35,7 +40,9 @@ interface SimulariumContextType {
 
 export const SimulariumContext = createContext({
     trajectoryName: LIVE_SIMULATION_NAME,
+    adjustableAgentName: AgentName.B,
     productName: ProductName.AB,
+    fixedAgentStartingConcentration: 0,
     maxConcentration: 10,
     getAgentColor: () => "",
     currentProductionConcentration: 0,
@@ -47,6 +54,9 @@ export const SimulariumContext = createContext({
     handleStartExperiment: () => {},
     setPage: () => {},
     page: 0,
+    setCurrentModule: () => {},
+    module: Module.A_B_AB,
+    moduleLength: 0,
     timeFactor: 30,
     timeUnit: NANO,
     handleTrajectoryChange: () => {},

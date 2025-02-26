@@ -12,6 +12,7 @@ import {
     AgentName,
     CurrentConcentration,
     InputConcentration,
+    LayoutType,
     Module,
     ProductName,
     ScatterTrace,
@@ -22,7 +23,7 @@ import LeftPanel from "./components/main-layout/LeftPanel";
 import RightPanel from "./components/main-layout/RightPanel";
 import ReactionDisplay from "./components/main-layout/ReactionDisplay";
 import ContentPanelTimer from "./components/main-layout/ContentPanelTimer";
-import content, { moduleNames } from "./content";
+import content, { FIRST_PAGE, moduleNames } from "./content";
 import {
     PROMPT_TO_ADJUST_B,
     DEFAULT_VIEWPORT_SIZE,
@@ -48,10 +49,8 @@ import LiveSimulationData from "./simulation/LiveSimulationData";
 import { PLOT_COLORS } from "./components/plots/constants";
 import useModule from "./hooks/useModule";
 
-const ADJUSTABLE_AGENT = AgentName.B;
-
 function App() {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(FIRST_PAGE);
     const [time, setTime] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [trajectoryStatus, setTrajectoryStatus] = useState(
@@ -86,12 +85,18 @@ function App() {
     const [timeFactor, setTimeFactor] = useState(
         LiveSimulationData.INITIAL_TIME_FACTOR
     );
-    const [viewportSize, setViewportSize] = useState(DEFAULT_VIEWPORT_SIZE);
+    const [viewportWidth, setViewportWidth] = useState(
+        DEFAULT_VIEWPORT_SIZE.width
+    );
+    const [viewportHeight, setViewportHeight] = useState(
+        DEFAULT_VIEWPORT_SIZE.height
+    );
+
     /**
      * Analysis state
      * used to create plots and feedback
      */
-    const [trajectoryPlotData, setTrajectoryPlotData] =
+    const [preComputedTrajectoryPlotData, setPreComputedTrajectoryPlotData] =
         useState<ScatterTrace[]>();
     const [liveConcentration, setLiveConcentration] =
         useState<CurrentConcentration>({
@@ -161,21 +166,22 @@ function App() {
         if (!trajectory) {
             return null;
         }
-        const longestAxis = Math.max(viewportSize.width, viewportSize.height);
+        const longestAxis = Math.max(viewportWidth, viewportHeight);
         return new BindingSimulator(trajectory, longestAxis / 3);
-    }, [currentModule, viewportSize, simulationData]);
+    }, [viewportWidth, viewportHeight, simulationData, currentModule]);
 
     const preComputedPlotDataManager = useMemo(() => {
-        if (!trajectoryPlotData) {
+        if (!preComputedTrajectoryPlotData) {
             return null;
         }
-        return new PreComputedPlotData(trajectoryPlotData);
-    }, [trajectoryPlotData]);
+        return new PreComputedPlotData(preComputedTrajectoryPlotData);
+    }, [preComputedTrajectoryPlotData]);
 
     useEffect(() => {
         if (!clientSimulator) {
             return;
         }
+
         simulariumController.changeFile(
             {
                 clientSimulator: clientSimulator,
@@ -244,6 +250,7 @@ function App() {
             uniqMeasuredConcentrations.length >= 3
         );
     }, [hasAValueAboveKd, hasAValueBelowKd, uniqMeasuredConcentrations]);
+
     const handleNewInputConcentration = useCallback(
         (name: string, value: number) => {
             if (value === 0) {
@@ -261,6 +268,7 @@ function App() {
                 name as keyof typeof LiveSimulationData.AVAILABLE_AGENTS;
             const agentId = LiveSimulationData.AVAILABLE_AGENTS[agentName].id;
             clientSimulator.changeConcentration(agentId, value);
+
             simulariumController.gotoTime(time + 1);
             resetCurrentRunAnalysisState();
         },
@@ -282,13 +290,18 @@ function App() {
                 LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
         });
         handleNewInputConcentration(
-            ADJUSTABLE_AGENT,
+            LiveSimulationData.ADJUSTABLE_AGENT_MAP[currentModule],
             LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B]
         );
         setIsPlaying(false);
         clearAllAnalysisState();
         setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
-    }, [clearAllAnalysisState, handleNewInputConcentration, productName]);
+    }, [
+        clearAllAnalysisState,
+        handleNewInputConcentration,
+        productName,
+        currentModule,
+    ]);
     // Special events in page navigation
     // usePageNumber takes a page number, a conditional and a callback
 
@@ -299,7 +312,10 @@ function App() {
     // clicked the home button
     usePageNumber(
         page,
-        (page) => page === 1 && currentProductConcentrationArray.length > 1,
+        (page) =>
+            page === 1 &&
+            currentModule === 1 &&
+            currentProductConcentrationArray.length > 1,
         () => {
             totalReset();
         }
@@ -313,17 +329,35 @@ function App() {
             isPlaying &&
             recordedInputConcentration.length > 0 &&
             recordedInputConcentration[0] !==
-                inputConcentration[ADJUSTABLE_AGENT],
+                inputConcentration[
+                    LiveSimulationData.ADJUSTABLE_AGENT_MAP[currentModule]
+                ],
         () => {
             setPage(page + 1);
         }
     );
 
+    // handle trajectory changes based on content changes
     useEffect(() => {
+        const currentPage = content[currentModule][page];
         const nextPage = content[currentModule][page + 1];
+        if (!nextPage?.trajectoryUrl && !currentPage.trajectoryUrl) {
+            if (trajectoryStatus === TrajectoryStatus.LOADED) {
+                simulariumController.clearFile();
+                setTrajectoryStatus(TrajectoryStatus.INITIAL);
+            }
+            if (
+                currentPage.layout === LayoutType.LiveSimulation &&
+                simulariumController.getFile() !== LIVE_SIMULATION_NAME
+            ) {
+                setTrajectoryName(LIVE_SIMULATION_NAME);
+            }
+        }
+
         if (!nextPage) {
             return;
         }
+        // if the next page has a trajectory, load it
         const url = nextPage.trajectoryUrl;
         if (trajectoryStatus === TrajectoryStatus.INITIAL && url) {
             const changeTrajectory = async () => {
@@ -334,7 +368,7 @@ function App() {
                 await fetch3DTrajectory(
                     url,
                     simulariumController,
-                    setTrajectoryPlotData
+                    setPreComputedTrajectoryPlotData
                 );
                 setTrajectoryStatus(TrajectoryStatus.LOADED);
             };
@@ -349,15 +383,14 @@ function App() {
         totalReset,
     ]);
 
-    usePageNumber(
-        page,
-        (page) => page === finalPageNumber,
-        () => {
-            if (simulariumController.getFile()) {
-                simulariumController.clearFile();
-            }
+    useEffect(() => {
+        const { section } = content[currentModule][page];
+        if (section === Section.Experiment) {
+            setTimeFactor(LiveSimulationData.DEFAULT_TIME_FACTOR);
+        } else if (section === Section.Introduction) {
+            setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
         }
-    );
+    }, [currentModule, page]);
 
     const addProductionTrace = (previousConcentration: number) => {
         const traces = productOverTimeTraces;
@@ -376,7 +409,6 @@ function App() {
     const handleStartExperiment = () => {
         simulariumController.pause();
         totalReset();
-        setTimeFactor(LiveSimulationData.DEFAULT_TIME_FACTOR);
         setPage(page + 1);
     };
 
@@ -386,12 +418,7 @@ function App() {
             // 2d trajectory
             // switch to orthographic camera
             simulariumController.setCameraType(true);
-            const { section } = content[currentModule][page];
-            if (section === Section.Experiment) {
-                setTimeFactor(LiveSimulationData.DEFAULT_TIME_FACTOR);
-            } else {
-                setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
-            }
+            setPreComputedTrajectoryPlotData(undefined);
             setFinalTime(-1);
         } else {
             // 3d trajectory
@@ -414,7 +441,6 @@ function App() {
         }
         let concentrations: CurrentConcentration = {};
         let previousData = currentProductConcentrationArray;
-
         if (preComputedPlotDataManager) {
             if (timeData.time === 0) {
                 // for the 3D trajectory,
@@ -482,16 +508,19 @@ function App() {
             setEquilibriumFeedbackTimeout("Not yet!");
             return false;
         }
+        const adjustableAgentName =
+            LiveSimulationData.ADJUSTABLE_AGENT_MAP[currentModule];
         // this will always be defined for the current run, but since there are
         // different agents in each module, typescript fears it will be undefined
-        const currentInputConcentration = inputConcentration[ADJUSTABLE_AGENT];
+        const currentInputConcentration =
+            inputConcentration[adjustableAgentName];
         if (currentInputConcentration === undefined) {
             return false;
         }
         const concentrations =
             clientSimulator.getCurrentConcentrations(productName);
         const productConcentration = concentrations[productName];
-        const reactantConcentration = concentrations[ADJUSTABLE_AGENT];
+        const reactantConcentration = concentrations[adjustableAgentName];
 
         const currentTime = indexToTime(
             currentProductConcentrationArray.length,
@@ -538,7 +567,8 @@ function App() {
 
     const { totalMainContentPages } = useModule(currentModule);
     const lastPageOfExperiment = page === totalMainContentPages;
-
+    const adjustableAgentName =
+        LiveSimulationData.ADJUSTABLE_AGENT_MAP[currentModule];
     return (
         <>
             <div className="app">
@@ -546,12 +576,17 @@ function App() {
                     value={{
                         trajectoryName,
                         productName,
+                        adjustableAgentName,
+                        fixedAgentStartingConcentration:
+                            inputConcentration[AgentName.A] || 0,
                         currentProductionConcentration:
                             liveConcentration[productName] || 0,
                         maxConcentration:
                             simulationData.getMaxConcentration(currentModule),
                         handleStartExperiment,
                         section: content[currentModule][page].section,
+                        moduleLength: content[currentModule].length,
+                        module: currentModule,
                         getAgentColor: simulationData.getAgentColor,
                         isPlaying,
                         setIsPlaying,
@@ -559,11 +594,18 @@ function App() {
                         handleTimeChange,
                         page,
                         setPage,
+                        setCurrentModule,
                         timeFactor,
                         timeUnit: simulationData.timeUnit,
                         handleTrajectoryChange,
-                        viewportSize,
-                        setViewportSize,
+                        viewportSize: {
+                            width: viewportWidth,
+                            height: viewportHeight,
+                        },
+                        setViewportSize: ({ width, height }) => {
+                            setViewportWidth(width);
+                            setViewportHeight(height);
+                        },
                         recordedConcentrations: recordedInputConcentration,
                     }}
                 >
@@ -611,7 +653,7 @@ function App() {
                                 unbindingEventsOverTime={
                                     unBindingEventsOverTime
                                 }
-                                adjustableAgent={ADJUSTABLE_AGENT}
+                                adjustableAgent={adjustableAgentName}
                             />
                         }
                         centerPanel={
@@ -636,7 +678,7 @@ function App() {
                                     handleRecordEquilibrium
                                 }
                                 currentAdjustableAgentConcentration={
-                                    inputConcentration[ADJUSTABLE_AGENT] || 0
+                                    inputConcentration[adjustableAgentName] || 0
                                 }
                                 equilibriumData={{
                                     inputConcentrations:

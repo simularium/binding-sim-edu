@@ -1,5 +1,5 @@
 import { System, Circle, Response } from "detect-collisions";
-import { find, random } from "lodash";
+import { find, isEqual, random } from "lodash";
 import { Vector } from "sat";
 
 import {
@@ -13,7 +13,7 @@ import {
     VisTypes,
 } from "@aics/simularium-viewer";
 import { InputAgent, ProductName, StoredAgent } from "../types";
-import { AGENT_AB_COLOR } from "../constants/colors";
+import { AGENT_AB_COLOR, AGENT_AC_COLOR } from "../constants/colors";
 import LiveSimulationData from "./LiveSimulationData";
 import { LIVE_SIMULATION_NAME } from "../constants";
 
@@ -157,7 +157,12 @@ class BindingInstance extends Circle {
         }
         this.setPosition(this.pos.x + xStep, this.pos.y + yStep);
         if (this.child) {
-            this.rotateGroup(xStep, yStep);
+            const unbind = this.checkWillUnbind(this.child);
+            if (!unbind) {
+                this.rotateGroup(xStep, yStep);
+            } else {
+                return true;
+            }
         }
     }
 
@@ -172,6 +177,7 @@ class BindingInstance extends Circle {
         this.child = null;
         this.isTrigger = false;
         ligand.releaseFromParent();
+
         // QUESTION: should the ligand be moved to a random position?
         return true;
     }
@@ -213,6 +219,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     numberAgentOnRight: number = 0;
     _isMixed: boolean = false;
     size: number;
+    numberLowSlopes: number = 0;
+    productColor: string = AGENT_AB_COLOR;
+    productName: ProductName = ProductName.AB;
+    prevProductConcentration: number = 0;
     constructor(
         agents: InputAgent[],
         size: number,
@@ -225,6 +235,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.timeFactor = timeFactor;
         this.agents = this.initializeAgents(agents);
         this.currentFrame = 0;
+        this.numberLowSlopes = 0;
         this.system.separate();
     }
 
@@ -274,6 +285,9 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 this.instances.push(instance);
             }
         }
+        this.productName = this.getProductName(agents);
+        this.productColor = this.getProductColor(agents);
+        this.numberLowSlopes = 0;
         return agents as StoredAgent[];
     }
 
@@ -284,21 +298,31 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         if (agentInstance.id !== this.mixCheckAgent) {
             return;
         }
-
         // checking the rightmost third of the simulation
         // and the left most third of the simulation
-        if (agentInstance.pos.x < -this.size / 3) {
+        if (agentInstance.pos.x < 0) {
             this.numberAgentOnLeft++;
-        } else if (agentInstance.pos.x > this.size / 3) {
+        } else if (agentInstance.pos.x > 0) {
             this.numberAgentOnRight++;
         }
     }
 
-    private compareAgentsOnEachSide() {
+    private checkChangeInTotalProduct() {
         // once the simulation is mixed, if it dips momentarily
         // that's not a sign that equilibrium has been reversed
         if (this._isMixed) {
             return;
+        }
+        const lastValue = this.prevProductConcentration;
+        const newValue = this.getCurrentConcentrations(this.productName)[
+            this.productName
+        ];
+        const slope = newValue - lastValue;
+        this.prevProductConcentration = newValue;
+        if (Math.abs(slope) < 0.1) {
+            this.numberLowSlopes++;
+        } else if (Math.abs(slope) > 0.3) {
+            this.numberLowSlopes = 0;
         }
 
         // if either of the agents is a limiting reactant
@@ -316,11 +340,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             this._isMixed = true;
             return;
         }
-
-        const diff = Math.abs(this.numberAgentOnLeft - this.numberAgentOnRight);
-        const total = this.numberAgentOnLeft + this.numberAgentOnRight;
-        const percentUnmixed = (diff / total) * 100;
-        if (percentUnmixed < 10) {
+        if (this.numberLowSlopes >= 4) {
             this._isMixed = true;
         }
     }
@@ -460,6 +480,28 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         }
     }
 
+    private getProductName(agents: InputAgent[]) {
+        const agentNames = agents.map((agent) => agent.name);
+        if (isEqual(agentNames, ["A", "B"])) {
+            return ProductName.AB;
+        }
+        if (isEqual(agentNames, ["A", "C"])) {
+            return ProductName.AC;
+        }
+        return ProductName.AB;
+    }
+
+    private getProductColor(agents: InputAgent[]) {
+        const agentNames = agents.map((agent) => agent.name);
+        if (isEqual(agentNames, ["A", "B"])) {
+            return AGENT_AB_COLOR;
+        }
+        if (isEqual(agentNames, ["A", "C"])) {
+            return AGENT_AC_COLOR;
+        }
+        return AGENT_AB_COLOR;
+    }
+
     /** PUBLIC METHODS BELOW */
 
     public isMixed() {
@@ -478,6 +520,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         if (!agent) {
             return;
         }
+        this.numberLowSlopes = 0;
         const newCount = this.convertConcentrationToCount(newConcentration);
         const oldCount = agent.count || 0;
         agent.count = newCount;
@@ -601,17 +644,28 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         if (this.static || this.initialState) {
             return this.staticUpdate();
         }
+
         this.clearMixCounts();
 
         for (let i = 0; i < this.instances.length; ++i) {
-            this.instances[i].oneStep(this.size, this.timeFactor);
+            const unbindingOccurred = this.instances[i].oneStep(
+                this.size,
+                this.timeFactor
+            );
+            if (unbindingOccurred) {
+                this.currentNumberOfUnbindingEvents++;
+                this.currentNumberBound--;
+            }
             this.countNumberOfInstancesOnEachSide(this.instances[i]);
         }
         // reset to zero for every tenth time point
         if (this.currentFrame % 10 === 0) {
             this.currentNumberOfBindingEvents = 0;
             this.currentNumberOfUnbindingEvents = 0;
-            this.compareAgentsOnEachSide();
+        }
+        // check if the system is mixed every 50 time points
+        if (this.currentFrame % 50 === 0) {
+            this.checkChangeInTotalProduct();
         }
         this.system.checkAll((response: Response) => {
             const { a, b, overlapV } = response;
@@ -620,13 +674,19 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 // if they are bound, check if they should unbind
                 if (a.isBoundPair(b)) {
                     let unbound = false;
+                    let ligand = null;
+                    let target = null;
                     if (a.r < b.r) {
-                        unbound = b.checkWillUnbind(a);
+                        target = b;
+                        ligand = a;
                     } else {
                         // b is the ligand
-                        unbound = a.checkWillUnbind(b);
+                        ligand = b;
+                        target = a;
                     }
+                    unbound = target.checkWillUnbind(ligand);
                     if (unbound) {
+                        // ligand.move(-overlapV.x, -overlapV.y);
                         this.currentNumberOfUnbindingEvents++;
                         this.currentNumberBound--;
                     }
@@ -718,7 +778,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             typeMapping[this.agents[i].id + 100] = {
                 name: `${this.agents[i].name}#bound`,
                 geometry: {
-                    color: AGENT_AB_COLOR,
+                    color: this.productColor,
                     displayType: GeometryDisplayType.SPHERE,
                     url: "",
                 },
