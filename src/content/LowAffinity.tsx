@@ -13,15 +13,14 @@ export const lowAffinityContentArray: PageContent[] = [
             <>
                 Molecule <C /> has a different binding affinity with molecule{" "}
                 <A />. Let’s repeat our simulation experiments with <A /> and{" "}
-                <C />
-                to determine the binding affinity K<sub>d</sub> for this pair of
-                molecules.
+                <C /> to determine the binding affinity K<sub>d</sub> for this
+                pair of molecules.
             </>
         ),
         layout: LayoutType.LiveSimulation,
         section: Section.Experiment,
         callToAction:
-            "Choose different concentrations of C and repeat the experiment to record the new equilibrium concentrations.",
+            "Press play and watch the Concentration over time plot until you think the reaction has reached equilibrium. Then, press the “Record” button to record the equilibrium concentration.",
     },
     {
         content: (
@@ -46,5 +45,14 @@ export const lowAffinityContentArray: PageContent[] = [
                 equilibrium point until you have enough data.
             </>
         ),
+    },
+    {
+        content:
+            "Congratulations, you’ve completed the High Affinity experiment!",
+        backButton: true,
+        // nextButton: true,
+        nextButtonText: "View examples",
+        section: Section.BonusContent,
+        layout: LayoutType.FullScreenOverlay,
     },
 ];
