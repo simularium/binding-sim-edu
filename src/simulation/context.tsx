@@ -27,7 +27,7 @@ interface SimulariumContextType {
     section: Section;
     setPage: (value: number) => void;
     module: Module;
-    setCurrentModule: (value: Module) => void;
+    setModule: (value: Module) => void;
     moduleLength: number;
     page: number;
     timeFactor: number;
@@ -54,7 +54,7 @@ export const SimulariumContext = createContext({
     handleStartExperiment: () => {},
     setPage: () => {},
     page: 0,
-    setCurrentModule: () => {},
+    setModule: () => {},
     module: Module.A_B_AB,
     moduleLength: 0,
     timeFactor: 30,
