@@ -48,8 +48,6 @@ import LiveSimulationData from "./simulation/LiveSimulationData";
 import { PLOT_COLORS } from "./components/plots/constants";
 import useModule from "./hooks/useModule";
 
-const ADJUSTABLE_AGENT = AgentName.B;
-
 function App() {
     const [page, setPage] = useState(1);
     const [time, setTime] = useState(0);
@@ -62,6 +60,7 @@ function App() {
      * Simulation state
      * input values for the simulation
      */
+
     const [trajectoryName, setTrajectoryName] = useState(LIVE_SIMULATION_NAME);
     const simulationData = useMemo(() => {
         if (trajectoryName === LIVE_SIMULATION_NAME) {
@@ -87,6 +86,8 @@ function App() {
         LiveSimulationData.INITIAL_TIME_FACTOR
     );
     const [viewportSize, setViewportSize] = useState(DEFAULT_VIEWPORT_SIZE);
+    const adjustableAgentName =
+        LiveSimulationData.ADJUSTABLE_AGENT_MAP[currentModule];
     /**
      * Analysis state
      * used to create plots and feedback
@@ -282,13 +283,18 @@ function App() {
                 LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
         });
         handleNewInputConcentration(
-            ADJUSTABLE_AGENT,
+            adjustableAgentName,
             LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B]
         );
         setIsPlaying(false);
         clearAllAnalysisState();
         setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
-    }, [clearAllAnalysisState, handleNewInputConcentration, productName]);
+    }, [
+        clearAllAnalysisState,
+        handleNewInputConcentration,
+        productName,
+        adjustableAgentName,
+    ]);
     // Special events in page navigation
     // usePageNumber takes a page number, a conditional and a callback
 
@@ -313,7 +319,7 @@ function App() {
             isPlaying &&
             recordedInputConcentration.length > 0 &&
             recordedInputConcentration[0] !==
-                inputConcentration[ADJUSTABLE_AGENT],
+                inputConcentration[adjustableAgentName],
         () => {
             setPage(page + 1);
         }
@@ -484,14 +490,15 @@ function App() {
         }
         // this will always be defined for the current run, but since there are
         // different agents in each module, typescript fears it will be undefined
-        const currentInputConcentration = inputConcentration[ADJUSTABLE_AGENT];
+        const currentInputConcentration =
+            inputConcentration[adjustableAgentName];
         if (currentInputConcentration === undefined) {
             return false;
         }
         const concentrations =
             clientSimulator.getCurrentConcentrations(productName);
         const productConcentration = concentrations[productName];
-        const reactantConcentration = concentrations[ADJUSTABLE_AGENT];
+        const reactantConcentration = concentrations[adjustableAgentName];
 
         const currentTime = indexToTime(
             currentProductConcentrationArray.length,
@@ -546,8 +553,11 @@ function App() {
                     value={{
                         trajectoryName,
                         productName,
+                        adjustableAgentName,
                         currentProductionConcentration:
                             liveConcentration[productName] || 0,
+                        fixedAgentStartingConcentration:
+                            inputConcentration[AgentName.A] || 0,
                         maxConcentration:
                             simulationData.getMaxConcentration(currentModule),
                         handleStartExperiment,
@@ -614,7 +624,7 @@ function App() {
                                 unbindingEventsOverTime={
                                     unBindingEventsOverTime
                                 }
-                                adjustableAgent={ADJUSTABLE_AGENT}
+                                adjustableAgent={adjustableAgentName}
                             />
                         }
                         centerPanel={
@@ -639,7 +649,7 @@ function App() {
                                     handleRecordEquilibrium
                                 }
                                 currentAdjustableAgentConcentration={
-                                    inputConcentration[ADJUSTABLE_AGENT] || 0
+                                    inputConcentration[adjustableAgentName] || 0
                                 }
                                 equilibriumData={{
                                     inputConcentrations:

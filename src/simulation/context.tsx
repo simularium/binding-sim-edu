@@ -15,6 +15,8 @@ interface SimulariumContextType {
     trajectoryName: string;
     productName: ProductName;
     maxConcentration: number;
+    fixedAgentStartingConcentration: number;
+    adjustableAgentName: AgentName;
     module: Module;
     moduleLength: number;
     setModule: (value: Module) => void;
@@ -40,6 +42,8 @@ export const SimulariumContext = createContext({
     trajectoryName: LIVE_SIMULATION_NAME,
     productName: ProductName.AB,
     module: Module.A_B_AB,
+    fixedAgentStartingConcentration: 0,
+    adjustableAgentName: AgentName.B,
     setModule: () => {},
     moduleLength: 0,
     maxConcentration: 10,
