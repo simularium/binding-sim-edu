@@ -289,6 +289,7 @@ function App() {
             [AgentName.B]:
                 LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
         });
+        // advances time
         handleNewInputConcentration(
             LiveSimulationData.ADJUSTABLE_AGENT_MAP[currentModule],
             LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B]
@@ -434,6 +435,7 @@ function App() {
     const handleTimeChange = (timeData: TimeData) => {
         const { time } = timeData;
         setTime(time);
+        console.log("new time", time);
         // can't use isLastFrame here because the time is not updated
         // in state yet
         if (finalTime > 0 && time >= finalTime - timeFactor && isPlaying) {

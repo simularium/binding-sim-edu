@@ -640,7 +640,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         return frameData;
     }
 
-    public update(): VisDataMessage {
+    public update(frame?: number): VisDataMessage {
+        if (frame) {
+            this.currentFrame = frame;
+        }
         if (this.static || this.initialState) {
             return this.staticUpdate();
         }
