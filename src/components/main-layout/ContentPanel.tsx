@@ -7,6 +7,7 @@ import { moduleNames } from "../../content";
 import PointerIcon from "../icons/PointerIcon";
 import NextButton from "../shared/NextButton";
 import BackButton from "../shared/BackButton";
+import CustomModal from "../shared/CustomModal";
 
 import styles from "./layout.module.css";
 export interface ContentPanelProps extends PageContent {
@@ -22,8 +23,9 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
     callToAction,
     backButton,
     nextButton,
-    nextButtonText,
     moreInfo,
+    modal,
+    nextButtonText,
     actionButton,
     section,
     currentModule,
@@ -57,9 +59,14 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
             <div className={styles.contentPanelText}>
                 <h3>{header}</h3>
                 <p>{content}</p>
-
-                {moreInfo && (
-                    <span className={styles.moreInfo}>{moreInfo}</span>
+                {modal && (
+                    <Flex gap={12} align="center">
+                        <CustomModal
+                            title={modal.title}
+                            content={modal.content}
+                        />
+                        {moreInfo && <span>{moreInfo}</span>}
+                    </Flex>
                 )}
                 {callToAction && (
                     <p className={styles.callToActionP}>
