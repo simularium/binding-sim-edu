@@ -11,7 +11,7 @@ type ProgressionControlChildProps =
 type ProgressionControlChild = React.ReactElement<ProgressionControlChildProps>;
 interface ProgressionControlProps {
     children: ProgressionControlChild;
-    onPage: { [key in Module]?: number | number[] };
+    onPage: { [key in Module]?: number[] };
 }
 
 /**
@@ -25,13 +25,13 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
 }) => {
     const { page, setPage, module } = useContext(SimulariumContext);
     const pagesToAdvance = onPage[module];
+    let showHighlight = false;
     const progress = () => {
-        if (Array.isArray(pagesToAdvance)) {
-            if (pagesToAdvance.includes(page)) {
-                setPage(page + 1);
-            }
-        } else if (page === pagesToAdvance) {
+        if (pagesToAdvance?.includes(page)) {
             setPage(page + 1);
+            showHighlight = true;
+        } else {
+            showHighlight = false;
         }
     };
 
@@ -50,10 +50,6 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
             }
         };
     };
-
-    const showHighlight =
-        (Array.isArray(onPage) && onPage[0] === page) ||
-        page === pagesToAdvance;
 
     const className = showHighlight ? styles.hintHighlight : "";
 

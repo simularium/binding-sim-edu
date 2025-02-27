@@ -142,7 +142,13 @@ class BindingInstance extends Circle {
         }
         this.setPosition(this.pos.x + xStep, this.pos.y + yStep);
         if (this.child) {
-            this.rotateGroup(xStep, yStep);
+            // first check if it will unbind, otherwise rotate
+            const unbind = this.checkWillUnbind(this.child);
+            if (!unbind) {
+                this.rotateGroup(xStep, yStep);
+            } else {
+                return true;
+            }
         }
     }
 
