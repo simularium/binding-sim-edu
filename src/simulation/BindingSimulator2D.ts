@@ -427,7 +427,14 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.clearMixCounts();
 
         for (let i = 0; i < this.instances.length; ++i) {
-            this.instances[i].oneStep(this.size, this.timeFactor);
+            const unbindingOccurred = this.instances[i].oneStep(
+                this.size,
+                this.timeFactor
+            );
+            if (unbindingOccurred) {
+                this.currentNumberOfUnbindingEvents++;
+                this.currentNumberBound--;
+            }
             this.countNumberOfInstancesOnEachSide(this.instances[i]);
         }
         // reset to zero for every tenth time point

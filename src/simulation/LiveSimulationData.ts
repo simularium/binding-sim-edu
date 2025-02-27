@@ -32,8 +32,8 @@ const agentB: InputAgent = {
     initialConcentration: 0,
     radius: 1,
     partners: [0],
-    kOn: 0.6,
-    kOff: 0.5,
+    kOn: 0.9,
+    kOff: 0.01,
     color: AGENT_B_COLOR,
 };
 
@@ -49,7 +49,7 @@ const agentC: InputAgent = {
 };
 
 const kds = {
-    [Module.A_B_AB]: 1,
+    [Module.A_B_AB]: 0.75,
     [Module.A_C_AC]: 10,
     [Module.A_B_C_AB_AC]: 5,
 };
