@@ -27,9 +27,8 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
     const pagesToAdvance = onPage[module];
     const progress = () => {
         if (pagesToAdvance.includes(page)) {
-                setPage(page + 1);
-            }
-        } 
+            setPage(page + 1);
+        }
     };
 
     const mergeHandlers = (baseHandler: BaseHandler) => {
