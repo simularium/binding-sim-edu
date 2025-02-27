@@ -26,7 +26,7 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
     const { page, setPage, module } = useContext(SimulariumContext);
     const pagesToAdvance = onPage[module];
     const progress = () => {
-        if (pagesToAdvance.includes(page)) {
+        if (pagesToAdvance?.includes(page)) {
             setPage(page + 1);
         }
     };
