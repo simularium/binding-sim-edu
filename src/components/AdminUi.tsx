@@ -57,6 +57,7 @@ const AdminUI: React.FC<AdminUIProps> = ({
                         min={0}
                         max={totalPages}
                         step={1}
+                        overrideValue={page}
                         initialValue={page}
                         onChange={(_, value): void => {
                             setPage(value);
