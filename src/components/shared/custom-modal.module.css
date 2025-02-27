@@ -1,4 +1,4 @@
 .container {
-    max-width: 90%;
+    max-width: calc(min(90%, 1000px));
     width: auto !important;
 }
