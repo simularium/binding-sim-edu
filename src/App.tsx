@@ -558,6 +558,7 @@ function App() {
                         simulariumController,
                         handleTimeChange,
                         page,
+                        module: currentModule,
                         setPage,
                         timeFactor,
                         timeUnit: simulationData.timeUnit,
