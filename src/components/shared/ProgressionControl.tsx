@@ -11,7 +11,7 @@ type ProgressionControlChildProps =
 type ProgressionControlChild = React.ReactElement<ProgressionControlChildProps>;
 interface ProgressionControlProps {
     children: ProgressionControlChild;
-    onPage: { [key in Module]?: number | number[] };
+    onPage: { [key in Module]?: number[] };
 }
 
 /**
@@ -26,13 +26,10 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
     const { page, setPage, module } = useContext(SimulariumContext);
     const pagesToAdvance = onPage[module];
     const progress = () => {
-        if (Array.isArray(pagesToAdvance)) {
-            if (pagesToAdvance.includes(page)) {
+        if (pagesToAdvance.includes(page)) {
                 setPage(page + 1);
             }
-        } else if (page === pagesToAdvance) {
-            setPage(page + 1);
-        }
+        } 
     };
 
     const mergeHandlers = (baseHandler: BaseHandler) => {
