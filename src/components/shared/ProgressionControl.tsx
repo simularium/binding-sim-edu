@@ -25,9 +25,13 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
 }) => {
     const { page, setPage, module } = useContext(SimulariumContext);
     const pagesToAdvance = onPage[module];
+    let showHighlight = false;
     const progress = () => {
         if (pagesToAdvance?.includes(page)) {
             setPage(page + 1);
+            showHighlight = true;
+        } else {
+            showHighlight = false;
         }
     };
 
@@ -46,10 +50,6 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
             }
         };
     };
-
-    const showHighlight =
-        (Array.isArray(onPage) && onPage[0] === page) ||
-        page === pagesToAdvance;
 
     const className = showHighlight ? styles.hintHighlight : "";
 
