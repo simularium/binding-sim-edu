@@ -362,25 +362,26 @@ function App() {
             // if there is not a 3D trajectory on this or the next page,
             // clear any 3D trajectory and load a liveSim if necessary
             switchToLiveSimulation(currentPage.layout);
-        }
-        if (!nextPage) {
-            return;
-        }
-        const url = nextPage.trajectoryUrl;
-        if (trajectoryStatus === TrajectoryStatus.INITIAL && url) {
-            const changeTrajectory = async () => {
-                setIsPlaying(false);
-                setTrajectoryStatus(TrajectoryStatus.LOADING);
-                totalReset();
+        } else {
+            // The preference is request the 3D trajectory while on the
+            // previous page so it's already loaded when the user gets to the page
+            const url = nextPage.trajectoryUrl || currentPage.trajectoryUrl;
 
-                await fetch3DTrajectory(
-                    url,
-                    simulariumController,
-                    setPreComputedTrajectoryPlotData
-                );
-                setTrajectoryStatus(TrajectoryStatus.LOADED);
-            };
-            changeTrajectory();
+            if (trajectoryStatus === TrajectoryStatus.INITIAL && url) {
+                const changeTrajectory = async () => {
+                    setIsPlaying(false);
+                    setTrajectoryStatus(TrajectoryStatus.LOADING);
+                    totalReset();
+
+                    await fetch3DTrajectory(
+                        url,
+                        simulariumController,
+                        setPreComputedTrajectoryPlotData
+                    );
+                    setTrajectoryStatus(TrajectoryStatus.LOADED);
+                };
+                changeTrajectory();
+            }
         }
     }, [
         page,
