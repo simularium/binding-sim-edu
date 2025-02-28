@@ -15,6 +15,7 @@ const LabView: React.FC = () => {
         page,
         getAgentColor,
         productName,
+        module,
     } = useContext(SimulariumContext);
     const color = getAgentColor(productName);
     const colorGradient = useMemo(() => {
@@ -27,7 +28,7 @@ const LabView: React.FC = () => {
         <div
             className={classNames([
                 styles.container,
-                { [styles.top]: page === 1 },
+                { [styles.top]: page === 1 && module === Module.A_B_AB },
             ])}
         >
             <VisibilityControl excludedPages={{ [Module.A_B_AB]: [1] }}>
