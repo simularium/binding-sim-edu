@@ -80,6 +80,7 @@ const AdminUI: React.FC<AdminUIProps> = ({
                         onChange={(_, value): void => {
                             setModule(value);
                         }}
+                        overrideValue={module}
                         marks={moduleMarks}
                         disabled={false}
                         name="time factor (ns)"
