@@ -9,8 +9,9 @@ import LabIcon from "./icons/Lab";
 import Molecules from "./icons/Molecules";
 import LabView from "./LabView";
 import VisibilityControl from "./shared/VisibilityControl";
-import { Module } from "../types";
+import { Module, Section } from "../types";
 import { FIRST_PAGE } from "../content";
+import useModule from "../hooks/useModule";
 
 enum View {
     Lab = "lab",
@@ -36,12 +37,16 @@ const ViewSwitch: React.FC = () => {
         setCurrentView(View.Lab);
     }
 
+    const { contentData } = useModule(module);
+
     // The first time the user gets to the second module
-    // it should show the simulation
+    // it should show the simulation view
     if (module !== previousModule) {
         setPreviousModule(module);
-        if (page === FIRST_PAGE && currentView === View.Lab) {
-            setCurrentView(View.Simulation);
+        if (contentData[page].section === Section.Experiment) {
+            if (currentView === View.Lab) {
+                setCurrentView(View.Simulation);
+            }
         }
     }
 
@@ -54,6 +59,7 @@ const ViewSwitch: React.FC = () => {
             "background 0.2s, color 0.2s, border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1)",
     };
 
+    // on the first page of the first module, the button is centered, but otherwise it's on the right
     if (isFirstPageOfFirstModule) {
         buttonStyle = {
             ...buttonStyle,
