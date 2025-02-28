@@ -28,7 +28,6 @@ interface SimulariumContextType {
     setPage: (value: number) => void;
     module: Module;
     setModule: (value: Module) => void;
-    moduleLength: number;
     page: number;
     timeFactor: number;
     timeUnit: string;
@@ -56,7 +55,6 @@ export const SimulariumContext = createContext({
     page: 0,
     setModule: () => {},
     module: Module.A_B_AB,
-    moduleLength: 0,
     timeFactor: 30,
     timeUnit: NANO,
     handleTrajectoryChange: () => {},
