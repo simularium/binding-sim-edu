@@ -25,15 +25,13 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
 }) => {
     const { page, setPage, module } = useContext(SimulariumContext);
     const pagesToAdvance = onPage[module];
-    let showHighlight = false;
     const progress = () => {
         if (pagesToAdvance?.includes(page)) {
             setPage(page + 1);
-            showHighlight = true;
-        } else {
-            showHighlight = false;
         }
     };
+
+    const showHighlight = pagesToAdvance?.includes(page);
 
     const mergeHandlers = (baseHandler: BaseHandler) => {
         return (
