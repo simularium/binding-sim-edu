@@ -21,7 +21,6 @@ const PlayButton: React.FC = () => {
             <ProgressionControl
                 onPage={{
                     [Module.A_B_AB]: [2, 6],
-                    [Module.A_C_AC]: [],
                 }}
             >
                 <OverlayButton
