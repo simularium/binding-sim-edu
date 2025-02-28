@@ -10,6 +10,7 @@ import Molecules from "./icons/Molecules";
 import LabView from "./LabView";
 import VisibilityControl from "./shared/VisibilityControl";
 import { Module } from "../types";
+import { FIRST_PAGE } from "../content";
 
 enum View {
     Lab = "lab",
@@ -18,6 +19,7 @@ enum View {
 
 const ViewSwitch: React.FC = () => {
     const [currentView, setCurrentView] = useState<View>(View.Lab);
+    const [previousModule, setPreviousModule] = useState<Module>(Module.A_B_AB);
 
     const switchView = () => {
         setCurrentView((prevView) =>
@@ -27,22 +29,19 @@ const ViewSwitch: React.FC = () => {
     const { page, isPlaying, setIsPlaying, handleTimeChange, module } =
         useContext(SimulariumContext);
 
-    let isFirstPageOfFirstModule = false;
-    if (page === 1) {
-        switch (module) {
-            case Module.A_B_AB:
-                if (currentView === View.Simulation) {
-                    setCurrentView(View.Lab);
-                }
-                isFirstPageOfFirstModule = true;
-                break;
-            case Module.A_C_AC:
-                if (currentView === View.Lab) {
-                    setCurrentView(View.Simulation);
-                }
-                break;
-            default:
-                break;
+    const isFirstPageOfFirstModule =
+        page === FIRST_PAGE && module === Module.A_B_AB;
+
+    if (isFirstPageOfFirstModule && currentView === View.Simulation) {
+        setCurrentView(View.Lab);
+    }
+
+    // The first time the user gets to the second module
+    // it should show the simulation
+    if (module !== previousModule) {
+        setPreviousModule(module);
+        if (page === FIRST_PAGE && currentView === View.Lab) {
+            setCurrentView(View.Simulation);
         }
     }
 
