@@ -30,13 +30,12 @@ Typical steps to contribute:
 4. Submit a pull request to merge your fork's branch into this repository, via GitHub.
 
 ## Running locally 
-**NOTE**: Unfortunately web workers don't work with vite's dev server. It's a known issue that hopefully they'll resolve soon (there is a lot of activity on the ticket). Fortunately it's not an issue in production, so I don't feel a need to move away from vite yet. But it makes dev set up a little more involved. 
 
 ### install Bun 
 1. [Instructions](https://bun.sh/docs/installation) 
 2. In this repo: `bun install`
 
-### Locally link the viewer (web workers work in this setup)
+### Locally link the viewer (for testing new changes to the viewer, or debugging)
 1. clone the [viewer repo](https://github.com/simularium/simularium-viewer) 
 1. cd into the viewer repo 
 1. build the viewer: `npm run build`
