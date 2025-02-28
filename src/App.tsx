@@ -86,7 +86,12 @@ function App() {
     const [timeFactor, setTimeFactor] = useState(
         LiveSimulationData.INITIAL_TIME_FACTOR
     );
-    const [viewportSize, setViewportSize] = useState(DEFAULT_VIEWPORT_SIZE);
+    const [viewportWidth, setViewportWidth] = useState(
+        DEFAULT_VIEWPORT_SIZE.width
+    );
+    const [viewportHeight, setViewportHeight] = useState(
+        DEFAULT_VIEWPORT_SIZE.height
+    );
     /**
      * Analysis state
      * used to create plots and feedback
@@ -161,10 +166,9 @@ function App() {
         if (!trajectory) {
             return null;
         }
-        const longestAxis = Math.max(viewportSize.width, viewportSize.height);
+        const longestAxis = Math.max(viewportWidth, viewportHeight);
         return new BindingSimulator(trajectory, longestAxis / 3);
-    }, [currentModule, viewportSize, simulationData]);
-
+    }, [viewportWidth, viewportHeight, simulationData, currentModule]);
     const preComputedPlotDataManager = useMemo(() => {
         if (!trajectoryPlotData) {
             return null;
@@ -563,8 +567,14 @@ function App() {
                         timeFactor,
                         timeUnit: simulationData.timeUnit,
                         handleTrajectoryChange,
-                        viewportSize,
-                        setViewportSize,
+                        viewportSize: {
+                            width: viewportWidth,
+                            height: viewportHeight,
+                        },
+                        setViewportSize: ({ width, height }) => {
+                            setViewportWidth(width);
+                            setViewportHeight(height);
+                        },
                         recordedConcentrations: recordedInputConcentration,
                     }}
                 >
