@@ -15,6 +15,7 @@ const useModule = (currentModule: Module) => {
         );
 
         return {
+            contentData,
             totalPages,
             totalBonusPages,
             totalMainContentPages,

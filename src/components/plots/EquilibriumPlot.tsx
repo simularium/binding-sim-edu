@@ -8,11 +8,7 @@ import {
     GRAY_COLOR,
 } from "./constants";
 import { SimulariumContext } from "../../simulation/context";
-import {
-    AGENT_AB_COLOR,
-    AGENT_A_COLOR,
-    AGENT_B_COLOR,
-} from "../../constants/colors";
+import { AGENT_A_COLOR } from "../../constants/colors";
 import { MICRO } from "../../constants";
 
 import plotStyles from "./plots.module.css";
@@ -35,7 +31,12 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
     colors,
     kd,
 }) => {
-    const { maxConcentration } = useContext(SimulariumContext);
+    const {
+        fixedAgentStartingConcentration,
+        productName,
+        getAgentColor,
+        adjustableAgentName,
+    } = useContext(SimulariumContext);
 
     const hintOverlay = (
         <div
@@ -96,8 +97,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
                 shape: "spline" as const,
                 width: 1,
             },
-            hovertemplate:
-                "[B]: <b>%{x:.1f}</b><br>[AB]: <b>%{y:.1f}</b><extra></extra>",
+            hovertemplate: `[${adjustableAgentName}]: <b>%{x:.1f}</b><br>[${productName}]: <b>%{y:.1f}</b><extra></extra>`,
         },
     ];
 
@@ -109,22 +109,26 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         xaxis: {
             ...AXIS_SETTINGS,
             range: [0, kd * 2],
-            title: `[B] ${MICRO}M`,
+            title: `[${adjustableAgentName}] ${MICRO}M`,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,
-                color: AGENT_B_COLOR,
+                color: getAgentColor(adjustableAgentName),
             },
         },
         yaxis: {
             ...AXIS_SETTINGS,
-            range: [0, maxConcentration + 0.25], // the line gets cut off without the extra 0.25
-            title: `[AB] ${MICRO}M`,
+            range: [0, fixedAgentStartingConcentration + 0.25], // the line gets cut off without the extra 0.25
+            title: `[${productName}] ${MICRO}M`,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,
-                color: AGENT_AB_COLOR,
+                color: getAgentColor(productName),
             },
             tickmode: "array" as const,
-            tickvals: [0, maxConcentration / 2, maxConcentration],
+            tickvals: [
+                0,
+                fixedAgentStartingConcentration / 2,
+                fixedAgentStartingConcentration,
+            ],
         },
     };
     return (
