@@ -8,7 +8,6 @@ import { OverlayButton } from "./shared/ButtonLibrary";
 import LabIcon from "./icons/Lab";
 import Molecules from "./icons/Molecules";
 import LabView from "./LabView";
-import usePageNumber from "../hooks/usePageNumber";
 import VisibilityControl from "./shared/VisibilityControl";
 import { Module } from "../types";
 
@@ -25,17 +24,27 @@ const ViewSwitch: React.FC = () => {
             prevView === View.Lab ? View.Simulation : View.Lab
         );
     };
-    const { page, isPlaying, setIsPlaying, handleTimeChange } =
+    const { page, isPlaying, setIsPlaying, handleTimeChange, module } =
         useContext(SimulariumContext);
 
-    usePageNumber(
-        page,
-        (page) => page === 1 && currentView === View.Simulation,
-        () => {
-            // reset home
-            setCurrentView(View.Lab);
+    let isFirstPageOfFirstModule = false;
+    if (page === 1) {
+        switch (module) {
+            case Module.A_B_AB:
+                if (currentView === View.Simulation) {
+                    setCurrentView(View.Lab);
+                }
+                isFirstPageOfFirstModule = true;
+                break;
+            case Module.A_C_AC:
+                if (currentView === View.Lab) {
+                    setCurrentView(View.Simulation);
+                }
+                break;
+            default:
+                break;
         }
-    );
+    }
 
     let buttonStyle: React.CSSProperties = {
         top: 16,
@@ -46,7 +55,7 @@ const ViewSwitch: React.FC = () => {
             "background 0.2s, color 0.2s, border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1)",
     };
 
-    if (page === 1) {
+    if (isFirstPageOfFirstModule) {
         buttonStyle = {
             ...buttonStyle,
             right: "50%",

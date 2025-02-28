@@ -39,7 +39,8 @@ const AdminUI: React.FC<AdminUIProps> = ({
         pageMarks[i] = { label: i.toString() };
     }
     const moduleMarks: SliderSingleProps["marks"] = {};
-    for (let i = 0; i <= 3; i++) {
+    const totalNumberOfModules = 2; // only 2 modules that work currently
+    for (let i = 0; i <= totalNumberOfModules; i++) {
         moduleMarks[i] = { label: i.toString() };
     }
     return (
@@ -73,7 +74,7 @@ const AdminUI: React.FC<AdminUIProps> = ({
                     <h4>Module number</h4>
                     <Slider
                         min={1}
-                        max={3}
+                        max={totalNumberOfModules}
                         step={1}
                         initialValue={module}
                         onChange={(_, value): void => {
