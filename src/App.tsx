@@ -305,7 +305,10 @@ function App() {
     // clicked the home button
     usePageNumber(
         page,
-        (page) => page === 1 && currentProductConcentrationArray.length > 1,
+        (page) =>
+            page === 1 &&
+            currentModule === 1 &&
+            currentProductConcentrationArray.length > 1,
         () => {
             totalReset();
         }
