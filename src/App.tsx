@@ -12,6 +12,7 @@ import {
     AgentName,
     CurrentConcentration,
     InputConcentration,
+    LayoutType,
     Module,
     ProductName,
     ScatterTrace,
@@ -92,7 +93,7 @@ function App() {
      * Analysis state
      * used to create plots and feedback
      */
-    const [trajectoryPlotData, setTrajectoryPlotData] =
+    const [preComputedTrajectoryPlotData, setPreComputedTrajectoryPlotData] =
         useState<ScatterTrace[]>();
     const [liveConcentration, setLiveConcentration] =
         useState<CurrentConcentration>({
@@ -163,15 +164,22 @@ function App() {
             return null;
         }
         const longestAxis = Math.max(viewportSize.width, viewportSize.height);
-        return new BindingSimulator(trajectory, longestAxis / 3);
-    }, [currentModule, viewportSize, simulationData]);
+        const productColor = simulationData.getAgentColor(productName);
+        return new BindingSimulator(trajectory, longestAxis / 3, productColor);
+    }, [
+        simulationData,
+        currentModule,
+        viewportSize.width,
+        viewportSize.height,
+        productName,
+    ]);
 
     const preComputedPlotDataManager = useMemo(() => {
-        if (!trajectoryPlotData) {
+        if (!preComputedTrajectoryPlotData) {
             return null;
         }
-        return new PreComputedPlotData(trajectoryPlotData);
-    }, [trajectoryPlotData]);
+        return new PreComputedPlotData(preComputedTrajectoryPlotData);
+    }, [preComputedTrajectoryPlotData]);
 
     useEffect(() => {
         if (!clientSimulator) {
@@ -328,8 +336,33 @@ function App() {
         }
     );
 
+    const switchToLiveSimulation = useCallback(
+        (layout: LayoutType) => {
+            if (trajectoryStatus === TrajectoryStatus.LOADED) {
+                simulariumController.clearFile();
+                setTrajectoryStatus(TrajectoryStatus.INITIAL);
+            }
+            if (
+                layout === LayoutType.LiveSimulation &&
+                simulariumController.getFile() !== LIVE_SIMULATION_NAME
+            ) {
+                // if we are on a live simulation page, and the file is not the live simulation
+                // load the live simulation
+                setTrajectoryName(LIVE_SIMULATION_NAME);
+            }
+        },
+        [simulariumController, trajectoryStatus]
+    );
+
+    // handle trajectory changes based on content changes
     useEffect(() => {
+        const currentPage = content[currentModule][page];
         const nextPage = content[currentModule][page + 1];
+        if (!nextPage?.trajectoryUrl && !currentPage.trajectoryUrl) {
+            // if there is not a 3D trajectory on this or the next page,
+            // clear any 3D trajectory and load a liveSim if necessary
+            switchToLiveSimulation(currentPage.layout);
+        }
         if (!nextPage) {
             return;
         }
@@ -343,7 +376,7 @@ function App() {
                 await fetch3DTrajectory(
                     url,
                     simulariumController,
-                    setTrajectoryPlotData
+                    setPreComputedTrajectoryPlotData
                 );
                 setTrajectoryStatus(TrajectoryStatus.LOADED);
             };
@@ -356,17 +389,17 @@ function App() {
         simulariumController,
         isPlaying,
         totalReset,
+        switchToLiveSimulation,
     ]);
 
-    usePageNumber(
-        page,
-        (page) => page === finalPageNumber,
-        () => {
-            if (simulariumController.getFile()) {
-                simulariumController.clearFile();
-            }
+    useEffect(() => {
+        const { section } = content[currentModule][page];
+        if (section === Section.Experiment) {
+            setTimeFactor(LiveSimulationData.DEFAULT_TIME_FACTOR);
+        } else if (section === Section.Introduction) {
+            setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
         }
-    );
+    }, [currentModule, page]);
 
     const addProductionTrace = (previousConcentration: number) => {
         const traces = productOverTimeTraces;
@@ -389,18 +422,14 @@ function App() {
         setPage(page + 1);
     };
 
+    // trigger when the trajectory data has been sent by the viewer
     const handleTrajectoryChange = (trajectoryInfo: TrajectoryFileInfo) => {
         setTrajectoryName(trajectoryInfo.trajectoryTitle || "");
         if (trajectoryInfo.trajectoryTitle === LIVE_SIMULATION_NAME) {
             // 2d trajectory
             // switch to orthographic camera
             simulariumController.setCameraType(true);
-            const { section } = content[currentModule][page];
-            if (section === Section.Experiment) {
-                setTimeFactor(LiveSimulationData.DEFAULT_TIME_FACTOR);
-            } else {
-                setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
-            }
+            setPreComputedTrajectoryPlotData(undefined);
             setFinalTime(-1);
         } else {
             // 3d trajectory
@@ -573,7 +602,6 @@ function App() {
                         page,
                         module: currentModule,
                         setModule: setCurrentModule,
-                        moduleLength: totalMainContentPages,
                         setPage,
                         timeFactor,
                         timeUnit: simulationData.timeUnit,
