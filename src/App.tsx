@@ -23,7 +23,7 @@ import LeftPanel from "./components/main-layout/LeftPanel";
 import RightPanel from "./components/main-layout/RightPanel";
 import ReactionDisplay from "./components/main-layout/ReactionDisplay";
 import ContentPanelTimer from "./components/main-layout/ContentPanelTimer";
-import content, { moduleNames } from "./content";
+import content, { FIRST_PAGE, moduleNames } from "./content";
 import {
     PROMPT_TO_ADJUST_B,
     DEFAULT_VIEWPORT_SIZE,
@@ -415,6 +415,12 @@ function App() {
 
     // User input handlers
 
+    const setModule = (module: Module) => {
+        setPage(FIRST_PAGE);
+        setCurrentModule(module);
+        setIsPlaying(false);
+    };
+
     const handleStartExperiment = () => {
         simulariumController.pause();
         totalReset();
@@ -601,7 +607,7 @@ function App() {
                         handleTimeChange,
                         page,
                         module: currentModule,
-                        setModule: setCurrentModule,
+                        setModule,
                         setPage,
                         timeFactor,
                         timeUnit: simulationData.timeUnit,
