@@ -11,7 +11,7 @@
     "install-viewer": "bun install @aics/simularium-viewer"
   },
   "dependencies": {
-    "@aics/simularium-viewer": "link:@aics/simularium-viewer",
+    "@aics/simularium-viewer": "^3.9.1",
     "@ant-design/icons": "^5.3.6",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
