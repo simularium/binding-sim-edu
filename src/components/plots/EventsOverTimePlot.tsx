@@ -27,10 +27,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
     bindingEventsOverTime,
     unbindingEventsOverTime,
 }) => {
-    const { timeFactor, module } = useContext(SimulariumContext) as {
-        timeFactor: number;
-        module: Module;
-    };
+    const { timeFactor, module } = useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
 
     // the two arrays will always be the same length

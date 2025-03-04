@@ -39,8 +39,7 @@ const ViewSwitch: React.FC = () => {
 
     const { contentData } = useModule(module);
 
-    // The first time the user gets to the second module
-    // it should show the simulation view
+    // Show the sim view at the beginning of the module
     if (module !== previousModule) {
         setPreviousModule(module);
         if (contentData[page].section === Section.Experiment) {
