@@ -33,16 +33,18 @@ const KdDerivation: React.FC = () => {
                         "how little <B /> do I need to bind to half of <A />
                         ?"
                     </em>{" "}
-                    <ul>
-                        <li>
-                            <strong>high</strong> {variables.kd} ={" "}
-                            <strong>low</strong> affinity
-                        </li>
-                        <li>
-                            <strong>low</strong> {variables.kd} ={" "}
-                            <strong>high</strong> affinity
-                        </li>
-                    </ul>
+                </p>
+                <ul>
+                    <li>
+                        <strong>high</strong> {variables.kd} ={" "}
+                        <strong>low</strong> affinity
+                    </li>
+                    <li>
+                        <strong>low</strong> {variables.kd} ={" "}
+                        <strong>high</strong> affinity
+                    </li>
+                </ul>
+                <p>
                     A reaction with a <strong>high</strong> {variables.kd} means
                     you need a lot of <B /> so the components have a{" "}
                     <strong>low</strong> affinity and are more likely to fall
