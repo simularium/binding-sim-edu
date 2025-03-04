@@ -60,16 +60,16 @@ class BindingInstance extends Circle {
         this.isTrigger = true;
         this.parent = parent;
         // adjust the ligand to the exact edge of the parent
-        this.move(-overlapV.x, -overlapV.y);
+        this.moveInstance(-overlapV.x, -overlapV.y);
         this.bound = true;
         return this;
     }
 
     /** PUBLIC METHODS BELOW */
 
-    public move(x: number, y: number) {
+    public moveInstance(x: number, y: number) {
         if (this.parent) {
-            this.parent.move(x, y);
+            this.parent.moveInstance(x, y);
         } else {
             this.setPosition(this.pos.x + x, this.pos.y + y);
             if (this.child) {
