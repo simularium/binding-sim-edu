@@ -16,7 +16,7 @@ export default class PreComputedSimulationData implements ISimulationData {
     static NAME_TO_FUNCTION_MAP = {
         [AgentName.Antibody]: AgentFunction.Fixed,
         [AgentName.Antigen]: AgentFunction.Adjustable,
-        [ProductName.AntibodyAntigen]: AgentFunction.Complex,
+        [ProductName.AntibodyAntigen]: AgentFunction.Complex_1,
     };
     static EXAMPLE_TRAJECTORY_URLS = {
         [Module.A_B_AB]:

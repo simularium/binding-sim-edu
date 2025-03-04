@@ -1,6 +1,7 @@
 import React from "react";
 import {
     AGENT_AB_COLOR,
+    AGENT_AC_COLOR,
     AGENT_A_COLOR,
     AGENT_B_COLOR,
     AGENT_C_COLOR,
@@ -23,5 +24,5 @@ export const AB: React.FC<{ name?: string }> = (props) => {
 };
 
 export const AC: React.FC = () => {
-    return <span style={{ color: AGENT_A_COLOR }}>AB</span>;
+    return <span style={{ color: AGENT_AC_COLOR }}>AC</span>;
 };

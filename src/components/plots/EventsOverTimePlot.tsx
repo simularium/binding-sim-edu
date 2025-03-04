@@ -9,14 +9,14 @@ import {
     CONFIG,
 } from "./constants";
 import { SimulariumContext } from "../../simulation/context";
-import { A, B, AB } from "../agent-symbols";
+import { A, B, AB, C, AC } from "../agent-symbols";
 import { MICRO } from "../../constants";
 
 import plotStyles from "./plots.module.css";
 import layoutStyles from "./events-over-time.module.css";
 import ResizeContainer from "../shared/ResizeContainer";
 import InfoText from "../shared/InfoText";
-import { UiElement } from "../../types";
+import { Module, UiElement } from "../../types";
 
 interface PlotProps {
     bindingEventsOverTime: number[];
@@ -27,7 +27,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
     bindingEventsOverTime,
     unbindingEventsOverTime,
 }) => {
-    const { timeFactor } = useContext(SimulariumContext);
+    const { timeFactor, module } = useContext(SimulariumContext);
     const [width, setWidth] = useState<number>(0);
 
     // the two arrays will always be the same length
@@ -84,6 +84,47 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
         },
     };
 
+    const forwardReaction: { [key in Module]?: JSX.Element } = {
+        [Module.A_B_AB]: (
+            <>
+                <A />
+                <span> + </span>
+                <B />
+                <span> &#8594; </span>
+                <AB />
+            </>
+        ),
+        [Module.A_C_AC]: (
+            <>
+                <A />
+                <span> + </span>
+                <C />
+                <span> &#8594; </span>
+                <AC />
+            </>
+        ),
+    };
+
+    const backwardReaction: { [key in Module]?: JSX.Element } = {
+        [Module.A_B_AB]: (
+            <>
+                <AB />
+                <span> &#8594; </span>
+                <A />
+                <span> + </span>
+                <B />
+            </>
+        ),
+        [Module.A_C_AC]: (
+            <>
+                <AC />
+                <span> &#8594; </span>
+                <A />
+                <span> + </span>
+                <C />
+            </>
+        ),
+    };
     return (
         <div className={plotStyles.plotContainer} style={{ marginBottom: 0 }}>
             <h3>
@@ -93,13 +134,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
             <div className={plotStyles.yLabel}>Count of reactions</div>
             <ResizeContainer className={layoutStyles.plots} setWidth={setWidth}>
                 <Flex vertical style={{ marginBottom: 10 }}>
-                    <div>
-                        <A />
-                        <span> + </span>
-                        <B />
-                        <span> &#8594; </span>
-                        <AB />
-                    </div>
+                    <div>{forwardReaction[module]}</div>
                     <Plot
                         data={[
                             {
@@ -113,13 +148,7 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
                     />
                 </Flex>
                 <Flex vertical style={{ marginTop: -BOTTOM_MARGIN }}>
-                    <div>
-                        <AB />
-                        <span> &#8594; </span>
-                        <A />
-                        <span> + </span>
-                        <B />
-                    </div>
+                    <div>{backwardReaction[module]}</div>
                     <Plot
                         data={[
                             {
