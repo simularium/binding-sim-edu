@@ -9,12 +9,13 @@ import {
     LIVE_SIMULATION_NAME,
     NANO,
 } from "../constants";
-import { AgentName, ProductName, Section } from "../types";
+import { AgentName, Module, ProductName, Section } from "../types";
 
 interface SimulariumContextType {
     trajectoryName: string;
     productName: ProductName;
     maxConcentration: number;
+    module: Module;
     getAgentColor: (agentName: AgentName) => string;
     currentProductionConcentration: number;
     isPlaying: boolean;
@@ -36,6 +37,7 @@ interface SimulariumContextType {
 export const SimulariumContext = createContext({
     trajectoryName: LIVE_SIMULATION_NAME,
     productName: ProductName.AB,
+    module: Module.A_B_AB,
     maxConcentration: 10,
     getAgentColor: () => "",
     currentProductionConcentration: 0,

@@ -5,6 +5,7 @@ import { SimulariumContext } from "../simulation/context";
 import ProgressionControl from "./shared/ProgressionControl";
 import VisibilityControl from "./shared/VisibilityControl";
 import { OverlayButton } from "./shared/ButtonLibrary";
+import { Module } from "../types";
 
 const PlayButton: React.FC = () => {
     const { isPlaying, setIsPlaying } = useContext(SimulariumContext);
@@ -16,8 +17,13 @@ const PlayButton: React.FC = () => {
     const iconStyle = { fontSize: 26 };
 
     return (
-        <VisibilityControl excludedPages={[1]}>
-            <ProgressionControl onPage={[2, 6]}>
+        <VisibilityControl excludedPages={{ [Module.A_B_AB]: [1] }}>
+            <ProgressionControl
+                onPage={{
+                    [Module.A_B_AB]: [2, 6],
+                    [Module.A_C_AC]: [],
+                }}
+            >
                 <OverlayButton
                     onClick={handleClick}
                     style={{ top: 14, left: 16 }}
