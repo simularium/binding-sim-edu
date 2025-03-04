@@ -359,11 +359,11 @@ function App() {
         const currentPage = content[currentModule][page];
         const nextPage = content[currentModule][page + 1];
         if (!nextPage?.trajectoryUrl && !currentPage.trajectoryUrl) {
-            // if there is not a 3D trajectory on this or the next page,
-            // clear any 3D trajectory and load a liveSim if necessary
+            // if there is not a precomputed on this or the next page,
+            // clear any precomputed trajectory and load a liveSim if necessary
             switchToLiveSimulation(currentPage.layout);
         } else {
-            // The preference is request the 3D trajectory while on the
+            // The preference is request the precomputed trajectory while on the
             // previous page so it's already loaded when the user gets to the page
             const url = nextPage.trajectoryUrl || currentPage.trajectoryUrl;
 
