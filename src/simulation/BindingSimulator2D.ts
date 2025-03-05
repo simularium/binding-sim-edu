@@ -242,13 +242,13 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         // prefer to move an instance that is not bound, ie, not isTrigger
         // because after it's moved any additional overlaps will be resolved by the system
         if (!a.isTrigger) {
-            a.move(-x, -y);
+            a.moveInstance(-x, -y);
             toCheck = a;
         } else if (!b.isTrigger && b.type === "Circle") {
-            b.move(x, y);
+            b.moveInstance(x, y);
             toCheck = b;
         } else {
-            a.move(-x, -y);
+            a.moveInstance(-x, -y);
             toCheck = a;
         }
         if (toCheck) {

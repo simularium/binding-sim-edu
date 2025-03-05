@@ -1,6 +1,7 @@
 import BindingDiagrams from "../components/BindingDiagrams";
 import StartExperiment from "../components/StartExperiment";
 import { AB, A, B } from "../components/agent-symbols";
+import KdDerivation from "../components/modals/KdDerivation";
 import Definition from "../components/shared/Definition";
 import { PageContent, Section, LayoutType } from "../types";
 
@@ -156,6 +157,10 @@ export const highAffinityContentArray: PageContent[] = [
                 where half the binding sites of <A /> are occupied.
             </>
         ),
+        modal: {
+            title: "Learn how to derive Kd",
+            content: <KdDerivation />,
+        },
         moreInfo: (
             <>
                 K<sub>d</sub> = [<B />] (at equilibrium when 50% of <A /> is
