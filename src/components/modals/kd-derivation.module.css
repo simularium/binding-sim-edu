@@ -1,0 +1,38 @@
+.container :global(.ant-steps-item-content) {
+    display: flex !important;
+    gap: 32px;
+}
+
+.container :global(.ant-steps-item-content .ant-steps-item-title) {
+    width: 380px;
+    line-height: 16px !important;
+}
+
+.title-section {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: var(--mid-gray-dark);
+    justify-content: space-between;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.title {
+    margin-left: 20px;
+}
+
+.main-equation {
+    padding: 4px 8px;
+    width: 100px;
+    font-size: 16px;
+    text-align: center;
+    justify-content: center;
+    height: 60px;
+}
+
+.steps {
+    border: 1px solid var(--app-border-color);
+    border-radius: 0 0 4px 4px;
+    padding: 8px;
+}

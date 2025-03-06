@@ -21,6 +21,7 @@ const SuccessFeedback: React.FC<FeedbackProps> = ({
         return () => {
             clearTimeout(timeout);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     if (hasBeenSeen) {
         return null;
