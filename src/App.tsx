@@ -1,4 +1,11 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import {
+    ReactNode,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
 import {
     SimulariumController,
     TimeData,
@@ -41,6 +48,7 @@ import {
     getColorIndex,
     indexToTime,
     insertValueSorted,
+    isSlopeZero,
     updateArrayInState,
 } from "./utils";
 import PreComputedPlotData from "./simulation/PreComputedPlotData";
@@ -146,6 +154,20 @@ function App() {
         setTimeToReachEquilibrium([]);
         setDataColors([]);
     }, []);
+
+    const isPassedEquilibrium = useRef(false);
+    const arrayLength = currentProductConcentrationArray.length;
+    if (
+        !isPassedEquilibrium.current &&
+        arrayLength > 0 &&
+        arrayLength % 50 === 0
+    ) {
+        isPassedEquilibrium.current = isSlopeZero(
+            currentProductConcentrationArray
+        );
+    } else if (arrayLength === 0 && isPassedEquilibrium.current) {
+        isPassedEquilibrium.current = false;
+    }
 
     // SIMULATION INITIALIZATION
     const simulariumController = useMemo(() => {
@@ -523,7 +545,7 @@ function App() {
             return false;
         }
 
-        if (!clientSimulator.isMixed()) {
+        if (!isPassedEquilibrium.current) {
             setEquilibriumFeedbackTimeout("Not yet!");
             return false;
         }

@@ -34,7 +34,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     numberAgentOnLeft: number = 0;
     numberAgentOnRight: number = 0;
     productColor: string = "";
-    _isMixed: boolean = false;
     size: number;
     constructor(
         agents: InputAgent[],
@@ -59,7 +58,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.currentNumberOfUnbindingEvents = 0;
         this.system = new System();
         this.instances = [];
-        this._isMixed = false;
     }
 
     private initializeAgents(agents: InputAgent[]): StoredAgent[] {
@@ -100,59 +98,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             }
         }
         return agents as StoredAgent[];
-    }
-
-    private countNumberOfInstancesOnEachSide(agentInstance: BindingInstance) {
-        if (this._isMixed) {
-            return;
-        }
-        if (agentInstance.id !== this.mixCheckAgent) {
-            return;
-        }
-
-        // checking the rightmost third of the simulation
-        // and the left most third of the simulation
-        if (agentInstance.pos.x < -this.size / 3) {
-            this.numberAgentOnLeft++;
-        } else if (agentInstance.pos.x > this.size / 3) {
-            this.numberAgentOnRight++;
-        }
-    }
-
-    private compareAgentsOnEachSide() {
-        // once the simulation is mixed, if it dips momentarily
-        // that's not a sign that equilibrium has been reversed
-        if (this._isMixed) {
-            return;
-        }
-
-        // if either of the agents is a limiting reactant
-        // then the system is mixed when it's been used up
-        // even if the other agent is not evenly distributed
-        let limitReached = false;
-        this.agents.forEach((agent) => {
-            const agentUnbound = agent.count - this.currentNumberBound;
-            if ((agentUnbound / agent.count) * 100 < 10) {
-                limitReached = true;
-                return;
-            }
-        });
-        if (limitReached) {
-            this._isMixed = true;
-            return;
-        }
-
-        const diff = Math.abs(this.numberAgentOnLeft - this.numberAgentOnRight);
-        const total = this.numberAgentOnLeft + this.numberAgentOnRight;
-        const percentUnmixed = (diff / total) * 100;
-        if (percentUnmixed < 10) {
-            this._isMixed = true;
-        }
-    }
-
-    private clearMixCounts() {
-        this.numberAgentOnLeft = 0;
-        this.numberAgentOnRight = 0;
     }
 
     private createBoundingLines() {
@@ -286,10 +231,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     /** PUBLIC METHODS BELOW */
-
-    public isMixed() {
-        return this._isMixed;
-    }
 
     public getEvents() {
         return {
@@ -426,7 +367,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         if (this.static || this.initialState) {
             return this.staticUpdate();
         }
-        this.clearMixCounts();
 
         for (let i = 0; i < this.instances.length; ++i) {
             const unbindingOccurred = this.instances[i].oneStep(
@@ -437,13 +377,11 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 this.currentNumberOfUnbindingEvents++;
                 this.currentNumberBound--;
             }
-            this.countNumberOfInstancesOnEachSide(this.instances[i]);
         }
         // reset to zero for every tenth time point
         if (this.currentFrame % 10 === 0) {
             this.currentNumberOfBindingEvents = 0;
             this.currentNumberOfUnbindingEvents = 0;
-            this.compareAgentsOnEachSide();
         }
         this.system.checkAll((response: Response) => {
             const { a, b, overlapV } = response;
