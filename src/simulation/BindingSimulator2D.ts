@@ -13,7 +13,6 @@ import {
 } from "@aics/simularium-viewer";
 
 import { InputAgent, ProductName, StoredAgent } from "../types";
-import { AGENT_AB_COLOR } from "../constants/colors";
 import LiveSimulationData from "./LiveSimulationData";
 import { LIVE_SIMULATION_NAME } from "../constants";
 import BindingInstance from "./BindingInstance";
@@ -34,14 +33,17 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     mixCheckAgent: number = 0;
     numberAgentOnLeft: number = 0;
     numberAgentOnRight: number = 0;
+    productColor: string = "";
     _isMixed: boolean = false;
     size: number;
     constructor(
         agents: InputAgent[],
         size: number,
+        productColor: string,
         timeFactor: number = LiveSimulationData.DEFAULT_TIME_FACTOR
     ) {
         this.size = size;
+        this.productColor = productColor;
         this.system = new System();
         this.createBoundingLines();
         this.distanceFactor = 40;
@@ -548,7 +550,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             typeMapping[this.agents[i].id + 100] = {
                 name: `${this.agents[i].name}#bound`,
                 geometry: {
-                    color: AGENT_AB_COLOR,
+                    color: this.productColor,
                     displayType: GeometryDisplayType.SPHERE,
                     url: "",
                 },
