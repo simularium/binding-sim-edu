@@ -44,3 +44,18 @@ export const indexToTime = (
         return index * timeFactor;
     }
 };
+
+export const isSlopeZero = (array: number[]) => {
+    const sliceSize = 25;
+    const averageOfLastFive =
+        array.slice(-sliceSize).reduce((a, b) => a + b) / sliceSize;
+    const averageOfFirstFive =
+        array.slice(-sliceSize * 2, -sliceSize).reduce((a, b) => a + b) /
+        sliceSize;
+    const slope = averageOfLastFive - averageOfFirstFive;
+    if (Math.abs(slope) < 0.01) {
+        return true;
+    } else {
+        return false;
+    }
+};
