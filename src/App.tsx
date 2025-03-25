@@ -275,6 +275,7 @@ function App() {
             uniqMeasuredConcentrations.length >= 3
         );
     }, [hasAValueAboveKd, hasAValueBelowKd, uniqMeasuredConcentrations]);
+
     const handleNewInputConcentration = useCallback(
         (name: string, value: number) => {
             if (value === 0) {
@@ -292,10 +293,10 @@ function App() {
                 name as keyof typeof LiveSimulationData.AVAILABLE_AGENTS;
             const agentId = LiveSimulationData.AVAILABLE_AGENTS[agentName].id;
             clientSimulator.changeConcentration(agentId, value);
-            simulariumController.gotoTime(time + 1);
+            simulariumController.gotoTime(1); // the number isn't used, but it triggers the update
             resetCurrentRunAnalysisState();
         },
-        [clientSimulator, time, simulariumController]
+        [clientSimulator, simulariumController]
     );
     const totalReset = useCallback(() => {
         setLiveConcentration({
@@ -348,6 +349,7 @@ function App() {
     usePageNumber(
         page,
         (page) =>
+            currentModule === 1 &&
             page === PROMPT_TO_ADJUST_B &&
             isPlaying &&
             recordedInputConcentration.length > 0 &&
@@ -417,12 +419,18 @@ function App() {
 
     useEffect(() => {
         const { section } = content[currentModule][page];
-        if (section === Section.Experiment) {
+        if (
+            section === Section.Experiment &&
+            timeFactor !== LiveSimulationData.DEFAULT_TIME_FACTOR
+        ) {
             setTimeFactor(LiveSimulationData.DEFAULT_TIME_FACTOR);
-        } else if (section === Section.Introduction) {
+        } else if (
+            section === Section.Introduction &&
+            timeFactor !== LiveSimulationData.INITIAL_TIME_FACTOR
+        ) {
             setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
         }
-    }, [currentModule, page]);
+    }, [currentModule, page, timeFactor]);
 
     const addProductionTrace = (previousConcentration: number) => {
         const traces = productOverTimeTraces;
@@ -447,7 +455,6 @@ function App() {
     const handleStartExperiment = () => {
         simulariumController.pause();
         totalReset();
-        setTimeFactor(LiveSimulationData.DEFAULT_TIME_FACTOR);
         setPage(page + 1);
     };
 
