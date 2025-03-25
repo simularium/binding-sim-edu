@@ -37,7 +37,8 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         getAgentColor,
         adjustableAgentName,
     } = useContext(SimulariumContext);
-
+    const xMax = Math.max(...x);
+    const xAxisMax = Math.max(kd * 2, xMax * 1.1);
     const hintOverlay = (
         <div
             style={{
@@ -63,7 +64,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
     };
 
     const horizontalLine = {
-        x: [0, kd * 2],
+        x: [0, xAxisMax],
         y: [5, 5],
         mode: "lines",
         name: "50% bound",
@@ -74,7 +75,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         line: lineOptions,
     };
     const horizontalLineMax = {
-        x: [0, kd * 2],
+        x: [0, xAxisMax],
         y: [10, 10],
         mode: "lines",
         name: "Initial [A]",
@@ -108,7 +109,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         height: Math.max(130, height),
         xaxis: {
             ...AXIS_SETTINGS,
-            range: [0, kd * 2],
+            range: [0, xAxisMax],
             title: `[${adjustableAgentName}] ${MICRO}M`,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,
