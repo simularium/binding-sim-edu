@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { valueType } from "antd/es/statistic/utils";
 import { Flex } from "antd";
 
@@ -8,6 +8,7 @@ import InputNumber from "../shared/InputNumber";
 import { FormState } from "./types";
 import styles from "./popup.module.css";
 import { MICRO } from "../../constants";
+import { SimulariumContext } from "../../simulation/context";
 
 interface KdQuestionProps {
     kd: number;
@@ -17,6 +18,42 @@ interface KdQuestionProps {
 const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [formState, setFormState] = useState(FormState.Clear);
+
+    const { module } = useContext(SimulariumContext);
+
+    useEffect(() => {
+        console.log("module change", module);
+        setSelectedAnswer(null);
+        setFormState(FormState.Clear);
+    }, [module]);
+
+    const getSuccessMessage = (selectedAnswer: number) => {
+        if (selectedAnswer < 5) {
+            return (
+                <>
+                    {selectedAnswer} {MICRO}M is considered a{" "}
+                    <strong>
+                        low K<sub>d</sub>
+                    </strong>
+                    , which means A and B have a <strong>high affinity</strong>{" "}
+                    for one another because it takes a low amount of B to create
+                    the complex.
+                </>
+            );
+        } else {
+            return (
+                <>
+                    {selectedAnswer} {MICRO}M is considered a{" "}
+                    <strong>
+                        high K<sub>d</sub>
+                    </strong>
+                    , which means A and C have a <strong>low affinity</strong>{" "}
+                    for one another because it takes a lot of C to create the
+                    complex.
+                </>
+            );
+        }
+    };
 
     const handleAnswerSelection = (answer: valueType | null) => {
         setSelectedAnswer(Number(answer));
@@ -77,17 +114,7 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
                 title="What is the binding affinity?"
                 formContent={formContent}
                 onSubmit={handleSubmit}
-                successMessage={
-                    <>
-                        {selectedAnswer} {MICRO}M is considered a{" "}
-                        <strong>
-                            low K<sub>d</sub>
-                        </strong>
-                        , which means A and B have a{" "}
-                        <strong>high affinity</strong> for one another because
-                        it takes a low amount of B to create the complex.
-                    </>
-                }
+                successMessage={getSuccessMessage(selectedAnswer!)}
                 failureMessage="Visit the “Learn how to derive Kd” button above, then use the Equilibrium concentration plot to answer."
                 formState={formState}
                 id="Kd Value"
