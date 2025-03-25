@@ -22,7 +22,6 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
     const { module } = useContext(SimulariumContext);
 
     useEffect(() => {
-        console.log("module change", module);
         setSelectedAnswer(null);
         setFormState(FormState.Clear);
     }, [module]);
