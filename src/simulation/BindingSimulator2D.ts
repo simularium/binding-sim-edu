@@ -290,7 +290,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         return agentData;
     }
 
-    private updateAgents() {
+    private updateAgentsPositions() {
         for (let i = 0; i < this.instances.length; ++i) {
             const unbindingOccurred = this.instances[i].oneStep(
                 this.size,
@@ -306,6 +306,8 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     private resolveChildPositions() {
         for (let i = 0; i < this.instances.length; ++i) {
             const instance = this.instances[i];
+            // if the instance is a child, we're going to move it to be
+            // perfectly bound to its parent (with a slight overlap)
             if (instance.parent) {
                 const bindingOverlap = instance.r * 0.5;
                 const parentPosition = instance.parent.pos;
@@ -378,7 +380,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             agentData = this.getAgentData();
             this.static = false;
         } else {
-            this.updateAgents();
+            this.updateAgentsPositions();
             // reset to zero for every tenth time point
             if (this.currentFrame % 10 === 0) {
                 this.currentNumberOfBindingEvents = 0;
