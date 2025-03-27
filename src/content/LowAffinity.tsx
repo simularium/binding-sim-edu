@@ -9,6 +9,7 @@ export const lowAffinityContentArray: PageContent[] = [
         layout: LayoutType.FullScreenOverlay,
     },
     {
+        title: "Experiment with a binding partner",
         content: (
             <>
                 Molecule <C /> has a different binding affinity with molecule{" "}
@@ -23,6 +24,7 @@ export const lowAffinityContentArray: PageContent[] = [
             "Press play and watch the Concentration over time plot until you think the reaction has reached equilibrium. Then, press the “Record” button to record the equilibrium concentration.",
     },
     {
+        title: "Determining Kd",
         content: (
             <>
                 We can use the same method we used for <A /> and <B /> to
