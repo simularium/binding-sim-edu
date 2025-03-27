@@ -19,8 +19,15 @@ export const lowAffinityContentArray: PageContent[] = [
         ),
         layout: LayoutType.LiveSimulation,
         section: Section.Experiment,
-        callToAction:
-            "Press play and watch the Concentration over time plot until you think the reaction has reached equilibrium. Then, press the “Record” button to record the equilibrium concentration.",
+        callToAction: (
+            <>
+                Press <strong>play</strong> and watch the{" "}
+                <strong>Concentration over time</strong> plot until you think
+                the reaction has reached equilibrium. Then, press the{" "}
+                <strong>Record</strong> button to record the equilibrium
+                concentration.
+            </>
+        ),
     },
     {
         content: (
