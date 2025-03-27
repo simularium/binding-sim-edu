@@ -86,6 +86,7 @@ export const highAffinityContentArray: PageContent[] = [
         layout: LayoutType.LiveSimulation,
     },
     {
+        title: "Identifying equilibrium",
         content: (
             <>
                 When the reaction first starts, the concentration of each
@@ -101,6 +102,7 @@ export const highAffinityContentArray: PageContent[] = [
         layout: LayoutType.LiveSimulation,
     },
     {
+        title: "Affinity",
         content: (
             <>
                 The goal of these experiments is to figure out how tightly two
@@ -119,6 +121,7 @@ export const highAffinityContentArray: PageContent[] = [
         layout: LayoutType.LiveSimulation,
     },
     {
+        title: "Repeating the experiment",
         content: (
             <>
                 We want to understand the affinity of{" "}
@@ -141,6 +144,7 @@ export const highAffinityContentArray: PageContent[] = [
         layout: LayoutType.LiveSimulation,
     },
     {
+        title: "Deriving Kd",
         content: (
             <>
                 We use the constant{" "}
