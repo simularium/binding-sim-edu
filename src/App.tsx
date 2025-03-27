@@ -417,20 +417,14 @@ function App() {
         switchToLiveSimulation,
     ]);
 
+    const { section } = content[currentModule][page];
     useEffect(() => {
-        const { section } = content[currentModule][page];
-        if (
-            section === Section.Experiment &&
-            timeFactor !== LiveSimulationData.DEFAULT_TIME_FACTOR
-        ) {
+        if (section === Section.Experiment) {
             setTimeFactor(LiveSimulationData.DEFAULT_TIME_FACTOR);
-        } else if (
-            section === Section.Introduction &&
-            timeFactor !== LiveSimulationData.INITIAL_TIME_FACTOR
-        ) {
+        } else if (section === Section.Introduction) {
             setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
         }
-    }, [currentModule, page, timeFactor]);
+    }, [section]);
 
     const addProductionTrace = (previousConcentration: number) => {
         const traces = productOverTimeTraces;
