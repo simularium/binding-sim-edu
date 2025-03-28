@@ -31,7 +31,7 @@ const ViewSwitch: React.FC = () => {
         useContext(SimulariumContext);
 
     const isFirstPageOfFirstModule =
-        page === FIRST_PAGE[module] && module === Module.A_B_AB;
+        page === FIRST_PAGE[module] + 1 && module === Module.A_B_AB;
 
     if (isFirstPageOfFirstModule && currentView === View.Simulation) {
         setCurrentView(View.Lab);
