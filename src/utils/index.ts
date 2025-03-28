@@ -53,7 +53,7 @@ export const isSlopeZero = (array: number[]) => {
         array.slice(-sliceSize * 2, -sliceSize).reduce((a, b) => a + b) /
         sliceSize;
     const slope = averageOfLastFive - averageOfFirstFive;
-    if (Math.abs(slope) < 0.01) {
+    if (Math.abs(slope) < 0.05) {
         return true;
     } else {
         return false;

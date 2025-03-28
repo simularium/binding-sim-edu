@@ -3,8 +3,9 @@ import React, { useContext, useEffect } from "react";
 import Slider from "./shared/Slider";
 import { BG_DARK, LIGHT_GREY } from "../constants/colors";
 import { SimulariumContext } from "../simulation/context";
-import { SliderSingleProps } from "antd";
+import { InputNumber, SliderSingleProps } from "antd";
 import { zStacking } from "../constants/z-stacking";
+import { Module } from "../types";
 
 interface AdminUIProps {
     totalPages: number;
@@ -72,18 +73,15 @@ const AdminUI: React.FC<AdminUIProps> = ({
                         name="time factor (ns)"
                     />
                     <h4>Module number</h4>
-                    <Slider
+                    <InputNumber
                         min={1}
                         max={totalNumberOfModules}
                         step={1}
-                        initialValue={module}
-                        onChange={(_, value): void => {
-                            setModule(value);
+                        value={Number(module)}
+                        onChange={(value): void => {
+                            setModule(value as Module);
                         }}
-                        overrideValue={module}
-                        marks={moduleMarks}
                         disabled={false}
-                        name="time factor (ns)"
                     />
                 </div>
                 <div style={{ padding: 12 }}>
@@ -94,6 +92,7 @@ const AdminUI: React.FC<AdminUIProps> = ({
                         max={100}
                         step={1}
                         initialValue={timeFactor}
+                        overrideValue={timeFactor}
                         onChange={(_, value) => {
                             setTimeFactor(value);
                         }}

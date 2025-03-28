@@ -169,59 +169,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         }
     }
 
-    private resolveCollision(
-        a: BindingInstance,
-        b: BindingInstance,
-        overlapV: Vector,
-        numberOfPasses: number = 0
-    ) {
-        let toCheck = null;
-        const { x, y } = overlapV;
-        // if neither is a trigger, then they
-        // will both get moved by system.separate()
-        if (!a.isTrigger && !b.isTrigger) {
-            return;
-        }
-        if (numberOfPasses > 8) {
-            return;
-        }
-
-        // prefer to move an instance that is not bound, ie, not isTrigger
-        // because after it's moved any additional overlaps will be resolved by the system
-        if (!a.isTrigger) {
-            a.moveInstance(-x, -y);
-            toCheck = a;
-        } else if (!b.isTrigger && b.type === "Circle") {
-            b.moveInstance(x, y);
-            toCheck = b;
-        } else {
-            a.moveInstance(-x, -y);
-            toCheck = a;
-        }
-        if (toCheck) {
-            numberOfPasses++;
-            // after moving the instance, check if it overlaps with any other instance
-            this.system.checkOne(toCheck, (response: Response) => {
-                if (response) {
-                    const { a, b, overlapV, overlap } = response;
-                    if (!a.isBoundPair(b)) {
-                        // This check is to keep from having to resolve
-                        // a ridiculous number of collisions
-                        // the value is half the radius of the larger agent
-                        if (overlap > 1) {
-                            return this.resolveCollision(
-                                a,
-                                b,
-                                overlapV,
-                                numberOfPasses
-                            );
-                        }
-                    }
-                }
-            });
-        }
-    }
-
     private relax(maxCycles: number = 30) {
         let cycles = 0;
         while (cycles < maxCycles) {
@@ -320,11 +267,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         return concentrations;
     }
 
-    public staticUpdate() {
-        // update the number of agents without
-        // changing their positions
-        this.relax();
-
+    private getAgentData() {
         const agentData: number[] = [];
         for (let ii = 0; ii < this.instances.length; ++ii) {
             const instance = this.instances[ii];
@@ -344,30 +287,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             agentData.push(instance.r); // collision radius
             agentData.push(0); // subpoints
         }
-        const frameData: VisDataMessage = {
-            // TODO get msgType out of here
-            msgType: ClientMessageEnum.ID_VIS_DATA_ARRIVE,
-            bundleStart: this.currentFrame,
-            bundleSize: 1, // frames
-            bundleData: [
-                {
-                    data: agentData,
-                    frameNumber: this.currentFrame,
-                    time: this.currentFrame,
-                },
-            ],
-            fileName: "hello world",
-        };
-        this.static = false;
-        this.currentFrame++;
-        return frameData;
+        return agentData;
     }
 
-    public update(): VisDataMessage {
-        if (this.static || this.initialState) {
-            return this.staticUpdate();
-        }
-
+    private updateAgentsPositions() {
         for (let i = 0; i < this.instances.length; ++i) {
             const unbindingOccurred = this.instances[i].oneStep(
                 this.size,
@@ -378,11 +301,38 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 this.currentNumberBound--;
             }
         }
-        // reset to zero for every tenth time point
-        if (this.currentFrame % 10 === 0) {
-            this.currentNumberOfBindingEvents = 0;
-            this.currentNumberOfUnbindingEvents = 0;
+    }
+
+    private resolveChildPositions() {
+        for (let i = 0; i < this.instances.length; ++i) {
+            const instance = this.instances[i];
+            // if the instance is a child, we're going to move it to be
+            // perfectly bound to its parent (with a slight overlap)
+            if (instance.parent) {
+                const bindingOverlap = instance.r * 0.5;
+                const parentPosition = instance.parent.pos;
+                const childPosition = instance.pos;
+                const distanceVector = new Vector(
+                    childPosition.x - parentPosition.x,
+                    childPosition.y - parentPosition.y
+                );
+                const distance = Math.sqrt(
+                    distanceVector.x ** 2 + distanceVector.y ** 2
+                );
+                const perfectBoundDistance =
+                    instance.parent.r + instance.r - bindingOverlap;
+                const tolerance = 0.1;
+                if (Math.abs(distance - perfectBoundDistance) > tolerance) {
+                    const ratio = perfectBoundDistance / distance;
+                    const x = parentPosition.x + distanceVector.x * ratio;
+                    const y = parentPosition.y + distanceVector.y * ratio;
+                    instance.setPosition(x, y);
+                }
+            }
         }
+    }
+
+    private resolveBindingReactions() {
         this.system.checkAll((response: Response) => {
             const { a, b, overlapV } = response;
 
@@ -415,39 +365,33 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                         this.currentNumberBound++;
                     }
                 }
-                // Now that binding has been resolved, resolve collisions
-                // if they are not bound the system will resolve the collision
-                if (!a.isBoundPair(b)) {
-                    if (!a.isStatic && !b.isStatic) {
-                        this.resolveCollision(a, b, overlapV);
-                    }
-                }
             } else {
                 console.log("no response");
             }
         });
-        this.relax(5);
-        // fill agent data.
-        const agentData: number[] = [];
+    }
 
-        for (let ii = 0; ii < this.instances.length; ++ii) {
-            const instance = this.instances[ii];
-            agentData.push(VisTypes.ID_VIS_TYPE_DEFAULT); // vis type
-            agentData.push(ii); // instance id
-            agentData.push(
-                instance.bound || instance.child
-                    ? 100 + instance.id
-                    : instance.id
-            ); // type
-            agentData.push(instance.pos.x); // x
-            agentData.push(instance.pos.y); // y
-            agentData.push(0); // z
-            agentData.push(0); // rx
-            agentData.push(0); // ry
-            agentData.push(0); // rz
-            agentData.push(instance.r); // collision radius
-            agentData.push(0); // subpoints
+    public update(): VisDataMessage {
+        let agentData: number[] = [];
+        if (this.static || this.initialState) {
+            // update number of agents
+            // without changing positions
+            this.relax();
+            agentData = this.getAgentData();
+            this.static = false;
+        } else {
+            this.updateAgentsPositions();
+            // reset to zero for every tenth time point
+            if (this.currentFrame % 10 === 0) {
+                this.currentNumberOfBindingEvents = 0;
+                this.currentNumberOfUnbindingEvents = 0;
+            }
+            this.resolveBindingReactions();
+            this.relax(3);
+            this.resolveChildPositions();
+            agentData = this.getAgentData();
         }
+
         const frameData: VisDataMessage = {
             // TODO get msgType out of here
             msgType: ClientMessageEnum.ID_VIS_DATA_ARRIVE,
@@ -513,7 +457,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 position: {
                     x: 0,
                     y: 0,
-                    z: 65,
+                    z: 70,
                 },
             },
             typeMapping: typeMapping,

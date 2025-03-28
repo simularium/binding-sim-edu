@@ -11,7 +11,8 @@ interface ScaleBarProps {
 const ScaleBar: React.FC<ScaleBarProps> = ({ productColor }) => {
     const { maxConcentration } = useContext(SimulariumContext);
     const labelArray = [];
-    for (let i = maxConcentration; i >= 0; i = i - 2) {
+    const interval = maxConcentration / 5;
+    for (let i = maxConcentration; i >= 0; i = i - interval) {
         labelArray.push(i);
     }
     return (

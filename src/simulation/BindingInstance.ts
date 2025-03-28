@@ -1,5 +1,7 @@
-import { Circle, Vector } from "detect-collisions";
+import { Circle } from "detect-collisions";
 import { random } from "lodash";
+import { Vector } from "sat";
+
 import LiveSimulationData from "./LiveSimulationData";
 
 class BindingInstance extends Circle {
@@ -48,7 +50,6 @@ class BindingInstance extends Circle {
     }
 
     private releaseFromParent() {
-        this.isTrigger = false;
         this.bound = false;
         this.parent = null;
     }
@@ -57,7 +58,6 @@ class BindingInstance extends Circle {
         parent: BindingInstance,
         overlapV: Vector
     ): BindingInstance {
-        this.isTrigger = true;
         this.parent = parent;
         // adjust the ligand to the exact edge of the parent
         this.moveInstance(-overlapV.x, -overlapV.y);
@@ -68,6 +68,8 @@ class BindingInstance extends Circle {
     /** PUBLIC METHODS BELOW */
 
     public moveInstance(x: number, y: number) {
+        // if we're trying to move a bound instance, move the parent instead
+        // and then we'll resolve the child position
         if (this.parent) {
             this.parent.moveInstance(x, y);
         } else {
@@ -161,7 +163,6 @@ class BindingInstance extends Circle {
             return false;
         }
         this.child = null;
-        this.isTrigger = false;
         ligand.releaseFromParent();
         // QUESTION: should the ligand be moved to a random position?
         return true;
@@ -180,7 +181,6 @@ class BindingInstance extends Circle {
         if (!willBind) {
             return false;
         }
-        this.isTrigger = true;
         this.child = ligand.bindToParent(this, overlapV);
         return true;
     }
