@@ -56,6 +56,13 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
     }
     return (
         <div className={containerClass}>
+            {/* {coverImage && (
+                <img
+                    className={styles.coverImage}
+                    src={"../../assets/" + coverImage}
+                    alt="Cover"
+                />
+            )} */}
             <div className={styles.contentPanelText}>
                 <h3>{header}</h3>
                 <p>{content}</p>

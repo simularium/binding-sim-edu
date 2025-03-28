@@ -15,8 +15,12 @@
 }
 
 .content-panel.overlay {
-    height: 100vh;
+    height: calc(100vh - var(--nav-bar-height));
     border-bottom: none;
+}
+
+.content-panel.no-padding {
+    padding: 0;
 }
 
 .content-panel p,
