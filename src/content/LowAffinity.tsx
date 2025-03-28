@@ -9,6 +9,7 @@ export const lowAffinityContentArray: PageContent[] = [
         layout: LayoutType.FullScreenOverlay,
     },
     {
+        title: "Experiment with a binding partner",
         content: (
             <>
                 Molecule <C /> has a different binding affinity with molecule{" "}
@@ -30,6 +31,7 @@ export const lowAffinityContentArray: PageContent[] = [
         ),
     },
     {
+        title: "Determining Kd",
         content: (
             <>
                 We can use the same method we used for <A /> and <B /> to
