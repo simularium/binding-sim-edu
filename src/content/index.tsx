@@ -9,7 +9,7 @@ export const moduleNames = {
 };
 
 export const FIRST_PAGE = {
-    [Module.A_B_AB]: 0,
+    [Module.A_B_AB]: 0, // landing page
     [Module.A_C_AC]: 1,
     [Module.A_B_C_AB_AC]: 1,
 };
