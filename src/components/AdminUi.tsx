@@ -40,7 +40,7 @@ const AdminUI: React.FC<AdminUIProps> = ({
         pageMarks[i] = { label: i.toString() };
     }
     const moduleMarks: SliderSingleProps["marks"] = {};
-    const totalNumberOfModules = 2; // only 2 modules that work currently
+    const totalNumberOfModules = 3;
     for (let i = 0; i <= totalNumberOfModules; i++) {
         moduleMarks[i] = { label: i.toString() };
     }
