@@ -8,6 +8,8 @@ import {
 } from "../types";
 import {
     AGENT_A_COLOR,
+    AGENT_AB_COLOR,
+    AGENT_AC_COLOR,
     AGENT_B_COLOR,
     AGENT_C_COLOR,
 } from "../constants/colors";
@@ -35,6 +37,7 @@ const agentB: InputAgent = {
     kOn: 0.9,
     kOff: 0.01,
     color: AGENT_B_COLOR,
+    complexColor: AGENT_AB_COLOR,
 };
 
 const agentC: InputAgent = {
@@ -46,6 +49,7 @@ const agentC: InputAgent = {
     kOn: 0.3,
     kOff: 0.9,
     color: AGENT_C_COLOR,
+    complexColor: AGENT_AC_COLOR,
 };
 
 const kds = {

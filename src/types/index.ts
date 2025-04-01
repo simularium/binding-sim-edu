@@ -69,6 +69,7 @@ export interface InputAgent {
     kOff?: number;
     count?: number;
     color: string;
+    complexColor?: string;
 }
 
 export interface PageContent {

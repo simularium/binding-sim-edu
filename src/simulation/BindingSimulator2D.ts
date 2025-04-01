@@ -27,22 +27,22 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     static: boolean = false;
     initialState: boolean = true;
     currentNumberBound: number = 0;
+    currentComplexMap: Map<string, number> = new Map();
     currentNumberOfBindingEvents: number = 0;
     currentNumberOfUnbindingEvents: number = 0;
     onUpdate: (data: number) => void = () => {};
     mixCheckAgent: number = 0;
     numberAgentOnLeft: number = 0;
     numberAgentOnRight: number = 0;
-    productColor: string = "";
+    productColor: Map<number, string>;
     size: number;
     constructor(
         agents: InputAgent[],
         size: number,
-        productColor: string,
         timeFactor: number = LiveSimulationData.DEFAULT_TIME_FACTOR
     ) {
         this.size = size;
-        this.productColor = productColor;
+        this.productColor = new Map();
         this.system = new System();
         this.createBoundingLines();
         this.distanceFactor = 40;
@@ -54,10 +54,22 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
     private clearAgents() {
         this.currentNumberBound = 0;
+        this.productMap.clear();
+        this.productColor.clear();
         this.currentNumberOfBindingEvents = 0;
         this.currentNumberOfUnbindingEvents = 0;
         this.system = new System();
         this.instances = [];
+    }
+
+    private getProductName(agent1: InputAgent, agent2: InputAgent) {
+        const name1 = agent1.name;
+        const name2 = agent2.name;
+        if (agent1.id > agent2.id) {
+            return `${name2}#${name1}`;
+        } else {
+            return `${name1}#${name2}`;
+        }
     }
 
     private initializeAgents(agents: InputAgent[]): StoredAgent[] {
@@ -72,6 +84,21 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                     agent.initialConcentration
                 );
             }
+            if (agent.complexColor) {
+                this.productColor.set(agent.id, agent.complexColor);
+            }
+            if (agent.partners.length > 0) {
+                for (let j = 0; j < agent.partners.length; ++j) {
+                    const partnerId = agent.partners[j];
+                    const partner = agents.find((a) => a.id === partnerId);
+                    if (!partner) {
+                        continue;
+                    }
+                    const complexName = this.getProductName(agent, partner);
+                    this.currentComplexMap.set(complexName, 0);
+                }
+            }
+
             if (agent.radius > largestRadius) {
                 // use the largest agent to check if the system is mixed
                 largestRadius = agent.radius;
@@ -271,13 +298,15 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         const agentData: number[] = [];
         for (let ii = 0; ii < this.instances.length; ++ii) {
             const instance = this.instances[ii];
+            let typeId = instance.id;
+            if (instance.parent) {
+                typeId = this.getBoundTypeId(instance.id, instance.parent.id);
+            } else if (instance.child) {
+                typeId = this.getBoundTypeId(instance.id, instance.child.id);
+            }
             agentData.push(VisTypes.ID_VIS_TYPE_DEFAULT); // vis type
             agentData.push(ii); // instance id
-            agentData.push(
-                instance.bound || instance.child
-                    ? 100 + instance.id
-                    : instance.id
-            ); // type
+            agentData.push(typeId); // type
             agentData.push(instance.pos.x); // x
             agentData.push(instance.pos.y); // y
             agentData.push(0); // z
@@ -417,11 +446,16 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         };
     }
 
+    private getBoundTypeId(id: number, partnerId: number) {
+        return 100 + id * 10 + partnerId;
+    }
+
     public getInfo(): TrajectoryFileInfo {
         const typeMapping: EncodedTypeMapping = {};
         const size = this.size;
         for (let i = 0; i < this.agents.length; ++i) {
-            typeMapping[this.agents[i].id] = {
+            const id = this.agents[i].id;
+            typeMapping[id] = {
                 name: `${this.agents[i].name}`,
                 geometry: {
                     color: this.agents[i].color,
@@ -429,15 +463,29 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                     url: "",
                 },
             };
-            typeMapping[this.agents[i].id + 100] = {
-                name: `${this.agents[i].name}#bound`,
-                geometry: {
-                    color: this.productColor,
-                    displayType: GeometryDisplayType.SPHERE,
-                    url: "",
-                },
-            };
+            if (this.agents[i].partners.length > 0) {
+                for (let j = 0; j < this.agents[i].partners.length; ++j) {
+                    const partnerId = this.agents[i].partners[j];
+                    const complexId = this.getBoundTypeId(id, partnerId);
+                    const partner = this.agents.find((a) => a.id === partnerId);
+                    if (!partner) {
+                        continue;
+                    }
+                    typeMapping[complexId] = {
+                        name: `${this.agents[i].name}#${this.agents[partnerId].name}`,
+                        geometry: {
+                            color:
+                                this.productColor.get(partnerId) ||
+                                this.productColor.get(id) ||
+                                "",
+                            displayType: GeometryDisplayType.SPHERE,
+                            url: "",
+                        },
+                    };
+                }
+            }
         }
+        console.log("typeMapping", typeMapping);
         return {
             // TODO get msgType and connId out of here
             connId: "hello world",

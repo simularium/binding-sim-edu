@@ -186,14 +186,12 @@ function App() {
             return null;
         }
         const longestAxis = Math.max(viewportSize.width, viewportSize.height);
-        const productColor = simulationData.getAgentColor(productName);
-        return new BindingSimulator(trajectory, longestAxis / 3, productColor);
+        return new BindingSimulator(trajectory, longestAxis / 3);
     }, [
         simulationData,
         currentModule,
         viewportSize.width,
         viewportSize.height,
-        productName,
     ]);
 
     const preComputedPlotDataManager = useMemo(() => {
