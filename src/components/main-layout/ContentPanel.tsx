@@ -3,7 +3,6 @@ import { Flex } from "antd";
 
 import useModule from "../../hooks/useModule";
 import { Section, PageContent, Module } from "../../types";
-import { moduleNames } from "../../content";
 import PointerIcon from "../icons/PointerIcon";
 import NextButton from "../shared/NextButton";
 import BackButton from "../shared/BackButton";
@@ -33,21 +32,19 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
 }) => {
     const showButton = nextButton;
     const { totalMainContentPages } = useModule(currentModule);
-    const moduleName = moduleNames[currentModule];
     let header;
-    const module = <span style={{ fontWeight: 300 }}>{moduleName}</span>;
     if (section !== Section.BonusContent) {
-        const pageInfo = `${pageNumber} of ${totalMainContentPages}`;
+        const pageInfo = `${pageNumber}/${totalMainContentPages}`;
         if (title) {
             header = (
                 <>
-                    {pageInfo} - {module} - {title}
+                    {pageInfo} - {title}
                 </>
             );
         } else {
             header = (
                 <>
-                    {pageInfo} - {module} - {Section[section]}
+                    {pageInfo} - {Section[section]}
                 </>
             );
         }
