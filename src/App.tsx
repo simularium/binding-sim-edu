@@ -349,7 +349,7 @@ function App() {
     usePageNumber(
         page,
         (page) =>
-            currentModule === 1 &&
+            currentModule === Module.A_B_AB &&
             page === PROMPT_TO_ADJUST_B &&
             isPlaying &&
             recordedInputConcentration.length > 0 &&
