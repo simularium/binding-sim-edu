@@ -72,11 +72,7 @@ const ConcentrationSlider: React.FC<SliderProps> = ({
                     <Mark
                         index={index}
                         disabledNumbers={disabledNumbers}
-                        onMouseUp={() => {
-                            if (onChangeComplete) {
-                                onChangeComplete(name, index);
-                            }
-                        }}
+                        onMouseUp={() => onChangeComplete?.(name, index)}
                     />
                 ),
             };
