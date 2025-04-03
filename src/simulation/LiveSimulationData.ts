@@ -52,6 +52,18 @@ const agentC: InputAgent = {
     complexColor: AGENT_AC_COLOR,
 };
 
+const agentD: InputAgent = {
+    id: 3,
+    name: AgentName.D,
+    initialConcentration: 0,
+    radius: 1,
+    partners: [0],
+    kOn: 0.9,
+    kOff: 0.01,
+    color: AGENT_B_COLOR,
+    complexColor: AGENT_AB_COLOR,
+};
+
 const kds = {
     [Module.A_B_AB]: 0.75,
     [Module.A_C_AC]: 74,
@@ -63,6 +75,7 @@ export default class LiveSimulation implements ISimulationData {
         [AgentName.A]: AgentFunction.Fixed,
         [AgentName.B]: AgentFunction.Adjustable,
         [AgentName.C]: AgentFunction.Competitor,
+        [AgentName.D]: AgentFunction.Competitor,
         [ProductName.AB]: AgentFunction.Complex_1,
         [ProductName.AC]: AgentFunction.Complex_2,
     };
@@ -119,7 +132,7 @@ export default class LiveSimulation implements ISimulationData {
                 maxConcentration = 75;
                 break;
             case Module.A_B_C_AB_AC:
-                maxConcentration = 20; //TODO: adjust these as needed
+                maxConcentration = 10;
                 break;
         }
         return maxConcentration;

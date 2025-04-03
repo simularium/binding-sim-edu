@@ -38,6 +38,7 @@ export enum AgentName {
     A = "A",
     B = "B",
     C = "C",
+    D = "D",
     Antibody = "Antibody",
     Antigen = "Antigen",
 }

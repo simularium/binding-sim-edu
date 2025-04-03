@@ -54,7 +54,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
     private clearAgents() {
         this.currentNumberBound = 0;
-        this.productMap.clear();
+        this.currentComplexMap.clear();
         this.productColor.clear();
         this.currentNumberOfBindingEvents = 0;
         this.currentNumberOfUnbindingEvents = 0;
@@ -62,13 +62,14 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.instances = [];
     }
 
-    private getProductName(agent1: InputAgent, agent2: InputAgent) {
-        const name1 = agent1.name;
-        const name2 = agent2.name;
+    private getProductName(
+        agent1: BindingInstance | InputAgent,
+        agent2: BindingInstance | InputAgent
+    ) {
         if (agent1.id > agent2.id) {
-            return `${name2}#${name1}`;
+            return `${agent1.id}#${agent2.id}`;
         } else {
-            return `${name1}#${name2}`;
+            return `${agent2.id}#${agent1.id}`;
         }
     }
 
@@ -87,17 +88,8 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             if (agent.complexColor) {
                 this.productColor.set(agent.id, agent.complexColor);
             }
-            if (agent.partners.length > 0) {
-                for (let j = 0; j < agent.partners.length; ++j) {
-                    const partnerId = agent.partners[j];
-                    const partner = agents.find((a) => a.id === partnerId);
-                    if (!partner) {
-                        continue;
-                    }
-                    const complexName = this.getProductName(agent, partner);
-                    this.currentComplexMap.set(complexName, 0);
-                }
-            }
+
+            this.currentComplexMap.set(agent.id.toString(), 0);
 
             if (agent.radius > largestRadius) {
                 // use the largest agent to check if the system is mixed
@@ -105,10 +97,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 this.mixCheckAgent = agent.id;
             }
             for (let j = 0; j < agent.count; ++j) {
-                const position: number[] = this.getRandomPointOnSide(
-                    agent.id,
-                    agents.length
-                );
+                const position: number[] = this.getRandomPointOnSide(agent.id);
                 const circle = new Circle(
                     new Vector(...position),
                     agent.radius
@@ -173,17 +162,12 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         return concentration;
     }
 
-    private getRandomPointOnSide(side: number, total: number) {
+    private getRandomPointOnSide(side: number) {
         const size = this.size;
         const buffer = size / 20;
         const dFromSide = random(0 + buffer, size / 2, true);
-        let dAlongSide = random(-size / 2, size / 2, true);
+        const dAlongSide = random(-size / 2, size / 2, true);
 
-        if (total > 2 && side === 1) {
-            dAlongSide = random(0, size / 2, true);
-        } else if (total > 2 && side === 2) {
-            dAlongSide = random(-size / 2, 0, true);
-        }
         switch (side) {
             case 0:
                 return [-dFromSide, dAlongSide];
@@ -234,10 +218,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         const diff = newCount - oldCount;
         if (diff > 0) {
             for (let i = 0; i < diff; ++i) {
-                const position: number[] = this.getRandomPointOnSide(
-                    agent.id,
-                    this.agents.length
-                );
+                const position: number[] = this.getRandomPointOnSide(agent.id);
                 const circle = new Circle(
                     new Vector(...position),
                     agent.radius
@@ -284,12 +265,12 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         const init = <{ [key: string]: number }>{};
         const concentrations = this.agents.reduce((acc, agent) => {
             acc[agent.name] = this.convertCountToConcentration(
-                agent.count - this.currentNumberBound
+                agent.count - this.currentComplexMap.get(agent.id.toString())!
             );
             return acc;
         }, init);
         concentrations[product] = this.convertCountToConcentration(
-            this.currentNumberBound
+            this.currentComplexMap.get("1#0") || 0
         );
         return concentrations;
     }
@@ -321,13 +302,14 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
     private updateAgentsPositions() {
         for (let i = 0; i < this.instances.length; ++i) {
-            const unbindingOccurred = this.instances[i].oneStep(
+            const releasedChild = this.instances[i].oneStep(
                 this.size,
                 this.timeFactor
             );
-            if (unbindingOccurred) {
+            if (releasedChild) {
                 this.currentNumberOfUnbindingEvents++;
                 this.currentNumberBound--;
+                this.incrementBoundCounts(this.instances[i], releasedChild, -1);
             }
         }
     }
@@ -361,6 +343,27 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         }
     }
 
+    private incrementBoundCounts(
+        a: BindingInstance,
+        b: BindingInstance,
+        amount: number
+    ) {
+        const complexName = this.getProductName(a, b);
+        this.currentComplexMap.set(
+            complexName,
+            (this.currentComplexMap.get(complexName) || 0) + amount
+        );
+
+        const previousValue = this.currentComplexMap.get(a.id.toString()) || 0;
+        const nextValue = previousValue + amount;
+
+        this.currentComplexMap.set(a.id.toString(), nextValue);
+        this.currentComplexMap.set(
+            b.id.toString(),
+            (this.currentComplexMap.get(b.id.toString()) || 0) + amount
+        );
+    }
+
     private resolveBindingReactions() {
         this.system.checkAll((response: Response) => {
             const { a, b, overlapV } = response;
@@ -378,9 +381,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                     if (unbound) {
                         this.currentNumberOfUnbindingEvents++;
                         this.currentNumberBound--;
+                        this.incrementBoundCounts(a, b, -1);
                     }
                 }
-                if (a.partners.includes(b.id)) {
+                if (a.partners.includes(b.id) && !a.isBoundPair(b)) {
                     // a is the ligand
                     let bound = false;
                     if (a.r < b.r) {
@@ -390,6 +394,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                         bound = a.checkWillBind(b, overlapV);
                     }
                     if (bound) {
+                        this.incrementBoundCounts(a, b, 1);
                         this.currentNumberOfBindingEvents++;
                         this.currentNumberBound++;
                     }
@@ -472,7 +477,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                         continue;
                     }
                     typeMapping[complexId] = {
-                        name: `${this.agents[i].name}#${this.agents[partnerId].name}`,
+                        name: `${this.agents[i].name}#${partner.name}`,
                         geometry: {
                             color:
                                 this.productColor.get(partnerId) ||
@@ -485,7 +490,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 }
             }
         }
-        console.log("typeMapping", typeMapping);
         return {
             // TODO get msgType and connId out of here
             connId: "hello world",
