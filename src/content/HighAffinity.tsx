@@ -34,7 +34,7 @@ export const highAffinityContentArray: PageContent[] = [
                     doi:10.2210/rcsb_pdb/goodsell-gallery-021
                 </div>
                 <div>
-                    This painting is part of “VAX,” a series of paintings
+                    This painting is part of “VAX”, a series of paintings
                     exploring the molecular basis of vaccines. These paintings
                     are designed to be accurate representations of the
                     biological processes, but they also serve as a personal
