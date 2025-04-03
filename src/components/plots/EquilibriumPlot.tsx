@@ -109,7 +109,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         height: Math.max(130, height),
         xaxis: {
             ...AXIS_SETTINGS,
-            range: [-10, xAxisMax],
+            range: [0, xAxisMax],
             title: `[${adjustableAgentName}] ${MICRO}M`,
             titlefont: {
                 ...AXIS_SETTINGS.titlefont,
