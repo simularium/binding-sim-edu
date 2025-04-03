@@ -29,7 +29,12 @@ export const highAffinityContentArray: PageContent[] = [
                 represented simply as circles.
             </>
         ),
-        callToAction: "What happens to the molecules once you press play?",
+        callToAction: (
+            <>
+                What happens to the molecules once you press{" "}
+                <strong>play</strong>?
+            </>
+        ),
         section: Section.Introduction,
         layout: LayoutType.LiveSimulation,
     },
@@ -38,11 +43,17 @@ export const highAffinityContentArray: PageContent[] = [
             <>
                 As the simulation plays, the molecules move by a random walk.
                 Watch what happens when they bump into each other. What do you
-                think the "Reaction events over time" graph is showing?
+                think the <strong>Reaction events over time</strong> graph is
+                showing?
             </>
         ),
-        callToAction:
-            "After you've observed the simulation, click 'Lab view' to see what the cuvette looks like now.",
+        callToAction: (
+            <>
+                After you've observed the simulation, click{" "}
+                <strong>Lab view</strong> to see what the cuvette looks like
+                now.
+            </>
+        ),
         section: Section.Introduction,
         layout: LayoutType.LiveSimulation,
     },
@@ -53,7 +64,11 @@ export const highAffinityContentArray: PageContent[] = [
                 progresses. Can you estimate the concentration of <AB /> ?
             </>
         ),
-        callToAction: "Click 'Molecular view' to switch back.",
+        callToAction: (
+            <>
+                Click <strong>Molecular view</strong> to switch back.
+            </>
+        ),
         section: Section.Introduction,
         layout: LayoutType.LiveSimulation,
     },
@@ -66,8 +81,12 @@ export const highAffinityContentArray: PageContent[] = [
             </>
         ),
         actionButton: <StartExperiment />,
-        callToAction:
-            "Click the 'Start experiment' button to reset the simulation and begin by pressing play!",
+        callToAction: (
+            <>
+                Click the <strong>Start experiment</strong> button to reset the
+                simulation and begin by pressing <strong>play</strong>!
+            </>
+        ),
         section: Section.Introduction,
         layout: LayoutType.LiveSimulation,
     },
@@ -80,8 +99,12 @@ export const highAffinityContentArray: PageContent[] = [
             </>
         ),
         actionButton: <StartExperiment />,
-        callToAction:
-            "Click the 'Start experiment' button to reset the simulation and begin by pressing play!",
+        callToAction: (
+            <>
+                Click the <strong>Start experiment</strong> button to reset the
+                simulation and begin by pressing <strong>play</strong>!
+            </>
+        ),
         section: Section.Experiment,
         layout: LayoutType.LiveSimulation,
     },
@@ -95,8 +118,14 @@ export const highAffinityContentArray: PageContent[] = [
                 concentration of <AB /> stays more or less consistent.
             </>
         ),
-        callToAction:
-            "Watch the Concentration over time plot until you think the reaction has reached equilibrium. Then, press the “Record” button to record the equilibrium concentration.",
+        callToAction: (
+            <>
+                Watch the <strong>Concentration over time</strong> plot until
+                you think the reaction has reached equilibrium. Then, press the{" "}
+                <strong>Record</strong> button to record the equilibrium
+                concentration.
+            </>
+        ),
         section: Section.Experiment,
         layout: LayoutType.LiveSimulation,
     },
@@ -110,9 +139,11 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         callToAction: (
             <>
-                If you haven’t already done so, pause the simulation and use the
-                now-visible interactive slider under “Agent concentrations” to
-                adjust the concentration of <B /> and play the simulation again.
+                If you haven’t already done so, <strong>pause</strong> the
+                simulation and use the now-visible interactive slider under{" "}
+                <strong>Agent concentrations</strong> to adjust the
+                concentration of <B /> and <strong>play</strong> the simulation
+                again.
             </>
         ),
         section: Section.Experiment,
@@ -133,8 +164,8 @@ export const highAffinityContentArray: PageContent[] = [
         callToAction: (
             <>
                 For each new concentration of <B />, determine when equilibrium
-                has been reached and then press the 'Record' button to plot
-                their equilibrium concentrations.
+                has been reached and then press the <strong>Record</strong>{" "}
+                button to plot their equilibrium concentrations.
             </>
         ),
         section: Section.Experiment,

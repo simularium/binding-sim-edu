@@ -49,19 +49,6 @@ const agentC: InputAgent = {
     kOn: 0.3,
     kOff: 0.9,
     color: AGENT_C_COLOR,
-    complexColor: AGENT_AC_COLOR,
-};
-
-const agentD: InputAgent = {
-    id: 3,
-    name: AgentName.D,
-    initialConcentration: 0,
-    radius: 1,
-    partners: [0],
-    kOn: 0.9,
-    kOff: 0.01,
-    color: AGENT_B_COLOR,
-    complexColor: AGENT_AB_COLOR,
 };
 
 const kds = {
