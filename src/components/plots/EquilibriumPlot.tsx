@@ -65,7 +65,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
 
     const horizontalLine = {
         x: [0, xAxisMax],
-        y: [5, 5],
+        y: [2.5, 2.5],
         mode: "lines",
         name: "50% bound",
         hovertemplate: "50% bound",
@@ -76,7 +76,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
     };
     const horizontalLineMax = {
         x: [0, xAxisMax],
-        y: [10, 10],
+        y: [5, 5],
         mode: "lines",
         name: "Initial [A]",
         hoverlabel: { bgcolor: AGENT_A_COLOR },

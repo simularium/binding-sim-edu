@@ -10,7 +10,7 @@ import {
 export const enum Module {
     A_B_AB = 1,
     A_C_AC = 2,
-    A_B_C_AB_AC = 3,
+    A_B_D = 3,
 }
 
 export enum Section {
@@ -26,12 +26,14 @@ export const enum LayoutType {
     PreComputedSimulation = "pre-computed-simulation",
 }
 
-export enum AgentFunction {
+export enum AgentType {
     Fixed = "Fixed",
-    Adjustable = "Adjustable",
+    Adjustable_1 = "Adjustable_1",
+    Adjustable_2 = "Adjustable_2",
     Competitor = "Competitor",
     Complex_1 = "Complex_1",
     Complex_2 = "Complex_2",
+    Complex_3 = "Complex_3",
 }
 
 export enum AgentName {
@@ -46,6 +48,7 @@ export enum AgentName {
 export enum ProductName {
     AB = "AB",
     AC = "AC",
+    AD = "AD",
     AntibodyAntigen = "Antibody-Antigen",
     Hemoglobin = "Hemoglobin",
 }

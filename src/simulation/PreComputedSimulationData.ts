@@ -1,5 +1,5 @@
 import {
-    AgentFunction,
+    AgentType,
     AgentName,
     CurrentConcentration,
     InputAgent,
@@ -13,17 +13,17 @@ import ISimulationData, {
 import { MICRO } from "../constants";
 
 export default class PreComputedSimulationData implements ISimulationData {
-    static NAME_TO_FUNCTION_MAP = {
-        [AgentName.Antibody]: AgentFunction.Fixed,
-        [AgentName.Antigen]: AgentFunction.Adjustable,
-        [ProductName.AntibodyAntigen]: AgentFunction.Complex_1,
+    static NAME_TO_TYPE_MAP = {
+        [AgentName.Antibody]: AgentType.Fixed,
+        [AgentName.Antigen]: AgentType.Adjustable_1,
+        [ProductName.AntibodyAntigen]: AgentType.Complex_1,
     };
     static EXAMPLE_TRAJECTORY_URLS = {
         [Module.A_B_AB]:
             "https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/binding-affinity_antibodies.simularium",
         [Module.A_C_AC]:
             "https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/binding-affinity_hemoglobin.simularium",
-        [Module.A_B_C_AB_AC]:
+        [Module.A_B_D]:
             "https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/binding-affinity_hemoglobin-co.simularium",
     };
 
@@ -32,7 +32,7 @@ export default class PreComputedSimulationData implements ISimulationData {
     PRODUCT = {
         [Module.A_B_AB]: ProductName.AntibodyAntigen,
         [Module.A_C_AC]: ProductName.Hemoglobin,
-        [Module.A_B_C_AB_AC]: ProductName.Hemoglobin,
+        [Module.A_B_D]: ProductName.Hemoglobin,
     };
     type = TrajectoryType.precomputed;
 
@@ -49,18 +49,18 @@ export default class PreComputedSimulationData implements ISimulationData {
             case Module.A_C_AC:
                 maxConcentration = 20;
                 break;
-            case Module.A_B_C_AB_AC:
+            case Module.A_B_D:
                 maxConcentration = 20;
                 break;
         }
         return maxConcentration;
     };
 
-    getAgentFunction = (name: AgentName | ProductName): AgentFunction => {
+    getAgentFunction = (name: AgentName | ProductName): AgentType => {
         return (
-            PreComputedSimulationData.NAME_TO_FUNCTION_MAP as Record<
+            PreComputedSimulationData.NAME_TO_TYPE_MAP as Record<
                 AgentName | ProductName,
-                AgentFunction
+                AgentType
             >
         )[name];
     };

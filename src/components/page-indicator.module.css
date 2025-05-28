@@ -27,10 +27,23 @@
     position: absolute;
     width: 10px;
     height: 10px;
-    top: 23px; /* aligned by eye after rest of layout created */
-    left: -2px;
+    top: 24px; /* aligned by eye after rest of layout created */
+    left: 0px;
     border-radius: 50%;
     background-color: var(--dark-gray);
+    cursor: pointer;
+}
+
+/* click target */
+.progress-bar-wrapper::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 20px;
+    left: -5px;
+    border-radius: 50%;
+    cursor: pointer;
 }
 
 .progress-bar {

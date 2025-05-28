@@ -12,7 +12,7 @@ import {
     VisTypes,
 } from "@aics/simularium-viewer";
 
-import { InputAgent, ProductName, StoredAgent } from "../types";
+import { AgentName, InputAgent, ProductName, StoredAgent } from "../types";
 import LiveSimulationData from "./LiveSimulationData";
 import { LIVE_SIMULATION_NAME } from "../constants";
 import BindingInstance from "./BindingInstance";
@@ -62,7 +62,30 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.instances = [];
     }
 
-    private getProductName(
+    private getProductIdByProductName(productName: ProductName) {
+        let agent1: InputAgent | undefined;
+        let agent2: InputAgent | undefined;
+        switch (productName) {
+            case ProductName.AB:
+                agent1 = this.agents.find((a) => a.name === AgentName.A);
+                agent2 = this.agents.find((a) => a.name === AgentName.B);
+                break;
+            case ProductName.AC:
+                agent1 = this.agents.find((a) => a.name === AgentName.A);
+                agent2 = this.agents.find((a) => a.name === AgentName.C);
+                break;
+            case ProductName.AD:
+                agent1 = this.agents.find((a) => a.name === AgentName.A);
+                agent2 = this.agents.find((a) => a.name === AgentName.D);
+                break;
+        }
+        if (!agent1 || !agent2) {
+            throw new Error("Invalid product name");
+        }
+        return this.getProductIdByAgents(agent1, agent2);
+    }
+
+    private getProductIdByAgents(
         agent1: BindingInstance | InputAgent,
         agent2: BindingInstance | InputAgent
     ) {
@@ -269,9 +292,12 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             );
             return acc;
         }, init);
-        concentrations[product] = this.convertCountToConcentration(
-            this.currentComplexMap.get("1#0") || 0
-        );
+        const productId = this.getProductIdByProductName(product);
+        if (productId) {
+            concentrations[product] = this.convertCountToConcentration(
+                this.currentComplexMap.get(productId) || 0
+            );
+        }
         return concentrations;
     }
 
@@ -348,7 +374,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         b: BindingInstance,
         amount: number
     ) {
-        const complexName = this.getProductName(a, b);
+        const complexName = this.getProductIdByAgents(a, b);
         this.currentComplexMap.set(
             complexName,
             (this.currentComplexMap.get(complexName) || 0) + amount

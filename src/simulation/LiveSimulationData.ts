@@ -1,5 +1,5 @@
 import {
-    AgentFunction,
+    AgentType,
     AgentName,
     CurrentConcentration,
     InputAgent,
@@ -10,8 +10,10 @@ import {
     AGENT_A_COLOR,
     AGENT_AB_COLOR,
     AGENT_AC_COLOR,
+    AGENT_AD_COLOR,
     AGENT_B_COLOR,
     AGENT_C_COLOR,
+    AGENT_D_COLOR,
 } from "../constants/colors";
 import ISimulationData, {
     AGENT_AND_PRODUCT_COLORS,
@@ -24,7 +26,7 @@ const agentA: InputAgent = {
     name: AgentName.A,
     initialConcentration: 0,
     radius: 3,
-    partners: [1, 2],
+    partners: [1, 2, 3],
     color: AGENT_A_COLOR,
 };
 
@@ -34,7 +36,7 @@ const agentB: InputAgent = {
     initialConcentration: 0,
     radius: 1,
     partners: [0],
-    kOn: 0.9,
+    kOn: 0.8,
     kOff: 0.01,
     color: AGENT_B_COLOR,
     complexColor: AGENT_AB_COLOR,
@@ -49,27 +51,41 @@ const agentC: InputAgent = {
     kOn: 0.3,
     kOff: 0.9,
     color: AGENT_C_COLOR,
+    complexColor: AGENT_AC_COLOR,
+};
+
+const agentD: InputAgent = {
+    id: 3,
+    name: AgentName.D,
+    initialConcentration: 0,
+    radius: 1.2,
+    partners: [0],
+    kOn: 0.99,
+    kOff: 0.001,
+    color: AGENT_D_COLOR,
+    complexColor: AGENT_AD_COLOR,
 };
 
 const kds = {
     [Module.A_B_AB]: 0.75,
     [Module.A_C_AC]: 74,
-    [Module.A_B_C_AB_AC]: 5,
+    [Module.A_B_D]: 5,
 };
 
 export default class LiveSimulation implements ISimulationData {
-    static NAME_TO_FUNCTION_MAP = {
-        [AgentName.A]: AgentFunction.Fixed,
-        [AgentName.B]: AgentFunction.Adjustable,
-        [AgentName.C]: AgentFunction.Competitor,
-        [AgentName.D]: AgentFunction.Competitor,
-        [ProductName.AB]: AgentFunction.Complex_1,
-        [ProductName.AC]: AgentFunction.Complex_2,
+    static NAME_TO_TYPE_MAP = {
+        [AgentName.A]: AgentType.Fixed,
+        [AgentName.B]: AgentType.Adjustable_1,
+        [AgentName.C]: AgentType.Adjustable_2,
+        [AgentName.D]: AgentType.Competitor,
+        [ProductName.AB]: AgentType.Complex_1,
+        [ProductName.AC]: AgentType.Complex_2,
+        [ProductName.AD]: AgentType.Complex_3,
     };
     static ADJUSTABLE_AGENT_MAP = {
         [Module.A_B_AB]: AgentName.B,
         [Module.A_C_AC]: AgentName.C,
-        [Module.A_B_C_AB_AC]: AgentName.B,
+        [Module.A_B_D]: AgentName.D,
     };
     static INITIAL_TIME_FACTOR: number = 30;
     static DEFAULT_TIME_FACTOR: number = 90;
@@ -77,16 +93,27 @@ export default class LiveSimulation implements ISimulationData {
         [AgentName.A]: agentA,
         [AgentName.B]: agentB,
         [AgentName.C]: agentC,
+        [AgentName.D]: agentD,
     };
     static INITIAL_CONCENTRATIONS = {
-        [AgentName.A]: 10,
-        [AgentName.B]: 4,
-        [AgentName.C]: 30,
+        [Module.A_B_AB]: {
+            [AgentName.A]: 5,
+            [AgentName.B]: 4,
+        },
+        [Module.A_C_AC]: {
+            [AgentName.A]: 1,
+            [AgentName.C]: 30,
+        },
+        [Module.A_B_D]: {
+            [AgentName.A]: 1,
+            [AgentName.B]: 1,
+            [AgentName.D]: 4,
+        },
     };
     PRODUCT = {
         [Module.A_B_AB]: ProductName.AB,
         [Module.A_C_AC]: ProductName.AC,
-        [Module.A_B_C_AB_AC]: ProductName.AB,
+        [Module.A_B_D]: ProductName.AB,
     };
     timeUnit = NANO;
     type = TrajectoryType.live;
@@ -95,11 +122,11 @@ export default class LiveSimulation implements ISimulationData {
         return this.PRODUCT[module];
     };
 
-    getAgentFunction = (name: AgentName | ProductName): AgentFunction => {
+    getAgentFunction = (name: AgentName | ProductName): AgentType => {
         return (
-            LiveSimulation.NAME_TO_FUNCTION_MAP as Record<
+            LiveSimulation.NAME_TO_TYPE_MAP as Record<
                 AgentName | ProductName,
-                AgentFunction
+                AgentType
             >
         )[name];
     };
@@ -118,7 +145,7 @@ export default class LiveSimulation implements ISimulationData {
             case Module.A_C_AC:
                 maxConcentration = 75;
                 break;
-            case Module.A_B_C_AB_AC:
+            case Module.A_B_D:
                 maxConcentration = 10;
                 break;
         }
@@ -126,8 +153,12 @@ export default class LiveSimulation implements ISimulationData {
     };
 
     createAgentsFromConcentrations = (
-        activeAgents?: AgentName[]
+        activeAgents?: AgentName[],
+        module?: Module
     ): InputAgent[] => {
+        if (!module) {
+            throw new Error("Module must be specified to create agents.");
+        }
         return (activeAgents ?? []).map((agentName: AgentName) => {
             const agent = {
                 ...(
@@ -137,10 +168,12 @@ export default class LiveSimulation implements ISimulationData {
                     >
                 )[agentName],
             };
-            agent.initialConcentration =
-                LiveSimulation.INITIAL_CONCENTRATIONS[
-                    agentName as keyof typeof LiveSimulation.INITIAL_CONCENTRATIONS
-                ];
+            agent.initialConcentration = (
+                LiveSimulation.INITIAL_CONCENTRATIONS[module] as Record<
+                    AgentName,
+                    number
+                >
+            )[agentName];
             return agent;
         });
     };
@@ -151,23 +184,26 @@ export default class LiveSimulation implements ISimulationData {
                 return [AgentName.A, AgentName.B];
             case Module.A_C_AC:
                 return [AgentName.A, AgentName.C];
-            case Module.A_B_C_AB_AC:
-                return [AgentName.A, AgentName.B, AgentName.C];
+            case Module.A_B_D:
+                return [AgentName.A, AgentName.B, AgentName.D];
             default:
                 return [];
         }
     };
     // filters down to the active agents
     getInitialConcentrations = (
-        activeAgents: AgentName[]
+        activeAgents: AgentName[],
+        module: Module
     ): CurrentConcentration => {
         return activeAgents.reduce((acc, agent) => {
             return {
                 ...acc,
-                [agent]:
-                    LiveSimulation.INITIAL_CONCENTRATIONS[
-                        agent as keyof typeof LiveSimulation.INITIAL_CONCENTRATIONS
-                    ],
+                [agent]: (
+                    LiveSimulation.INITIAL_CONCENTRATIONS[module] as Record<
+                        AgentName,
+                        number
+                    >
+                )[agent],
             };
         }, {});
     };

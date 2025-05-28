@@ -32,13 +32,13 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
     const concentrationExcludedPages = {
         [Module.A_B_AB]: [0, 1],
         [Module.A_C_AC]: [],
-        [Module.A_B_C_AB_AC]: [],
+        [Module.A_B_D]: [],
     };
 
     const eventsOverTimeExcludedPages = {
         [Module.A_B_AB]: [0, 1, 2],
         [Module.A_C_AC]: [],
-        [Module.A_B_C_AB_AC]: [],
+        [Module.A_B_D]: [0, 1, 2, 3, 4],
     };
     return (
         <>

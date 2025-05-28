@@ -1,12 +1,14 @@
 import {
     AGENT_AB_COLOR,
     AGENT_AC_COLOR,
+    AGENT_AD_COLOR,
     AGENT_A_COLOR,
     AGENT_B_COLOR,
     AGENT_C_COLOR,
+    AGENT_D_COLOR,
 } from "../constants/colors";
 import {
-    AgentFunction,
+    AgentType,
     AgentName,
     CurrentConcentration,
     InputAgent,
@@ -15,11 +17,13 @@ import {
 } from "../types";
 
 export const AGENT_AND_PRODUCT_COLORS = {
-    [AgentFunction.Fixed]: AGENT_A_COLOR,
-    [AgentFunction.Adjustable]: AGENT_B_COLOR,
-    [AgentFunction.Competitor]: AGENT_C_COLOR,
-    [AgentFunction.Complex_1]: AGENT_AB_COLOR,
-    [AgentFunction.Complex_2]: AGENT_AC_COLOR,
+    [AgentType.Fixed]: AGENT_A_COLOR,
+    [AgentType.Adjustable_1]: AGENT_B_COLOR,
+    [AgentType.Adjustable_2]: AGENT_C_COLOR,
+    [AgentType.Competitor]: AGENT_D_COLOR,
+    [AgentType.Complex_1]: AGENT_AB_COLOR,
+    [AgentType.Complex_2]: AGENT_AC_COLOR,
+    [AgentType.Complex_3]: AGENT_AD_COLOR,
 };
 
 export enum TrajectoryType {
@@ -31,11 +35,12 @@ interface ISimulationData {
     type: TrajectoryType;
     getCurrentProduct: (module: Module) => ProductName;
     getMaxConcentration: (module: Module) => number;
-    getAgentFunction: (name: AgentName | ProductName) => AgentFunction;
+    getAgentFunction: (name: AgentName | ProductName) => AgentType;
     getAgentColor: (agentName: AgentName | ProductName) => string;
     getActiveAgents: (currentModule: Module) => AgentName[];
     getInitialConcentrations: (
-        activeAgents: AgentName[]
+        activeAgents: AgentName[],
+        module: Module
     ) => CurrentConcentration;
     createAgentsFromConcentrations: () => InputAgent[] | null;
 }

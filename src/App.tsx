@@ -87,9 +87,13 @@ function App() {
     const [inputConcentration, setInputConcentration] =
         useState<InputConcentration>({
             [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.A
+                ],
             [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.B
+                ],
         });
     const [timeFactor, setTimeFactor] = useState(
         LiveSimulationData.INITIAL_TIME_FACTOR
@@ -106,9 +110,13 @@ function App() {
     const [liveConcentration, setLiveConcentration] =
         useState<CurrentConcentration>({
             [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.A
+                ],
             [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.B
+                ],
             [productName]: 0,
         });
     const [recordedInputConcentration, setRecordedInputConcentration] =
@@ -177,11 +185,13 @@ function App() {
     const clientSimulator = useMemo(() => {
         const activeAgents = simulationData.getActiveAgents(currentModule);
         setInputConcentration(
-            simulationData.getInitialConcentrations(activeAgents)
+            simulationData.getInitialConcentrations(activeAgents, currentModule)
         );
         resetCurrentRunAnalysisState();
-        const trajectory =
-            simulationData.createAgentsFromConcentrations(activeAgents);
+        const trajectory = simulationData.createAgentsFromConcentrations(
+            activeAgents,
+            currentModule
+        );
         if (!trajectory) {
             return null;
         }
@@ -299,21 +309,31 @@ function App() {
     const totalReset = useCallback(() => {
         setLiveConcentration({
             [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.A
+                ],
             [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.B
+                ],
             [productName]: 0,
         });
         setCurrentModule(Module.A_B_AB);
         setInputConcentration({
             [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.A
+                ],
             [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.B
+                ],
         });
         handleNewInputConcentration(
             adjustableAgentName,
-            LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B]
+            LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                AgentName.B
+            ]
         );
         setIsPlaying(false);
         clearAllAnalysisState();
@@ -440,6 +460,7 @@ function App() {
 
     const setModule = (module: Module) => {
         setPage(FIRST_PAGE);
+        clearAllAnalysisState();
         setCurrentModule(module);
         setIsPlaying(false);
     };

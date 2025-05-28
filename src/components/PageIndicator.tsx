@@ -5,6 +5,7 @@ import classNames from "classnames";
 
 import { moduleNames } from "../content";
 import styles from "./page-indicator.module.css";
+import { SimulariumContext } from "../simulation/context";
 
 interface PageIndicatorProps {
     title: string;
@@ -18,6 +19,7 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
     total,
 }) => {
     let indexOfActiveModule = -1;
+    const { setModule } = React.useContext(SimulariumContext);
 
     const getModulePercent = (isActiveModule: boolean, moduleIndex: number) => {
         if (isActiveModule) {
@@ -44,6 +46,12 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
                                 moduleIndex <= indexOfActiveModule,
                             [styles.current]: isActiveModule,
                         })}
+                        onClick={() => {
+                            if (isActiveModule) {
+                                return;
+                            }
+                            setModule(moduleIndex);
+                        }}
                     >
                         <div className={styles.title}>{name}</div>
                         <Progress
