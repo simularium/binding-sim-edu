@@ -56,9 +56,10 @@ import PreComputedSimulationData from "./simulation/PreComputedSimulationData";
 import LiveSimulationData from "./simulation/LiveSimulationData";
 import { PLOT_COLORS } from "./components/plots/constants";
 import useModule from "./hooks/useModule";
+import LandingPage from "./components/LandingPage";
 
 function App() {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(FIRST_PAGE[Module.A_B_AB]);
     const [time, setTime] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [trajectoryStatus, setTrajectoryStatus] = useState(
@@ -441,7 +442,7 @@ function App() {
     // User input handlers
 
     const setModule = (module: Module) => {
-        setPage(FIRST_PAGE);
+        setPage(FIRST_PAGE[module]);
         setCurrentModule(module);
         setIsPlaying(false);
     };
@@ -642,12 +643,19 @@ function App() {
                     }}
                 >
                     <MainLayout
+                        section={content[currentModule][page].section}
                         layout={content[currentModule][page].layout}
                         header={
                             <NavPanel
                                 page={page}
                                 title={moduleNames[currentModule]}
                                 total={finalPageNumber}
+                            />
+                        }
+                        landingPage={
+                            <LandingPage
+                                {...content[currentModule][page]}
+                                module={currentModule}
                             />
                         }
                         content={
