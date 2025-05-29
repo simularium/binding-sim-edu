@@ -14,6 +14,7 @@ export const enum Module {
 }
 
 export enum Section {
+    LandingPage = 0,
     Introduction = 1,
     Experiment = 2,
     BonusContent = 3,
@@ -81,6 +82,7 @@ export interface PageContent {
     section: Section;
     layout: LayoutType;
     visualContent?: JSX.Element;
+    acknowledgment?: JSX.Element;
     title?: string;
     actionButton?: JSX.Element;
     callToAction?: string | JSX.Element;

@@ -6,11 +6,45 @@ import Definition from "../components/shared/Definition";
 import { PageContent, Section, LayoutType } from "../types";
 
 export const highAffinityContentArray: PageContent[] = [
-    // making the content array 1 indexed to match the page numbers
     {
-        content: "",
-        section: Section.Introduction,
+        title: "Binding Affinity",
+        content: (
+            <>
+                <p>
+                    Welcome to the Binding Affinity interactive application!
+                    Here, you will learn how to determine the strength of
+                    interaction between two molecules in the lab by using
+                    computer simulations.{" "}
+                </p>
+                <p>
+                    This educational module is designed to be completed in a
+                    linear sequence, starting with high affinity, which contains
+                    important introductory content and guidance. However, if you
+                    complete the proceeding module, you may use the navigation
+                    at the top of the page to “drop in” on the next section.
+                </p>
+            </>
+        ),
+        section: Section.LandingPage,
         layout: LayoutType.FullScreenOverlay,
+        acknowledgment: (
+            <>
+                <div>
+                    David S. Goodsell, RCSB Protein Data Bank.
+                    doi:10.2210/rcsb_pdb/goodsell-gallery-021
+                </div>
+                <div>
+                    This painting is part of “VAX”, a series of paintings
+                    exploring the molecular basis of vaccines. These paintings
+                    are designed to be accurate representations of the
+                    biological processes, but they also serve as a personal
+                    celebration of a miracle of modern medicine. The painting
+                    shows aggregation of poliovirus by antibodies in a
+                    vaccinated person, neutralizing the virus and preventing
+                    infection.
+                </div>
+            </>
+        ),
     },
     {
         content:
@@ -73,7 +107,7 @@ export const highAffinityContentArray: PageContent[] = [
         layout: LayoutType.LiveSimulation,
     },
     {
-        title: "Start the Experiment",
+        title: "Start the experiment",
         content: (
             <>
                 Now, let's use this simulation to make measurements. We're going
@@ -91,7 +125,7 @@ export const highAffinityContentArray: PageContent[] = [
         layout: LayoutType.LiveSimulation,
     },
     {
-        title: "Start the Experiment",
+        title: "Start the experiment",
         content: (
             <>
                 Now, let's use this simulation to make measurements. We're going
@@ -109,6 +143,7 @@ export const highAffinityContentArray: PageContent[] = [
         layout: LayoutType.LiveSimulation,
     },
     {
+        title: "Identifying equilibrium",
         content: (
             <>
                 When the reaction first starts, the concentration of each
@@ -130,6 +165,7 @@ export const highAffinityContentArray: PageContent[] = [
         layout: LayoutType.LiveSimulation,
     },
     {
+        title: "Affinity",
         content: (
             <>
                 The goal of these experiments is to figure out how tightly two
@@ -150,6 +186,7 @@ export const highAffinityContentArray: PageContent[] = [
         layout: LayoutType.LiveSimulation,
     },
     {
+        title: "Repeating the experiment",
         content: (
             <>
                 We want to understand the affinity of{" "}
@@ -172,6 +209,7 @@ export const highAffinityContentArray: PageContent[] = [
         layout: LayoutType.LiveSimulation,
     },
     {
+        title: "Deriving Kd",
         content: (
             <>
                 We use the constant{" "}

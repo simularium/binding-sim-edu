@@ -9,7 +9,11 @@ export const moduleNames = {
     [Module.A_B_D]: "Competitive Binding",
 };
 
-export const FIRST_PAGE = 1;
+export const FIRST_PAGE = {
+    [Module.A_B_AB]: 0, // landing page
+    [Module.A_C_AC]: 1,
+    [Module.A_B_C_AB_AC]: 1,
+};
 
 export default {
     [Module.A_B_AB]: highAffinityContentArray,

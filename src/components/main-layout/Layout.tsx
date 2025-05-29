@@ -6,8 +6,9 @@ import VisibilityControl from "../shared/VisibilityControl";
 
 import styles from "./layout.module.css";
 import classNames from "classnames";
-import { LayoutType } from "../../types";
+import { LayoutType, Section } from "../../types";
 interface MainLayoutProps {
+    landingPage: ReactNode;
     layout: LayoutType;
     header: ReactNode;
     leftPanel: ReactNode;
@@ -15,6 +16,7 @@ interface MainLayoutProps {
     content: ReactNode;
     centerPanel: ReactNode;
     reactionPanel: ReactNode;
+    section: Section;
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({
@@ -25,7 +27,16 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     content,
     centerPanel,
     reactionPanel,
+    section,
+    landingPage,
 }) => {
+    const getContent = () => {
+        if (section === Section.LandingPage) {
+            return landingPage;
+        } else {
+            return content;
+        }
+    };
     return (
         <Layout>
             <Header className={styles.navBar}>{header}</Header>
@@ -35,10 +46,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                     {
                         [styles.overlay]:
                             layout === LayoutType.FullScreenOverlay,
+                        [styles.noPadding]: section === Section.LandingPage,
                     },
                 ])}
             >
-                {content}
+                {getContent()}
             </Content>
             <VisibilityControl notInBonusMaterial>
                 <Header className={styles.reactionPanel}>
