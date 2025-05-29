@@ -187,7 +187,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
     private getRandomPointOnSide(side: number) {
         const size = this.size;
-        const buffer = size / 20;
+        const buffer = -size * 0.01;
         const dFromSide = random(0 + buffer, size / 2, true);
         const dAlongSide = random(-size / 2, size / 2, true);
 

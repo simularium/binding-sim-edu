@@ -36,7 +36,7 @@ const agentB: InputAgent = {
     initialConcentration: 0,
     radius: 1,
     partners: [0],
-    kOn: 0.8,
+    kOn: 0.95,
     kOff: 0.01,
     color: AGENT_B_COLOR,
     complexColor: AGENT_AB_COLOR,
@@ -97,11 +97,11 @@ export default class LiveSimulation implements ISimulationData {
     };
     static INITIAL_CONCENTRATIONS = {
         [Module.A_B_AB]: {
-            [AgentName.A]: 5,
+            [AgentName.A]: 10,
             [AgentName.B]: 4,
         },
         [Module.A_C_AC]: {
-            [AgentName.A]: 1,
+            [AgentName.A]: 5,
             [AgentName.C]: 30,
         },
         [Module.A_B_D]: {
