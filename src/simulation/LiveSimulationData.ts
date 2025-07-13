@@ -97,7 +97,7 @@ export default class LiveSimulation implements ISimulationData {
     };
     static INITIAL_CONCENTRATIONS = {
         [Module.A_B_AB]: {
-            [AgentName.A]: 10,
+            [AgentName.A]: 5,
             [AgentName.B]: 4,
         },
         [Module.A_C_AC]: {
@@ -140,13 +140,13 @@ export default class LiveSimulation implements ISimulationData {
         let maxConcentration = 0;
         switch (module) {
             case Module.A_B_AB:
-                maxConcentration = 10;
+                maxConcentration = 5;
                 break;
             case Module.A_C_AC:
                 maxConcentration = 75;
                 break;
             case Module.A_B_D:
-                maxConcentration = 10;
+                maxConcentration = 1;
                 break;
         }
         return maxConcentration;

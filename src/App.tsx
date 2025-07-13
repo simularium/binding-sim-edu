@@ -302,7 +302,7 @@ function App() {
                 name as keyof typeof LiveSimulationData.AVAILABLE_AGENTS;
             const agentId = LiveSimulationData.AVAILABLE_AGENTS[agentName].id;
             clientSimulator.changeConcentration(agentId, value);
-            simulariumController.gotoTime(1); // the number isn't used, but it triggers the update
+            simulariumController.gotoTime(10000); // the number isn't used, but it triggers the update
             resetCurrentRunAnalysisState();
         },
         [clientSimulator, simulariumController]
