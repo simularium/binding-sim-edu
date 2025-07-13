@@ -3,11 +3,19 @@
         100vh - var(--nav-bar-height) - var(--reaction-panel-height) -
             var(--content-height) + (var(--border-thickness) * 2)
     );
+    height: calc(
+        100dvh - var(--nav-bar-height) - var(--reaction-panel-height) -
+            var(--content-height) + (var(--border-thickness) * 2)
+    );
 }
 
 .container.example {
     height: calc(
         100vh - var(--nav-bar-height) - var(--content-height) +
+            (var(--border-thickness) * 2)
+    );
+    height: calc(
+        100dvh - var(--nav-bar-height) - var(--content-height) +
             (var(--border-thickness) * 2)
     );
 }

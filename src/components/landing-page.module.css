@@ -1,5 +1,6 @@
 .container {
     height: calc(100vh - var(--nav-bar-height));
+    height: calc(100dvh - var(--nav-bar-height));
     background-size: cover;
     position: relative;
 }

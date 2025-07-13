@@ -4,6 +4,7 @@
     flex-flow: row wrap;
     width: 100vw;
     height: calc(100vh - var(--nav-bar-height) - var(--content-height));
+    height: calc(100dvh - var(--nav-bar-height) - var(--content-height));
     z-index: var(--full-page-layer);
     top: 0;
     background-color: black;
