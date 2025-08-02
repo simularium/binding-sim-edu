@@ -11,7 +11,7 @@ const NextButton = ({ text }: NextButtonProps) => {
     const { page, setPage, module, setModule } = useContext(SimulariumContext);
 
     const { totalPages } = useModule(module);
-    if (page + 1 >= totalPages) {
+    if (page + 1 > totalPages) {
         return (
             <PrimaryButton onClick={() => setModule(module + 1)}>
                 {text || "Finish"}
