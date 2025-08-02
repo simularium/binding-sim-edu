@@ -395,8 +395,9 @@ function App() {
             if (trajectoryStatus === TrajectoryStatus.INITIAL && url) {
                 const changeTrajectory = async () => {
                     setIsPlaying(false);
+                    simulariumController.clearFile();
                     setTrajectoryStatus(TrajectoryStatus.LOADING);
-                    totalReset();
+                    clearAllAnalysisState();
 
                     await fetch3DTrajectory(
                         url,
@@ -416,6 +417,7 @@ function App() {
         isPlaying,
         totalReset,
         switchToLiveSimulation,
+        clearAllAnalysisState,
     ]);
 
     const { section } = content[currentModule][page];

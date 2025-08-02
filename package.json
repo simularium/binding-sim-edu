@@ -11,7 +11,7 @@
     "install-viewer": "bun install @aics/simularium-viewer"
   },
   "dependencies": {
-    "@aics/simularium-viewer": "^3.9.1",
+    "@aics/simularium-viewer": "^3.10.2",
     "@ant-design/icons": "^5.3.6",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
@@ -44,5 +44,8 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
+  },
+  "resolutions": {
+    "rollup": "npm:@rollup/wasm-node"
   }
 }
