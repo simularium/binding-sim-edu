@@ -277,6 +277,21 @@ function App() {
         );
     }, [hasAValueAboveKd, hasAValueBelowKd, uniqMeasuredConcentrations]);
 
+    const addProductionTrace = useCallback(
+        (previousConcentration: number) => {
+            const traces = productOverTimeTraces;
+            if (currentProductConcentrationArray.length > 1) {
+                const newTrace = {
+                    inputConcentration: previousConcentration,
+                    productConcentrations: currentProductConcentrationArray,
+                };
+                setProductOverTimeTraces([...traces, newTrace]);
+                setCurrentProductConcentrationArray([]);
+            }
+        },
+        [currentProductConcentrationArray, productOverTimeTraces]
+    );
+
     const handleNewInputConcentration = useCallback(
         (name: string, value: number) => {
             if (value === 0) {
@@ -295,9 +310,17 @@ function App() {
             const agentId = LiveSimulationData.AVAILABLE_AGENTS[agentName].id;
             clientSimulator.changeConcentration(agentId, value);
             simulariumController.gotoTime(1); // the number isn't used, but it triggers the update
+            const previousConcentration = inputConcentration[agentName] || 0;
+            addProductionTrace(previousConcentration);
             resetCurrentRunAnalysisState();
         },
-        [clientSimulator, simulariumController]
+        [
+            clientSimulator,
+            simulariumController,
+            inputConcentration,
+            addProductionTrace,
+            resetCurrentRunAnalysisState,
+        ]
     );
     const totalReset = useCallback(() => {
         setLiveConcentration({
@@ -428,18 +451,6 @@ function App() {
             setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
         }
     }, [section]);
-
-    const addProductionTrace = (previousConcentration: number) => {
-        const traces = productOverTimeTraces;
-        if (currentProductConcentrationArray.length > 1) {
-            const newTrace = {
-                inputConcentration: previousConcentration,
-                productConcentrations: currentProductConcentrationArray,
-            };
-            setProductOverTimeTraces([...traces, newTrace]);
-            setCurrentProductConcentrationArray([]);
-        }
-    };
 
     // User input handlers
 
