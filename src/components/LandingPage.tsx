@@ -12,7 +12,7 @@ interface LandingPageProps extends PageContent {
 const MODULE_CLASSNAMES: Record<Module, string> = {
     [Module.A_B_AB]: styles.highAffinity,
     [Module.A_C_AC]: styles.lowAffinity,
-    [Module.A_B_C_AB_AC]: styles.competitive,
+    [Module.A_B_D]: styles.competitive,
 };
 
 const LandingPage: React.FC<LandingPageProps> = ({
