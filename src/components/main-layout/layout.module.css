@@ -15,8 +15,15 @@
 }
 
 .content-panel.overlay {
-    height: calc(100vh - var(--nav-bar-height));
+    height: calc(100vh - var(--nav-bar-height) + 3px);
     border-bottom: none;
+    position: absolute;
+    top: calc(var(--nav-bar-height) - 3px);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--full-page-layer);
+    background-color: var(--background-color);
 }
 
 .content-panel.no-padding {
