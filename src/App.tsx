@@ -285,6 +285,21 @@ function App() {
         );
     }, [hasAValueAboveKd, hasAValueBelowKd, uniqMeasuredConcentrations]);
 
+    const addProductionTrace = useCallback(
+        (previousConcentration: number) => {
+            const traces = productOverTimeTraces;
+            if (currentProductConcentrationArray.length > 1) {
+                const newTrace = {
+                    inputConcentration: previousConcentration,
+                    productConcentrations: currentProductConcentrationArray,
+                };
+                setProductOverTimeTraces([...traces, newTrace]);
+                setCurrentProductConcentrationArray([]);
+            }
+        },
+        [currentProductConcentrationArray, productOverTimeTraces]
+    );
+
     const handleNewInputConcentration = useCallback(
         (name: string, value: number) => {
             if (value === 0) {
@@ -302,10 +317,18 @@ function App() {
                 name as keyof typeof LiveSimulationData.AVAILABLE_AGENTS;
             const agentId = LiveSimulationData.AVAILABLE_AGENTS[agentName].id;
             clientSimulator.changeConcentration(agentId, value);
-            simulariumController.gotoTime(10000); // the number isn't used, but it triggers the update
+            simulariumController.gotoTime(1); // the number isn't used, but it triggers the update
+            const previousConcentration = inputConcentration[agentName] || 0;
+            addProductionTrace(previousConcentration);
             resetCurrentRunAnalysisState();
         },
-        [clientSimulator, simulariumController]
+        [
+            clientSimulator,
+            simulariumController,
+            inputConcentration,
+            addProductionTrace,
+            resetCurrentRunAnalysisState,
+        ]
     );
     const totalReset = useCallback(() => {
         setLiveConcentration({
@@ -413,8 +436,9 @@ function App() {
             if (trajectoryStatus === TrajectoryStatus.INITIAL && url) {
                 const changeTrajectory = async () => {
                     setIsPlaying(false);
+                    simulariumController.clearFile();
                     setTrajectoryStatus(TrajectoryStatus.LOADING);
-                    totalReset();
+                    clearAllAnalysisState();
 
                     await fetch3DTrajectory(
                         url,
@@ -434,6 +458,7 @@ function App() {
         isPlaying,
         totalReset,
         switchToLiveSimulation,
+        clearAllAnalysisState,
     ]);
 
     const { section } = content[currentModule][page];
@@ -444,18 +469,6 @@ function App() {
             setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
         }
     }, [section]);
-
-    const addProductionTrace = (previousConcentration: number) => {
-        const traces = productOverTimeTraces;
-        if (currentProductConcentrationArray.length > 1) {
-            const newTrace = {
-                inputConcentration: previousConcentration,
-                productConcentrations: currentProductConcentrationArray,
-            };
-            setProductOverTimeTraces([...traces, newTrace]);
-            setCurrentProductConcentrationArray([]);
-        }
-    };
 
     // User input handlers
 
