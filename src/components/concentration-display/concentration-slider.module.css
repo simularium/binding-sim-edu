@@ -64,6 +64,9 @@ span:has(.recorded)::before {
     border: none;
     inset-block-start: initial;
 }
+.container :global(.ant-slider-handle) {
+    z-index: var(--viewer-overlay-layer);
+}
 
 .container :global(.ant-slider-handle):after {
     background-color: var(--primary-color);
