@@ -28,6 +28,7 @@
     "react-dom": "^18.2.0",
     "react-plotly": "^1.0.0",
     "react-plotly.js": "^2.6.0",
+    "regression": "^2.0.1",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
