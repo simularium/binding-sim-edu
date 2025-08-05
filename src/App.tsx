@@ -164,7 +164,8 @@ function App() {
         arrayLength % 50 === 0
     ) {
         isPassedEquilibrium.current = isSlopeZero(
-            currentProductConcentrationArray
+            currentProductConcentrationArray,
+            timeFactor
         );
     } else if (arrayLength === 0 && isPassedEquilibrium.current) {
         isPassedEquilibrium.current = false;
