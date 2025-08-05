@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
+import regression, { DataPoint } from "regression";
 import Plot from "react-plotly.js";
 
 import {
@@ -39,6 +40,23 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
     } = useContext(SimulariumContext);
     const xMax = Math.max(...x);
     const xAxisMax = Math.max(kd * 2, xMax * 1.1);
+
+    // Calculate the best fit line for the data points
+    const bestFit = useMemo(() => {
+        const points = x.map((xVal, index) => ({
+            x: xVal,
+            y: y[index],
+        }));
+        const regressionData = points.map(
+            (point) => [point.x, point.y] as DataPoint
+        );
+        const bestFit = regression.logarithmic(regressionData);
+        const bestFitPoints = bestFit.points;
+        const bestFitX = bestFitPoints.map((point) => point[0]);
+        const bestFitY = bestFitPoints.map((point) => point[1]);
+        return { x: bestFitX, y: bestFitY };
+    }, [x, y]);
+
     const hintOverlay = (
         <div
             style={{
@@ -87,17 +105,24 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         horizontalLine,
         horizontalLineMax,
         {
-            x,
-            y,
-            type: "scatter" as const,
-            mode: "lines+markers" as const,
-            name: "collected data",
-            marker: { color: colors },
+            x: bestFit.x,
+            y: bestFit.y,
+            mode: "lines" as const,
+            name: "best fit",
             line: {
                 color: GRAY_COLOR,
                 shape: "spline" as const,
                 width: 1,
             },
+        },
+        {
+            x,
+            y,
+            type: "scatter" as const,
+            mode: "markers" as const,
+            name: "collected data",
+            marker: { color: colors },
+
             hovertemplate: `[${adjustableAgentName}]: <b>%{x:.1f}</b><br>[${productName}]: <b>%{y:.1f}</b><extra></extra>`,
         },
     ];

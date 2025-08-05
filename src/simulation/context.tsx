@@ -23,6 +23,7 @@ interface SimulariumContextType {
     setIsPlaying: (value: boolean) => void;
     simulariumController: SimulariumController | null;
     handleTimeChange: (timeData: TimeData) => void;
+    handleMixAgents: () => void;
     handleStartExperiment: () => void;
     section: Section;
     setPage: (value: number) => void;
@@ -50,6 +51,7 @@ export const SimulariumContext = createContext({
     setIsPlaying: () => {},
     simulariumController: null,
     handleTimeChange: () => {},
+    handleMixAgents: () => {},
     handleStartExperiment: () => {},
     setPage: () => {},
     page: 0,

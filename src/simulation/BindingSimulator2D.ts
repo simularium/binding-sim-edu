@@ -60,7 +60,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.instances = [];
     }
 
-    private initializeAgents(agents: InputAgent[]): StoredAgent[] {
+    private initializeAgents(
+        agents: InputAgent[],
+        mixed = false
+    ): StoredAgent[] {
         let largestRadius = 0;
         for (let i = 0; i < agents.length; ++i) {
             const agent = agents[i] as StoredAgent; // count is no longer optional
@@ -78,10 +81,20 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 this.mixCheckAgent = agent.id;
             }
             for (let j = 0; j < agent.count; ++j) {
-                const position: number[] = this.getRandomPointOnSide(
-                    agent.id,
-                    agents.length
-                );
+                let position: number[] = [];
+                if (mixed) {
+                    // if we're mixing agents, we want to randomize the position
+                    // of the agents on the sides of the bounding box
+                    position = [
+                        random(-this.size / 2, this.size / 2, true),
+                        random(-this.size / 2, this.size / 2, true),
+                    ];
+                } else {
+                    position = this.getRandomPointOnSide(
+                        agent.id,
+                        agents.length
+                    );
+                }
                 const circle = new Circle(
                     new Vector(...position),
                     agent.radius
@@ -184,6 +197,13 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             numberBindEvents: this.currentNumberOfBindingEvents,
             numberUnBindEvents: this.currentNumberOfUnbindingEvents,
         };
+    }
+
+    public mixAgents() {
+        this.clearAgents();
+        this.initializeAgents(this.agents, true);
+        this.static = true;
+        this.initialState = false;
     }
 
     public changeConcentration(agentId: number, newConcentration: number) {

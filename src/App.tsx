@@ -164,7 +164,8 @@ function App() {
         arrayLength % 50 === 0
     ) {
         isPassedEquilibrium.current = isSlopeZero(
-            currentProductConcentrationArray
+            currentProductConcentrationArray,
+            timeFactor
         );
     } else if (arrayLength === 0 && isPassedEquilibrium.current) {
         isPassedEquilibrium.current = false;
@@ -291,6 +292,14 @@ function App() {
         },
         [currentProductConcentrationArray, productOverTimeTraces]
     );
+
+    const handleMixAgents = useCallback(() => {
+        if (clientSimulator) {
+            clientSimulator.mixAgents();
+            simulariumController.gotoTime(0);
+            setIsPlaying(false);
+        }
+    }, [clientSimulator, simulariumController]);
 
     const handleNewInputConcentration = useCallback(
         (name: string, value: number) => {
@@ -637,6 +646,7 @@ function App() {
                         maxConcentration:
                             simulationData.getMaxConcentration(currentModule),
                         handleStartExperiment,
+                        handleMixAgents,
                         section: content[currentModule][page].section,
                         getAgentColor: simulationData.getAgentColor,
                         isPlaying,
