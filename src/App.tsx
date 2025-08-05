@@ -474,6 +474,7 @@ function App() {
 
     const setModule = (module: Module) => {
         setPage(FIRST_PAGE[module]);
+        clearAllAnalysisState();
         setCurrentModule(module);
         setIsPlaying(false);
     };
