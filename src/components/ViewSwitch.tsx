@@ -12,7 +12,6 @@ import VisibilityControl from "./shared/VisibilityControl";
 import { Module, Section } from "../types";
 import { FIRST_PAGE } from "../content";
 import useModule from "../hooks/useModule";
-import MixButton from "./MixButton";
 
 enum View {
     Lab = "lab",
@@ -87,7 +86,6 @@ const ViewSwitch: React.FC = () => {
                     </OverlayButton>
                 </ProgressionControl>
             </VisibilityControl>
-            <MixButton />
             <PlayButton />
             {currentView === View.Lab ? <LabView /> : null}
             <Viewer

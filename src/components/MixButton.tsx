@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
 
 import { SimulariumContext } from "../simulation/context";
 import ProgressionControl from "./shared/ProgressionControl";
@@ -13,8 +12,6 @@ const MixButton: React.FC = () => {
     const handleClick = () => {
         handleMixAgents();
     };
-
-    const iconStyle = { fontSize: 26 };
 
     return (
         <VisibilityControl excludedPages={{ [Module.A_B_AB]: [1] }}>
