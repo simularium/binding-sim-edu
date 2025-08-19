@@ -50,7 +50,6 @@ export const indexToTime = (
 export const isSlopeZero = (array: number[], timeFactor: number) => {
     const sliceSize = 25;
     const sampleSet = array.slice(-sliceSize);
-    console.log(timeFactor);
     const points = sampleSet.map((value, index) => [
         (index * timeFactor) / 1000,
         value,
@@ -60,7 +59,6 @@ export const isSlopeZero = (array: number[], timeFactor: number) => {
     );
     const bestFit = regression.linear(regressionData);
     const slope = bestFit.equation[0];
-    console.log(`Slope: ${slope}`);
     if (Math.abs(slope) < 0.001) {
         return true;
     } else {
