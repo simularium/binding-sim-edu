@@ -54,8 +54,12 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         const bestFitPoints = bestFit.points;
         const bestFitX = bestFitPoints.map((point) => point[0]);
         const bestFitY = bestFitPoints.map((point) => point[1]);
-        return { x: bestFitX, y: bestFitY };
-    }, [x, y]);
+        const halfFilled = fixedAgentStartingConcentration / 2;
+        const kdValue =
+            Math.E **
+            ((halfFilled - bestFit.equation[0]) / bestFit.equation[1]);
+        return { x: bestFitX, y: bestFitY, kd: kdValue };
+    }, [x, y, fixedAgentStartingConcentration]);
 
     const hintOverlay = (
         <div
@@ -101,6 +105,22 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         hovertemplate: "Initial [A]",
         line: lineOptions,
     };
+
+    const kdIndicator = {
+        x: [bestFit.kd, bestFit.kd],
+        y: [0, fixedAgentStartingConcentration / 2],
+        mode: "lines",
+        name: "",
+        hovertemplate: `Kd: <b>${bestFit.kd.toFixed(2)}</b> ${MICRO}M`,
+        hoverlabel: {
+            bgcolor: getAgentColor(adjustableAgentName),
+        },
+        line: {
+            ...lineOptions,
+            color: getAgentColor(adjustableAgentName),
+            dash: "dot" as Dash,
+        },
+    };
     const traces = [
         horizontalLine,
         horizontalLineMax,
@@ -127,6 +147,15 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         },
     ];
 
+    if (x.length >= 3) {
+        traces.push(kdIndicator);
+    }
+
+    const xAxisTicks = [];
+    for (let i = 0; i <= xAxisMax; i = i + 0.5) {
+        xAxisTicks.push(i);
+    }
+
     const layout = {
         ...BASE_PLOT_LAYOUT,
         showlegend: false,
@@ -140,6 +169,8 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
                 ...AXIS_SETTINGS.titlefont,
                 color: getAgentColor(adjustableAgentName),
             },
+            tickmode: x.length >= 3 ? ("array" as const) : ("auto" as const),
+            tickvals: [...xAxisTicks, bestFit.kd.toFixed(1)],
         },
         yaxis: {
             ...AXIS_SETTINGS,
