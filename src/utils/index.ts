@@ -1,4 +1,6 @@
 import { sortedIndex } from "lodash";
+import regression from "regression";
+
 import { PLOT_COLORS } from "../components/plots/constants";
 import { NANO } from "../constants";
 
@@ -45,15 +47,19 @@ export const indexToTime = (
     }
 };
 
-export const isSlopeZero = (array: number[]) => {
+export const isSlopeZero = (array: number[], timeFactor: number) => {
     const sliceSize = 25;
-    const averageOfLastFive =
-        array.slice(-sliceSize).reduce((a, b) => a + b) / sliceSize;
-    const averageOfFirstFive =
-        array.slice(-sliceSize * 2, -sliceSize).reduce((a, b) => a + b) /
-        sliceSize;
-    const slope = averageOfLastFive - averageOfFirstFive;
-    if (Math.abs(slope) < 0.05) {
+    const sampleSet = array.slice(-sliceSize);
+    const points = sampleSet.map((value, index) => [
+        (index * timeFactor) / 1000,
+        value,
+    ]);
+    const regressionData = points.map(
+        (point) => [point[0], point[1]] as [number, number]
+    );
+    const bestFit = regression.linear(regressionData);
+    const slope = bestFit.equation[0];
+    if (Math.abs(slope) < 0.001) {
         return true;
     } else {
         return false;
