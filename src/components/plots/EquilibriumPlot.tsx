@@ -43,13 +43,10 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
 
     // Calculate the best fit line for the data points
     const bestFit = useMemo(() => {
-        const points = x.map((xVal, index) => ({
-            x: xVal,
-            y: y[index],
-        }));
-        const regressionData = points.map(
-            (point) => [point.x, point.y] as DataPoint
-        );
+        const regressionData: DataPoint[] = x.map(
+  (xVal, index) => [xVal, y[index]]
+);
+
         const bestFit = regression.logarithmic(regressionData);
         const bestFitPoints = bestFit.points;
         const bestFitX = bestFitPoints.map((point) => point[0]);
