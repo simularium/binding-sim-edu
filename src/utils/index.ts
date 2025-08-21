@@ -59,7 +59,6 @@ export const isSlopeZero = (array: number[], timeFactor: number) => {
     );
     const bestFit = regression.linear(regressionData);
     const slope = bestFit.equation[0];
-    console.log(`Slope: ${slope}`);
     if (Math.abs(slope) <= 0.01) {
         return true;
     } else {

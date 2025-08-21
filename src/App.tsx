@@ -141,11 +141,11 @@ function App() {
         setCurrentProductConcentrationArray,
     ] = useState<number[]>([]);
 
-    const resetCurrentRunAnalysisState = () => {
+    const resetCurrentRunAnalysisState = useCallback(() => {
         setBindingEventsOverTime([]);
         setUnBindingEventsOverTime([]);
         setCurrentProductConcentrationArray([]);
-    };
+    }, []);
 
     const clearAllAnalysisState = useCallback(() => {
         resetCurrentRunAnalysisState();
@@ -154,7 +154,7 @@ function App() {
         setRecordedReactantConcentration([]);
         setTimeToReachEquilibrium([]);
         setDataColors([]);
-    }, []);
+    }, [resetCurrentRunAnalysisState]);
 
     const isPassedEquilibrium = useRef(false);
     const arrayLength = currentProductConcentrationArray.length;
@@ -297,9 +297,10 @@ function App() {
         if (clientSimulator) {
             clientSimulator.mixAgents();
             simulariumController.gotoTime(0);
+            setPage(page + 1);
             setIsPlaying(false);
         }
-    }, [clientSimulator, simulariumController]);
+    }, [clientSimulator, simulariumController, page]);
 
     const handleNewInputConcentration = useCallback(
         (name: string, value: number) => {

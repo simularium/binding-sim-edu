@@ -1,4 +1,5 @@
 import BindingDiagrams from "../components/BindingDiagrams";
+import MixButton from "../components/MixButton";
 import StartExperiment from "../components/StartExperiment";
 import { AB, A, B } from "../components/agent-symbols";
 import KdDerivation from "../components/modals/KdDerivation";
@@ -95,7 +96,8 @@ export const highAffinityContentArray: PageContent[] = [
         content: (
             <>
                 The clear liquid is slowly turning yellow as the simulation
-                progresses. Can you estimate the concentration of <AB /> ?
+                progresses, but it is taking a long time to change. Can you
+                estimate the concentration of <AB /> ?
             </>
         ),
         callToAction: (
@@ -103,6 +105,25 @@ export const highAffinityContentArray: PageContent[] = [
                 Click <strong>Molecular view</strong> to switch back.
             </>
         ),
+        section: Section.Introduction,
+        layout: LayoutType.LiveSimulation,
+    },
+    {
+        content: (
+            <>
+                The two populations started on opposite sides of the window,
+                which means they have to diffuse before they can bind. Lets
+                randomize their positions so we are only looking at the binding
+                events.
+            </>
+        ),
+        callToAction: (
+            <>
+                Click the <strong>Randomize positions</strong> button mix the
+                simulation and press <strong>play</strong> again!
+            </>
+        ),
+        actionButton: <MixButton />,
         section: Section.Introduction,
         layout: LayoutType.LiveSimulation,
     },

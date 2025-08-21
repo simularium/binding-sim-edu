@@ -1,10 +1,8 @@
 import React, { useContext } from "react";
 
 import { SimulariumContext } from "../simulation/context";
-import ProgressionControl from "./shared/ProgressionControl";
-import VisibilityControl from "./shared/VisibilityControl";
-import { OverlayButton } from "./shared/ButtonLibrary";
-import { Module } from "../types";
+import { TertiaryButton } from "./shared/ButtonLibrary";
+import style from "./start-experiment.module.css";
 
 const MixButton: React.FC = () => {
     const { handleMixAgents } = useContext(SimulariumContext);
@@ -14,25 +12,14 @@ const MixButton: React.FC = () => {
     };
 
     return (
-        <VisibilityControl excludedPages={{ [Module.A_B_AB]: [1] }}>
-            <ProgressionControl
-                onPage={{
-                    [Module.A_B_AB]: [2, 6],
-                }}
-            >
-                <OverlayButton
-                    onClick={handleClick}
-                    style={{ top: 14, left: 60 }}
-                    // icon={
-                    //     isPlaying ? (
-                    //         <PauseOutlined style={iconStyle} />
-                    //     ) : (
-                    //         <CaretRightOutlined style={iconStyle} />
-                    //     )
-                    // }
-                />
-            </ProgressionControl>
-        </VisibilityControl>
+        <TertiaryButton
+            ghost
+            onClick={handleClick}
+            style={{ top: 14, left: 60 }}
+            className={style.container}
+        >
+            Randomize positions
+        </TertiaryButton>
     );
 };
 
