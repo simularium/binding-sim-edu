@@ -172,6 +172,8 @@ function App() {
         return new SimulariumController({});
     }, []);
 
+    const sectionType = content[currentModule][page].section;
+
     const clientSimulator = useMemo(() => {
         const activeAgents = simulationData.getActiveAgents(currentModule);
         setInputConcentration(
@@ -185,8 +187,7 @@ function App() {
         }
         const longestAxis = Math.max(viewportSize.width, viewportSize.height);
         const productColor = simulationData.getAgentColor(productName);
-        const startMixed =
-            content[currentModule][page].section !== Section.Introduction;
+        const startMixed = sectionType !== Section.Introduction;
         return new BindingSimulator(
             trajectory,
             longestAxis / 3,
@@ -200,7 +201,7 @@ function App() {
         viewportSize.width,
         viewportSize.height,
         productName,
-        page,
+        sectionType,
     ]);
 
     const preComputedPlotDataManager = useMemo(() => {
@@ -300,9 +301,9 @@ function App() {
 
     const handleMixAgents = useCallback(() => {
         if (clientSimulator) {
-            clientSimulator.mixAgents();
-            simulariumController.gotoTime(0);
             setIsPlaying(false);
+            clientSimulator.mixAgents();
+            simulariumController.gotoTime(1);
         }
     }, [clientSimulator, simulariumController]);
 

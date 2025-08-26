@@ -199,9 +199,9 @@ export const highAffinityContentArray: PageContent[] = [
         title: "Start the experiment",
         content: (
             <>
-                Now, let's use this simulation to make measurements. We're going
-                to start with randomized positions and increase the timestep so
-                the experiments are fast.
+                Now, let's use this simulation to make measurements. We'll start
+                with randomized positions and increase the timestep so the
+                experiments are fast.
             </>
         ),
         actionButton: <StartExperiment />,
@@ -219,9 +219,9 @@ export const highAffinityContentArray: PageContent[] = [
         title: "Start the experiment",
         content: (
             <>
-                Now, let's use this simulation to make measurements. We're going
-                to start with randomized positions and increase the timestep so
-                the experiments are fast.
+                Now, let's use this simulation to make measurements. We'll start
+                with randomized positions and increase the timestep so the
+                experiments are fast.
             </>
         ),
         actionButton: <StartExperiment />,
