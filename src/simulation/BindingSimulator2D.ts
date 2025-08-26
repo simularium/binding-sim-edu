@@ -31,7 +31,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     currentNumberOfBindingEvents: number = 0;
     currentNumberOfUnbindingEvents: number = 0;
     onUpdate: (data: number) => void = () => {};
-    mixCheckAgent: number = 0;
     numberAgentOnLeft: number = 0;
     numberAgentOnRight: number = 0;
     productColor: Map<number, string>;
@@ -39,6 +38,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     constructor(
         agents: InputAgent[],
         size: number,
+        startMixed: boolean = false,
         timeFactor: number = LiveSimulationData.DEFAULT_TIME_FACTOR
     ) {
         this.size = size;
@@ -47,7 +47,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.createBoundingLines();
         this.distanceFactor = 40;
         this.timeFactor = timeFactor;
-        this.agents = this.initializeAgents(agents);
+        this.agents = this.initializeAgents(agents, startMixed);
         this.currentFrame = 0;
         this.system.separate();
     }
@@ -96,8 +96,17 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         }
     }
 
-    private initializeAgents(agents: InputAgent[]): StoredAgent[] {
-        let largestRadius = 0;
+    private getRandomPoint() {
+        return [
+            random(-this.size / 2, this.size / 2, true),
+            random(-this.size / 2, this.size / 2, true),
+        ];
+    }
+
+    private initializeAgents(
+        agents: InputAgent[],
+        mixed = false
+    ): StoredAgent[] {
         for (let i = 0; i < agents.length; ++i) {
             const agent = agents[i] as StoredAgent; // count is no longer optional
             // if this is called from the constructor, the count will be undefined
@@ -114,13 +123,15 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
             this.currentComplexMap.set(agent.id.toString(), 0);
 
-            if (agent.radius > largestRadius) {
-                // use the largest agent to check if the system is mixed
-                largestRadius = agent.radius;
-                this.mixCheckAgent = agent.id;
-            }
             for (let j = 0; j < agent.count; ++j) {
-                const position: number[] = this.getRandomPointOnSide(agent.id);
+                let position: number[] = [];
+                if (mixed) {
+                    // if we're mixing agents, we want to randomize the position
+                    // of the agents on the sides of the bounding box
+                    position = this.getRandomPoint();
+                } else {
+                    position = this.getRandomPointOnSide(agent.id);
+                }
                 const circle = new Circle(
                     new Vector(...position),
                     agent.radius
@@ -220,6 +231,13 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         };
     }
 
+    public mixAgents() {
+        this.clearAgents();
+        this.initializeAgents(this.agents, true);
+        this.static = true;
+        this.initialState = false;
+    }
+
     public changeConcentration(agentId: number, newConcentration: number) {
         const agent = find(this.agents, (agent) => agent.id === agentId);
         if (!agent) {
@@ -235,13 +253,13 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             // initial state
             this.clearAgents();
             this.initialState = true;
-            this.initializeAgents(this.agents);
+            this.initializeAgents(this.agents, true);
             return;
         }
         const diff = newCount - oldCount;
         if (diff > 0) {
             for (let i = 0; i < diff; ++i) {
-                const position: number[] = this.getRandomPointOnSide(agent.id);
+                const position: number[] = this.getRandomPoint();
                 const circle = new Circle(
                     new Vector(...position),
                     agent.radius

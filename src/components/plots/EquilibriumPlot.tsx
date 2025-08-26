@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
+import regression, { DataPoint } from "regression";
 import Plot from "react-plotly.js";
 
 import {
@@ -39,6 +40,25 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
     } = useContext(SimulariumContext);
     const xMax = Math.max(...x);
     const xAxisMax = Math.max(kd * 2, xMax * 1.1);
+
+    // Calculate the best fit line for the data points
+    const bestFit = useMemo(() => {
+        const regressionData: DataPoint[] = x.map((xVal, index) => [
+            xVal,
+            y[index],
+        ]);
+
+        const bestFit = regression.logarithmic(regressionData);
+        const bestFitPoints = bestFit.points;
+        const bestFitX = bestFitPoints.map((point) => point[0]);
+        const bestFitY = bestFitPoints.map((point) => point[1]);
+        const halfFilled = fixedAgentStartingConcentration / 2;
+        const kdValue =
+            Math.E **
+            ((halfFilled - bestFit.equation[0]) / bestFit.equation[1]);
+        return { x: bestFitX, y: bestFitY, kd: kdValue };
+    }, [x, y, fixedAgentStartingConcentration]);
+
     const hintOverlay = (
         <div
             style={{
@@ -83,24 +103,60 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         hovertemplate: "Initial [A]",
         line: lineOptions,
     };
+
+    const kdIndicator = {
+        x: [bestFit.kd, bestFit.kd],
+        y: [0, fixedAgentStartingConcentration / 2],
+        mode: "lines",
+        name: "",
+        hovertemplate: `Kd: <b>${bestFit.kd.toFixed(2)}</b> ${MICRO}M`,
+        hoverlabel: {
+            bgcolor: getAgentColor(adjustableAgentName),
+        },
+        line: {
+            ...lineOptions,
+            color: getAgentColor(adjustableAgentName),
+            dash: "dot" as Dash,
+        },
+    };
     const traces = [
         horizontalLine,
         horizontalLineMax,
         {
-            x,
-            y,
-            type: "scatter" as const,
-            mode: "lines+markers" as const,
-            name: "collected data",
-            marker: { color: colors },
+            x: bestFit.x,
+            y: bestFit.y,
+            mode: "lines" as const,
+            name: "best fit",
             line: {
                 color: GRAY_COLOR,
                 shape: "spline" as const,
                 width: 1,
             },
+        },
+        {
+            x,
+            y,
+            type: "scatter" as const,
+            mode: "markers" as const,
+            name: "collected data",
+            marker: { color: colors },
+
             hovertemplate: `[${adjustableAgentName}]: <b>%{x:.1f}</b><br>[${productName}]: <b>%{y:.1f}</b><extra></extra>`,
         },
     ];
+
+    let xAxisTicks = [];
+    const interval = xAxisMax > 50 ? 50 : 0.5;
+    for (let i = 0; i <= xAxisMax; i = i + interval) {
+        xAxisTicks.push(i);
+    }
+    if (x.length >= 3) {
+        traces.push(kdIndicator);
+        // filter out values that are so close to the kd value that they would overlap
+        xAxisTicks = xAxisTicks.filter(
+            (tick) => Math.abs(tick - bestFit.kd) >= interval / 2
+        );
+    }
 
     const layout = {
         ...BASE_PLOT_LAYOUT,
@@ -115,6 +171,8 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
                 ...AXIS_SETTINGS.titlefont,
                 color: getAgentColor(adjustableAgentName),
             },
+            tickmode: x.length >= 3 ? ("array" as const) : ("auto" as const),
+            tickvals: [...xAxisTicks, bestFit.kd.toFixed(1)],
         },
         yaxis: {
             ...AXIS_SETTINGS,

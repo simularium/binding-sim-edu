@@ -6,6 +6,7 @@ import {
     MouseEvent as ReactMouseEvent,
     MouseEventHandler,
 } from "react";
+import { ProgressionElement } from "../constants";
 
 export const enum Module {
     A_B_AB = 1,
@@ -91,6 +92,8 @@ export interface PageContent {
     backButton?: boolean;
     nextButtonText?: string;
     trajectoryUrl?: string;
+    progressionElement?: ProgressionElement;
+    quizQuestion?: string;
     modal?: {
         title: string;
         content: string | JSX.Element;
