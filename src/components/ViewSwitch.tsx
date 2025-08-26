@@ -12,6 +12,7 @@ import VisibilityControl from "./shared/VisibilityControl";
 import { Module, Section } from "../types";
 import { FIRST_PAGE } from "../content";
 import useModule from "../hooks/useModule";
+import { VIEW_SWITCH_ID } from "../constants";
 
 enum View {
     Lab = "lab",
@@ -19,6 +20,7 @@ enum View {
 }
 
 const ViewSwitch: React.FC = () => {
+    const id = VIEW_SWITCH_ID;
     const [currentView, setCurrentView] = useState<View>(View.Lab);
     const [previousModule, setPreviousModule] = useState<Module>(Module.A_B_AB);
 
@@ -27,8 +29,14 @@ const ViewSwitch: React.FC = () => {
             prevView === View.Lab ? View.Simulation : View.Lab
         );
     };
-    const { page, isPlaying, setIsPlaying, handleTimeChange, module } =
-        useContext(SimulariumContext);
+    const {
+        page,
+        isPlaying,
+        setIsPlaying,
+        handleTimeChange,
+        module,
+        progressionElement,
+    } = useContext(SimulariumContext);
 
     const isFirstPageOfFirstModule =
         page === FIRST_PAGE[module] + 1 && module === Module.A_B_AB;
@@ -70,7 +78,7 @@ const ViewSwitch: React.FC = () => {
     return (
         <div style={{ position: "relative", height: "100%" }}>
             <VisibilityControl notInBonusMaterial>
-                <ProgressionControl onPage={{ [Module.A_B_AB]: [1, 3, 4] }}>
+                <ProgressionControl onPage={progressionElement === id}>
                     <OverlayButton
                         onClick={switchView}
                         style={buttonStyle}

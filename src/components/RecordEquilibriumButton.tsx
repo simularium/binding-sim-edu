@@ -1,22 +1,21 @@
-import { Module } from "../types";
+import { RECORD_BUTTON_ID } from "../constants";
+import { SimulariumContext } from "../simulation/context";
 import { PillButton } from "./shared/ButtonLibrary";
 import ProgressionControl from "./shared/ProgressionControl";
+import { useContext } from "react";
 
 interface RecordEquilibriumButtonProps {
     handleRecordEquilibrium: () => void;
 }
-const FIRST_RECORD_PAGE = 7;
-const SECOND_RECORD_PAGE = 9;
+
 const RecordEquilibriumButton = ({
     handleRecordEquilibrium,
 }: RecordEquilibriumButtonProps) => {
+    const id = RECORD_BUTTON_ID;
+    const { progressionElement } = useContext(SimulariumContext);
+
     return (
-        <ProgressionControl
-            onPage={{
-                [Module.A_B_AB]: [FIRST_RECORD_PAGE, SECOND_RECORD_PAGE],
-                [Module.A_C_AC]: [1],
-            }}
-        >
+        <ProgressionControl onPage={progressionElement === id}>
             <PillButton onClick={handleRecordEquilibrium}>Record</PillButton>
         </ProgressionControl>
     );

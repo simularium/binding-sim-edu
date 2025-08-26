@@ -1,16 +1,25 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import QuizForm from "./QuizForm";
 import VisibilityControl from "../shared/VisibilityControl";
 import { FormState } from "./types";
 import RadioComponent from "../shared/Radio";
-import { PROMPT_TO_ADJUST_B } from "../../constants";
+import { EQUILIBRIUM_QUIZ_ID } from "../../constants";
 import { SimulariumContext } from "../../simulation/context";
+import { Module } from "../../types";
 
 const EquilibriumQuestion: React.FC = () => {
-    const { page } = useContext(SimulariumContext);
+    const id = EQUILIBRIUM_QUIZ_ID;
+    const { page, quizQuestion, module } = useContext(SimulariumContext);
     const [selectedAnswer, setSelectedAnswer] = useState("");
     const [formState, setFormState] = useState(FormState.Clear);
-
+    const DEFAULT_BIG_NUMBER = Infinity;
+    const startPage = useRef<{ page: number; module: Module }>({
+        page: DEFAULT_BIG_NUMBER,
+        module: Module.A_B_AB,
+    });
+    if (quizQuestion === id && startPage.current.page === DEFAULT_BIG_NUMBER) {
+        startPage.current = { page, module: module };
+    }
     const handleAnswerSelection = (answer: string) => {
         setSelectedAnswer(answer);
 
@@ -63,10 +72,12 @@ const EquilibriumQuestion: React.FC = () => {
     );
     // Hide the question if the user has already answered correctly, and moved on
     // to the next page
-    const hide = page > PROMPT_TO_ADJUST_B && formState === FormState.Correct;
+    const hide =
+        page > startPage.current?.page && formState === FormState.Correct;
+
     return (
         <VisibilityControl
-            startPage={PROMPT_TO_ADJUST_B}
+            startPage={startPage.current.page}
             conditionalRender={!hide}
             notInBonusMaterial
         >

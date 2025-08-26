@@ -38,6 +38,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         agents: InputAgent[],
         size: number,
         productColor: string,
+        startMixed: boolean = false,
         timeFactor: number = LiveSimulationData.DEFAULT_TIME_FACTOR
     ) {
         this.size = size;
@@ -46,7 +47,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.createBoundingLines();
         this.distanceFactor = 40;
         this.timeFactor = timeFactor;
-        this.agents = this.initializeAgents(agents);
+        this.agents = this.initializeAgents(agents, startMixed);
         this.currentFrame = 0;
         this.system.separate();
     }

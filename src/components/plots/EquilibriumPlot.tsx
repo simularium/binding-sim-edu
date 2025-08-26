@@ -146,14 +146,15 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
     ];
 
     let xAxisTicks = [];
-    for (let i = 0; i <= xAxisMax; i = i + 0.5) {
+    const interval = xAxisMax > 50 ? 50 : 0.5;
+    for (let i = 0; i <= xAxisMax; i = i + interval) {
         xAxisTicks.push(i);
     }
     if (x.length >= 3) {
         traces.push(kdIndicator);
         // filter out values that are so close to the kd value that they would overlap
         xAxisTicks = xAxisTicks.filter(
-            (tick) => Math.abs(tick - bestFit.kd) >= 0.2
+            (tick) => Math.abs(tick - bestFit.kd) >= interval / 2
         );
     }
 

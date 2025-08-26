@@ -1,4 +1,5 @@
 import { A, B, C } from "../components/agent-symbols";
+import { PLAY_BUTTON_ID } from "../constants";
 import { LayoutType, PageContent, Section } from "../types";
 
 export const lowAffinityContentArray: PageContent[] = [
@@ -9,7 +10,7 @@ export const lowAffinityContentArray: PageContent[] = [
         layout: LayoutType.FullScreenOverlay,
     },
     {
-        title: "Experiment with a binding partner",
+        title: "Experiment with a different binding partner",
         content: (
             <>
                 Molecule <C /> has a different binding affinity with molecule{" "}
@@ -29,6 +30,7 @@ export const lowAffinityContentArray: PageContent[] = [
                 concentration.
             </>
         ),
+        progressionElement: PLAY_BUTTON_ID,
     },
     {
         title: "Determining Kd",

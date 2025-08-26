@@ -31,11 +31,7 @@ import RightPanel from "./components/main-layout/RightPanel";
 import ReactionDisplay from "./components/main-layout/ReactionDisplay";
 import ContentPanelTimer from "./components/main-layout/ContentPanelTimer";
 import content, { FIRST_PAGE, moduleNames } from "./content";
-import {
-    PROMPT_TO_ADJUST_B,
-    DEFAULT_VIEWPORT_SIZE,
-    LIVE_SIMULATION_NAME,
-} from "./constants";
+import { DEFAULT_VIEWPORT_SIZE, LIVE_SIMULATION_NAME } from "./constants";
 import CenterPanel from "./components/main-layout/CenterPanel";
 import { SimulariumContext } from "./simulation/context";
 import NavPanel from "./components/main-layout/NavPanel";
@@ -189,13 +185,22 @@ function App() {
         }
         const longestAxis = Math.max(viewportSize.width, viewportSize.height);
         const productColor = simulationData.getAgentColor(productName);
-        return new BindingSimulator(trajectory, longestAxis / 3, productColor);
+        const startMixed =
+            content[currentModule][page].section !== Section.Introduction;
+        return new BindingSimulator(
+            trajectory,
+            longestAxis / 3,
+            productColor,
+            startMixed
+        );
     }, [
         simulationData,
         currentModule,
+        resetCurrentRunAnalysisState,
         viewportSize.width,
         viewportSize.height,
         productName,
+        page,
     ]);
 
     const preComputedPlotDataManager = useMemo(() => {
@@ -297,10 +302,9 @@ function App() {
         if (clientSimulator) {
             clientSimulator.mixAgents();
             simulariumController.gotoTime(0);
-            setPage(page + 1);
             setIsPlaying(false);
         }
-    }, [clientSimulator, simulariumController, page]);
+    }, [clientSimulator, simulariumController]);
 
     const handleNewInputConcentration = useCallback(
         (name: string, value: number) => {
@@ -378,18 +382,19 @@ function App() {
             totalReset();
         }
     );
-
+    const hasRecordedFirstValue = useRef(false);
     // they have recorded a single value, changed the slider and pressed play
     usePageNumber(
         page,
-        (page) =>
+        () =>
             currentModule === Module.A_B_AB &&
-            page === PROMPT_TO_ADJUST_B &&
+            !hasRecordedFirstValue.current &&
             isPlaying &&
-            recordedInputConcentration.length > 0 &&
+            recordedInputConcentration.length === 1 &&
             recordedInputConcentration[0] !==
                 inputConcentration[adjustableAgentName],
         () => {
+            hasRecordedFirstValue.current = true;
             setPage(page + 1);
         }
     );
@@ -637,49 +642,48 @@ function App() {
             <div className="app">
                 <SimulariumContext.Provider
                     value={{
-                        trajectoryName,
-                        productName,
                         adjustableAgentName,
                         currentProductionConcentration:
                             liveConcentration[productName] || 0,
                         fixedAgentStartingConcentration:
                             inputConcentration[AgentName.A] || 0,
+                        getAgentColor: simulationData.getAgentColor,
+                        handleMixAgents,
+                        handleStartExperiment,
+                        handleTimeChange,
+                        handleTrajectoryChange,
+                        isPlaying,
                         maxConcentration:
                             simulationData.getMaxConcentration(currentModule),
-                        handleStartExperiment,
-                        handleMixAgents,
-                        section: content[currentModule][page].section,
-                        getAgentColor: simulationData.getAgentColor,
-                        isPlaying,
-                        setIsPlaying,
-                        simulariumController,
-                        handleTimeChange,
-                        page,
                         module: currentModule,
+                        page,
+                        productName,
+                        progressionElement:
+                            content[currentModule][page].progressionElement ||
+                            "",
+                        quizQuestion:
+                            content[currentModule][page].quizQuestion || "",
+                        recordedConcentrations: recordedInputConcentration,
+                        section: content[currentModule][page].section,
+                        setIsPlaying,
                         setModule,
                         setPage,
+                        setViewportSize,
+                        simulariumController,
                         timeFactor,
                         timeUnit: simulationData.timeUnit,
-                        handleTrajectoryChange,
+                        trajectoryName,
                         viewportSize,
-                        setViewportSize,
-                        recordedConcentrations: recordedInputConcentration,
                     }}
                 >
                     <MainLayout
-                        section={content[currentModule][page].section}
-                        layout={content[currentModule][page].layout}
-                        header={
-                            <NavPanel
-                                page={page}
-                                title={moduleNames[currentModule]}
-                                total={finalPageNumber}
-                            />
-                        }
-                        landingPage={
-                            <LandingPage
-                                {...content[currentModule][page]}
-                                module={currentModule}
+                        centerPanel={
+                            <CenterPanel
+                                kd={simulationData.getKd(currentModule)}
+                                canDetermineEquilibrium={canDetermineKd}
+                                overlay={
+                                    content[currentModule][page].visualContent
+                                }
                             />
                         }
                         content={
@@ -700,8 +704,18 @@ function App() {
                                 currentModule={currentModule}
                             />
                         }
-                        reactionPanel={
-                            <ReactionDisplay reactionType={currentModule} />
+                        header={
+                            <NavPanel
+                                page={page}
+                                title={moduleNames[currentModule]}
+                                total={finalPageNumber}
+                            />
+                        }
+                        landingPage={
+                            <LandingPage
+                                {...content[currentModule][page]}
+                                module={currentModule}
+                            />
                         }
                         leftPanel={
                             <LeftPanel
@@ -720,14 +734,8 @@ function App() {
                                 adjustableAgent={adjustableAgentName}
                             />
                         }
-                        centerPanel={
-                            <CenterPanel
-                                kd={simulationData.getKd(currentModule)}
-                                canDetermineEquilibrium={canDetermineKd}
-                                overlay={
-                                    content[currentModule][page].visualContent
-                                }
-                            />
+                        reactionPanel={
+                            <ReactionDisplay reactionType={currentModule} />
                         }
                         rightPanel={
                             <RightPanel
@@ -758,6 +766,8 @@ function App() {
                                 equilibriumFeedback={equilibriumFeedback}
                             />
                         }
+                        section={content[currentModule][page].section}
+                        layout={content[currentModule][page].layout}
                     />
                     <AdminUI
                         totalPages={finalPageNumber}
