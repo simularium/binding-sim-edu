@@ -192,7 +192,7 @@ function App() {
             trajectory,
             longestAxis / 3,
             productColor,
-            startMixed
+            startMixed ? "random" : "sorted"
         );
     }, [
         simulationData,
@@ -323,7 +323,11 @@ function App() {
             const agentName =
                 name as keyof typeof LiveSimulationData.AVAILABLE_AGENTS;
             const agentId = LiveSimulationData.AVAILABLE_AGENTS[agentName].id;
-            clientSimulator.changeConcentration(agentId, value);
+            clientSimulator.changeConcentration(
+                agentId,
+                value,
+                sectionType === Section.Experiment ? "random" : "sorted"
+            );
             simulariumController.gotoTime(1); // the number isn't used, but it triggers the update
             const previousConcentration = inputConcentration[agentName] || 0;
             addProductionTrace(previousConcentration);
@@ -335,6 +339,7 @@ function App() {
             inputConcentration,
             addProductionTrace,
             resetCurrentRunAnalysisState,
+            sectionType,
         ]
     );
     const totalReset = useCallback(() => {
