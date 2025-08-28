@@ -110,7 +110,8 @@ export default class LiveSimulation implements ISimulationData {
             [AgentName.D]: 2,
         },
     };
-
+    // for competitive binding we want to start the experiment with zero D but
+    // still have it in the introduction
     static EXPERIMENT_CONCENTRATIONS = {
         ...this.INITIAL_CONCENTRATIONS,
         [Module.A_B_D_AB]: {

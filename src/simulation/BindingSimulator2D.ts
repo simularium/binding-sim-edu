@@ -199,7 +199,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
     private getRandomPointOnSide(side: number) {
         const size = this.size;
-        const buffer = -size * 0.01;
+        const buffer = size / 20;
         const dFromSide = random(0 + buffer, size / 2, true);
         const dAlongSide = random(-size / 2, size / 2, true);
 
@@ -247,7 +247,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         const newCount = this.convertConcentrationToCount(newConcentration);
         const oldCount = agent.count || 0;
         agent.count = newCount;
-        console.log(agent.count);
         agent.initialConcentration = newConcentration;
         this.static = true;
         if (!this.initialState) {
@@ -255,7 +254,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             // initial state
             this.clearAgents();
             this.initialState = true;
-            console.log("INIT AGENTS from Concentration", this.agents);
             this.initializeAgents(this.agents, true);
             return;
         }
