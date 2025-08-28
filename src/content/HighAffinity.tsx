@@ -132,7 +132,7 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         callToAction: (
             <>
-                Click the <strong>Randomize positions</strong> button, press{" "}
+                Click the <strong>Randomize positions</strong> button, then press{" "}
                 <strong>play</strong> again!
             </>
         ),
