@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Progress, Flex } from "antd";
 import { map } from "lodash";
 import classNames from "classnames";
@@ -18,13 +18,22 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
     page,
     total,
 }) => {
-    let indexOfActiveModule = -1;
-    const { setModule } = React.useContext(SimulariumContext);
+    const { setModule, completedModules } = React.useContext(SimulariumContext);
+    const indexOfActiveModule: number = useMemo(() => {
+        let toReturn = -1;
+        map(moduleNames, (name, index) => {
+            if (name === title) {
+                toReturn = Number(index);
+            }
+        });
+        return toReturn;
+    }, [title]);
 
     const getModulePercent = (isActiveModule: boolean, moduleIndex: number) => {
+        console.log(moduleIndex, indexOfActiveModule);
         if (isActiveModule) {
             return (page / total) * 100;
-        } else if (moduleIndex < indexOfActiveModule) {
+        } else if (completedModules.includes(moduleIndex)) {
             return 100;
         } else {
             return 0;
@@ -34,10 +43,7 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
         <Flex align="center" justify="flex-end" className={styles.container}>
             {map(moduleNames, (name, index) => {
                 const moduleIndex = Number(index);
-                const isActiveModule = name === title;
-                if (isActiveModule) {
-                    indexOfActiveModule = moduleIndex;
-                }
+                const isActiveModule = moduleIndex === indexOfActiveModule;
                 return (
                     <div
                         key={index}
