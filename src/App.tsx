@@ -84,9 +84,13 @@ function App() {
     const [inputConcentration, setInputConcentration] =
         useState<InputConcentration>({
             [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.A
+                ],
             [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.B
+                ],
         });
     const [timeFactor, setTimeFactor] = useState(
         LiveSimulationData.INITIAL_TIME_FACTOR
@@ -103,9 +107,13 @@ function App() {
     const [liveConcentration, setLiveConcentration] =
         useState<CurrentConcentration>({
             [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.A
+                ],
             [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.B
+                ],
             [productName]: 0,
         });
     const [recordedInputConcentration, setRecordedInputConcentration] =
@@ -177,11 +185,18 @@ function App() {
     const clientSimulator = useMemo(() => {
         const activeAgents = simulationData.getActiveAgents(currentModule);
         setInputConcentration(
-            simulationData.getInitialConcentrations(activeAgents)
+            simulationData.getInitialConcentrations(
+                activeAgents,
+                currentModule,
+                sectionType === Section.Experiment
+            )
         );
         resetCurrentRunAnalysisState();
-        const trajectory =
-            simulationData.createAgentsFromConcentrations(activeAgents);
+        const trajectory = simulationData.createAgentsFromConcentrations(
+            activeAgents,
+            currentModule,
+            sectionType === Section.Experiment
+        );
         if (!trajectory) {
             return null;
         }
@@ -200,7 +215,6 @@ function App() {
         resetCurrentRunAnalysisState,
         viewportSize.width,
         viewportSize.height,
-        productName,
         sectionType,
     ]);
 
@@ -299,21 +313,8 @@ function App() {
         [currentProductConcentrationArray, productOverTimeTraces]
     );
 
-    const handleMixAgents = useCallback(() => {
-        if (clientSimulator) {
-            setIsPlaying(false);
-            clientSimulator.mixAgents();
-            simulariumController.gotoTime(1);
-        }
-    }, [clientSimulator, simulariumController]);
-
     const handleNewInputConcentration = useCallback(
         (name: string, value: number) => {
-            if (value === 0) {
-                // this is available on the slider, but we only want it visible
-                // as an axis marker, not as a selection
-                return;
-            }
             if (!clientSimulator) {
                 return;
             }
@@ -342,24 +343,26 @@ function App() {
             sectionType,
         ]
     );
+
     const totalReset = useCallback(() => {
+        const activeAgents = [AgentName.A, AgentName.B];
+        setCurrentModule(Module.A_B_AB);
+        const concentrations = simulationData.getInitialConcentrations(
+            activeAgents,
+            Module.A_B_AB
+        );
         setLiveConcentration({
-            [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
-            [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
+            [AgentName.A]: concentrations[AgentName.A],
+            [AgentName.B]: concentrations[AgentName.B],
             [productName]: 0,
         });
-        setCurrentModule(Module.A_B_AB);
         setInputConcentration({
-            [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
-            [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
+            [AgentName.A]: concentrations[AgentName.A],
+            [AgentName.B]: concentrations[AgentName.B],
         });
         handleNewInputConcentration(
             adjustableAgentName,
-            LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B]
+            concentrations[AgentName.B] ?? 4
         );
         setIsPlaying(false);
         clearAllAnalysisState();
@@ -369,6 +372,7 @@ function App() {
         handleNewInputConcentration,
         productName,
         adjustableAgentName,
+        simulationData,
     ]);
     // Special events in page navigation
     // usePageNumber takes a page number, a conditional and a callback
@@ -477,13 +481,37 @@ function App() {
 
     const setModule = (module: Module) => {
         setPage(FIRST_PAGE[module]);
+        clearAllAnalysisState();
         setCurrentModule(module);
         setIsPlaying(false);
     };
 
+    const setExperiment = () => {
+        setIsPlaying(false);
+
+        const activeAgents = simulationData.getActiveAgents(currentModule);
+        const concentrations = simulationData.getInitialConcentrations(
+            activeAgents,
+            currentModule,
+            true
+        );
+        clientSimulator?.mixAgents();
+        setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
+        setInputConcentration(concentrations);
+        setLiveConcentration(concentrations);
+    };
+
+    const handleMixAgents = useCallback(() => {
+        if (clientSimulator) {
+            setIsPlaying(false);
+            clientSimulator.mixAgents();
+            simulariumController.gotoTime(1);
+        }
+    }, [clientSimulator, simulariumController]);
+
     const handleStartExperiment = () => {
-        simulariumController.pause();
-        totalReset();
+        clearAllAnalysisState();
+        setExperiment();
         setPage(page + 1);
     };
 
