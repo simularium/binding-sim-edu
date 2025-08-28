@@ -9,6 +9,10 @@
     background-image: url("../assets/poliovirus-neutralization.jpg");
 }
 
+.container.competitive {
+    background-image: url("../assets/sars-cov-2-and-neutralizing-antibodies.jpg");
+}
+
 .content {
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
