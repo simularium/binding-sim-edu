@@ -52,7 +52,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         let bestFit;
 
         let value;
-        if (module === Module.A_B_D) {
+        if (module === Module.A_B_D_AB) {
             bestFit = regression.exponential(regressionData);
             const max = Math.max(...y);
             const min = 0;

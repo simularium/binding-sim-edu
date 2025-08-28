@@ -11,7 +11,7 @@ import { ProgressionElement } from "../constants";
 export const enum Module {
     A_B_AB = 1,
     A_C_AC = 2,
-    A_B_D = 3,
+    A_B_D_AB = 3,
 }
 
 export enum Section {

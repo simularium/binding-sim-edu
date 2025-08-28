@@ -6,17 +6,17 @@ import { competitiveArray } from "./Competitive";
 export const moduleNames = {
     [Module.A_B_AB]: "High Affinity",
     [Module.A_C_AC]: "Low Affinity",
-    [Module.A_B_D]: "Competitive Binding",
+    [Module.A_B_D_AB]: "Competitive Binding",
 };
 
 export const FIRST_PAGE = {
     [Module.A_B_AB]: 0, // landing page
     [Module.A_C_AC]: 1,
-    [Module.A_B_D]: 0,
+    [Module.A_B_D_AB]: 0,
 };
 
 export default {
     [Module.A_B_AB]: highAffinityContentArray,
     [Module.A_C_AC]: lowAffinityContentArray,
-    [Module.A_B_D]: competitiveArray,
+    [Module.A_B_D_AB]: competitiveArray,
 } as { [key in Module]: PageContent[] };

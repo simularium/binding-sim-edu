@@ -23,7 +23,7 @@ export default class PreComputedSimulationData implements ISimulationData {
             "https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/binding-affinity_antibodies.simularium",
         [Module.A_C_AC]:
             "https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/binding-affinity_hemoglobin.simularium",
-        [Module.A_B_D]:
+        [Module.A_B_D_AB]:
             "https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/binding-affinity_hemoglobin-co.simularium",
     };
 
@@ -32,7 +32,7 @@ export default class PreComputedSimulationData implements ISimulationData {
     PRODUCT = {
         [Module.A_B_AB]: ProductName.AntibodyAntigen,
         [Module.A_C_AC]: ProductName.Hemoglobin,
-        [Module.A_B_D]: ProductName.Hemoglobin,
+        [Module.A_B_D_AB]: ProductName.Hemoglobin,
     };
     type = TrajectoryType.precomputed;
 
@@ -49,7 +49,7 @@ export default class PreComputedSimulationData implements ISimulationData {
             case Module.A_C_AC:
                 maxConcentration = 20;
                 break;
-            case Module.A_B_D:
+            case Module.A_B_D_AB:
                 maxConcentration = 20;
                 break;
         }

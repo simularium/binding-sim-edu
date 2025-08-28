@@ -33,7 +33,7 @@ const ReactionDisplay: React.FC<ReactionDisplayProps> = ({ reactionType }) => {
                     <AC />
                 </>
             )}
-            {reactionType === Module.A_B_D && (
+            {reactionType === Module.A_B_D_AB && (
                 <>
                     <AB />
                     <ReversibleArrows reverse />
