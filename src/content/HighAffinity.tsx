@@ -132,7 +132,7 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         callToAction: (
             <>
-                Click the <strong>Randomize positions</strong> button, press{" "}
+                Click the <strong>Randomize positions</strong> button, then press{" "}
                 <strong>play</strong> again!
             </>
         ),
@@ -152,7 +152,7 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         callToAction: (
             <>
-                Click the <strong>Randomize positions</strong> button, press{" "}
+                Click the <strong>Randomize positions</strong> button, then press{" "}
                 <strong>play</strong> again!
             </>
         ),
@@ -163,7 +163,7 @@ export const highAffinityContentArray: PageContent[] = [
     },
     {
         content: (
-            <>Randomizing the positions is simulating a well mixed solution.</>
+            <>Randomizing the positions is simulating a well-mixed solution.</>
         ),
         callToAction: (
             <>

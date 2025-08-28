@@ -201,8 +201,14 @@ function App() {
             return null;
         }
         const longestAxis = Math.max(viewportSize.width, viewportSize.height);
-        const startMixed = sectionType === Section.Experiment;
-        return new BindingSimulator(trajectory, longestAxis / 3, startMixed);
+        const productColor = simulationData.getAgentColor(productName);
+        const startMixed = sectionType !== Section.Introduction;
+        return new BindingSimulator(
+            trajectory,
+            longestAxis / 3,
+            productColor,
+            startMixed ? "random" : "sorted"
+        );
     }, [
         simulationData,
         currentModule,
@@ -318,7 +324,11 @@ function App() {
             const agentName =
                 name as keyof typeof LiveSimulationData.AVAILABLE_AGENTS;
             const agentId = LiveSimulationData.AVAILABLE_AGENTS[agentName].id;
-            clientSimulator.changeConcentration(agentId, value);
+            clientSimulator.changeConcentration(
+                agentId,
+                value,
+                sectionType === Section.Experiment ? "random" : "sorted"
+            );
             simulariumController.gotoTime(1); // the number isn't used, but it triggers the update
             const previousConcentration = inputConcentration[agentName] || 0;
             addProductionTrace(previousConcentration);
@@ -330,6 +340,7 @@ function App() {
             inputConcentration,
             addProductionTrace,
             resetCurrentRunAnalysisState,
+            sectionType,
         ]
     );
 
