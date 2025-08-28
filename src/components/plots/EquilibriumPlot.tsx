@@ -14,6 +14,7 @@ import { MICRO } from "../../constants";
 
 import plotStyles from "./plots.module.css";
 import { Dash } from "plotly.js";
+import { Module } from "../../types";
 
 interface PlotProps {
     x: number[];
@@ -37,6 +38,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         productName,
         getAgentColor,
         adjustableAgentName,
+        module,
     } = useContext(SimulariumContext);
     const xMax = Math.max(...x);
     const xAxisMax = Math.max(kd * 2, xMax * 1.1);
@@ -47,17 +49,31 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
             xVal,
             y[index],
         ]);
+        let bestFit;
 
-        const bestFit = regression.logarithmic(regressionData);
+        let value;
+        if (module === Module.A_B_D) {
+            bestFit = regression.exponential(regressionData);
+            const max = Math.max(...y);
+            const min = 0;
+            const valueAtHalfMax = (max - min) / 2 + min;
+            value =
+                (1 / bestFit.equation[1]) *
+                Math.log(valueAtHalfMax / bestFit.equation[0]);
+        } else {
+            bestFit = regression.logarithmic(regressionData);
+
+            const halfFilled = fixedAgentStartingConcentration / 2;
+            value =
+                Math.E **
+                ((halfFilled - bestFit.equation[0]) / bestFit.equation[1]);
+        }
         const bestFitPoints = bestFit.points;
+
         const bestFitX = bestFitPoints.map((point) => point[0]);
         const bestFitY = bestFitPoints.map((point) => point[1]);
-        const halfFilled = fixedAgentStartingConcentration / 2;
-        const kdValue =
-            Math.E **
-            ((halfFilled - bestFit.equation[0]) / bestFit.equation[1]);
-        return { x: bestFitX, y: bestFitY, kd: kdValue };
-    }, [x, y, fixedAgentStartingConcentration]);
+        return { x: bestFitX, y: bestFitY, value: value };
+    }, [x, y, fixedAgentStartingConcentration, module]);
 
     const hintOverlay = (
         <div
@@ -105,11 +121,11 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
     };
 
     const kdIndicator = {
-        x: [bestFit.kd, bestFit.kd],
+        x: [bestFit.value, bestFit.value],
         y: [0, fixedAgentStartingConcentration / 2],
         mode: "lines",
         name: "",
-        hovertemplate: `Kd: <b>${bestFit.kd.toFixed(2)}</b> ${MICRO}M`,
+        hovertemplate: `Kd: <b>${bestFit.value.toFixed(2)}</b> ${MICRO}M`,
         hoverlabel: {
             bgcolor: getAgentColor(adjustableAgentName),
         },
@@ -154,7 +170,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         traces.push(kdIndicator);
         // filter out values that are so close to the kd value that they would overlap
         xAxisTicks = xAxisTicks.filter(
-            (tick) => Math.abs(tick - bestFit.kd) >= interval / 2
+            (tick) => Math.abs(tick - bestFit.value) >= interval / 2
         );
     }
 
@@ -172,7 +188,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
                 color: getAgentColor(adjustableAgentName),
             },
             tickmode: x.length >= 3 ? ("array" as const) : ("auto" as const),
-            tickvals: [...xAxisTicks, bestFit.kd.toFixed(1)],
+            tickvals: [...xAxisTicks, bestFit.value.toFixed(1)],
         },
         yaxis: {
             ...AXIS_SETTINGS,

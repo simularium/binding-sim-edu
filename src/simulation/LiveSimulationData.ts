@@ -69,7 +69,7 @@ const agentD: InputAgent = {
 const kds = {
     [Module.A_B_AB]: 0.75,
     [Module.A_C_AC]: 74,
-    [Module.A_B_D]: 5,
+    [Module.A_B_D]: 1.5,
 };
 
 export default class LiveSimulation implements ISimulationData {
@@ -105,9 +105,17 @@ export default class LiveSimulation implements ISimulationData {
             [AgentName.C]: 30,
         },
         [Module.A_B_D]: {
-            [AgentName.A]: 1,
-            [AgentName.B]: 1,
-            [AgentName.D]: 4,
+            [AgentName.A]: 2,
+            [AgentName.B]: 2,
+            [AgentName.D]: 2,
+        },
+    };
+
+    static EXPERIMENT_CONCENTRATIONS = {
+        ...this.INITIAL_CONCENTRATIONS,
+        [Module.A_B_D]: {
+            ...this.INITIAL_CONCENTRATIONS[Module.A_B_D],
+            [AgentName.D]: 0,
         },
     };
     PRODUCT = {
@@ -146,7 +154,7 @@ export default class LiveSimulation implements ISimulationData {
                 maxConcentration = 75;
                 break;
             case Module.A_B_D:
-                maxConcentration = 1;
+                maxConcentration = 10;
                 break;
         }
         return maxConcentration;
@@ -154,11 +162,20 @@ export default class LiveSimulation implements ISimulationData {
 
     createAgentsFromConcentrations = (
         activeAgents?: AgentName[],
-        module?: Module
+        module?: Module,
+        isExperiment: boolean = false
     ): InputAgent[] => {
         if (!module) {
             throw new Error("Module must be specified to create agents.");
         }
+        if (!activeAgents) {
+            activeAgents = this.getActiveAgents(module);
+        }
+        const concentrations = this.getInitialConcentrations(
+            activeAgents,
+            module,
+            isExperiment
+        );
         return (activeAgents ?? []).map((agentName: AgentName) => {
             const agent = {
                 ...(
@@ -168,12 +185,8 @@ export default class LiveSimulation implements ISimulationData {
                     >
                 )[agentName],
             };
-            agent.initialConcentration = (
-                LiveSimulation.INITIAL_CONCENTRATIONS[module] as Record<
-                    AgentName,
-                    number
-                >
-            )[agentName];
+
+            agent.initialConcentration = concentrations[agentName] ?? 0;
             return agent;
         });
     };
@@ -193,17 +206,18 @@ export default class LiveSimulation implements ISimulationData {
     // filters down to the active agents
     getInitialConcentrations = (
         activeAgents: AgentName[],
-        module: Module
+        module: Module,
+        isExperiment: boolean = false
     ): CurrentConcentration => {
+        console.log("isExperiment", isExperiment);
+        const concentrations = isExperiment
+            ? { ...LiveSimulation.EXPERIMENT_CONCENTRATIONS[module] }
+            : { ...LiveSimulation.INITIAL_CONCENTRATIONS[module] };
+        console.log("concentrations", concentrations);
         return activeAgents.reduce((acc, agent) => {
             return {
                 ...acc,
-                [agent]: (
-                    LiveSimulation.INITIAL_CONCENTRATIONS[module] as Record<
-                        AgentName,
-                        number
-                    >
-                )[agent],
+                [agent]: (concentrations as Record<AgentName, number>)[agent],
             };
         }, {});
     };

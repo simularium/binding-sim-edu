@@ -185,18 +185,23 @@ function App() {
     const clientSimulator = useMemo(() => {
         const activeAgents = simulationData.getActiveAgents(currentModule);
         setInputConcentration(
-            simulationData.getInitialConcentrations(activeAgents, currentModule)
+            simulationData.getInitialConcentrations(
+                activeAgents,
+                currentModule,
+                sectionType === Section.Experiment
+            )
         );
         resetCurrentRunAnalysisState();
         const trajectory = simulationData.createAgentsFromConcentrations(
             activeAgents,
-            currentModule
+            currentModule,
+            sectionType === Section.Experiment
         );
         if (!trajectory) {
             return null;
         }
         const longestAxis = Math.max(viewportSize.width, viewportSize.height);
-        const startMixed = sectionType !== Section.Introduction;
+        const startMixed = sectionType === Section.Experiment;
         return new BindingSimulator(trajectory, longestAxis / 3, startMixed);
     }, [
         simulationData,
@@ -302,21 +307,9 @@ function App() {
         [currentProductConcentrationArray, productOverTimeTraces]
     );
 
-    const handleMixAgents = useCallback(() => {
-        if (clientSimulator) {
-            setIsPlaying(false);
-            clientSimulator.mixAgents();
-            simulariumController.gotoTime(1);
-        }
-    }, [clientSimulator, simulariumController]);
-
     const handleNewInputConcentration = useCallback(
         (name: string, value: number) => {
-            if (value === 0) {
-                // this is available on the slider, but we only want it visible
-                // as an axis marker, not as a selection
-                return;
-            }
+            console.log("name, value", name, value);
             if (!clientSimulator) {
                 return;
             }
@@ -340,6 +333,7 @@ function App() {
             resetCurrentRunAnalysisState,
         ]
     );
+
     const totalReset = useCallback(() => {
         setLiveConcentration({
             [AgentName.A]:
@@ -490,9 +484,32 @@ function App() {
         setIsPlaying(false);
     };
 
+    const setExperiment = () => {
+        setIsPlaying(false);
+
+        const activeAgents = simulationData.getActiveAgents(currentModule);
+        const concentrations = simulationData.getInitialConcentrations(
+            activeAgents,
+            currentModule,
+            true
+        );
+        clientSimulator?.mixAgents();
+        setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
+        setInputConcentration(concentrations);
+        setLiveConcentration(concentrations);
+    };
+
+    const handleMixAgents = useCallback(() => {
+        if (clientSimulator) {
+            setIsPlaying(false);
+            clientSimulator.mixAgents();
+            simulariumController.gotoTime(1);
+        }
+    }, [clientSimulator, simulariumController]);
+
     const handleStartExperiment = () => {
-        simulariumController.pause();
-        totalReset();
+        clearAllAnalysisState();
+        setExperiment();
         setPage(page + 1);
     };
 

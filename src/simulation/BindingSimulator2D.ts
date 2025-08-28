@@ -47,6 +47,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         this.createBoundingLines();
         this.distanceFactor = 40;
         this.timeFactor = timeFactor;
+        console.log("INITIALIZING AGENTS FROM CONSTRUCTOR", agents);
         this.agents = this.initializeAgents(agents, startMixed);
         this.currentFrame = 0;
         this.system.separate();
@@ -246,6 +247,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         const newCount = this.convertConcentrationToCount(newConcentration);
         const oldCount = agent.count || 0;
         agent.count = newCount;
+        console.log(agent.count);
         agent.initialConcentration = newConcentration;
         this.static = true;
         if (!this.initialState) {
@@ -253,6 +255,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             // initial state
             this.clearAgents();
             this.initialState = true;
+            console.log("INIT AGENTS from Concentration", this.agents);
             this.initializeAgents(this.agents, true);
             return;
         }

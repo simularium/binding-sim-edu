@@ -35,9 +35,9 @@ const ReactionDisplay: React.FC<ReactionDisplayProps> = ({ reactionType }) => {
             )}
             {reactionType === Module.A_B_D && (
                 <>
-                    <AD />
-                    <ReversibleArrows2 />
-                    <D />
+                    <AB />
+                    <ReversibleArrows reverse />
+                    <B />
                     <span> + </span>
                     <A />
                     <Divider
@@ -48,9 +48,9 @@ const ReactionDisplay: React.FC<ReactionDisplayProps> = ({ reactionType }) => {
                     />
                     <A />
                     <span> + </span>
-                    <B />
-                    <ReversibleArrows />
-                    <AB />
+                    <D />
+                    <ReversibleArrows2 />
+                    <AD />
                 </>
             )}
             <InfoText uiElement={UiElement.ReactionDisplay} />
