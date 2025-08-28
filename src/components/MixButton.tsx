@@ -7,12 +7,10 @@ import ProgressionControl from "./shared/ProgressionControl";
 import style from "./start-experiment.module.css";
 
 const MixButton: React.FC = () => {
-    const id = MIX_AGENTS_ID;
-    const { handleMixAgents, progressionElement } =
-        useContext(SimulariumContext);
+    const { handleMixAgents } = useContext(SimulariumContext);
 
     return (
-        <ProgressionControl onPage={progressionElement === id}>
+        <ProgressionControl elementId={MIX_AGENTS_ID}>
             <TertiaryButton
                 ghost
                 onClick={handleMixAgents}
