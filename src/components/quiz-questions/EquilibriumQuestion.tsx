@@ -12,13 +12,16 @@ const EquilibriumQuestion: React.FC = () => {
     const { page, quizQuestion, module } = useContext(SimulariumContext);
     const [selectedAnswer, setSelectedAnswer] = useState("");
     const [formState, setFormState] = useState(FormState.Clear);
-    const DEFAULT_BIG_NUMBER = Infinity;
-    const startPage = useRef<{ page: number; module: Module }>({
-        page: DEFAULT_BIG_NUMBER,
+    const firstVisiblePage = useRef<{ page: number; module: Module }>({
+        page: Infinity,
         module: Module.A_B_AB,
     });
-    if (quizQuestion === id && startPage.current.page === DEFAULT_BIG_NUMBER) {
-        startPage.current = { page, module: module };
+    const hasBeenInitialized = firstVisiblePage.current.page !== Infinity;
+
+    // quiz questions have a start page, but they can continue to be visible
+    // throughout the module, so we need to track the first visible page
+    if (quizQuestion === id && !hasBeenInitialized) {
+        firstVisiblePage.current = { page, module: module };
     }
     const handleAnswerSelection = (answer: string) => {
         setSelectedAnswer(answer);
@@ -73,11 +76,12 @@ const EquilibriumQuestion: React.FC = () => {
     // Hide the question if the user has already answered correctly, and moved on
     // to the next page
     const hide =
-        page > startPage.current?.page && formState === FormState.Correct;
+        page > firstVisiblePage.current?.page &&
+        formState === FormState.Correct;
 
     return (
         <VisibilityControl
-            startPage={startPage.current.page}
+            startPage={firstVisiblePage.current.page}
             conditionalRender={!hide}
             notInBonusMaterial
         >

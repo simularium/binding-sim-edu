@@ -48,7 +48,7 @@ export const indexToTime = (
 };
 
 export const isSlopeZero = (array: number[], timeFactor: number) => {
-    const sliceSize = 70;
+    const sliceSize = 25;
     const sampleSet = array.slice(-sliceSize);
     const points = sampleSet.map((value, index) => [
         (index * timeFactor) / 1000,

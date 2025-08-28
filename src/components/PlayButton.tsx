@@ -9,9 +9,7 @@ import { Module } from "../types";
 import { PLAY_BUTTON_ID } from "../constants";
 
 const PlayButton: React.FC = () => {
-    const id = PLAY_BUTTON_ID;
-    const { isPlaying, setIsPlaying, progressionElement } =
-        useContext(SimulariumContext);
+    const { isPlaying, setIsPlaying } = useContext(SimulariumContext);
 
     const handleClick = () => {
         setIsPlaying(!isPlaying);
@@ -21,7 +19,7 @@ const PlayButton: React.FC = () => {
 
     return (
         <VisibilityControl excludedPages={{ [Module.A_B_AB]: [1] }}>
-            <ProgressionControl onPage={progressionElement === id}>
+            <ProgressionControl elementId={PLAY_BUTTON_ID}>
                 <OverlayButton
                     onClick={handleClick}
                     style={{ top: 14, left: 16 }}
