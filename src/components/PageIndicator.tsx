@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Progress, Flex } from "antd";
+import { Progress, Flex, Popconfirm } from "antd";
 import { map } from "lodash";
 import classNames from "classnames";
 
@@ -18,7 +18,8 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
     page,
     total,
 }) => {
-    const { setModule, completedModules } = React.useContext(SimulariumContext);
+    const { module, setModule, completedModules } =
+        React.useContext(SimulariumContext);
     const indexOfActiveModule: number = useMemo(() => {
         let toReturn = -1;
         map(moduleNames, (name, index) => {
@@ -30,7 +31,6 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
     }, [title]);
 
     const getModulePercent = (isActiveModule: boolean, moduleIndex: number) => {
-        console.log(moduleIndex, indexOfActiveModule);
         if (isActiveModule) {
             return (page / total) * 100;
         } else if (completedModules.includes(moduleIndex)) {
@@ -39,37 +39,59 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
             return 0;
         }
     };
+
+    const getTitle = (moduleIndex: number) => {
+        if (module === moduleIndex) {
+            return "Restart module";
+        } else {
+            return "Leave module";
+        }
+    };
+
+    const getMessage = (moduleIndex: number) => {
+        if (module === moduleIndex) {
+            return "Are you sure to restart this module? You will lose all progress.";
+        } else {
+            return "Are you sure you want to leave this module? You will lose all progress.";
+        }
+    };
+
     return (
         <Flex align="center" justify="flex-end" className={styles.container}>
             {map(moduleNames, (name, index) => {
                 const moduleIndex = Number(index);
                 const isActiveModule = moduleIndex === indexOfActiveModule;
                 return (
-                    <div
-                        key={index}
-                        className={classNames(styles.progressBarWrapper, {
-                            [styles.previous]:
-                                moduleIndex <= indexOfActiveModule,
-                            [styles.current]: isActiveModule,
-                        })}
-                        onClick={() => {
-                            if (isActiveModule) {
-                                return;
-                            }
+                    <Popconfirm
+                        title={getTitle(moduleIndex)}
+                        description={getMessage(moduleIndex)}
+                        onConfirm={() => {
                             setModule(moduleIndex);
                         }}
+                        onCancel={() => {}}
+                        okText="Yes"
+                        cancelText="No"
                     >
-                        <div className={styles.title}>{name}</div>
-                        <Progress
-                            className={styles.progressBar}
-                            size={["100%", 4]}
-                            percent={getModulePercent(
-                                isActiveModule,
-                                moduleIndex
-                            )}
-                            showInfo={false}
-                        />
-                    </div>
+                        <div
+                            key={index}
+                            className={classNames(styles.progressBarWrapper, {
+                                [styles.previous]:
+                                    moduleIndex <= indexOfActiveModule,
+                                [styles.current]: isActiveModule,
+                            })}
+                        >
+                            <div className={styles.title}>{name}</div>
+                            <Progress
+                                className={styles.progressBar}
+                                size={["100%", 4]}
+                                percent={getModulePercent(
+                                    isActiveModule,
+                                    moduleIndex
+                                )}
+                                showInfo={false}
+                            />
+                        </div>
+                    </Popconfirm>
                 );
             })}
         </Flex>
