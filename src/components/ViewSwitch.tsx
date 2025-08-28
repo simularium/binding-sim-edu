@@ -12,6 +12,7 @@ import VisibilityControl from "./shared/VisibilityControl";
 import { Module, Section } from "../types";
 import { FIRST_PAGE } from "../content";
 import useModule from "../hooks/useModule";
+import { VIEW_SWITCH_ID } from "../constants";
 
 enum View {
     Lab = "lab",
@@ -70,7 +71,7 @@ const ViewSwitch: React.FC = () => {
     return (
         <div style={{ position: "relative", height: "100%" }}>
             <VisibilityControl notInBonusMaterial>
-                <ProgressionControl onPage={{ [Module.A_B_AB]: [1, 3, 4] }}>
+                <ProgressionControl elementId={VIEW_SWITCH_ID}>
                     <OverlayButton
                         onClick={switchView}
                         style={buttonStyle}

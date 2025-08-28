@@ -1,22 +1,16 @@
-import { Module } from "../types";
+import { RECORD_BUTTON_ID } from "../constants";
 import { PillButton } from "./shared/ButtonLibrary";
 import ProgressionControl from "./shared/ProgressionControl";
 
 interface RecordEquilibriumButtonProps {
     handleRecordEquilibrium: () => void;
 }
-const FIRST_RECORD_PAGE = 7;
-const SECOND_RECORD_PAGE = 9;
+
 const RecordEquilibriumButton = ({
     handleRecordEquilibrium,
 }: RecordEquilibriumButtonProps) => {
     return (
-        <ProgressionControl
-            onPage={{
-                [Module.A_B_AB]: [FIRST_RECORD_PAGE, SECOND_RECORD_PAGE],
-                [Module.A_C_AC]: [1],
-            }}
-        >
+        <ProgressionControl elementId={RECORD_BUTTON_ID}>
             <PillButton onClick={handleRecordEquilibrium}>Record</PillButton>
         </ProgressionControl>
     );

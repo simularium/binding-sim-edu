@@ -56,15 +56,17 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
             <div className={styles.contentPanelText}>
                 <h3>{header}</h3>
                 <p>{content}</p>
-                {modal && (
-                    <Flex gap={12} align="center">
+
+                <Flex gap={12} align="center">
+                    {modal && (
                         <CustomModal
                             title={modal.title}
                             content={modal.content}
                         />
-                        {moreInfo && <span>{moreInfo}</span>}
-                    </Flex>
-                )}
+                    )}
+                    {moreInfo && <span>{moreInfo}</span>}
+                </Flex>
+
                 {callToAction && (
                     <p className={styles.callToActionP}>
                         <PointerIcon /> <span>{callToAction}</span>
