@@ -163,7 +163,7 @@ export const highAffinityContentArray: PageContent[] = [
     },
     {
         content: (
-            <>Randomizing the positions is simulating a well mixed solution.</>
+            <>Randomizing the positions is simulating a well-mixed solution.</>
         ),
         callToAction: (
             <>
