@@ -42,7 +42,6 @@ const Concentration: React.FC<AgentProps> = ({
     liveConcentration,
     onChangeComplete,
 }) => {
-    const id = CHANGE_CONCENTRATION_ID;
     const {
         isPlaying,
         maxConcentration,
@@ -60,7 +59,7 @@ const Concentration: React.FC<AgentProps> = ({
     );
 
     if (
-        id === progressionElement &&
+        CHANGE_CONCENTRATION_ID === progressionElement &&
         !isPlaying &&
         highlightState === HighlightState.Initial
     ) {
@@ -134,7 +133,7 @@ const Concentration: React.FC<AgentProps> = ({
 
     const showHighlight =
         highlightState === HighlightState.Show &&
-        id === progressionElement &&
+        CHANGE_CONCENTRATION_ID === progressionElement &&
         !isPlaying;
     return (
         <>
