@@ -210,11 +210,9 @@ export default class LiveSimulation implements ISimulationData {
         module: Module,
         isExperiment: boolean = false
     ): CurrentConcentration => {
-        console.log("isExperiment", isExperiment);
         const concentrations = isExperiment
             ? { ...LiveSimulation.EXPERIMENT_CONCENTRATIONS[module] }
             : { ...LiveSimulation.INITIAL_CONCENTRATIONS[module] };
-        console.log("concentrations", concentrations);
         return activeAgents.reduce((acc, agent) => {
             return {
                 ...acc,

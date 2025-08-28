@@ -309,7 +309,6 @@ function App() {
 
     const handleNewInputConcentration = useCallback(
         (name: string, value: number) => {
-            console.log("name, value", name, value);
             if (!clientSimulator) {
                 return;
             }
@@ -335,33 +334,24 @@ function App() {
     );
 
     const totalReset = useCallback(() => {
+        const activeAgents = [AgentName.A, AgentName.B];
+        setCurrentModule(Module.A_B_AB);
+        const concentrations = simulationData.getInitialConcentrations(
+            activeAgents,
+            Module.A_B_AB
+        );
         setLiveConcentration({
-            [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
-                    AgentName.A
-                ],
-            [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
-                    AgentName.B
-                ],
+            [AgentName.A]: concentrations[AgentName.A],
+            [AgentName.B]: concentrations[AgentName.B],
             [productName]: 0,
         });
-        setCurrentModule(Module.A_B_AB);
         setInputConcentration({
-            [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
-                    AgentName.A
-                ],
-            [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
-                    AgentName.B
-                ],
+            [AgentName.A]: concentrations[AgentName.A],
+            [AgentName.B]: concentrations[AgentName.B],
         });
         handleNewInputConcentration(
             adjustableAgentName,
-            LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
-                AgentName.B
-            ]
+            concentrations[AgentName.B] ?? 4
         );
         setIsPlaying(false);
         clearAllAnalysisState();
@@ -371,6 +361,7 @@ function App() {
         handleNewInputConcentration,
         productName,
         adjustableAgentName,
+        simulationData,
     ]);
     // Special events in page navigation
     // usePageNumber takes a page number, a conditional and a callback
