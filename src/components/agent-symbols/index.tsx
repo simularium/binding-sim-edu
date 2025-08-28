@@ -2,9 +2,11 @@ import React from "react";
 import {
     AGENT_AB_COLOR,
     AGENT_AC_COLOR,
+    AGENT_AD_COLOR,
     AGENT_A_COLOR,
     AGENT_B_COLOR,
     AGENT_C_COLOR,
+    AGENT_D_COLOR,
 } from "../../constants/colors";
 
 export const A: React.FC = () => {
@@ -19,10 +21,18 @@ export const C: React.FC = () => {
     return <span style={{ color: AGENT_C_COLOR }}>C</span>;
 };
 
+export const D: React.FC = () => {
+    return <span style={{ color: AGENT_D_COLOR }}>D</span>;
+};
+
 export const AB: React.FC<{ name?: string }> = (props) => {
     return <span style={{ color: AGENT_AB_COLOR }}>{props.name || "AB"}</span>;
 };
 
 export const AC: React.FC = () => {
     return <span style={{ color: AGENT_AC_COLOR }}>AC</span>;
+};
+
+export const AD: React.FC = () => {
+    return <span style={{ color: AGENT_AD_COLOR }}>AD</span>;
 };

@@ -1,8 +1,10 @@
 export const AGENT_A_COLOR = "#4DFEFE"; // cyan
 export const AGENT_B_COLOR = "#FE4DC2"; // magenta
 export const AGENT_C_COLOR = "#FEAD4D"; // orange
+export const AGENT_D_COLOR = "#694DFF"; // purple
 export const AGENT_AB_COLOR = "#FFEB00"; // yellow
 export const AGENT_AC_COLOR = "#70FE4D"; // green
+export const AGENT_AD_COLOR = "#686868"; // gray
 
 export const MID_GREY = "#6E6E6E";
 export const LIGHT_GREY_PURPLE = "#9E6AFF";
