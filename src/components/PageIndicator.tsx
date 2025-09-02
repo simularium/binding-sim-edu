@@ -58,8 +58,8 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
 
     return (
         <Flex align="center" justify="flex-end" className={styles.container}>
-            {map(moduleNames, (name, index) => {
-                const moduleIndex = Number(index);
+            {map(moduleNames, (name, index: number) => {
+                const moduleIndex = index;
                 const isActiveModule = moduleIndex === indexOfActiveModule;
                 return (
                     <Popconfirm
