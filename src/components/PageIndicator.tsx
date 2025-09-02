@@ -50,7 +50,7 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
 
     const getMessage = (moduleIndex: number) => {
         if (module === moduleIndex) {
-            return "Are you sure to restart this module? You will lose all progress.";
+            return "Are you sure you want to restart this module? You will lose all progress.";
         } else {
             return "Are you sure you want to leave this module? You will lose all progress.";
         }
