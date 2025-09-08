@@ -19,8 +19,7 @@ const AdminUI: React.FC<AdminUIProps> = ({
     totalPages,
 }) => {
     const { page, setPage, module, setModule } = useContext(SimulariumContext);
-    const isDev = process.env.NODE_ENV === "development";
-    const [visible, setVisible] = React.useState<boolean>(isDev);
+    const [visible, setVisible] = React.useState<boolean>(false);
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             // control-option-1 (mac) or ctrl-alt-1 (windows)
@@ -40,7 +39,7 @@ const AdminUI: React.FC<AdminUIProps> = ({
         pageMarks[i] = { label: i.toString() };
     }
     const moduleMarks: SliderSingleProps["marks"] = {};
-    const totalNumberOfModules = 2; // only 2 modules that work currently
+    const totalNumberOfModules = 3;
     for (let i = 0; i <= totalNumberOfModules; i++) {
         moduleMarks[i] = { label: i.toString() };
     }
