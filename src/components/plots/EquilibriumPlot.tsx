@@ -146,6 +146,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
     ];
 
     let xAxisTicks = [];
+    // scale the x axis based on the max value X can be.
     const interval = xAxisMax > 50 ? 50 : 0.5;
     for (let i = 0; i <= xAxisMax; i = i + interval) {
         xAxisTicks.push(i);
