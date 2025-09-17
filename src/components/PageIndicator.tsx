@@ -63,6 +63,7 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
                 const isActiveModule = moduleIndex === indexOfActiveModule;
                 return (
                     <Popconfirm
+                        key={moduleIndex}
                         title={getTitle(moduleIndex)}
                         description={getMessage(moduleIndex)}
                         onConfirm={() => {
