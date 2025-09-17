@@ -8,7 +8,6 @@ import { SimulariumContext } from "../../simulation/context";
 import { Module } from "../../types";
 
 const EquilibriumQuestion: React.FC = () => {
-    const id = EQUILIBRIUM_QUIZ_ID;
     const { page, quizQuestion, module } = useContext(SimulariumContext);
     const [selectedAnswer, setSelectedAnswer] = useState("");
     const [formState, setFormState] = useState(FormState.Clear);
@@ -20,7 +19,7 @@ const EquilibriumQuestion: React.FC = () => {
 
     // quiz questions have a start page, but they can continue to be visible
     // throughout the module, so we need to track the first visible page
-    if (quizQuestion === id && !hasBeenInitialized) {
+    if (quizQuestion === EQUILIBRIUM_QUIZ_ID && !hasBeenInitialized) {
         firstVisiblePage.current = { page, module: module };
     }
     const handleAnswerSelection = (answer: string) => {
