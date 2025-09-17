@@ -150,7 +150,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
     for (let i = 0; i <= xAxisMax; i = i + interval) {
         xAxisTicks.push(i);
     }
-    // the best fit line will only be show if there are 3 or more points
+    // the best fit line will only be shown if there are 3 or more points
     const bestFitVisible = x.length >= 3;
     if (bestFitVisible) {
         // add the kd indicator line
