@@ -12,7 +12,12 @@ import {
     VisTypes,
 } from "@aics/simularium-viewer";
 
-import { InputAgent, ProductName, StoredAgent } from "../types";
+import {
+    InitialCondition,
+    InputAgent,
+    ProductName,
+    StoredAgent,
+} from "../types";
 import LiveSimulationData from "./LiveSimulationData";
 import { LIVE_SIMULATION_NAME } from "../constants";
 import BindingInstance from "./BindingInstance";
@@ -38,7 +43,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         agents: InputAgent[],
         size: number,
         productColor: string,
-        initPositions: "random" | "sorted" = "sorted",
+        initPositions: InitialCondition = InitialCondition.SORTED,
         timeFactor: number = LiveSimulationData.DEFAULT_TIME_FACTOR
     ) {
         this.size = size;
@@ -69,7 +74,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
     private initializeAgents(
         agents: InputAgent[],
-        initPositions: "random" | "sorted" = "sorted"
+        initPositions: InitialCondition = InitialCondition.SORTED
     ): StoredAgent[] {
         for (let i = 0; i < agents.length; ++i) {
             const agent = agents[i] as StoredAgent; // count is no longer optional
@@ -83,7 +88,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             }
             for (let j = 0; j < agent.count; ++j) {
                 let position: number[] = [];
-                if (initPositions === "random") {
+                if (initPositions === InitialCondition.RANDOM) {
                     // if we're mixing agents, we want to randomize the position
                     // of the agents on the sides of the bounding box
                     position = this.getRandomPoint();
@@ -199,7 +204,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
     public mixAgents() {
         this.clearAgents();
-        this.initializeAgents(this.agents, "random");
+        this.initializeAgents(this.agents, InitialCondition.RANDOM);
         this.static = true;
         this.initialState = false;
     }
@@ -207,7 +212,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     public changeConcentration(
         agentId: number,
         newConcentration: number,
-        initPositions: "random" | "sorted"
+        initPositions: InitialCondition
     ) {
         const agent = find(this.agents, (agent) => agent.id === agentId);
         if (!agent) {
@@ -230,7 +235,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         if (diff > 0) {
             for (let i = 0; i < diff; ++i) {
                 let position: number[];
-                if (initPositions === "random") {
+                if (initPositions === InitialCondition.RANDOM) {
                     position = this.getRandomPoint();
                 } else {
                     position = this.getRandomPointOnSide(

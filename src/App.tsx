@@ -18,6 +18,7 @@ import BindingSimulator from "./simulation/BindingSimulator2D";
 import {
     AgentName,
     CurrentConcentration,
+    InitialCondition,
     InputConcentration,
     LayoutType,
     Module,
@@ -192,7 +193,7 @@ function App() {
             trajectory,
             longestAxis / 3,
             productColor,
-            startMixed ? "random" : "sorted"
+            startMixed ? InitialCondition.RANDOM : InitialCondition.SORTED
         );
     }, [
         simulationData,
@@ -326,7 +327,9 @@ function App() {
             clientSimulator.changeConcentration(
                 agentId,
                 value,
-                sectionType === Section.Experiment ? "random" : "sorted"
+                sectionType === Section.Experiment
+                    ? InitialCondition.RANDOM
+                    : InitialCondition.SORTED
             );
             simulariumController.gotoTime(1); // the number isn't used, but it triggers the update
             const previousConcentration = inputConcentration[agentName] || 0;

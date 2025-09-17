@@ -112,6 +112,11 @@ export interface ScatterTrace {
     name: string;
 }
 
+export enum InitialCondition {
+    RANDOM = "random",
+    SORTED = "sorted",
+}
+
 export interface StoredAgent extends InputAgent {
     count: number;
 }
