@@ -125,15 +125,15 @@ export const highAffinityContentArray: PageContent[] = [
         content: (
             <>
                 The two populations started on opposite sides of the window, so
-                they have to diffuse before they can bind, which takes awhile.
+                they have to diffuse before they can bind, which takes a while.
                 Let's randomize their positions so we are only looking at the
                 binding events.
             </>
         ),
         callToAction: (
             <>
-                Click the <strong>Randomize positions</strong> button, then press{" "}
-                <strong>play</strong> again!
+                Click the <strong>Randomize positions</strong> button, then
+                press <strong>play</strong> again!
             </>
         ),
         actionButton: <MixButton />,
@@ -145,15 +145,15 @@ export const highAffinityContentArray: PageContent[] = [
         content: (
             <>
                 The two populations started on opposite sides of the window, so
-                they have to diffuse before they can bind, which takes awhile.
+                they have to diffuse before they can bind, which takes a while.
                 Let's randomize their positions so we are only looking at the
                 binding events.
             </>
         ),
         callToAction: (
             <>
-                Click the <strong>Randomize positions</strong> button, then press{" "}
-                <strong>play</strong> again!
+                Click the <strong>Randomize positions</strong> button, then
+                press <strong>play</strong> again!
             </>
         ),
         actionButton: <MixButton />,
