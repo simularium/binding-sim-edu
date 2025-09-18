@@ -42,7 +42,6 @@ export const competitiveArray: PageContent[] = [
     },
     {
         content: "Placeholder",
-
         section: Section.Experiment,
         layout: LayoutType.LiveSimulation,
     },
