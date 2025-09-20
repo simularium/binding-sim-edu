@@ -8,57 +8,64 @@ import {
     DEFAULT_VIEWPORT_SIZE,
     LIVE_SIMULATION_NAME,
     NANO,
+    ProgressionElement,
 } from "../constants";
 import { AgentName, Module, ProductName, Section } from "../types";
 
 interface SimulariumContextType {
-    trajectoryName: string;
-    productName: ProductName;
     adjustableAgentName: AgentName;
-    fixedAgentStartingConcentration: number;
-    maxConcentration: number;
-    getAgentColor: (agentName: AgentName | ProductName) => string;
     currentProductionConcentration: number;
-    isPlaying: boolean;
-    setIsPlaying: (value: boolean) => void;
-    simulariumController: SimulariumController | null;
-    handleTimeChange: (timeData: TimeData) => void;
+    fixedAgentStartingConcentration: number;
+    getAgentColor: (agentName: AgentName | ProductName) => string;
+    handleMixAgents: () => void;
     handleStartExperiment: () => void;
-    section: Section;
-    setPage: (value: number) => void;
+    handleTimeChange: (timeData: TimeData) => void;
+    handleTrajectoryChange: (value: TrajectoryFileInfo) => void;
+    isPlaying: boolean;
+    maxConcentration: number;
     module: Module;
-    setModule: (value: Module) => void;
     page: number;
+    productName: ProductName;
+    progressionElement: ProgressionElement | "";
+    quizQuestion: string;
+    recordedConcentrations: number[];
+    section: Section;
+    setIsPlaying: (value: boolean) => void;
+    setModule: (value: Module) => void;
+    setPage: (value: number) => void;
+    setViewportSize: (value: { width: number; height: number }) => void;
+    simulariumController: SimulariumController | null;
     timeFactor: number;
     timeUnit: string;
-    handleTrajectoryChange: (value: TrajectoryFileInfo) => void;
+    trajectoryName: string;
     viewportSize: { width: number; height: number };
-    setViewportSize: (value: { width: number; height: number }) => void;
-    recordedConcentrations: number[];
 }
 
 export const SimulariumContext = createContext({
-    trajectoryName: LIVE_SIMULATION_NAME,
     adjustableAgentName: AgentName.B,
-    productName: ProductName.AB,
-    fixedAgentStartingConcentration: 0,
-    maxConcentration: 10,
-    getAgentColor: () => "",
     currentProductionConcentration: 0,
-    section: Section.Introduction,
-    isPlaying: false,
-    setIsPlaying: () => {},
-    simulariumController: null,
-    handleTimeChange: () => {},
+    fixedAgentStartingConcentration: 0,
+    getAgentColor: () => "",
+    handleMixAgents: () => {},
     handleStartExperiment: () => {},
-    setPage: () => {},
-    page: 0,
-    setModule: () => {},
+    handleTimeChange: () => {},
+    handleTrajectoryChange: () => {},
+    isPlaying: false,
+    maxConcentration: 10,
     module: Module.A_B_AB,
+    page: 0,
+    productName: ProductName.AB,
+    progressionElement: "",
+    quizQuestion: "",
+    recordedConcentrations: [],
+    section: Section.Introduction,
+    setIsPlaying: () => {},
+    setModule: () => {},
+    setPage: () => {},
+    setViewportSize: () => {},
+    simulariumController: null,
     timeFactor: 30,
     timeUnit: NANO,
-    handleTrajectoryChange: () => {},
+    trajectoryName: LIVE_SIMULATION_NAME,
     viewportSize: DEFAULT_VIEWPORT_SIZE,
-    setViewportSize: () => {},
-    recordedConcentrations: [],
 } as SimulariumContextType);

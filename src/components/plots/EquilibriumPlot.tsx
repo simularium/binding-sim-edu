@@ -43,9 +43,10 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
 
     // Calculate the best fit line for the data points
     const bestFit = useMemo(() => {
-        const regressionData: DataPoint[] = x.map(
-  (xVal, index) => [xVal, y[index]]
-);
+        const regressionData: DataPoint[] = x.map((xVal, index) => [
+            xVal,
+            y[index],
+        ]);
 
         const bestFit = regression.logarithmic(regressionData);
         const bestFitPoints = bestFit.points;
@@ -145,14 +146,19 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
     ];
 
     let xAxisTicks = [];
-    for (let i = 0; i <= xAxisMax; i = i + 0.5) {
+    // scale the x axis based on the max value X can be.
+    const interval = xAxisMax > 50 ? 50 : 0.5;
+    for (let i = 0; i <= xAxisMax; i = i + interval) {
         xAxisTicks.push(i);
     }
-    if (x.length >= 3) {
+    // the best fit line will only be shown if there are 3 or more points
+    const bestFitVisible = x.length >= 3;
+    if (bestFitVisible) {
+        // add the kd indicator line
         traces.push(kdIndicator);
-        // filter out values that are so close to the kd value that they would overlap
+        // filter out axis values that are so close to the kd value that they would overlap on the axis
         xAxisTicks = xAxisTicks.filter(
-            (tick) => Math.abs(tick - bestFit.kd) >= 0.2
+            (tick) => Math.abs(tick - bestFit.kd) >= interval / 2
         );
     }
 
@@ -169,7 +175,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
                 ...AXIS_SETTINGS.titlefont,
                 color: getAgentColor(adjustableAgentName),
             },
-            tickmode: x.length >= 3 ? ("array" as const) : ("auto" as const),
+            tickmode: bestFitVisible ? ("array" as const) : ("auto" as const),
             tickvals: [...xAxisTicks, bestFit.kd.toFixed(1)],
         },
         yaxis: {

@@ -6,6 +6,7 @@ import ProgressionControl from "./shared/ProgressionControl";
 import VisibilityControl from "./shared/VisibilityControl";
 import { OverlayButton } from "./shared/ButtonLibrary";
 import { Module } from "../types";
+import { PLAY_BUTTON_ID } from "../constants";
 
 const PlayButton: React.FC = () => {
     const { isPlaying, setIsPlaying } = useContext(SimulariumContext);
@@ -18,11 +19,7 @@ const PlayButton: React.FC = () => {
 
     return (
         <VisibilityControl excludedPages={{ [Module.A_B_AB]: [1] }}>
-            <ProgressionControl
-                onPage={{
-                    [Module.A_B_AB]: [2, 6],
-                }}
-            >
+            <ProgressionControl elementId={PLAY_BUTTON_ID}>
                 <OverlayButton
                     onClick={handleClick}
                     style={{ top: 14, left: 16 }}
