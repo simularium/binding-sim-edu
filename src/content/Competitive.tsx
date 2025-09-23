@@ -40,6 +40,11 @@ export const competitiveArray: PageContent[] = [
         section: Section.LandingPage,
         layout: LayoutType.FullScreenOverlay,
     },
+    {
+        content: "Placeholder",
+        section: Section.Experiment,
+        layout: LayoutType.LiveSimulation,
+    },
 
     {
         content:
