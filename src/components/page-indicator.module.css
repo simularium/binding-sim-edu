@@ -10,6 +10,10 @@
     position: relative;
 }
 
+.progress-bar-wrapper:hover {
+    cursor: pointer;
+}
+
 .text-format {
     font-weight: 400;
     line-height: 14px;
