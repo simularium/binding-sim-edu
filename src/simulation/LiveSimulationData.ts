@@ -48,6 +48,12 @@ const agentC: InputAgent = {
     color: AGENT_C_COLOR,
 };
 
+const kds = {
+    [Module.A_B_AB]: 0.75,
+    [Module.A_C_AC]: 74,
+    [Module.A_B_D_AB]: 5,
+};
+
 export default class LiveSimulation implements ISimulationData {
     static ESTIMATED_SOLUTIONS = {
         [Module.A_B_AB]: 0.75,
@@ -64,7 +70,7 @@ export default class LiveSimulation implements ISimulationData {
     static ADJUSTABLE_AGENT_MAP = {
         [Module.A_B_AB]: AgentName.B,
         [Module.A_C_AC]: AgentName.C,
-        [Module.A_B_C_AB_AC]: AgentName.B,
+        [Module.A_B_D_AB]: AgentName.B,
     };
     static INITIAL_TIME_FACTOR: number = 30;
     static DEFAULT_TIME_FACTOR: number = 90;
@@ -81,7 +87,7 @@ export default class LiveSimulation implements ISimulationData {
     PRODUCT = {
         [Module.A_B_AB]: ProductName.AB,
         [Module.A_C_AC]: ProductName.AC,
-        [Module.A_B_C_AB_AC]: ProductName.AB,
+        [Module.A_B_D_AB]: ProductName.AB,
     };
     timeUnit = NANO;
     type = TrajectoryType.live;
@@ -113,7 +119,7 @@ export default class LiveSimulation implements ISimulationData {
             case Module.A_C_AC:
                 maxConcentration = 75;
                 break;
-            case Module.A_B_C_AB_AC:
+            case Module.A_B_D_AB:
                 maxConcentration = 20; //TODO: adjust these as needed
                 break;
         }
@@ -146,7 +152,7 @@ export default class LiveSimulation implements ISimulationData {
                 return [AgentName.A, AgentName.B];
             case Module.A_C_AC:
                 return [AgentName.A, AgentName.C];
-            case Module.A_B_C_AB_AC:
+            case Module.A_B_D_AB:
                 return [AgentName.A, AgentName.B, AgentName.C];
             default:
                 return [];

@@ -1,8 +1,18 @@
 import BindingDiagrams from "../components/BindingDiagrams";
+import MixButton from "../components/MixButton";
 import StartExperiment from "../components/StartExperiment";
 import { AB, A, B } from "../components/agent-symbols";
 import KdDerivation from "../components/modals/KdDerivation";
 import Definition from "../components/shared/Definition";
+import {
+    CHANGE_CONCENTRATION_ID,
+    EQUILIBRIUM_QUIZ_ID,
+    MIX_AGENTS_ID,
+    PLAY_BUTTON_ID,
+    RECORD_BUTTON_ID,
+    START_EXPERIMENT_ID,
+    VIEW_SWITCH_ID,
+} from "../constants";
 import { PageContent, Section, LayoutType } from "../types";
 
 export const highAffinityContentArray: PageContent[] = [
@@ -53,6 +63,7 @@ export const highAffinityContentArray: PageContent[] = [
             "Click or tap the animated button to switch your view to a molecular simulation.",
         section: Section.Introduction,
         layout: LayoutType.LiveSimulation,
+        progressionElement: VIEW_SWITCH_ID,
     },
     {
         content: (
@@ -71,6 +82,7 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         section: Section.Introduction,
         layout: LayoutType.LiveSimulation,
+        progressionElement: PLAY_BUTTON_ID,
     },
     {
         content: (
@@ -90,12 +102,14 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         section: Section.Introduction,
         layout: LayoutType.LiveSimulation,
+        progressionElement: VIEW_SWITCH_ID,
     },
     {
         content: (
             <>
                 The clear liquid is slowly turning yellow as the simulation
-                progresses. Can you estimate the concentration of <AB /> ?
+                progresses, but it is taking a long time to change. Can you
+                estimate the concentration of <AB /> ?
             </>
         ),
         callToAction: (
@@ -105,13 +119,89 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         section: Section.Introduction,
         layout: LayoutType.LiveSimulation,
+        progressionElement: VIEW_SWITCH_ID,
+    },
+    {
+        content: (
+            <>
+                The two populations started on opposite sides of the window, so
+                they have to diffuse before they can bind, which takes a while.
+                Let's randomize their positions so we are only looking at the
+                binding events.
+            </>
+        ),
+        callToAction: (
+            <>
+                Click the <strong>Randomize positions</strong> button, then
+                press <strong>play</strong> again!
+            </>
+        ),
+        actionButton: <MixButton />,
+        section: Section.Introduction,
+        layout: LayoutType.LiveSimulation,
+        progressionElement: MIX_AGENTS_ID,
+    },
+    {
+        content: (
+            <>
+                The two populations started on opposite sides of the window, so
+                they have to diffuse before they can bind, which takes a while.
+                Let's randomize their positions so we are only looking at the
+                binding events.
+            </>
+        ),
+        callToAction: (
+            <>
+                Click the <strong>Randomize positions</strong> button, then
+                press <strong>play</strong> again!
+            </>
+        ),
+        actionButton: <MixButton />,
+        section: Section.Introduction,
+        layout: LayoutType.LiveSimulation,
+        progressionElement: PLAY_BUTTON_ID,
+    },
+    {
+        content: (
+            <>Randomizing the positions is simulating a well-mixed solution.</>
+        ),
+        callToAction: (
+            <>
+                Click <strong>Lab view</strong> to see what the cuvette looks
+                like now.
+            </>
+        ),
+
+        section: Section.Introduction,
+        layout: LayoutType.LiveSimulation,
+        progressionElement: VIEW_SWITCH_ID,
+    },
+    {
+        content: (
+            <>
+                There are now many more bound complexes in the "solution", so
+                our measured indicator (in this case, color) is now much
+                stronger for roughly the same amount of time.
+            </>
+        ),
+        callToAction: (
+            <>
+                Click <strong>Molecular view</strong> to switch back to the
+                simulation.
+            </>
+        ),
+
+        section: Section.Introduction,
+        layout: LayoutType.LiveSimulation,
+        progressionElement: VIEW_SWITCH_ID,
     },
     {
         title: "Start the experiment",
         content: (
             <>
-                Now, let's use this simulation to make measurements. We're going
-                to increase the timestep so the experiments are fast.
+                Now, let's use this simulation to make measurements. We'll start
+                with randomized positions and increase the timestep so the
+                experiments are fast.
             </>
         ),
         actionButton: <StartExperiment />,
@@ -123,13 +213,15 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         section: Section.Introduction,
         layout: LayoutType.LiveSimulation,
+        progressionElement: START_EXPERIMENT_ID,
     },
     {
         title: "Start the experiment",
         content: (
             <>
-                Now, let's use this simulation to make measurements. We're going
-                to increase the timestep so the experiments are fast.
+                Now, let's use this simulation to make measurements. We'll start
+                with randomized positions and increase the timestep so the
+                experiments are fast.
             </>
         ),
         actionButton: <StartExperiment />,
@@ -141,6 +233,7 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         section: Section.Experiment,
         layout: LayoutType.LiveSimulation,
+        progressionElement: PLAY_BUTTON_ID,
     },
     {
         title: "Identifying equilibrium",
@@ -163,6 +256,7 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         section: Section.Experiment,
         layout: LayoutType.LiveSimulation,
+        progressionElement: RECORD_BUTTON_ID,
     },
     {
         title: "Affinity",
@@ -184,6 +278,8 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         section: Section.Experiment,
         layout: LayoutType.LiveSimulation,
+        progressionElement: CHANGE_CONCENTRATION_ID,
+        quizQuestion: EQUILIBRIUM_QUIZ_ID,
     },
     {
         title: "Repeating the experiment",
@@ -207,6 +303,7 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         section: Section.Experiment,
         layout: LayoutType.LiveSimulation,
+        progressionElement: RECORD_BUTTON_ID,
     },
     {
         title: "Deriving Kd",

@@ -6,11 +6,12 @@ import {
     MouseEvent as ReactMouseEvent,
     MouseEventHandler,
 } from "react";
+import { ProgressionElement } from "../constants";
 
 export const enum Module {
     A_B_AB = 1,
     A_C_AC = 2,
-    A_B_C_AB_AC = 3,
+    A_B_D_AB = 3,
 }
 
 export enum Section {
@@ -86,6 +87,8 @@ export interface PageContent {
     backButton?: boolean;
     nextButtonText?: string;
     trajectoryUrl?: string;
+    progressionElement?: ProgressionElement;
+    quizQuestion?: string;
     modal?: {
         title: string;
         content: string | JSX.Element;
@@ -107,6 +110,11 @@ export interface ScatterTrace {
     mode: "markers" | "lines" | "lines+markers";
     type: "scatter";
     name: string;
+}
+
+export enum InitialCondition {
+    RANDOM = "random",
+    SORTED = "sorted",
 }
 
 export interface StoredAgent extends InputAgent {
