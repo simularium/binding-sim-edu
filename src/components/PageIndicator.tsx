@@ -33,7 +33,7 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
     const getModulePercent = (isActiveModule: boolean, moduleIndex: number) => {
         if (isActiveModule) {
             return (page / total) * 100;
-        } else if (completedModules.includes(moduleIndex)) {
+        } else if (completedModules.has(moduleIndex)) {
             return 100;
         } else {
             return 0;

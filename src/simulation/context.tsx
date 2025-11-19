@@ -36,7 +36,7 @@ interface SimulariumContextType {
     setViewportSize: (value: { width: number; height: number }) => void;
     recordedConcentrations: number[];
     addCompletedModule: (value: Module) => void;
-    completedModules: Module[];
+    completedModules: Set<Module>;
 }
 
 export const SimulariumContext = createContext({
@@ -64,5 +64,5 @@ export const SimulariumContext = createContext({
     setViewportSize: () => {},
     recordedConcentrations: [],
     addCompletedModule: () => {},
-    completedModules: [],
+    completedModules: new Set(),
 } as SimulariumContextType);

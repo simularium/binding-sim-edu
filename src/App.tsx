@@ -96,7 +96,9 @@ function App() {
         LiveSimulationData.INITIAL_TIME_FACTOR
     );
 
-    const [completedModules, setCompletedModules] = useState<Module[]>([]);
+    const [completedModules, setCompletedModules] = useState<Set<Module>>(
+        new Set()
+    );
     const [viewportSize, setViewportSize] = useState(DEFAULT_VIEWPORT_SIZE);
     const adjustableAgentName =
         LiveSimulationData.ADJUSTABLE_AGENT_MAP[currentModule];
@@ -458,7 +460,7 @@ function App() {
     // User input handlers
 
     const addCompletedModule = (module: Module) => {
-        setCompletedModules((prev: Module[]) => [...prev, module] as Module[]);
+        setCompletedModules((prev: Set<Module>) => new Set(prev).add(module));
     };
 
     const setModule = (module: Module) => {
