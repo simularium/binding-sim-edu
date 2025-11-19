@@ -39,8 +39,6 @@ interface SimulariumContextType {
     timeUnit: string;
     trajectoryName: string;
     viewportSize: { width: number; height: number };
-    setViewportSize: (value: { width: number; height: number }) => void;
-    recordedConcentrations: number[];
     addCompletedModule: (value: Module) => void;
     completedModules: Set<Module>;
 }
@@ -72,8 +70,6 @@ export const SimulariumContext = createContext({
     timeUnit: NANO,
     trajectoryName: LIVE_SIMULATION_NAME,
     viewportSize: DEFAULT_VIEWPORT_SIZE,
-    setViewportSize: () => {},
-    recordedConcentrations: [],
     addCompletedModule: () => {},
     completedModules: new Set(),
 } as SimulariumContextType);

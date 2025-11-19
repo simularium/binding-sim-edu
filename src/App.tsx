@@ -692,9 +692,7 @@ function App() {
                         timeUnit: simulationData.timeUnit,
                         trajectoryName,
                         viewportSize,
-                        setViewportSize,
                         addCompletedModule,
-                        recordedConcentrations: recordedInputConcentration,
                         completedModules,
                     }}
                 >
