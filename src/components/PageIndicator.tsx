@@ -74,7 +74,6 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
                         cancelText="No"
                     >
                         <div
-                            key={index}
                             className={classNames(styles.progressBarWrapper, {
                                 [styles.previous]:
                                     moduleIndex <= indexOfActiveModule,
