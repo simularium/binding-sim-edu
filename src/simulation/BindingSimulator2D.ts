@@ -13,6 +13,7 @@ import {
 } from "@aics/simularium-viewer";
 
 import {
+    AgentName,
     InitialCondition,
     InputAgent,
     ProductName,
@@ -31,23 +32,23 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     timeFactor: number;
     static: boolean = false;
     initialState: boolean = true;
+    currentComplexMap: Map<string, number> = new Map();
     currentNumberBound: number = 0;
     currentNumberOfBindingEvents: number = 0;
     currentNumberOfUnbindingEvents: number = 0;
     onUpdate: (data: number) => void = () => {};
     numberAgentOnLeft: number = 0;
     numberAgentOnRight: number = 0;
-    productColor: string = "";
+    productColor: Map<number, string>;
     size: number;
     constructor(
         agents: InputAgent[],
         size: number,
-        productColor: string,
         initPositions: InitialCondition = InitialCondition.SORTED,
         timeFactor: number = LiveSimulationData.DEFAULT_TIME_FACTOR
     ) {
         this.size = size;
-        this.productColor = productColor;
+        this.productColor = new Map();
         this.system = new System();
         this.createBoundingLines();
         this.distanceFactor = 40;
@@ -59,10 +60,45 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
     private clearAgents() {
         this.currentNumberBound = 0;
+        this.currentComplexMap.clear();
+        this.productColor.clear();
         this.currentNumberOfBindingEvents = 0;
         this.currentNumberOfUnbindingEvents = 0;
         this.system = new System();
         this.instances = [];
+    }
+    private getProductIdByProductName(productName: ProductName) {
+        let agent1: InputAgent | undefined;
+        let agent2: InputAgent | undefined;
+        switch (productName) {
+            case ProductName.AB:
+                agent1 = this.agents.find((a) => a.name === AgentName.A);
+                agent2 = this.agents.find((a) => a.name === AgentName.B);
+                break;
+            case ProductName.AC:
+                agent1 = this.agents.find((a) => a.name === AgentName.A);
+                agent2 = this.agents.find((a) => a.name === AgentName.C);
+                break;
+            case ProductName.AD:
+                agent1 = this.agents.find((a) => a.name === AgentName.A);
+                agent2 = this.agents.find((a) => a.name === AgentName.D);
+                break;
+        }
+        if (!agent1 || !agent2) {
+            throw new Error("Invalid product name");
+        }
+        return this.getProductIdByAgents(agent1, agent2);
+    }
+
+    private getProductIdByAgents(
+        agent1: BindingInstance | InputAgent,
+        agent2: BindingInstance | InputAgent
+    ) {
+        if (agent1.id > agent2.id) {
+            return `${agent1.id}#${agent2.id}`;
+        } else {
+            return `${agent2.id}#${agent1.id}`;
+        }
     }
 
     private getRandomPoint() {
@@ -70,6 +106,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             random(-this.size / 2, this.size / 2, true),
             random(-this.size / 2, this.size / 2, true),
         ];
+    }
+
+    private getBoundTypeId(id: number, partnerId: number) {
+        return 100 + id * 10 + partnerId;
     }
 
     private initializeAgents(
@@ -86,6 +126,11 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                     agent.initialConcentration
                 );
             }
+            if (agent.complexColor) {
+                this.productColor.set(agent.id, agent.complexColor);
+            }
+            this.currentComplexMap.set(agent.id.toString(), 0);
+
             for (let j = 0; j < agent.count; ++j) {
                 let position: number[] = [];
                 if (initPositions === InitialCondition.RANDOM) {
@@ -290,13 +335,16 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         const init = <{ [key: string]: number }>{};
         const concentrations = this.agents.reduce((acc, agent) => {
             acc[agent.name] = this.convertCountToConcentration(
-                agent.count - this.currentNumberBound
+                agent.count - this.currentComplexMap.get(agent.id.toString())!
             );
             return acc;
         }, init);
-        concentrations[product] = this.convertCountToConcentration(
-            this.currentNumberBound
-        );
+        const productId = this.getProductIdByProductName(product);
+        if (productId) {
+            concentrations[product] = this.convertCountToConcentration(
+                this.currentComplexMap.get(productId) || 0
+            );
+        }
         return concentrations;
     }
 
@@ -325,13 +373,14 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
     private updateAgentsPositions() {
         for (let i = 0; i < this.instances.length; ++i) {
-            const unbindingOccurred = this.instances[i].oneStep(
+            const releasedChild = this.instances[i].oneStep(
                 this.size,
                 this.timeFactor
             );
-            if (unbindingOccurred) {
+            if (releasedChild) {
                 this.currentNumberOfUnbindingEvents++;
                 this.currentNumberBound--;
+                this.incrementBoundCounts(this.instances[i], releasedChild, -1);
             }
         }
     }
@@ -363,6 +412,27 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 }
             }
         }
+    }
+
+    private incrementBoundCounts(
+        a: BindingInstance,
+        b: BindingInstance,
+        amount: number
+    ) {
+        const complexName = this.getProductIdByAgents(a, b);
+        this.currentComplexMap.set(
+            complexName,
+            (this.currentComplexMap.get(complexName) || 0) + amount
+        );
+
+        const previousValue = this.currentComplexMap.get(a.id.toString()) || 0;
+        const nextValue = previousValue + amount;
+
+        this.currentComplexMap.set(a.id.toString(), nextValue);
+        this.currentComplexMap.set(
+            b.id.toString(),
+            (this.currentComplexMap.get(b.id.toString()) || 0) + amount
+        );
     }
 
     private resolveBindingReactions() {
@@ -454,6 +524,8 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         const typeMapping: EncodedTypeMapping = {};
         const size = this.size;
         for (let i = 0; i < this.agents.length; ++i) {
+            const id = this.agents[i].id;
+
             typeMapping[this.agents[i].id] = {
                 name: `${this.agents[i].name}`,
                 geometry: {
@@ -462,14 +534,27 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                     url: "",
                 },
             };
-            typeMapping[this.agents[i].id + 100] = {
-                name: `${this.agents[i].name}#bound`,
-                geometry: {
-                    color: this.productColor,
-                    displayType: GeometryDisplayType.SPHERE,
-                    url: "",
-                },
-            };
+            if (this.agents[i].partners.length > 0) {
+                for (let j = 0; j < this.agents[i].partners.length; ++j) {
+                    const partnerId = this.agents[i].partners[j];
+                    const complexId = this.getBoundTypeId(id, partnerId);
+                    const partner = this.agents.find((a) => a.id === partnerId);
+                    if (!partner) {
+                        continue;
+                    }
+                    typeMapping[complexId] = {
+                        name: `${this.agents[i].name}#${partner.name}`,
+                        geometry: {
+                            color:
+                                this.productColor.get(partnerId) ||
+                                this.productColor.get(id) ||
+                                "",
+                            displayType: GeometryDisplayType.SPHERE,
+                            url: "",
+                        },
+                    };
+                }
+            }
         }
         return {
             // TODO get msgType and connId out of here
