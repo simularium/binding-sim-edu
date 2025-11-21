@@ -19,7 +19,7 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [formState, setFormState] = useState(FormState.Clear);
 
-    const { module } = useContext(SimulariumContext);
+    const { module, addCompletedModule } = useContext(SimulariumContext);
 
     useEffect(() => {
         setSelectedAnswer(null);
@@ -82,6 +82,7 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
             Math.abs(selectedAnswer - correctAnswer) / correctAnswer;
         if (closeness <= tolerance) {
             setFormState(FormState.Correct);
+            addCompletedModule(module);
         } else {
             setFormState(FormState.Incorrect);
         }

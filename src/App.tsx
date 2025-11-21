@@ -92,6 +92,10 @@ function App() {
     const [timeFactor, setTimeFactor] = useState(
         LiveSimulationData.INITIAL_TIME_FACTOR
     );
+
+    const [completedModules, setCompletedModules] = useState<Set<Module>>(
+        new Set()
+    );
     const [viewportSize, setViewportSize] = useState(DEFAULT_VIEWPORT_SIZE);
     const adjustableAgentName =
         LiveSimulationData.ADJUSTABLE_AGENT_MAP[currentModule];
@@ -478,8 +482,13 @@ function App() {
 
     // User input handlers
 
+    const addCompletedModule = (module: Module) => {
+        setCompletedModules((prev: Set<Module>) => new Set(prev).add(module));
+    };
+
     const setModule = (module: Module) => {
         setPage(FIRST_PAGE[module]);
+        clearAllAnalysisState();
         setCurrentModule(module);
         setIsPlaying(false);
     };
@@ -683,6 +692,8 @@ function App() {
                         timeUnit: simulationData.timeUnit,
                         trajectoryName,
                         viewportSize,
+                        addCompletedModule,
+                        completedModules,
                     }}
                 >
                     <MainLayout
