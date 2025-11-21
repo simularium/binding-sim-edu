@@ -38,7 +38,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
     const eventsOverTimeExcludedPages = {
         [Module.A_B_AB]: [0, 1, 2],
         [Module.A_C_AC]: [],
-        [Module.A_B_D_AB]: [],
+        [Module.A_B_D_AB]: [0, 1, 2, 3, 4],
     };
     return (
         <>
