@@ -1,3 +1,11 @@
+import { A, AB, AD, B, C, D } from "../components/agent-symbols";
+import Definition from "../components/shared/Definition";
+import StartExperiment from "../components/StartExperiment";
+import {
+    PLAY_BUTTON_ID,
+    RECORD_BUTTON_ID,
+    START_EXPERIMENT_ID,
+} from "../constants";
 import { LayoutType, PageContent, Section } from "../types";
 
 export const competitiveArray: PageContent[] = [
@@ -41,11 +49,153 @@ export const competitiveArray: PageContent[] = [
         layout: LayoutType.FullScreenOverlay,
     },
     {
-        content: "Placeholder",
+        title: "Competitive Binding",
+        content: (
+            <>
+                We now know the binding affinity of <A /> and <B />. Our
+                competitive inhibitor, <D />, also binds to <A /> and we want to
+                figure out how effective it is at blocking the binding of <B />.
+                We cannot directly measure the formation of <AD /> (which is why
+                it's shown in grey).
+            </>
+        ),
+        layout: LayoutType.LiveSimulation,
+        section: Section.Introduction,
+        progressionElement: PLAY_BUTTON_ID,
+        callToAction:
+            "Press play and watch the how the two different complexes form over time.",
+    },
+
+    {
+        title: "Start the experiment",
+        content: (
+            <>
+                Now, let's use this simulation to make measurements. We'll start
+                with [<D />] = 0 so we can get the formation of <AB /> without
+                any competition.
+            </>
+        ),
+        actionButton: <StartExperiment />,
+        callToAction: (
+            <>
+                Click the <strong>Start experiment</strong> button to reset the
+                simulation and begin by pressing <strong>play</strong>!
+            </>
+        ),
+        section: Section.Introduction,
+        layout: LayoutType.LiveSimulation,
+        progressionElement: START_EXPERIMENT_ID,
+    },
+    {
+        title: "Start the experiment",
+        content: (
+            <>
+                Now, let's use this simulation to make measurements. We'll start
+                with [<D />] = 0 so we can get the formation of <AB /> without
+                any competition.
+            </>
+        ),
+        actionButton: <StartExperiment />,
+        callToAction: (
+            <>
+                Click the <strong>Start experiment</strong> button to reset the
+                simulation and begin by pressing <strong>play</strong>!
+            </>
+        ),
+        section: Section.Experiment,
+        layout: LayoutType.LiveSimulation,
+        progressionElement: PLAY_BUTTON_ID,
+    },
+    {
+        title: "Find maximum complex formation",
+        content: (
+            <>
+                With [<D />] = 0, the <AB /> complex is able to form without any
+                inhibition. This will be our baseline for the max amount of{" "}
+                <AB /> that can form at these concentrations.{" "}
+            </>
+        ),
+        callToAction: (
+            <>
+                Watch the <strong>Concentration over time</strong> plot until
+                you think the reaction has reached equilibrium. Then, press the{" "}
+                <strong>Record</strong> button to record the equilibrium
+                concentration.
+            </>
+        ),
+        section: Section.Experiment,
+        layout: LayoutType.LiveSimulation,
+        progressionElement: RECORD_BUTTON_ID,
+    },
+    {
+        title: "Introduce the competitive inhibitor",
+        content: (
+            <>
+                Now let's see how the addition of <D /> affects the formation of{" "}
+                <AB />.
+            </>
+        ),
+        callToAction: (
+            <>
+                If you haven’t already done so, <strong>pause</strong> the
+                simulation and use the now-visible interactive slider under{" "}
+                <strong>Agent concentrations</strong> to adjust the
+                concentration of <D /> and <strong>play</strong> the simulation
+                again.
+            </>
+        ),
+        section: Section.Experiment,
+        layout: LayoutType.LiveSimulation,
+        progressionElement: PLAY_BUTTON_ID,
+    },
+    {
+        title: "Repeating the experiment",
+        content: (
+            <>
+                We want to understand the effect
+                <D /> has on the formation of <AB />. Let’s repeat the
+                experiment with a new concentration of <D />. We will keep the
+                concentration of <A /> and <B /> constant.
+            </>
+        ),
+        callToAction: (
+            <>
+                For each new concentration of <D />, determine when equilibrium
+                has been reached and then press the <strong>Record</strong>{" "}
+                button to plot their equilibrium concentrations.
+            </>
+        ),
+        section: Section.Experiment,
+        layout: LayoutType.LiveSimulation,
+        progressionElement: RECORD_BUTTON_ID,
+    },
+    {
+        title: "Deriving Ki",
+        content: (
+            <>
+                The constant K<sub>i</sub> is analogous to K<sub>d</sub> for
+                inhibitors. K<sub>i</sub> can be determined in this experiment
+                by finding the IC<sub>50</sub>, the concentration of inhibitor
+                where the amount of
+                <AB /> complex is reduced by half.
+            </>
+        ),
+        moreInfo: (
+            <>
+                K<sub>50</sub> = [<D />] (at equilibrium when [<AB />] is half
+                of max)
+            </>
+        ),
+        callToAction: (
+            <>
+                Let’s find K<sub>50</sub> - Repeat the experiment by pausing,
+                adjusting the concentration of <D /> and recording the
+                equilibrium point until you have enough data.
+            </>
+        ),
         section: Section.Experiment,
         layout: LayoutType.LiveSimulation,
     },
-
     {
         content:
             "Congratulations, you’ve completed the High Affinity experiment!",
