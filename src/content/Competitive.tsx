@@ -51,11 +51,10 @@ export const competitiveArray: PageContent[] = [
         title: "Competitive Binding",
         content: (
             <>
-                We now know the binding affinity of <A /> and <B />. Our
-                competitive inhibitor, <D />, also binds to <A /> and we want to
-                figure out how effective it is at blocking the binding of <B />.
-                We cannot directly measure the formation of <AD /> (which is why
-                it's shown in grey).
+                In the "High Affinity" section we determined the binding
+                affinity of <A /> and <B />. Our new competitive inhibitor,{" "}
+                <D />, also binds to <A />. Once it binds to <A />, <B /> can no
+                longer bind.
             </>
         ),
         layout: LayoutType.LiveSimulation,
@@ -64,54 +63,56 @@ export const competitiveArray: PageContent[] = [
         callToAction:
             "Press play and watch the how the two different complexes form over time.",
     },
-
     {
         title: "Start the experiment",
         content: (
             <>
-                Now, let's use this simulation to make measurements. We'll start
-                with [<D />] = 0 so we can get the formation of <AB /> without
-                any competition.
+                We cannot directly measure the formation of <AD /> (which is why
+                it's shown in grey). To figure out how strongly <B /> binds to{" "}
+                <A /> we're going to keep track of how adding more <D />{" "}
+                decreases the formation of <AB />.
             </>
         ),
-        actionButton: <StartExperiment />,
-        callToAction: (
-            <>
-                Click the <strong>Start experiment</strong> button to reset the
-                simulation and begin by pressing <strong>play</strong>!
-            </>
-        ),
+        layout: LayoutType.LiveSimulation,
         section: Section.Introduction,
-        layout: LayoutType.LiveSimulation,
-        progressionElement: START_EXPERIMENT_ID,
-    },
-    {
-        title: "Start the experiment",
-        content: (
-            <>
-                Now, let's use this simulation to make measurements. We'll start
-                with [<D />] = 0 so we can get the formation of <AB /> without
-                any competition.
-            </>
-        ),
         actionButton: <StartExperiment />,
+        progressionElement: START_EXPERIMENT_ID,
         callToAction: (
             <>
                 Click the <strong>Start experiment</strong> button to reset the
                 simulation and begin by pressing <strong>play</strong>!
             </>
         ),
-        section: Section.Experiment,
-        layout: LayoutType.LiveSimulation,
-        progressionElement: PLAY_BUTTON_ID,
     },
+    {
+        title: "Start the experiment",
+        content: (
+            <>
+                We cannot directly measure the formation of <AD /> (which is why
+                it's shown in grey). To figure out how strongly <B /> binds to{" "}
+                <A /> we're going to keep track of how adding more <D /> affects
+                the amount of <AB /> formed.
+            </>
+        ),
+        layout: LayoutType.LiveSimulation,
+        section: Section.Introduction,
+        actionButton: <StartExperiment />,
+        progressionElement: PLAY_BUTTON_ID,
+        callToAction: (
+            <>
+                Click the <strong>Start experiment</strong> button to reset the
+                simulation and begin by pressing <strong>play</strong>!
+            </>
+        ),
+    },
+
     {
         title: "Find maximum complex formation",
         content: (
             <>
-                With [<D />] = 0, the <AB /> complex is able to form without any
-                inhibition. This will be our baseline for the max amount of{" "}
-                <AB /> that can form at these concentrations.{" "}
+                We are starting with [<D />] = 0, so the <AB /> complex is able
+                to form without any inhibition. This will be our baseline for
+                the max amount of <AB /> that can form at these concentrations.{" "}
             </>
         ),
         callToAction: (
@@ -130,7 +131,7 @@ export const competitiveArray: PageContent[] = [
         title: "Introduce the competitive inhibitor",
         content: (
             <>
-                Now let's see how the addition of <D /> affects the formation of{" "}
+                Now let's see how the addition of <D /> effects the formation of{" "}
                 <AB />.
             </>
         ),
@@ -151,10 +152,10 @@ export const competitiveArray: PageContent[] = [
         title: "Repeating the experiment",
         content: (
             <>
-                We want to understand the effect
-                <D /> has on the formation of <AB />. Let’s repeat the
-                experiment with a new concentration of <D />. We will keep the
-                concentration of <A /> and <B /> constant.
+                We want to understand the affect <D /> has on the formation of{" "}
+                <AB />. Let’s repeat the experiment with a new concentration of{" "}
+                <D />. We will keep the concentration of <A /> and <B />{" "}
+                constant.
             </>
         ),
         callToAction: (
@@ -175,8 +176,7 @@ export const competitiveArray: PageContent[] = [
                 The constant K<sub>i</sub> is analogous to K<sub>d</sub> for
                 inhibitors. K<sub>i</sub> can be determined in this experiment
                 by finding the IC<sub>50</sub>, the concentration of inhibitor
-                where the amount of
-                <AB /> complex is reduced by half.
+                where the amount of <AB /> complex is reduced by half.
             </>
         ),
         moreInfo: (
@@ -197,7 +197,7 @@ export const competitiveArray: PageContent[] = [
     },
     {
         content:
-            "Congratulations, you’ve completed the High Affinity experiment!",
+            "Congratulations, you’ve completed the Competitive Binding experiment!",
         backButton: true,
         // nextButton: true,
         nextButtonText: "View examples",
