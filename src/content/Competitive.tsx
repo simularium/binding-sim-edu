@@ -1,5 +1,4 @@
-import { A, AB, AD, B, C, D } from "../components/agent-symbols";
-import Definition from "../components/shared/Definition";
+import { A, AB, AD, B, D } from "../components/agent-symbols";
 import StartExperiment from "../components/StartExperiment";
 import {
     PLAY_BUTTON_ID,
