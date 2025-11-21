@@ -101,6 +101,12 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         }
     }
 
+    private getProductColor(id: number, partnerId: number) {
+        return (
+            this.productColor.get(partnerId) || this.productColor.get(id) || ""
+        );
+    }
+
     private getRandomPoint() {
         return [
             random(-this.size / 2, this.size / 2, true),
@@ -138,10 +144,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                     // of the agents on the sides of the bounding box
                     position = this.getRandomPoint();
                 } else {
-                    position = this.getRandomPointOnSide(
-                        agent.id,
-                        agents.length
-                    );
+                    position = this.getRandomPointOnSide(agent.id);
                 }
                 const circle = new Circle(
                     new Vector(...position),
@@ -207,17 +210,12 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         return concentration;
     }
 
-    private getRandomPointOnSide(side: number, total: number) {
+    private getRandomPointOnSide(side: number) {
         const size = this.size;
         const buffer = size / 20;
         const dFromSide = random(0 + buffer, size / 2, true);
-        let dAlongSide = random(-size / 2, size / 2, true);
+        const dAlongSide = random(-size / 2, size / 2, true);
 
-        if (total > 2 && side === 1) {
-            dAlongSide = random(0, size / 2, true);
-        } else if (total > 2 && side === 2) {
-            dAlongSide = random(-size / 2, 0, true);
-        }
         switch (side) {
             case 0:
                 return [-dFromSide, dAlongSide];
@@ -283,10 +281,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 if (initPositions === InitialCondition.RANDOM) {
                     position = this.getRandomPoint();
                 } else {
-                    position = this.getRandomPointOnSide(
-                        agent.id,
-                        this.agents.length
-                    );
+                    position = this.getRandomPointOnSide(agent.id);
                 }
 
                 const circle = new Circle(
@@ -352,13 +347,15 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         const agentData: number[] = [];
         for (let ii = 0; ii < this.instances.length; ++ii) {
             const instance = this.instances[ii];
+            let typeId = instance.id;
+            if (instance.parent) {
+                typeId = this.getBoundTypeId(instance.id, instance.parent.id);
+            } else if (instance.child) {
+                typeId = this.getBoundTypeId(instance.id, instance.child.id);
+            }
             agentData.push(VisTypes.ID_VIS_TYPE_DEFAULT); // vis type
             agentData.push(ii); // instance id
-            agentData.push(
-                instance.bound || instance.child
-                    ? 100 + instance.id
-                    : instance.id
-            ); // type
+            agentData.push(typeId); // type
             agentData.push(instance.pos.x); // x
             agentData.push(instance.pos.y); // y
             agentData.push(0); // z
@@ -452,9 +449,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                     if (unbound) {
                         this.currentNumberOfUnbindingEvents++;
                         this.currentNumberBound--;
+                        this.incrementBoundCounts(a, b, -1);
                     }
                 }
-                if (a.partners.includes(b.id)) {
+                if (a.partners.includes(b.id) && !a.isBoundPair(b)) {
                     // a is the ligand
                     let bound = false;
                     if (a.r < b.r) {
@@ -466,6 +464,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                     if (bound) {
                         this.currentNumberOfBindingEvents++;
                         this.currentNumberBound++;
+                        this.incrementBoundCounts(a, b, 1);
                     }
                 }
             } else {
@@ -542,13 +541,12 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                     if (!partner) {
                         continue;
                     }
+                    const color = this.getProductColor(id, partnerId);
+                    console.log("color", this.agents[i].name, color);
                     typeMapping[complexId] = {
                         name: `${this.agents[i].name}#${partner.name}`,
                         geometry: {
-                            color:
-                                this.productColor.get(partnerId) ||
-                                this.productColor.get(id) ||
-                                "",
+                            color: color,
                             displayType: GeometryDisplayType.SPHERE,
                             url: "",
                         },
