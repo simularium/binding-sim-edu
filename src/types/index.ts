@@ -153,3 +153,8 @@ export enum TrajectoryStatus {
     LOADED,
     ERROR,
 }
+
+export enum ViewType {
+    Lab = "lab",
+    Simulation = "simulation",
+}

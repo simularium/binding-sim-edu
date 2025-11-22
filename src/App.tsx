@@ -26,6 +26,7 @@ import {
     ScatterTrace,
     Section,
     TrajectoryStatus,
+    ViewType,
 } from "./types";
 import LeftPanel from "./components/main-layout/LeftPanel";
 import RightPanel from "./components/main-layout/RightPanel";
@@ -56,6 +57,7 @@ import useModule from "./hooks/useModule";
 import LandingPage from "./components/LandingPage";
 
 function App() {
+    const [currentView, setCurrentView] = useState<ViewType>(ViewType.Lab);
     const [page, setPage] = useState(FIRST_PAGE[Module.A_B_AB]);
     const [time, setTime] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -377,6 +379,7 @@ function App() {
         ]
     );
     const totalReset = useCallback(() => {
+        setCurrentView(ViewType.Lab);
         const activeAgents = [AgentName.A, AgentName.B];
         setCurrentModule(Module.A_B_AB);
         const concentrations = simulationData.getInitialConcentrations(
@@ -521,6 +524,12 @@ function App() {
         clearAllAnalysisState();
         setCurrentModule(module);
         setIsPlaying(false);
+        // the first module is the only one that starts with the lab view
+        if (module === Module.A_B_AB) {
+            setCurrentView(ViewType.Lab);
+        } else {
+            setCurrentView(ViewType.Simulation);
+        }
     };
 
     const handleStartExperiment = () => {
@@ -616,6 +625,12 @@ function App() {
         setTimeout(() => {
             setEquilibriumFeedback("");
         }, 3000);
+    };
+
+    const handleSwitchView = () => {
+        setCurrentView((prevView) =>
+            prevView === ViewType.Lab ? ViewType.Simulation : ViewType.Lab
+        );
     };
 
     const handleRecordEquilibrium = () => {
@@ -717,11 +732,13 @@ function App() {
                         setModule,
                         setPage,
                         setViewportSize,
+                        setViewportType: handleSwitchView,
                         simulariumController,
                         timeFactor,
                         timeUnit: simulationData.timeUnit,
                         trajectoryName,
                         viewportSize,
+                        viewportType: currentView,
                         addCompletedModule,
                         completedModules,
                     }}
