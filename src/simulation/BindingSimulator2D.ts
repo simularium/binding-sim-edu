@@ -542,7 +542,6 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                         continue;
                     }
                     const color = this.getProductColor(id, partnerId);
-                    console.log("color", this.agents[i].name, color);
                     typeMapping[complexId] = {
                         name: `${this.agents[i].name}#${partner.name}`,
                         geometry: {
