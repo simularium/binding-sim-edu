@@ -59,7 +59,7 @@ export const lowAffinityContentArray: PageContent[] = [
     },
     {
         content:
-            "Congratulations, you’ve completed the High Affinity experiment!",
+            "Congratulations, you’ve completed the Low Affinity experiment!",
         backButton: true,
         // nextButton: true,
         nextButtonText: "View examples",
