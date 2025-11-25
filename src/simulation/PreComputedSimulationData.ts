@@ -1,5 +1,5 @@
 import {
-    AgentFunction,
+    AgentType,
     AgentName,
     CurrentConcentration,
     InputAgent,
@@ -14,9 +14,9 @@ import { MICRO } from "../constants";
 
 export default class PreComputedSimulationData implements ISimulationData {
     static NAME_TO_FUNCTION_MAP = {
-        [AgentName.Antibody]: AgentFunction.Fixed,
-        [AgentName.Antigen]: AgentFunction.Adjustable,
-        [ProductName.AntibodyAntigen]: AgentFunction.Complex_1,
+        [AgentName.Antibody]: AgentType.Fixed,
+        [AgentName.Antigen]: AgentType.Adjustable_1,
+        [ProductName.AntibodyAntigen]: AgentType.Complex_1,
     };
     static EXAMPLE_TRAJECTORY_URLS = {
         [Module.A_B_AB]:
@@ -56,17 +56,17 @@ export default class PreComputedSimulationData implements ISimulationData {
         return maxConcentration;
     };
 
-    getAgentFunction = (name: AgentName | ProductName): AgentFunction => {
+    getAgentType = (name: AgentName | ProductName): AgentType => {
         return (
             PreComputedSimulationData.NAME_TO_FUNCTION_MAP as Record<
                 AgentName | ProductName,
-                AgentFunction
+                AgentType
             >
         )[name];
     };
 
     getAgentColor = (name: AgentName | ProductName): string => {
-        const agentFunction = this.getAgentFunction(name);
+        const agentFunction = this.getAgentType(name);
         return AGENT_AND_PRODUCT_COLORS[agentFunction];
     };
 

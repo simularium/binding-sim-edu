@@ -38,7 +38,6 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
     const eventsOverTimeExcludedPages = {
         [Module.A_B_AB]: [0, 1, 2],
         [Module.A_C_AC]: [],
-        [Module.A_B_D_AB]: [],
     };
     return (
         <>
@@ -53,6 +52,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
             </VisibilityControl>
             <VisibilityControl
                 excludedPages={eventsOverTimeExcludedPages}
+                includedPages={{ [Module.A_B_D_AB]: [] }} // don't show at all in last module
                 notInBonusMaterial
             >
                 <EventsOverTimePlot
