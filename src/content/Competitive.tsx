@@ -131,7 +131,7 @@ export const competitiveArray: PageContent[] = [
         title: "Introduce the competitive inhibitor",
         content: (
             <>
-                Now let's see how the addition of <D /> effects the formation of{" "}
+                Now let's see how the addition of <D /> affects the formation of{" "}
                 <AB />.
             </>
         ),
