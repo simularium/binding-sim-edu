@@ -71,7 +71,7 @@ const ConcentrationSlider: React.FC<SliderProps> = ({
                     <Mark
                         index={
                             index < 1 && index > 0
-                                ? (index.toFixed(1) as unknown as number)
+                                ? Number(index.toFixed(1))
                                 : index
                         }
                         disabledNumbers={disabledNumbers}
