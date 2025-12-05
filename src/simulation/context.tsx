@@ -10,7 +10,7 @@ import {
     NANO,
     ProgressionElement,
 } from "../constants";
-import { AgentName, Module, ProductName, Section } from "../types";
+import { AgentName, Module, ProductName, Section, ViewType } from "../types";
 
 interface SimulariumContextType {
     adjustableAgentName: AgentName;
@@ -34,11 +34,13 @@ interface SimulariumContextType {
     setModule: (value: Module) => void;
     setPage: (value: number) => void;
     setViewportSize: (value: { width: number; height: number }) => void;
+    setViewportType: () => void;
     simulariumController: SimulariumController | null;
     timeFactor: number;
     timeUnit: string;
     trajectoryName: string;
     viewportSize: { width: number; height: number };
+    viewportType: ViewType;
     addCompletedModule: (value: Module) => void;
     completedModules: Set<Module>;
 }
@@ -65,11 +67,13 @@ export const SimulariumContext = createContext({
     setModule: () => {},
     setPage: () => {},
     setViewportSize: () => {},
+    setViewportType: () => {},
     simulariumController: null,
     timeFactor: 30,
     timeUnit: NANO,
     trajectoryName: LIVE_SIMULATION_NAME,
     viewportSize: DEFAULT_VIEWPORT_SIZE,
+    viewportType: ViewType.Lab,
     addCompletedModule: () => {},
     completedModules: new Set(),
 } as SimulariumContextType);

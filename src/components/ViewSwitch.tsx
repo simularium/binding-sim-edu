@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 
 import Viewer from "./Viewer";
 import { SimulariumContext } from "../simulation/context";
@@ -9,46 +9,18 @@ import LabIcon from "./icons/Lab";
 import Molecules from "./icons/Molecules";
 import LabView from "./LabView";
 import VisibilityControl from "./shared/VisibilityControl";
-import { Module, Section } from "../types";
+import { Module, ViewType } from "../types";
 import { FIRST_PAGE } from "../content";
-import useModule from "../hooks/useModule";
 import { VIEW_SWITCH_ID } from "../constants";
 
-enum View {
-    Lab = "lab",
-    Simulation = "simulation",
-}
-
 const ViewSwitch: React.FC = () => {
-    const [currentView, setCurrentView] = useState<View>(View.Lab);
-    const [previousModule, setPreviousModule] = useState<Module>(Module.A_B_AB);
+    const { viewportType, setViewportType } = useContext(SimulariumContext);
 
-    const switchView = () => {
-        setCurrentView((prevView) =>
-            prevView === View.Lab ? View.Simulation : View.Lab
-        );
-    };
     const { page, isPlaying, setIsPlaying, handleTimeChange, module } =
         useContext(SimulariumContext);
 
     const isFirstPageOfFirstModule =
         page === FIRST_PAGE[module] + 1 && module === Module.A_B_AB;
-
-    if (isFirstPageOfFirstModule && currentView === View.Simulation) {
-        setCurrentView(View.Lab);
-    }
-
-    const { contentData } = useModule(module);
-
-    // Show the sim view at the beginning of the module
-    if (module !== previousModule) {
-        setPreviousModule(module);
-        if (contentData[page].section === Section.Experiment) {
-            if (currentView === View.Lab) {
-                setCurrentView(View.Simulation);
-            }
-        }
-    }
 
     let buttonStyle: React.CSSProperties = {
         top: 16,
@@ -73,22 +45,23 @@ const ViewSwitch: React.FC = () => {
             <VisibilityControl notInBonusMaterial>
                 <ProgressionControl elementId={VIEW_SWITCH_ID}>
                     <OverlayButton
-                        onClick={switchView}
+                        onClick={setViewportType}
                         style={buttonStyle}
                         icon={
-                            currentView === View.Lab ? (
+                            viewportType === ViewType.Lab ? (
                                 <Molecules />
                             ) : (
                                 <LabIcon />
                             )
                         }
                     >
-                        {currentView === View.Lab ? "Molecular" : "Lab"} view
+                        {viewportType === ViewType.Lab ? "Molecular" : "Lab"}{" "}
+                        view
                     </OverlayButton>
                 </ProgressionControl>
             </VisibilityControl>
             <PlayButton />
-            {currentView === View.Lab ? <LabView /> : null}
+            {viewportType === ViewType.Lab ? <LabView /> : null}
             <Viewer
                 isPlaying={isPlaying}
                 setIsPlaying={setIsPlaying}

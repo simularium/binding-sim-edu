@@ -26,6 +26,7 @@ import {
     ScatterTrace,
     Section,
     TrajectoryStatus,
+    ViewType,
 } from "./types";
 import LeftPanel from "./components/main-layout/LeftPanel";
 import RightPanel from "./components/main-layout/RightPanel";
@@ -56,6 +57,7 @@ import useModule from "./hooks/useModule";
 import LandingPage from "./components/LandingPage";
 
 function App() {
+    const [currentView, setCurrentView] = useState<ViewType>(ViewType.Lab);
     const [page, setPage] = useState(FIRST_PAGE[Module.A_B_AB]);
     const [time, setTime] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -85,9 +87,13 @@ function App() {
     const [inputConcentration, setInputConcentration] =
         useState<InputConcentration>({
             [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.A
+                ],
             [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.B
+                ],
         });
     const [timeFactor, setTimeFactor] = useState(
         LiveSimulationData.INITIAL_TIME_FACTOR
@@ -108,9 +114,13 @@ function App() {
     const [liveConcentration, setLiveConcentration] =
         useState<CurrentConcentration>({
             [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.A
+                ],
             [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.B
+                ],
             [productName]: 0,
         });
     const [recordedInputConcentration, setRecordedInputConcentration] =
@@ -182,21 +192,26 @@ function App() {
     const clientSimulator = useMemo(() => {
         const activeAgents = simulationData.getActiveAgents(currentModule);
         setInputConcentration(
-            simulationData.getInitialConcentrations(activeAgents)
+            simulationData.getInitialConcentrations(
+                activeAgents,
+                currentModule,
+                sectionType === Section.Experiment
+            )
         );
         resetCurrentRunAnalysisState();
-        const trajectory =
-            simulationData.createAgentsFromConcentrations(activeAgents);
+        const trajectory = simulationData.createAgentsFromConcentrations(
+            activeAgents,
+            currentModule,
+            sectionType === Section.Experiment
+        );
         if (!trajectory) {
             return null;
         }
         const longestAxis = Math.max(viewportSize.width, viewportSize.height);
-        const productColor = simulationData.getAgentColor(productName);
         const startMixed = sectionType !== Section.Introduction;
         return new BindingSimulator(
             trajectory,
             longestAxis / 3,
-            productColor,
             startMixed ? InitialCondition.RANDOM : InitialCondition.SORTED
         );
     }, [
@@ -205,7 +220,6 @@ function App() {
         resetCurrentRunAnalysisState,
         viewportSize.width,
         viewportSize.height,
-        productName,
         sectionType,
     ]);
 
@@ -304,6 +318,21 @@ function App() {
         [currentProductConcentrationArray, productOverTimeTraces]
     );
 
+    const setExperiment = () => {
+        setIsPlaying(false);
+
+        const activeAgents = simulationData.getActiveAgents(currentModule);
+        const concentrations = simulationData.getInitialConcentrations(
+            activeAgents,
+            currentModule,
+            true
+        );
+        clientSimulator?.mixAgents();
+        setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
+        setInputConcentration(concentrations);
+        setLiveConcentration(concentrations);
+    };
+
     const handleMixAgents = useCallback(() => {
         if (clientSimulator) {
             setIsPlaying(false);
@@ -350,23 +379,28 @@ function App() {
         ]
     );
     const totalReset = useCallback(() => {
+        setCurrentView(ViewType.Lab);
+        const activeAgents = [AgentName.A, AgentName.B];
+        setCurrentModule(Module.A_B_AB);
+        const concentrations = simulationData.getInitialConcentrations(
+            activeAgents,
+            Module.A_B_AB
+        );
         setLiveConcentration({
-            [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
-            [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
+            [AgentName.A]: concentrations[AgentName.A],
+            [AgentName.B]: concentrations[AgentName.B],
             [productName]: 0,
         });
-        setCurrentModule(Module.A_B_AB);
         setInputConcentration({
-            [AgentName.A]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.A],
-            [AgentName.B]:
-                LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B],
+            [AgentName.A]: concentrations[AgentName.A],
+            [AgentName.B]: concentrations[AgentName.B],
         });
         handleNewInputConcentration(
             adjustableAgentName,
-            LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B]
+            concentrations[AgentName.B] ??
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.B
+                ]
         );
         setIsPlaying(false);
         clearAllAnalysisState();
@@ -376,6 +410,7 @@ function App() {
         handleNewInputConcentration,
         productName,
         adjustableAgentName,
+        simulationData,
     ]);
     // Special events in page navigation
     // usePageNumber takes a page number, a conditional and a callback
@@ -491,11 +526,17 @@ function App() {
         clearAllAnalysisState();
         setCurrentModule(module);
         setIsPlaying(false);
+        // the first module is the only one that starts with the lab view
+        if (module === Module.A_B_AB) {
+            setCurrentView(ViewType.Lab);
+        } else {
+            setCurrentView(ViewType.Simulation);
+        }
     };
 
     const handleStartExperiment = () => {
-        simulariumController.pause();
-        totalReset();
+        clearAllAnalysisState();
+        setExperiment();
         setPage(page + 1);
     };
 
@@ -586,6 +627,12 @@ function App() {
         setTimeout(() => {
             setEquilibriumFeedback("");
         }, 3000);
+    };
+
+    const handleSwitchView = () => {
+        setCurrentView((prevView) =>
+            prevView === ViewType.Lab ? ViewType.Simulation : ViewType.Lab
+        );
     };
 
     const handleRecordEquilibrium = () => {
@@ -687,11 +734,13 @@ function App() {
                         setModule,
                         setPage,
                         setViewportSize,
+                        setViewportType: handleSwitchView,
                         simulariumController,
                         timeFactor,
                         timeUnit: simulationData.timeUnit,
                         trajectoryName,
                         viewportSize,
+                        viewportType: currentView,
                         addCompletedModule,
                         completedModules,
                     }}

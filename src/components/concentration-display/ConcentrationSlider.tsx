@@ -69,7 +69,11 @@ const ConcentrationSlider: React.FC<SliderProps> = ({
             marks[index] = {
                 label: (
                     <Mark
-                        index={index}
+                        index={
+                            index < 1 && index > 0
+                                ? Number(index.toFixed(1))
+                                : index
+                        }
                         disabledNumbers={disabledNumbers}
                         onMouseUp={() => onChangeComplete?.(name, index)}
                     />
