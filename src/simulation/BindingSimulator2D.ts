@@ -96,8 +96,11 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     ) {
         if (agent1.id > agent2.id) {
             return `${agent1.id}#${agent2.id}`;
-        } else {
+        } else if (agent2.id > agent1.id) {
             return `${agent2.id}#${agent1.id}`;
+        } else {
+            // currently no self-binding allowed
+            throw new Error("Agents cannot bind to themselves");
         }
     }
 
