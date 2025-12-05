@@ -391,7 +391,6 @@ function App() {
             [AgentName.B]: concentrations[AgentName.B],
             [productName]: 0,
         });
-        setCurrentModule(Module.A_B_AB);
         setInputConcentration({
             [AgentName.A]: concentrations[AgentName.A],
             [AgentName.B]: concentrations[AgentName.B],
