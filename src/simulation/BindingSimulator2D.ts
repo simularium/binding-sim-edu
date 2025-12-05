@@ -119,6 +119,15 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         ];
     }
 
+    /**
+     * Generates a unique type ID for a bound complex using a "magic formula":
+     *   100 + id * 10 + partnerId
+     * This formula assumes that both `id` and `partnerId` are single-digit integers (0-9).
+     * This ensures that for any pair (id, partnerId), the result is unique as long as
+     * id and partnerId are not greater than 9. If either value exceeds 9, collisions may occur.
+     * The offset of 100 is used to avoid overlapping with other type IDs.
+     * If agent IDs may exceed 9, this formula should be updated to avoid collisions.
+     */
     private getBoundTypeId(id: number, partnerId: number) {
         return 100 + id * 10 + partnerId;
     }
