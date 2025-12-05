@@ -107,9 +107,14 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     private getProductColor(id: number, partnerId: number) {
         // one and only one of the agents should have a product color
         // so the order here is not important
-        return (
-            this.productColor.get(partnerId) || this.productColor.get(id) || ""
-        );
+        const color1 = this.productColor.get(id);
+        const color2 = this.productColor.get(partnerId);
+        if (color1 && color2) {
+            throw new Error(
+                `Both agents (${id} and ${partnerId}) have a product color defined. Only one should have a product color.`
+            );
+        }
+        return color2 || color1 || "";
     }
 
     private getRandomPoint() {
