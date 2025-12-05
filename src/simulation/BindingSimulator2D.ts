@@ -102,6 +102,8 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     }
 
     private getProductColor(id: number, partnerId: number) {
+        // one and only one of the agents should have a product color
+        // so the order here is not important
         return (
             this.productColor.get(partnerId) || this.productColor.get(id) || ""
         );
