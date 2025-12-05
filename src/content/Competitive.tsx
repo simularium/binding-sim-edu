@@ -182,13 +182,13 @@ export const competitiveArray: PageContent[] = [
         ),
         moreInfo: (
             <>
-                K<sub>50</sub> = [<D />] (at equilibrium when [<AB />] is half
+                IC<sub>50</sub> = [<D />] (at equilibrium when [<AB />] is half
                 of max)
             </>
         ),
         callToAction: (
             <>
-                Let’s find K<sub>50</sub> - Repeat the experiment by pausing,
+                Let’s find IC<sub>50</sub> - Repeat the experiment by pausing,
                 adjusting the concentration of <D /> and recording the
                 equilibrium point until you have enough data.
             </>
