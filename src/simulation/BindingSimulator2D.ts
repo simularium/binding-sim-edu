@@ -422,14 +422,13 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             (this.currentComplexMap.get(complexName) || 0) + amount
         );
 
-        const previousValue = this.currentComplexMap.get(a.id.toString()) || 0;
-        const nextValue = previousValue + amount;
+        const previousValueA = this.currentComplexMap.get(a.id.toString()) || 0;
+        const nextValueA = previousValueA + amount;
+        this.currentComplexMap.set(a.id.toString(), nextValueA);
 
-        this.currentComplexMap.set(a.id.toString(), nextValue);
-        this.currentComplexMap.set(
-            b.id.toString(),
-            (this.currentComplexMap.get(b.id.toString()) || 0) + amount
-        );
+        const previousValueB = this.currentComplexMap.get(b.id.toString()) || 0;
+        const nextValueB = previousValueB + amount;
+        this.currentComplexMap.set(b.id.toString(), nextValueB);
     }
 
     private resolveBindingReactions() {
