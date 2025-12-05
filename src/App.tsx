@@ -398,7 +398,10 @@ function App() {
         });
         handleNewInputConcentration(
             adjustableAgentName,
-            concentrations[AgentName.B] ?? LiveSimulationData.INITIAL_CONCENTRATIONS[AgentName.B]
+            concentrations[AgentName.B] ??
+                LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
+                    AgentName.B
+                ]
         );
         setIsPlaying(false);
         clearAllAnalysisState();
