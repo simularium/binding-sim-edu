@@ -13,7 +13,7 @@ import ISimulationData, {
 import { MICRO } from "../constants";
 
 export default class PreComputedSimulationData implements ISimulationData {
-    static NAME_TO_FUNCTION_MAP = {
+    static NAME_TO_TYPE_MAP = {
         [AgentName.Antibody]: AgentType.Fixed,
         [AgentName.Antigen]: AgentType.Adjustable_1,
         [ProductName.AntibodyAntigen]: AgentType.Complex_1,
@@ -58,7 +58,7 @@ export default class PreComputedSimulationData implements ISimulationData {
 
     getAgentType = (name: AgentName | ProductName): AgentType => {
         return (
-            PreComputedSimulationData.NAME_TO_FUNCTION_MAP as Record<
+            PreComputedSimulationData.NAME_TO_TYPE_MAP as Record<
                 AgentName | ProductName,
                 AgentType
             >
