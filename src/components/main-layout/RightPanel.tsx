@@ -9,7 +9,7 @@ import { ProductOverTimeTrace } from "../plots/types";
 import styles from "./layout.module.css";
 import { AB, AC } from "../agent-symbols";
 import ResizeContainer from "../shared/ResizeContainer";
-import { SimulariumContext } from "../../simulation/context";
+import { SimulariumSimulationContext } from "../../simulation/context";
 import HelpPopup from "../HelpPopup";
 import InfoText from "../shared/InfoText";
 import { ProductName, UiElement } from "../../types";
@@ -40,7 +40,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
     currentAdjustableAgentConcentration,
     showHelpPanel,
 }) => {
-    const { productName } = useContext(SimulariumContext);
+    const { productName } = useContext(SimulariumSimulationContext);
     const [width, setWidth] = useState<number>(0);
     const [height, setHeight] = useState<number>(0);
     let data = productOverTimeTraces;

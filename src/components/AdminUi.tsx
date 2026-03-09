@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 
 import Slider from "./shared/Slider";
 import { BG_DARK, LIGHT_GREY } from "../constants/colors";
-import { SimulariumContext } from "../simulation/context";
+import { SimulariumUiContext } from "../simulation/context";
 import { InputNumber, SliderSingleProps } from "antd";
 import { zStacking } from "../constants/z-stacking";
 import { Module } from "../types";
@@ -18,7 +18,8 @@ const AdminUI: React.FC<AdminUIProps> = ({
     setTimeFactor,
     totalPages,
 }) => {
-    const { page, setPage, module, setModule } = useContext(SimulariumContext);
+    const { page, setPage, module, setModule } =
+        useContext(SimulariumUiContext);
     const [visible, setVisible] = React.useState<boolean>(false);
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { isEqual } from "lodash";
 
-import { SimulariumContext } from "../../simulation/context";
+import { SimulariumUiContext } from "../../simulation/context";
 import { PageContent, Module } from "../../types";
 
 import ContentPanel from "./ContentPanel";
@@ -29,7 +29,7 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
     const previousContentRef = useRef(pageContent);
     const contentJustChanged = !isEqual(
         previousContentRef.current.content,
-        pageContent.content
+        pageContent.content,
     );
 
     useEffect(() => {
@@ -44,7 +44,7 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
         // must be the same as the css transition time
         const FADE_TIME = 150;
         const updateRenderState = (
-            currentRenderState: RenderState
+            currentRenderState: RenderState,
         ): NodeJS.Timeout | null => {
             previousContentRef.current = pageContent;
             setRenderState(currentRenderState);
@@ -52,7 +52,7 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
             if (currentRenderState <= RenderState.FullyVisible) {
                 return setTimeout(
                     () => updateRenderState(currentRenderState),
-                    FADE_TIME
+                    FADE_TIME,
                 );
             } else {
                 return null;
@@ -60,7 +60,7 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
         };
         const timer = setTimeout(
             () => updateRenderState(RenderState.NoRender),
-            FADE_TIME
+            FADE_TIME,
         );
         return () => clearTimeout(timer);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,7 +72,7 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
         ? previousContentRef.current
         : pageContent;
 
-    const { page } = useContext(SimulariumContext);
+    const { page } = useContext(SimulariumUiContext);
     const pageNumber = contentJustChanged ? page - 1 : page;
     const containerClassNames = classNames([
         styles.contentPanelWrapper,

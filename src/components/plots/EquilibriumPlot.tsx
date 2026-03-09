@@ -8,7 +8,10 @@ import {
     CONFIG,
     GRAY_COLOR,
 } from "./constants";
-import { SimulariumContext } from "../../simulation/context";
+import {
+    SimulariumSimulationContext,
+    SimulariumUiContext,
+} from "../../simulation/context";
 import { AGENT_A_COLOR, AGENT_AB_COLOR } from "../../constants/colors";
 import { MICRO } from "../../constants";
 
@@ -38,8 +41,8 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         productName,
         getAgentColor,
         adjustableAgentName,
-        module,
-    } = useContext(SimulariumContext);
+    } = useContext(SimulariumSimulationContext);
+    const { module } = useContext(SimulariumUiContext);
     const xMax = Math.max(...x);
     const xAxisMax = Math.max(kd * 2, xMax * 1.1);
 

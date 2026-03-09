@@ -8,7 +8,7 @@ import InputNumber from "../shared/InputNumber";
 import { FormState } from "./types";
 import styles from "./popup.module.css";
 import { MICRO } from "../../constants";
-import { SimulariumContext } from "../../simulation/context";
+import { SimulariumUiContext } from "../../simulation/context";
 
 interface KdQuestionProps {
     kd: number;
@@ -19,7 +19,7 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [formState, setFormState] = useState(FormState.Clear);
 
-    const { module, addCompletedModule } = useContext(SimulariumContext);
+    const { module, addCompletedModule } = useContext(SimulariumUiContext);
 
     useEffect(() => {
         setSelectedAnswer(null);

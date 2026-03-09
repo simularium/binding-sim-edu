@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { SimulariumContext } from "../../simulation/context";
+import { SimulariumUiContext } from "../../simulation/context";
 import { PrimaryButton } from "./ButtonLibrary";
 import useModule from "../../hooks/useModule";
 
@@ -8,7 +8,8 @@ interface NextButtonProps {
 }
 
 const NextButton = ({ text }: NextButtonProps) => {
-    const { page, setPage, module, setModule } = useContext(SimulariumContext);
+    const { page, setPage, module, setModule } =
+        useContext(SimulariumUiContext);
 
     const { totalPages } = useModule(module);
     if (page + 1 > totalPages) {

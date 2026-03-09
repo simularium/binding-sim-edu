@@ -11,7 +11,7 @@ import {
     PLOT_COLORS,
 } from "./constants";
 import { ProductOverTimeTrace } from "./types";
-import { SimulariumContext } from "../../simulation/context";
+import { SimulariumSimulationContext } from "../../simulation/context";
 import { MICRO } from "../../constants";
 import { getColorIndex, indexToTime } from "../../utils";
 
@@ -41,7 +41,7 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         productName,
         adjustableAgentName,
         getAgentColor,
-    } = useContext(SimulariumContext);
+    } = useContext(SimulariumSimulationContext);
     const hasData = useRef(false);
     if (data.length === 0) {
         hasData.current = false;
@@ -70,7 +70,7 @@ const ProductConcentrationPlot: React.FC<ProductConcentrationPlotProps> = ({
         }
 
         const timeArray = productConcentrations.map((_, i) =>
-            indexToTime(i, timeFactor, timeUnit)
+            indexToTime(i, timeFactor, timeUnit),
         );
         return {
             x: timeArray,

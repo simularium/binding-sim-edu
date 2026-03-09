@@ -1,6 +1,9 @@
 import Rainbow from "rainbowvis.js";
 import { useContext, useMemo } from "react";
-import { SimulariumContext } from "../simulation/context";
+import {
+    SimulariumSimulationContext,
+    SimulariumUiContext,
+} from "../simulation/context";
 import Cuvette from "./icons/Cuvette";
 import styles from "./labview.module.css";
 import classNames from "classnames";
@@ -12,11 +15,10 @@ const LabView: React.FC = () => {
     const {
         currentProductionConcentration,
         maxConcentration,
-        page,
         getAgentColor,
         productName,
-        module,
-    } = useContext(SimulariumContext);
+    } = useContext(SimulariumSimulationContext);
+    const { page, module } = useContext(SimulariumUiContext);
     const color = getAgentColor(productName);
     const colorGradient = useMemo(() => {
         const rainbow = new Rainbow();

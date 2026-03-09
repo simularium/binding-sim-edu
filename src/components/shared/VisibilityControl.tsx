@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { SimulariumContext } from "../../simulation/context";
+import { SimulariumUiContext } from "../../simulation/context";
 import { Module, Section } from "../../types";
 
 interface VisibilityControlProps {
@@ -21,7 +21,7 @@ const VisibilityControl: React.FC<VisibilityControlProps> = ({
     notInIntroduction,
     startPage,
 }) => {
-    const { page, section, module } = useContext(SimulariumContext);
+    const { page, section, module } = useContext(SimulariumUiContext);
     if (conditionalRender === false) {
         return null;
     }

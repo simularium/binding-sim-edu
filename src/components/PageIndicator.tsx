@@ -5,7 +5,7 @@ import classNames from "classnames";
 
 import { moduleNames } from "../content";
 import styles from "./page-indicator.module.css";
-import { SimulariumContext } from "../simulation/context";
+import { SimulariumUiContext } from "../simulation/context";
 
 interface PageIndicatorProps {
     title: string;
@@ -19,7 +19,7 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
     total,
 }) => {
     const { module, setModule, completedModules } =
-        React.useContext(SimulariumContext);
+        React.useContext(SimulariumUiContext);
     const indexOfActiveModule: number = useMemo(() => {
         let toReturn = -1;
         map(moduleNames, (name, index) => {
@@ -86,7 +86,7 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({
                                 size={["100%", 4]}
                                 percent={getModulePercent(
                                     isActiveModule,
-                                    moduleIndex
+                                    moduleIndex,
                                 )}
                                 showInfo={false}
                             />
