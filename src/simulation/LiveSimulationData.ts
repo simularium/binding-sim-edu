@@ -36,7 +36,7 @@ const agentB: InputAgent = {
     initialConcentration: 0,
     radius: 1,
     partners: [0],
-    kOn: 0.9,
+    kOn: 0.95,
     kOff: 0.01,
     color: AGENT_B_COLOR,
     complexColor: AGENT_AB_COLOR,
@@ -163,7 +163,7 @@ export default class LiveSimulation implements ISimulationData {
     createAgentsFromConcentrations = (
         activeAgents?: AgentName[],
         module?: Module,
-        isExperiment: boolean = false
+        isExperiment: boolean = false,
     ): InputAgent[] => {
         if (!module) {
             throw new Error("Module must be specified to create agents.");
@@ -174,7 +174,7 @@ export default class LiveSimulation implements ISimulationData {
         const concentrations = this.getInitialConcentrations(
             activeAgents,
             module,
-            isExperiment
+            isExperiment,
         );
         return (activeAgents ?? []).map((agentName: AgentName) => {
             const agent = {
@@ -206,7 +206,7 @@ export default class LiveSimulation implements ISimulationData {
     getInitialConcentrations = (
         activeAgents: AgentName[],
         module: Module,
-        isExperiment: boolean = false
+        isExperiment: boolean = false,
     ): CurrentConcentration => {
         const concentrations = isExperiment
             ? { ...LiveSimulation.EXPERIMENT_CONCENTRATIONS[module] }

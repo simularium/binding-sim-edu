@@ -61,7 +61,7 @@ export const lowAffinityContentArray: PageContent[] = [
         content:
             "Congratulations, you’ve completed the Low Affinity experiment!",
         backButton: true,
-        // nextButton: true,
+        nextButton: true,
         nextButtonText: "View examples",
         section: Section.BonusContent,
         layout: LayoutType.FullScreenOverlay,

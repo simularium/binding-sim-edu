@@ -62,7 +62,7 @@ function App() {
     const [time, setTime] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [trajectoryStatus, setTrajectoryStatus] = useState(
-        TrajectoryStatus.INITIAL
+        TrajectoryStatus.INITIAL,
     );
 
     /**
@@ -96,11 +96,11 @@ function App() {
                 ],
         });
     const [timeFactor, setTimeFactor] = useState(
-        LiveSimulationData.INITIAL_TIME_FACTOR
+        LiveSimulationData.INITIAL_TIME_FACTOR,
     );
 
     const [completedModules, setCompletedModules] = useState<Set<Module>>(
-        new Set()
+        new Set(),
     );
     const [viewportSize, setViewportSize] = useState(DEFAULT_VIEWPORT_SIZE);
     const adjustableAgentName =
@@ -161,6 +161,7 @@ function App() {
     const clearAllAnalysisState = useCallback(() => {
         resetCurrentRunAnalysisState();
         setRecordedInputConcentration([]);
+        setProductEquilibriumConcentrations([]);
         setProductOverTimeTraces([]);
         setRecordedReactantConcentration([]);
         setTimeToReachEquilibrium([]);
@@ -176,7 +177,7 @@ function App() {
     ) {
         isPassedEquilibrium.current = isSlopeZero(
             currentProductConcentrationArray,
-            timeFactor
+            timeFactor,
         );
     } else if (arrayLength === 0 && isPassedEquilibrium.current) {
         isPassedEquilibrium.current = false;
@@ -195,29 +196,32 @@ function App() {
             simulationData.getInitialConcentrations(
                 activeAgents,
                 currentModule,
-                sectionType === Section.Experiment
-            )
+                sectionType === Section.Experiment,
+            ),
         );
-        resetCurrentRunAnalysisState();
+        clearAllAnalysisState();
         const trajectory = simulationData.createAgentsFromConcentrations(
             activeAgents,
             currentModule,
-            sectionType === Section.Experiment
+            sectionType === Section.Experiment,
         );
         if (!trajectory) {
             return null;
         }
         const longestAxis = Math.max(viewportSize.width, viewportSize.height);
         const startMixed = sectionType !== Section.Introduction;
+        if (process.env.NODE_ENV !== "production") {
+            console.log("NEW BINDING SIMULATOR");
+        }
         return new BindingSimulator(
             trajectory,
             longestAxis / 3,
-            startMixed ? InitialCondition.RANDOM : InitialCondition.SORTED
+            startMixed ? InitialCondition.RANDOM : InitialCondition.SORTED,
         );
     }, [
         simulationData,
         currentModule,
-        resetCurrentRunAnalysisState,
+        clearAllAnalysisState,
         viewportSize.width,
         viewportSize.height,
         sectionType,
@@ -238,7 +242,7 @@ function App() {
             {
                 clientSimulator: clientSimulator,
             },
-            LIVE_SIMULATION_NAME
+            LIVE_SIMULATION_NAME,
         );
     }, [simulariumController, clientSimulator]);
 
@@ -287,13 +291,13 @@ function App() {
         () =>
             uniqMeasuredConcentrations.filter((c) => c > halfFilled).length >=
             1,
-        [halfFilled, uniqMeasuredConcentrations]
+        [halfFilled, uniqMeasuredConcentrations],
     );
     const hasAValueBelowKd = useMemo(
         () =>
             uniqMeasuredConcentrations.filter((c) => c < halfFilled).length >=
             1,
-        [halfFilled, uniqMeasuredConcentrations]
+        [halfFilled, uniqMeasuredConcentrations],
     );
     const canDetermineKd = useMemo(() => {
         return (
@@ -315,17 +319,17 @@ function App() {
                 setCurrentProductConcentrationArray([]);
             }
         },
-        [currentProductConcentrationArray, productOverTimeTraces]
+        [currentProductConcentrationArray, productOverTimeTraces],
     );
 
     const setExperiment = () => {
         setIsPlaying(false);
-
+        setCurrentView(ViewType.Simulation);
         const activeAgents = simulationData.getActiveAgents(currentModule);
         const concentrations = simulationData.getInitialConcentrations(
             activeAgents,
             currentModule,
-            true
+            true,
         );
         clientSimulator?.mixAgents();
         setTimeFactor(LiveSimulationData.INITIAL_TIME_FACTOR);
@@ -362,7 +366,7 @@ function App() {
                 value,
                 sectionType === Section.Experiment
                     ? InitialCondition.RANDOM
-                    : InitialCondition.SORTED
+                    : InitialCondition.SORTED,
             );
             simulariumController.gotoTime(1); // the number isn't used, but it triggers the update
             const previousConcentration = inputConcentration[agentName] || 0;
@@ -376,15 +380,17 @@ function App() {
             addProductionTrace,
             resetCurrentRunAnalysisState,
             sectionType,
-        ]
+        ],
     );
+
+    // takes you to the home state
     const totalReset = useCallback(() => {
         setCurrentView(ViewType.Lab);
         const activeAgents = [AgentName.A, AgentName.B];
         setCurrentModule(Module.A_B_AB);
         const concentrations = simulationData.getInitialConcentrations(
             activeAgents,
-            Module.A_B_AB
+            Module.A_B_AB,
         );
         setLiveConcentration({
             [AgentName.A]: concentrations[AgentName.A],
@@ -400,7 +406,7 @@ function App() {
             concentrations[AgentName.B] ??
                 LiveSimulationData.INITIAL_CONCENTRATIONS[Module.A_B_AB][
                     AgentName.B
-                ]
+                ],
         );
         setIsPlaying(false);
         clearAllAnalysisState();
@@ -428,7 +434,7 @@ function App() {
             currentProductConcentrationArray.length > 1,
         () => {
             totalReset();
-        }
+        },
     );
     const hasRecordedFirstValue = useRef(false);
     // they have recorded a single value, changed the slider and pressed play
@@ -444,7 +450,7 @@ function App() {
         () => {
             hasRecordedFirstValue.current = true;
             setPage(page + 1);
-        }
+        },
     );
 
     const switchToLiveSimulation = useCallback(
@@ -462,7 +468,7 @@ function App() {
                 setTrajectoryName(LIVE_SIMULATION_NAME);
             }
         },
-        [simulariumController, trajectoryStatus]
+        [simulariumController, trajectoryStatus],
     );
 
     // handle trajectory changes based on content changes
@@ -488,7 +494,7 @@ function App() {
                     await fetch3DTrajectory(
                         url,
                         simulariumController,
-                        setPreComputedTrajectoryPlotData
+                        setPreComputedTrajectoryPlotData,
                     );
                     setTrajectoryStatus(TrajectoryStatus.LOADED);
                 };
@@ -555,7 +561,7 @@ function App() {
             simulariumController.setCameraType(false);
             setTimeFactor(trajectoryInfo.timeStepSize);
             setFinalTime(
-                trajectoryInfo.totalSteps * trajectoryInfo.timeStepSize
+                trajectoryInfo.totalSteps * trajectoryInfo.timeStepSize,
             );
         }
     };
@@ -582,7 +588,7 @@ function App() {
                 preComputedPlotDataManager.getCurrentConcentrations();
         } else if (clientSimulator) {
             concentrations = clientSimulator.getCurrentConcentrations(
-                productName
+                productName,
             ) as CurrentConcentration;
         }
         const productConcentration = concentrations[productName];
@@ -607,7 +613,7 @@ function App() {
 
     const handleFinishInputConcentrationChange = (
         name: string,
-        value: number
+        value: number,
     ) => {
         // this is called when the user finishes dragging the slider
         // it stores the previous collected data and resets the live data
@@ -631,7 +637,7 @@ function App() {
 
     const handleSwitchView = () => {
         setCurrentView((prevView) =>
-            prevView === ViewType.Lab ? ViewType.Simulation : ViewType.Lab
+            prevView === ViewType.Lab ? ViewType.Simulation : ViewType.Lab,
         );
     };
 
@@ -659,43 +665,43 @@ function App() {
         const currentTime = indexToTime(
             currentProductConcentrationArray.length,
             timeFactor,
-            simulationData.timeUnit
+            simulationData.timeUnit,
         );
         const { newArray, index } = insertValueSorted(
             recordedReactantConcentrations,
-            reactantConcentration
+            reactantConcentration,
         );
         setRecordedReactantConcentration(newArray);
         updateArrayInState(
             productEquilibriumConcentrations,
             index,
             productConcentration,
-            setProductEquilibriumConcentrations
+            setProductEquilibriumConcentrations,
         );
         updateArrayInState(
             recordedInputConcentration,
             index,
             currentInputConcentration,
-            setRecordedInputConcentration
+            setRecordedInputConcentration,
         );
         updateArrayInState(
             timeToReachEquilibrium,
             index,
             currentTime,
-            setTimeToReachEquilibrium
+            setTimeToReachEquilibrium,
         );
         const color =
             PLOT_COLORS[
                 getColorIndex(
                     currentInputConcentration,
-                    simulationData.getMaxConcentration(currentModule)
+                    simulationData.getMaxConcentration(currentModule),
                 )
             ];
         updateArrayInState(dataColors, index, color, setDataColors);
         setEquilibriumFeedbackTimeout(
             <>
                 Great! <CheckCircleOutlined />
-            </>
+            </>,
         );
     };
 

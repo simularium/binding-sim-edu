@@ -45,7 +45,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         agents: InputAgent[],
         size: number,
         initPositions: InitialCondition = InitialCondition.SORTED,
-        timeFactor: number = LiveSimulationData.DEFAULT_TIME_FACTOR
+        timeFactor: number = LiveSimulationData.DEFAULT_TIME_FACTOR,
     ) {
         this.size = size;
         this.productColor = new Map();
@@ -92,7 +92,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
     private getProductIdByAgents(
         agent1: BindingInstance | InputAgent,
-        agent2: BindingInstance | InputAgent
+        agent2: BindingInstance | InputAgent,
     ) {
         if (agent1.id > agent2.id) {
             return `${agent1.id}#${agent2.id}`;
@@ -111,7 +111,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         const color2 = this.productColor.get(partnerId);
         if (color1 && color2) {
             throw new Error(
-                `Both agents (${id} and ${partnerId}) have a product color defined. Only one should have a product color.`
+                `Both agents (${id} and ${partnerId}) have a product color defined. Only one should have a product color.`,
             );
         }
         return color2 || color1 || "";
@@ -139,7 +139,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
     private initializeAgents(
         agents: InputAgent[],
-        initPositions: InitialCondition = InitialCondition.SORTED
+        initPositions: InitialCondition = InitialCondition.SORTED,
     ): StoredAgent[] {
         for (let i = 0; i < agents.length; ++i) {
             const agent = agents[i] as StoredAgent; // count is no longer optional
@@ -148,7 +148,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             // the count will already be set
             if (agent.count === undefined) {
                 agent.count = this.convertConcentrationToCount(
-                    agent.initialConcentration
+                    agent.initialConcentration,
                 );
             }
             if (agent.complexColor) {
@@ -167,14 +167,14 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 }
                 const circle = new Circle(
                     new Vector(...position),
-                    agent.radius
+                    agent.radius,
                 );
                 const instance = new BindingInstance(
                     circle,
                     agent.id,
                     agent.partners,
                     agent.kOn,
-                    agent.kOff
+                    agent.kOff,
                 );
                 this.system.insert(instance);
                 this.instances.push(instance);
@@ -196,7 +196,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
             this.system.createLine(
                 new Vector(point[0], point[1]),
                 new Vector(nextPoint[0], nextPoint[1]),
-                { isStatic: true }
+                { isStatic: true },
             );
         });
     }
@@ -274,7 +274,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     public changeConcentration(
         agentId: number,
         newConcentration: number,
-        initPositions: InitialCondition
+        initPositions: InitialCondition,
     ) {
         const agent = find(this.agents, (agent) => agent.id === agentId);
         if (!agent) {
@@ -305,21 +305,21 @@ export default class BindingSimulator implements IClientSimulatorImpl {
 
                 const circle = new Circle(
                     new Vector(...position),
-                    agent.radius
+                    agent.radius,
                 );
                 const instance = new BindingInstance(
                     circle,
                     agent.id,
                     agent.partners,
                     agent.kOn,
-                    agent.kOff
+                    agent.kOff,
                 );
                 this.system.insert(instance);
                 this.instances.push(instance);
             }
         } else if (diff < 0) {
             const toRemove = this.instances.filter(
-                (instance) => instance.id === agentId
+                (instance) => instance.id === agentId,
             );
             for (let i = 0; i < Math.abs(diff); ++i) {
                 const instance = toRemove[i];
@@ -349,14 +349,14 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         const init = <{ [key: string]: number }>{};
         const concentrations = this.agents.reduce((acc, agent) => {
             acc[agent.name] = this.convertCountToConcentration(
-                agent.count - this.currentComplexMap.get(agent.id.toString())!
+                agent.count - this.currentComplexMap.get(agent.id.toString())!,
             );
             return acc;
         }, init);
         const productId = this.getProductIdByProductName(product);
         if (productId) {
             concentrations[product] = this.convertCountToConcentration(
-                this.currentComplexMap.get(productId) || 0
+                this.currentComplexMap.get(productId) || 0,
             );
         }
         return concentrations;
@@ -391,7 +391,7 @@ export default class BindingSimulator implements IClientSimulatorImpl {
         for (let i = 0; i < this.instances.length; ++i) {
             const releasedChild = this.instances[i].oneStep(
                 this.size,
-                this.timeFactor
+                this.timeFactor,
             );
             if (releasedChild) {
                 this.currentNumberOfUnbindingEvents++;
@@ -412,10 +412,10 @@ export default class BindingSimulator implements IClientSimulatorImpl {
                 const childPosition = instance.pos;
                 const distanceVector = new Vector(
                     childPosition.x - parentPosition.x,
-                    childPosition.y - parentPosition.y
+                    childPosition.y - parentPosition.y,
                 );
                 const distance = Math.sqrt(
-                    distanceVector.x ** 2 + distanceVector.y ** 2
+                    distanceVector.x ** 2 + distanceVector.y ** 2,
                 );
                 const perfectBoundDistance =
                     instance.parent.r + instance.r - bindingOverlap;
@@ -433,12 +433,12 @@ export default class BindingSimulator implements IClientSimulatorImpl {
     private incrementBoundCounts(
         a: BindingInstance,
         b: BindingInstance,
-        amount: number
+        amount: number,
     ) {
         const complexName = this.getProductIdByAgents(a, b);
         this.currentComplexMap.set(
             complexName,
-            (this.currentComplexMap.get(complexName) || 0) + amount
+            (this.currentComplexMap.get(complexName) || 0) + amount,
         );
 
         const previousValueA = this.currentComplexMap.get(a.id.toString()) || 0;
