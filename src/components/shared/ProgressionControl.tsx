@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { SimulariumUiContext } from "../../simulation/context";
+import React from "react";
+import { useSimulariumUi } from "../../hooks/useSimulationContext";
 import { BaseHandler, ProgressionControlEvent } from "../../types";
 
 import styles from "./progression-control.module.css";
@@ -24,8 +24,7 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
     children,
     elementId,
 }) => {
-    const { page, setPage, progressionElement } =
-        useContext(SimulariumUiContext);
+    const { page, setPage, progressionElement } = useSimulariumUi();
     const shouldProgress = progressionElement === elementId;
     const progress = () => {
         if (shouldProgress) {

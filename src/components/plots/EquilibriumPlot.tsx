@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from "react";
+import React, { useMemo } from "react";
 import regression, { DataPoint } from "regression";
 import Plot from "react-plotly.js";
 
@@ -9,9 +9,9 @@ import {
     GRAY_COLOR,
 } from "./constants";
 import {
-    SimulariumSimulationContext,
-    SimulariumUiContext,
-} from "../../simulation/context";
+    useSimulariumSimulation,
+    useSimulariumUi,
+} from "../../hooks/useSimulationContext";
 import { AGENT_A_COLOR, AGENT_AB_COLOR } from "../../constants/colors";
 import { MICRO } from "../../constants";
 
@@ -41,8 +41,8 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         productName,
         getAgentColor,
         adjustableAgentName,
-    } = useContext(SimulariumSimulationContext);
-    const { module } = useContext(SimulariumUiContext);
+    } = useSimulariumSimulation();
+    const { module } = useSimulariumUi();
     const xMax = Math.max(...x);
     const xAxisMax = Math.max(kd * 2, xMax * 1.1);
 

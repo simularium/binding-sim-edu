@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Flex } from "antd";
 import Plot from "react-plotly.js";
 
@@ -9,9 +9,9 @@ import {
     CONFIG,
 } from "./constants";
 import {
-    SimulariumSimulationContext,
-    SimulariumUiContext,
-} from "../../simulation/context";
+    useSimulariumSimulation,
+    useSimulariumUi,
+} from "../../hooks/useSimulationContext";
 import { A, B, AB, C, AC } from "../agent-symbols";
 import { MICRO } from "../../constants";
 
@@ -30,8 +30,8 @@ const EventsOverTimePlot: React.FC<PlotProps> = ({
     bindingEventsOverTime,
     unbindingEventsOverTime,
 }) => {
-    const { timeFactor } = useContext(SimulariumSimulationContext);
-    const { module } = useContext(SimulariumUiContext);
+    const { timeFactor } = useSimulariumSimulation();
+    const { module } = useSimulariumUi();
     const [width, setWidth] = useState<number>(0);
 
     // the two arrays will always be the same length

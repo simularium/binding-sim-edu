@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import Viewer from "./Viewer";
 import {
-    SimulariumSimulationContext,
-    SimulariumUiContext,
-} from "../simulation/context";
+    useSimulariumSimulation,
+    useSimulariumUi,
+} from "../hooks/useSimulationContext";
 import ProgressionControl from "./shared/ProgressionControl";
 import PlayButton from "./PlayButton";
 import { OverlayButton } from "./shared/ButtonLibrary";
@@ -17,11 +17,9 @@ import { FIRST_PAGE } from "../content";
 import { VIEW_SWITCH_ID } from "../constants";
 
 const ViewSwitch: React.FC = () => {
-    const { viewportType, setViewportType, page, module } =
-        useContext(SimulariumUiContext);
-    const { isPlaying, setIsPlaying, handleTimeChange } = useContext(
-        SimulariumSimulationContext,
-    );
+    const { viewportType, setViewportType, page, module } = useSimulariumUi();
+    const { isPlaying, setIsPlaying, handleTimeChange } =
+        useSimulariumSimulation();
 
     const isFirstPageOfFirstModule =
         page === FIRST_PAGE[module] + 1 && module === Module.A_B_AB;

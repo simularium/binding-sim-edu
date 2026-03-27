@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import styles from "./scalebar.module.css";
 import { MICRO } from "../constants";
-import { SimulariumSimulationContext } from "../simulation/context";
+import { useSimulariumSimulation } from "../hooks/useSimulationContext";
 
 interface ScaleBarProps {
     productColor: string;
 }
 
 const ScaleBar: React.FC<ScaleBarProps> = ({ productColor }) => {
-    const { maxConcentration } = useContext(SimulariumSimulationContext);
+    const { maxConcentration } = useSimulariumSimulation();
     const labelArray = [];
     const interval = maxConcentration / 5;
     for (let i = maxConcentration; i >= 0; i = i - interval) {

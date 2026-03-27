@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext, useState } from "react";
+import React, { ReactNode, useState } from "react";
 
 import VisibilityControl from "../shared/VisibilityControl";
 import ProductConcentrationPlot from "../plots/ProductConcentrationPlot";
@@ -9,7 +9,7 @@ import { ProductOverTimeTrace } from "../plots/types";
 import styles from "./layout.module.css";
 import { AB, AC } from "../agent-symbols";
 import ResizeContainer from "../shared/ResizeContainer";
-import { SimulariumSimulationContext } from "../../simulation/context";
+import { useSimulariumSimulation } from "../../hooks/useSimulationContext";
 import HelpPopup from "../HelpPopup";
 import InfoText from "../shared/InfoText";
 import { ProductName, UiElement } from "../../types";
@@ -40,7 +40,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
     currentAdjustableAgentConcentration,
     showHelpPanel,
 }) => {
-    const { productName } = useContext(SimulariumSimulationContext);
+    const { productName } = useSimulariumSimulation();
     const [width, setWidth] = useState<number>(0);
     const [height, setHeight] = useState<number>(0);
     let data = productOverTimeTraces;

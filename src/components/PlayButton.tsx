@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
 
-import { SimulariumSimulationContext } from "../simulation/context";
+import { useSimulariumSimulation } from "../hooks/useSimulationContext";
 import ProgressionControl from "./shared/ProgressionControl";
 import VisibilityControl from "./shared/VisibilityControl";
 import { OverlayButton } from "./shared/ButtonLibrary";
@@ -9,7 +9,7 @@ import { Module } from "../types";
 import { PLAY_BUTTON_ID } from "../constants";
 
 const PlayButton: React.FC = () => {
-    const { isPlaying, setIsPlaying } = useContext(SimulariumSimulationContext);
+    const { isPlaying, setIsPlaying } = useSimulariumSimulation();
 
     const handleClick = () => {
         setIsPlaying(!isPlaying);

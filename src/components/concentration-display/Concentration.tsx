@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { map } from "lodash";
 import { Flex } from "antd";
 import classNames from "classnames";
@@ -11,9 +11,9 @@ import {
     UiElement,
 } from "../../types";
 import {
-    SimulariumSimulationContext,
-    SimulariumUiContext,
-} from "../../simulation/context";
+    useSimulariumSimulation,
+    useSimulariumUi,
+} from "../../hooks/useSimulationContext";
 import LiveConcentrationDisplay from "./LiveConcentrationDisplay";
 import ConcentrationSlider from "./ConcentrationSlider";
 import { MICRO, CHANGE_CONCENTRATION_ID } from "../../constants";
@@ -45,10 +45,9 @@ const Concentration: React.FC<AgentProps> = ({
     liveConcentration,
     onChangeComplete,
 }) => {
-    const { isPlaying, maxConcentration, getAgentColor } = useContext(
-        SimulariumSimulationContext,
-    );
-    const { section, progressionElement } = useContext(SimulariumUiContext);
+    const { isPlaying, maxConcentration, getAgentColor } =
+        useSimulariumSimulation();
+    const { section, progressionElement } = useSimulariumUi();
     const [width, setWidth] = useState<number>(0);
 
     const MARGINS = 64.2;

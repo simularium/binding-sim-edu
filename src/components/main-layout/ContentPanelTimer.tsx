@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { isEqual } from "lodash";
 
-import { SimulariumUiContext } from "../../simulation/context";
+import { useSimulariumUi } from "../../hooks/useSimulationContext";
 import { PageContent, Module } from "../../types";
 
 import ContentPanel from "./ContentPanel";
@@ -72,7 +72,7 @@ const ContentPanelTimer: React.FC<ContentPanelProps> = ({
         ? previousContentRef.current
         : pageContent;
 
-    const { page } = useContext(SimulariumUiContext);
+    const { page } = useSimulariumUi();
     const pageNumber = contentJustChanged ? page - 1 : page;
     const containerClassNames = classNames([
         styles.contentPanelWrapper,

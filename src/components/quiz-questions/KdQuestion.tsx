@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { valueType } from "antd/es/statistic/utils";
 import { Flex } from "antd";
 
@@ -8,7 +8,7 @@ import InputNumber from "../shared/InputNumber";
 import { FormState } from "./types";
 import styles from "./popup.module.css";
 import { MICRO } from "../../constants";
-import { SimulariumUiContext } from "../../simulation/context";
+import { useSimulariumUi } from "../../hooks/useSimulationContext";
 
 interface KdQuestionProps {
     kd: number;
@@ -19,7 +19,7 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [formState, setFormState] = useState(FormState.Clear);
 
-    const { module, addCompletedModule } = useContext(SimulariumUiContext);
+    const { module, addCompletedModule } = useSimulariumUi();
 
     useEffect(() => {
         setSelectedAnswer(null);

@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Flex } from "antd";
 import PageIndicator from "../PageIndicator";
 import Dropdown from "../shared/Dropdown";
-import { SimulariumUiContext } from "../../simulation/context";
+import { useSimulariumUi } from "../../hooks/useSimulationContext";
 import LinkOut from "../icons/LinkOut";
 
 interface NavPanelProps {
@@ -12,7 +12,7 @@ interface NavPanelProps {
 }
 
 const NavPanel: React.FC<NavPanelProps> = ({ title, page, total }) => {
-    const { setPage } = useContext(SimulariumUiContext);
+    const { setPage } = useSimulariumUi();
     const helpMenuItems = [
         {
             key: "1",

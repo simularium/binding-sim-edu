@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 
-import { SimulariumSimulationContext } from "../simulation/context";
+import { useSimulariumSimulation } from "../hooks/useSimulationContext";
 import { TertiaryButton } from "./shared/ButtonLibrary";
 import { MIX_AGENTS_ID } from "../constants";
 import ProgressionControl from "./shared/ProgressionControl";
 import style from "./start-experiment.module.css";
 
 const MixButton: React.FC = () => {
-    const { handleMixAgents } = useContext(SimulariumSimulationContext);
+    const { handleMixAgents } = useSimulariumSimulation();
 
     return (
         <ProgressionControl elementId={MIX_AGENTS_ID}>

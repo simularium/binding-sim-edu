@@ -1,9 +1,8 @@
-import { useContext } from "react";
-import { SimulariumUiContext } from "../../simulation/context";
+import { useSimulariumUi } from "../../hooks/useSimulationContext";
 import { SecondaryButton } from "./ButtonLibrary";
 
 const BackButton = () => {
-    const { page, setPage } = useContext(SimulariumUiContext);
+    const { page, setPage } = useSimulariumUi();
 
     return (
         <SecondaryButton onClick={() => setPage(page - 1)}>
