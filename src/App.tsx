@@ -210,7 +210,9 @@ function App() {
         }
         const longestAxis = Math.max(viewportSize.width, viewportSize.height);
         const startMixed = sectionType !== Section.Introduction;
-        console.log("NEW BINDING SIMULATOR");
+        if (process.env.NODE_ENV !== "production") {
+            console.log("NEW BINDING SIMULATOR");
+        }
         return new BindingSimulator(
             trajectory,
             longestAxis / 3,
