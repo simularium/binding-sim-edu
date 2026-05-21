@@ -52,30 +52,31 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
             xVal,
             y[index],
         ]);
-        let bestFit;
+        let fitResult;
         let value;
         if (module === Module.A_B_D_AB) {
-            bestFit = regression.exponential(regressionData);
+            fitResult = regression.exponential(regressionData);
             const max = Math.max(...y);
             const min = Math.min(...y);
             const halfMax = (max - min) / 2 + min;
             // for exponential, the equation is in the form y = a * e^(b*x)
-            // bestFit.equation[0] is a and bestFit.equation[1] is b, so to solve for x when y is halfMax:
+            // fitResult.equation[0] is a and fitResult.equation[1] is b, so to solve for x when y is halfMax:
             // halfMax = a * e^(b*x)
             // halfMax / a = e^(b*x)
             // ln(halfMax / a) = b*x
             // x = ln(halfMax / a) / b
             value =
-                Math.log(halfMax / bestFit.equation[0]) / bestFit.equation[1];
+                Math.log(halfMax / fitResult.equation[0]) /
+                fitResult.equation[1];
         } else {
-            bestFit = regression.logarithmic(regressionData);
+            fitResult = regression.logarithmic(regressionData);
 
             const halfFilled = fixedAgentStartingConcentration / 2;
             value =
                 Math.E **
-                ((halfFilled - bestFit.equation[0]) / bestFit.equation[1]);
+                ((halfFilled - fitResult.equation[0]) / fitResult.equation[1]);
         }
-        const bestFitPoints = bestFit.points;
+        const bestFitPoints = fitResult.points;
 
         const bestFitX = bestFitPoints.map((point) => point[0]);
         const bestFitY = bestFitPoints.map((point) => point[1]);
