@@ -95,8 +95,8 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
                 where half of the binding sites of A are occupied.
             </p>
             <p>
-                If you're not sure, look at the where the line crosses the 50%
-                mark on the <strong>Equilibrium concentration plot.</strong>
+                If you're not sure, look at where the line crosses the 50% mark
+                on the <strong>Equilibrium concentration plot.</strong>
             </p>
             <b>
                 K<sub>d</sub> = ?
