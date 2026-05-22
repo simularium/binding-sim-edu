@@ -269,6 +269,9 @@ function App() {
             if (isLastFrame) {
                 simulariumController.gotoTime(0);
             }
+            setCurrentProductConcentrationArray((prev) =>
+                prev.length === 0 ? [0] : prev,
+            );
             simulariumController.resume();
         } else {
             simulariumController.pause();
@@ -608,7 +611,7 @@ function App() {
                 ) as CurrentConcentration;
             }
             const productConcentration = concentrations[productName];
-            if (productConcentration !== undefined) {
+            if (productConcentration !== undefined && isPlaying) {
                 const newData = [...previousData, productConcentration];
                 setCurrentProductConcentrationArray(newData);
             }
