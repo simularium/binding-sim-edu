@@ -7,10 +7,12 @@ import {
     AgentName,
     CurrentConcentration,
     InputConcentration,
+    Module,
     Section,
     UiElement,
 } from "../../types";
 import {
+    useSimulariumAnalysis,
     useSimulariumSimulation,
     useSimulariumUi,
 } from "../../hooks/useSimulationContext";
@@ -47,7 +49,10 @@ const Concentration: React.FC<AgentProps> = ({
 }) => {
     const { isPlaying, maxConcentration, getAgentColor } =
         useSimulariumSimulation();
-    const { section, progressionElement } = useSimulariumUi();
+    const { module, section, progressionElement } = useSimulariumUi();
+    const { recordedConcentrations } = useSimulariumAnalysis();
+    const isSliderDisabled =
+        module === Module.A_B_D_AB && !recordedConcentrations.includes(0);
     const [width, setWidth] = useState<number>(0);
 
     const MARGINS = 64.2;
@@ -79,13 +84,14 @@ const Concentration: React.FC<AgentProps> = ({
         if (adjustableAgent === agent && !isPlaying) {
             return (
                 <ConcentrationSlider
-                    min={0}
-                    max={maxConcentration}
-                    name={agent}
+                    disabled={isSliderDisabled}
                     initialValue={concentration[agent] || 0}
+                    key={agent}
+                    max={maxConcentration}
+                    min={0}
+                    name={agent}
                     onChange={handleChange}
                     onChangeComplete={onChangeComplete}
-                    key={agent}
                 />
             );
         } else {

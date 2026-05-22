@@ -7,12 +7,13 @@ import styles from "./concentration-slider.module.css";
 import classNames from "classnames";
 
 interface SliderProps {
-    min: number;
-    max: number;
+    disabled?: boolean;
     initialValue: number;
+    max: number;
+    min: number;
+    name: string;
     onChange: (name: string, value: number) => void;
     onChangeComplete?: (name: string, value: number) => void;
-    name: string;
 }
 
 const Mark: React.FC<{
@@ -53,12 +54,13 @@ const Mark: React.FC<{
 };
 
 const ConcentrationSlider: React.FC<SliderProps> = ({
-    min,
-    max,
+    disabled,
     initialValue,
+    max,
+    min,
+    name,
     onChange,
     onChangeComplete,
-    name,
 }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const disabledNumbers = [0];
@@ -75,15 +77,20 @@ const ConcentrationSlider: React.FC<SliderProps> = ({
                                 : index
                         }
                         disabledNumbers={disabledNumbers}
-                        onMouseUp={() => onChangeComplete?.(name, index)}
+                        onMouseUp={
+                            disabled
+                                ? () => {}
+                                : () => onChangeComplete?.(name, index)
+                        }
                     />
                 ),
             };
         }
         return marks;
-    }, [min, max, disabledNumbers, onChangeComplete, name, stepSize]);
+    }, [min, max, disabledNumbers, disabled, onChangeComplete, name, stepSize]);
     return (
         <Slider
+            disabled={disabled}
             initialValue={initialValue}
             className={styles.container}
             name={name}

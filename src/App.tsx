@@ -310,7 +310,7 @@ function App() {
             1,
         [halfFilled, uniqMeasuredConcentrations],
     );
-    const canDetermineKd = useMemo(() => {
+    const canDetermineConstant = useMemo(() => {
         return (
             hasAValueAboveKd &&
             hasAValueBelowKd &&
@@ -834,7 +834,9 @@ function App() {
                                 centerPanel={
                                     <CenterPanel
                                         kd={simulationData.getKd(currentModule)}
-                                        canDetermineEquilibrium={canDetermineKd}
+                                        canDetermineConstant={
+                                            canDetermineConstant
+                                        }
                                         overlay={pageContent.visualContent}
                                     />
                                 }
@@ -843,7 +845,7 @@ function App() {
                                         pageContent={{
                                             ...pageContent,
                                             nextButton:
-                                                (canDetermineKd &&
+                                                (canDetermineConstant &&
                                                     pageContent.section ===
                                                         Section.Experiment) ||
                                                 pageContent.nextButton,

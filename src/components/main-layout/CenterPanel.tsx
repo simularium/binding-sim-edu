@@ -9,7 +9,7 @@ import { Module } from "../../types";
 
 interface CenterPanelProps {
     kd: number;
-    canDetermineEquilibrium: boolean;
+    canDetermineConstant: boolean;
     overlay?: JSX.Element;
 }
 
@@ -23,7 +23,7 @@ export const CenterPanelContext = React.createContext<{
 
 const CenterPanel: React.FC<CenterPanelProps> = ({
     kd,
-    canDetermineEquilibrium,
+    canDetermineConstant,
     overlay,
 }) => {
     const [lastOpened, setLastOpened] = React.useState<string | null>(null);
@@ -35,9 +35,9 @@ const CenterPanel: React.FC<CenterPanelProps> = ({
                 <div className={styles.questionContainer}>
                     <EquilibriumQuestion />
                     {module === Module.A_B_D_AB ? (
-                        <KiQuestion ki={kd} canAnswer={canDetermineEquilibrium} />
+                        <KiQuestion ki={kd} canAnswer={canDetermineConstant} />
                     ) : (
-                        <KdQuestion kd={kd} canAnswer={canDetermineEquilibrium} />
+                        <KdQuestion kd={kd} canAnswer={canDetermineConstant} />
                     )}
                 </div>
             </CenterPanelContext.Provider>
