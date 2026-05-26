@@ -31,7 +31,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
     adjustableAgent,
 }) => {
     const { module } = useSimulariumUi();
-    
+
     const concentrationExcludedPages = {
         [Module.A_B_AB]: [0, 1],
         [Module.A_C_AC]: [],
@@ -42,10 +42,10 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
         [Module.A_B_AB]: [0, 1, 2],
         [Module.A_C_AC]: [],
     };
-    
+
     // Don't show events over time plot in the competitive binding module
     const showEventsOverTime = module !== Module.A_B_D_AB;
-    
+
     return (
         <>
             <VisibilityControl excludedPages={concentrationExcludedPages}>
