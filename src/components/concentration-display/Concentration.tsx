@@ -52,7 +52,9 @@ const Concentration: React.FC<AgentProps> = ({
     const { module, section, progressionElement } = useSimulariumUi();
     const { recordedConcentrations } = useSimulariumAnalysis();
     const isSliderDisabled =
-        module === Module.A_B_D_AB && !recordedConcentrations.includes(0);
+        module === Module.A_B_D_AB &&
+        !recordedConcentrations.includes(0) &&
+        section === Section.Experiment;
     const [width, setWidth] = useState<number>(0);
 
     const MARGINS = 64.2;

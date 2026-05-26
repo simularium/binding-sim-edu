@@ -5,6 +5,7 @@ import Slider from "../shared/Slider";
 import { useSimulariumAnalysis } from "../../hooks/useSimulationContext";
 import styles from "./concentration-slider.module.css";
 import classNames from "classnames";
+import HelpPopup from "../HelpPopup";
 
 interface SliderProps {
     disabled?: boolean;
@@ -89,19 +90,27 @@ const ConcentrationSlider: React.FC<SliderProps> = ({
         return marks;
     }, [min, max, disabledNumbers, disabled, onChangeComplete, name, stepSize]);
     return (
-        <Slider
-            disabled={disabled}
-            initialValue={initialValue}
-            className={styles.container}
-            name={name}
-            min={min}
-            max={max}
-            step={stepSize}
-            onChange={onChange}
-            onChangeComplete={onChangeComplete}
-            marks={marks}
-            disabledNumbers={disabledNumbers}
-        />
+        <HelpPopup
+            content="You need to measure a baseline value before you can add any of the inhibitor"
+            trigger="hover"
+            open={disabled ? undefined : false}
+        >
+            <span style={{ width: "100%" }}>
+                <Slider
+                    disabled={disabled}
+                    initialValue={initialValue}
+                    className={styles.container}
+                    name={name}
+                    min={min}
+                    max={max}
+                    step={stepSize}
+                    onChange={onChange}
+                    onChangeComplete={onChangeComplete}
+                    marks={marks}
+                    disabledNumbers={disabledNumbers}
+                />
+            </span>
+        </HelpPopup>
     );
 };
 

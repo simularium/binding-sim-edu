@@ -71,7 +71,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
                     content={
                         "Use this plot to help determine when the reaction reaches equilibrium."
                     }
-                    initialOpen={showHelpPanel}
+                    open={showHelpPanel}
                 >
                     <ProductConcentrationPlot
                         data={data}
