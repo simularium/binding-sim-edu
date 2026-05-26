@@ -68,7 +68,7 @@ const KiQuestion: React.FC<KiQuestionProps> = ({ canAnswer, ki }) => {
 
     const formContent = (
         <div className={styles.inputFormContent}>
-            <p id="ki question">
+            <p id="ki-question">
                 You have now measured enough points to estimate the
                 concentration of D where inhibition reduces binding by 50%
                 (IC&#x2085;&#x2080;).
