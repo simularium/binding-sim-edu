@@ -58,6 +58,24 @@
     font-weight: 600;
     color: var(--primary-color);
     border-bottom: 1px solid var(--app-border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.insetClose {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    padding: 0 0 0 8px;
+    opacity: 0.7;
+}
+
+.insetClose:hover {
+    opacity: 1;
 }
 
 .insetBody {

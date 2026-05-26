@@ -15,6 +15,7 @@ const LabView: React.FC = () => {
         getAgentColor,
         productName,
         module,
+        setViewportType,
     } = useContext(SimulariumContext);
     const color = getAgentColor(productName);
     const colorGradient = useMemo(() => {
@@ -28,7 +29,16 @@ const LabView: React.FC = () => {
     if (!isIntroPage) {
         return (
             <div className={styles.inset}>
-                <div className={styles.insetLabel}>In the wet lab</div>
+                <div className={styles.insetLabel}>
+                    <span>In the wet lab</span>
+                    <button
+                        className={styles.insetClose}
+                        onClick={setViewportType}
+                        aria-label="Close lab view"
+                    >
+                        ×
+                    </button>
+                </div>
                 <div className={styles.insetBody}>
                     <ScaleBar
                         productColor={color}

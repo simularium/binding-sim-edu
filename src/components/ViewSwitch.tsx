@@ -22,6 +22,9 @@ const ViewSwitch: React.FC = () => {
     const isFirstPageOfFirstModule =
         page === FIRST_PAGE[module] + 1 && module === Module.A_B_AB;
 
+    const showLabToggleButton =
+        viewportType !== ViewType.Lab || isFirstPageOfFirstModule;
+
     let buttonStyle: React.CSSProperties = {
         top: 16,
         right: 16,
@@ -43,22 +46,26 @@ const ViewSwitch: React.FC = () => {
     return (
         <div style={{ position: "relative", height: "100%" }}>
             <VisibilityControl notInBonusMaterial>
-                <ProgressionControl elementId={VIEW_SWITCH_ID}>
-                    <OverlayButton
-                        onClick={setViewportType}
-                        style={buttonStyle}
-                        icon={
-                            viewportType === ViewType.Lab ? (
-                                <Molecules />
-                            ) : (
-                                <LabIcon />
-                            )
-                        }
-                    >
-                        {viewportType === ViewType.Lab ? "Molecular" : "Lab"}{" "}
-                        view
-                    </OverlayButton>
-                </ProgressionControl>
+                {showLabToggleButton && (
+                    <ProgressionControl elementId={VIEW_SWITCH_ID}>
+                        <OverlayButton
+                            onClick={setViewportType}
+                            style={buttonStyle}
+                            icon={
+                                viewportType === ViewType.Lab ? (
+                                    <Molecules />
+                                ) : (
+                                    <LabIcon />
+                                )
+                            }
+                        >
+                            {viewportType === ViewType.Lab
+                                ? "Molecular"
+                                : "Lab"}{" "}
+                            view
+                        </OverlayButton>
+                    </ProgressionControl>
+                )}
             </VisibilityControl>
             <PlayButton />
             {viewportType === ViewType.Lab ? <LabView /> : null}
