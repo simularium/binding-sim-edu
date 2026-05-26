@@ -28,7 +28,7 @@ const VisibilityControl: React.FC<VisibilityControlProps> = ({
 
     let shouldRender = true;
 
-    if (includedPages) {
+    if (includedPages && module in includedPages) {
         shouldRender = includedPages[module]?.includes(page) ?? false;
     } else if (excludedPages) {
         shouldRender = !excludedPages[module]?.includes(page);
