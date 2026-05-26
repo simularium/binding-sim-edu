@@ -18,8 +18,10 @@ const LiveConcentrationDisplay: React.FC<LiveConcentrationDisplayProps> = ({
 }) => {
     const { maxConcentration, getAgentColor } = useContext(SimulariumContext);
     // the steps have a 2px gap, so we are adjusting the
-    // size of the step based on the total number we want
-    const steps = maxConcentration;
+    // size of the step based on the total number we want.
+    // cap steps so each step is at least 4px wide (2px step + 2px gap)
+    const maxSteps = Math.floor(width / 4);
+    const steps = Math.min(maxConcentration, Math.max(1, maxSteps));
     const size = width / steps - 2;
     return (
         <div className={styles.container}>
