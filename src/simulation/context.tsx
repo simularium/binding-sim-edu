@@ -53,7 +53,7 @@ export interface SimulariumAnalysisContextType {
     resetAnalysisState: () => void;
 }
 
-export const SimulariumUiContext = createContext({
+export const SimulariumUiContext = createContext<SimulariumUiContextType>({
     addCompletedModule: () => {},
     completedModules: new Set(),
     module: Module.A_B_AB,
@@ -66,30 +66,32 @@ export const SimulariumUiContext = createContext({
     setPage: () => {},
     setViewportType: () => {},
     viewportType: ViewType.Lab,
-} as SimulariumUiContextType);
+});
 
-export const SimulariumSimulationContext = createContext({
-    adjustableAgentName: AgentName.B,
-    currentProductionConcentration: 0,
-    fixedAgentStartingConcentration: 0,
-    getAgentColor: () => "",
-    handleMixAgents: () => {},
-    handleStartExperiment: () => {},
-    handleTimeChange: () => {},
-    handleTrajectoryChange: () => {},
-    isPlaying: false,
-    maxConcentration: 10,
-    productName: ProductName.AB,
-    setIsPlaying: () => {},
-    setViewportSize: () => {},
-    simulariumController: null,
-    timeFactor: 30,
-    timeUnit: NANO,
-    trajectoryName: LIVE_SIMULATION_NAME,
-    viewportSize: DEFAULT_VIEWPORT_SIZE,
-} as SimulariumSimulationContextType);
+export const SimulariumSimulationContext =
+    createContext<SimulariumSimulationContextType>({
+        adjustableAgentName: AgentName.B,
+        currentProductionConcentration: 0,
+        fixedAgentStartingConcentration: 0,
+        getAgentColor: () => "",
+        handleMixAgents: () => {},
+        handleStartExperiment: () => {},
+        handleTimeChange: () => {},
+        handleTrajectoryChange: () => {},
+        isPlaying: false,
+        maxConcentration: 10,
+        productName: ProductName.AB,
+        setIsPlaying: () => {},
+        setViewportSize: () => {},
+        simulariumController: null,
+        timeFactor: 30,
+        timeUnit: NANO,
+        trajectoryName: LIVE_SIMULATION_NAME,
+        viewportSize: DEFAULT_VIEWPORT_SIZE,
+    });
 
-export const SimulariumAnalysisContext = createContext({
-    recordedConcentrations: [],
-    resetAnalysisState: () => {},
-} as SimulariumAnalysisContextType);
+export const SimulariumAnalysisContext =
+    createContext<SimulariumAnalysisContextType>({
+        recordedConcentrations: [],
+        resetAnalysisState: () => {},
+    });

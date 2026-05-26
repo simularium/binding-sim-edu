@@ -230,7 +230,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
                 color: getAgentColor(adjustableAgentName),
             },
             tickmode: bestFitVisible ? ("array" as const) : ("auto" as const),
-            tickvals: [...xAxisTicks, bestFit.value.toFixed(1)],
+            tickvals: [...xAxisTicks, Number(bestFit.value.toFixed(1))],
         },
         yaxis: {
             ...AXIS_SETTINGS,
