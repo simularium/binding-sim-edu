@@ -5,7 +5,6 @@ import Cuvette from "./icons/Cuvette";
 import styles from "./labview.module.css";
 import classNames from "classnames";
 import ScaleBar from "./ScaleBar";
-import VisibilityControl from "./shared/VisibilityControl";
 import { Module } from "../types";
 
 const LabView: React.FC = () => {
@@ -24,16 +23,27 @@ const LabView: React.FC = () => {
         return rainbow;
     }, [color]);
     const position = (currentProductionConcentration / maxConcentration) * 100;
+    const isIntroPage = page === 1 && module === Module.A_B_AB;
+
+    if (!isIntroPage) {
+        return (
+            <div className={styles.inset}>
+                <div className={styles.insetLabel}>In the wet lab</div>
+                <div className={styles.insetBody}>
+                    <ScaleBar
+                        productColor={color}
+                        className={styles.scaleBarInset}
+                    />
+                    <div className={styles.insetCuvette}>
+                        <Cuvette color={colorGradient.colorAt(position)} />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div
-            className={classNames([
-                styles.container,
-                { [styles.top]: page === 1 && module === Module.A_B_AB },
-            ])}
-        >
-            <VisibilityControl excludedPages={{ [Module.A_B_AB]: [1] }}>
-                <ScaleBar productColor={color} />
-            </VisibilityControl>
+        <div className={classNames(styles.container, styles.top)}>
             <div className={styles.cuvette}>
                 <Cuvette color={colorGradient.colorAt(position)} />
             </div>
