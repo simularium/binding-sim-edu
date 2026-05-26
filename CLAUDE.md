@@ -40,11 +40,11 @@ import { useSimulariumUi, useSimulariumSimulation, useSimulariumAnalysis } from 
 
 ## Build Commands
 
-| What | Command |
-|------|---------|
-| Dev server | `bun run dev` |
-| Build | `bun run build` |
-| Lint | `bun run lint` |
+| What       | Command             |
+| ---------- | ------------------- |
+| Dev server | `bun run dev`       |
+| Build      | `bun run build`     |
+| Lint       | `bun run lint`      |
 | Type check | `bunx tsc --noEmit` |
 
 ---
@@ -69,8 +69,3 @@ import { useSimulariumUi, useSimulariumSimulation, useSimulariumAnalysis } from 
 ### Import order
 External libs → internal aliases → relative imports, each group alphabetical.
 
----
-
-## Notification
-
-After finishing work, run: `afplay /System/Library/Sounds/Funk.aiff`
