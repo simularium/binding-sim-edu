@@ -66,7 +66,7 @@ export const SimulariumUiContext = createContext({
     setPage: () => {},
     setViewportType: () => {},
     viewportType: ViewType.Lab,
-} as SimulariumUiContextType);
+} satisfies SimulariumUiContextType);
 
 export const SimulariumSimulationContext = createContext({
     adjustableAgentName: AgentName.B,
