@@ -24,3 +24,62 @@
     position: absolute;
     width: 95px;
 }
+
+/* ── Inset panel (all pages except intro) ──────────────── */
+
+.inset {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 210px;
+    border: 1px solid var(--app-border-color);
+    overflow: hidden;
+    z-index: var(--bottom);
+}
+
+/* Blurred lab background image behind inset content */
+.inset::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("../assets/ipub-bg_4.png");
+    background-size: cover;
+    background-position: center;
+    filter: blur(3px);
+    transform: scale(1.1); /* prevents blurred edges from bleeding to border */
+    z-index: 0;
+}
+
+.insetLabel {
+    position: relative;
+    z-index: 1;
+    padding: 6px 8px 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary-color);
+    border-bottom: 1px solid var(--app-border-color);
+}
+
+.insetBody {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    padding: 8px;
+    gap: 8px;
+    /* 166px = scale bar height; 24px = top+bottom padding */
+    height: 190px;
+}
+
+/* Override ScaleBar's absolute positioning so it participates in flex layout */
+.scaleBarInset {
+    position: static !important;
+    bottom: unset !important;
+    right: unset !important;
+}
+
+.insetCuvette {
+    width: 70px;
+    flex-shrink: 0;
+}
