@@ -833,7 +833,9 @@ function App() {
                             <MainLayout
                                 centerPanel={
                                     <CenterPanel
-                                        kd={simulationData.getKd(currentModule)}
+                                        eqConstant={simulationData.getEquilibriumConstant(
+                                            currentModule,
+                                        )}
                                         canDetermineConstant={
                                             canDetermineConstant
                                         }
@@ -922,9 +924,10 @@ function App() {
                                             timeToEquilibrium:
                                                 timeToReachEquilibrium,
                                             colors: dataColors,
-                                            kd: simulationData.getKd(
-                                                currentModule,
-                                            ),
+                                            eqConstant:
+                                                simulationData.getEquilibriumConstant(
+                                                    currentModule,
+                                                ),
                                         }}
                                         equilibriumFeedback={
                                             equilibriumFeedback

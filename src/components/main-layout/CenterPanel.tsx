@@ -8,7 +8,7 @@ import { useSimulariumUi } from "../../hooks/useSimulationContext";
 import { Module } from "../../types";
 
 interface CenterPanelProps {
-    kd: number;
+    eqConstant: number;
     canDetermineConstant: boolean;
     overlay?: JSX.Element;
 }
@@ -22,7 +22,7 @@ export const CenterPanelContext = React.createContext<{
 });
 
 const CenterPanel: React.FC<CenterPanelProps> = ({
-    kd,
+    eqConstant,
     canDetermineConstant,
     overlay,
 }) => {
@@ -35,9 +35,15 @@ const CenterPanel: React.FC<CenterPanelProps> = ({
                 <div className={styles.questionContainer}>
                     <EquilibriumQuestion />
                     {module === Module.A_B_D_AB ? (
-                        <KiQuestion ki={kd} canAnswer={canDetermineConstant} />
+                        <KiQuestion
+                            ki={eqConstant}
+                            canAnswer={canDetermineConstant}
+                        />
                     ) : (
-                        <KdQuestion kd={kd} canAnswer={canDetermineConstant} />
+                        <KdQuestion
+                            kd={eqConstant}
+                            canAnswer={canDetermineConstant}
+                        />
                     )}
                 </div>
             </CenterPanelContext.Provider>

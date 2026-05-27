@@ -82,7 +82,7 @@ const KiQuestion: React.FC<KiQuestionProps> = ({ canAnswer, ki }) => {
             </b>
             <Flex gap={8} align="baseline" style={{ maxWidth: 130 }}>
                 <InputNumber
-                    aria-labelledby="ki question"
+                    aria-labelledby="ki-question"
                     value={selectedAnswer || ""}
                     onChange={handleAnswerSelection}
                     placeholder="Type value..."

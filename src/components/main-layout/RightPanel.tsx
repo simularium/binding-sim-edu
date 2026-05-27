@@ -25,7 +25,7 @@ interface RightPanelProps {
         productConcentrations: number[];
         timeToEquilibrium: number[];
         colors: string[];
-        kd: number;
+        eqConstant: number;
     };
     equilibriumFeedback: ReactNode | string;
     showHelpPanel: boolean;
@@ -94,7 +94,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
                     x={equilibriumData.reactantConcentrations}
                     y={equilibriumData.productConcentrations}
                     colors={equilibriumData.colors}
-                    kd={equilibriumData.kd}
+                    eqConstant={equilibriumData.eqConstant}
                 />
                 <div className={styles.recordButton}>
                     <RecordEquilibriumButton

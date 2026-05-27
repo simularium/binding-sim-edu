@@ -218,7 +218,7 @@ export default class LiveSimulation implements ISimulationData {
             };
         }, {});
     };
-    getKd = (module: Module): number => {
+    getEquilibriumConstant = (module: Module): number => {
         return LiveSimulation.ESTIMATED_SOLUTIONS[module];
     };
 }

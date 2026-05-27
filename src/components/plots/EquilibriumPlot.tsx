@@ -25,7 +25,7 @@ interface PlotProps {
     height: number;
     width: number;
     colors: string[];
-    kd: number;
+    eqConstant: number;
 }
 
 const EquilibriumPlot: React.FC<PlotProps> = ({
@@ -34,7 +34,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
     height,
     width,
     colors,
-    kd,
+    eqConstant,
 }) => {
     const {
         fixedAgentStartingConcentration,
@@ -44,7 +44,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
     } = useSimulariumSimulation();
     const { module } = useSimulariumUi();
     const xMax = Math.max(...x);
-    const xAxisMax = Math.max(kd * 2, xMax * 1.1);
+    const xAxisMax = Math.max(eqConstant * 2, xMax * 1.1);
 
     // Calculate the best fit line for the data points
     const bestFit = useMemo(() => {
