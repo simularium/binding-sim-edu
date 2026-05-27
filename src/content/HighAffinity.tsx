@@ -107,23 +107,6 @@ export const highAffinityContentArray: PageContent[] = [
     {
         content: (
             <>
-                The clear liquid is slowly turning yellow as the simulation
-                progresses, but it is taking a long time to change. Can you
-                estimate the concentration of <AB /> ?
-            </>
-        ),
-        callToAction: (
-            <>
-                Click <strong>Molecular view</strong> to switch back.
-            </>
-        ),
-        section: Section.Introduction,
-        layout: LayoutType.LiveSimulation,
-        progressionElement: VIEW_SWITCH_ID,
-    },
-    {
-        content: (
-            <>
                 The two populations started on opposite sides of the window, so
                 they have to diffuse before they can bind, which takes a while.
                 Let's randomize their positions so we are only looking at the
@@ -163,21 +146,6 @@ export const highAffinityContentArray: PageContent[] = [
     },
     {
         content: (
-            <>Randomizing the positions is simulating a well-mixed solution.</>
-        ),
-        callToAction: (
-            <>
-                Click <strong>Lab view</strong> to see what the cuvette looks
-                like now.
-            </>
-        ),
-
-        section: Section.Introduction,
-        layout: LayoutType.LiveSimulation,
-        progressionElement: VIEW_SWITCH_ID,
-    },
-    {
-        content: (
             <>
                 There are now many more bound complexes in the "solution", so
                 our measured indicator (in this case, color) is now much
@@ -186,14 +154,14 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         callToAction: (
             <>
-                Click <strong>Molecular view</strong> to switch back to the
-                simulation.
+                When you're done observing the color, <strong>pause</strong> the
+                simulation to move on.
             </>
         ),
 
         section: Section.Introduction,
         layout: LayoutType.LiveSimulation,
-        progressionElement: VIEW_SWITCH_ID,
+        progressionElement: PLAY_BUTTON_ID,
     },
     {
         title: "Start the experiment",
