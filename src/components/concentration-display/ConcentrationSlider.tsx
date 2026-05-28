@@ -95,7 +95,7 @@ const ConcentrationSlider: React.FC<SliderProps> = ({
             trigger="hover"
             open={disabled ? undefined : false}
         >
-            <span style={{ width: "100%" }}>
+            <div style={{ width: "100%" }}>
                 <Slider
                     disabled={disabled}
                     initialValue={initialValue}
@@ -109,7 +109,7 @@ const ConcentrationSlider: React.FC<SliderProps> = ({
                     marks={marks}
                     disabledNumbers={disabledNumbers}
                 />
-            </span>
+            </div>
         </HelpPopup>
     );
 };
