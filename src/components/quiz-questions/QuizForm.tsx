@@ -18,12 +18,12 @@ interface QuizFormProps {
     formState: FormState;
     successMessage: string | JSX.Element;
     failureMessage: string;
-    id: string;
+    formID: string;
 }
 
 const QuizForm: React.FC<QuizFormProps> = ({
     title,
-    id,
+    formID,
     formContent,
     onSubmit,
     formState,
@@ -33,12 +33,12 @@ const QuizForm: React.FC<QuizFormProps> = ({
     const { lastOpened, setLastOpened } = React.useContext(CenterPanelContext);
     const [show, setShow] = React.useState(false);
 
-    const isFormMaximized = lastOpened === id;
-    const minimizedTitle = `Q:${id}`;
+    const isFormMaximized = lastOpened === formID;
+    const minimizedTitle = `Q:${formID}`;
 
     // open form on mount
     useEffect(() => {
-        setLastOpened(id);
+        setLastOpened(formID);
         setTimeout(() => {
             setShow(true);
         }, 1000);
@@ -47,7 +47,7 @@ const QuizForm: React.FC<QuizFormProps> = ({
 
     const toggleFormVisibility = () => {
         if (!isFormMaximized) {
-            setLastOpened(id);
+            setLastOpened(formID);
         } else {
             setLastOpened(null);
         }

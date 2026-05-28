@@ -98,7 +98,7 @@ const EquilibriumQuestion: React.FC = () => {
                     </>
                 }
                 failureMessage="Please try again. Look carefully at what is happening in each of the plots to help find the answer."
-                id="Equilibrium"
+                formID="Equilibrium"
             />
         </VisibilityControl>
     );
