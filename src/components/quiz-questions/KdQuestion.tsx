@@ -104,7 +104,7 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
             <Flex gap={8} align="baseline" style={{ maxWidth: 130 }}>
                 <InputNumber
                     aria-labelledby="kd question"
-                    value={selectedAnswer || ""}
+                    value={selectedAnswer ?? ""}
                     onChange={handleAnswerSelection}
                     placeholder="Type value..."
                 />
