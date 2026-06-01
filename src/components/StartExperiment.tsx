@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import classNames from "classnames";
 
-import { SimulariumContext } from "../simulation/context";
+import { useSimulariumSimulation } from "../hooks/useSimulationContext";
 import { TertiaryButton } from "./shared/ButtonLibrary";
 
 import style from "./start-experiment.module.css";
 
 const StartExperiment: React.FC = () => {
-    const { handleStartExperiment } = useContext(SimulariumContext);
+    const { handleStartExperiment } = useSimulariumSimulation();
     const [initial, setIsInitial] = React.useState(true);
     const handleClick = () => {
         if (initial) {

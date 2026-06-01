@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { valueType } from "antd/es/statistic/utils";
 import { Flex } from "antd";
 
@@ -8,7 +8,7 @@ import InputNumber from "../shared/InputNumber";
 import { FormState } from "./types";
 import styles from "./popup.module.css";
 import { MICRO } from "../../constants";
-import { SimulariumContext } from "../../simulation/context";
+import { useSimulariumUi } from "../../hooks/useSimulationContext";
 
 interface KdQuestionProps {
     kd: number;
@@ -19,7 +19,7 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [formState, setFormState] = useState(FormState.Clear);
 
-    const { module, addCompletedModule } = useContext(SimulariumContext);
+    const { module, addCompletedModule } = useSimulariumUi();
 
     useEffect(() => {
         setSelectedAnswer(null);
@@ -95,8 +95,8 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
                 where half of the binding sites of A are occupied.
             </p>
             <p>
-                If you're not sure, look at where the line crosses the 50%
-                mark on the <strong>Equilibrium concentration plot.</strong>
+                If you're not sure, look at where the line crosses the 50% mark
+                on the <strong>Equilibrium concentration plot.</strong>
             </p>
             <b>
                 K<sub>d</sub> = ?

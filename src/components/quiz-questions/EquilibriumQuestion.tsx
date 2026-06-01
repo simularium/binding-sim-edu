@@ -1,14 +1,14 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import QuizForm from "./QuizForm";
 import VisibilityControl from "../shared/VisibilityControl";
 import { FormState } from "./types";
 import RadioComponent from "../shared/Radio";
 import { EQUILIBRIUM_QUIZ_ID } from "../../constants";
-import { SimulariumContext } from "../../simulation/context";
+import { useSimulariumUi } from "../../hooks/useSimulationContext";
 import { Module } from "../../types";
 
 const EquilibriumQuestion: React.FC = () => {
-    const { page, quizQuestion, module } = useContext(SimulariumContext);
+    const { page, quizQuestion, module } = useSimulariumUi();
     const [selectedAnswer, setSelectedAnswer] = useState("");
     const [formState, setFormState] = useState(FormState.Clear);
     const firstVisiblePage = useRef<{ page: number; module: Module }>({

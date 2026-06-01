@@ -1,9 +1,9 @@
 import { Flex, Progress } from "antd";
-import React, { useContext } from "react";
+import React from "react";
 import { AgentName } from "../../types";
 
 import styles from "./live-concentration-display.module.css";
-import { SimulariumContext } from "../../simulation/context";
+import { useSimulariumSimulation } from "../../hooks/useSimulationContext";
 
 interface LiveConcentrationDisplayProps {
     concentration: number;
@@ -16,7 +16,7 @@ const LiveConcentrationDisplay: React.FC<LiveConcentrationDisplayProps> = ({
     concentration,
     width,
 }) => {
-    const { maxConcentration, getAgentColor } = useContext(SimulariumContext);
+    const { maxConcentration, getAgentColor } = useSimulariumSimulation();
     // the steps have a 2px gap, so we are adjusting the
     // size of the step based on the total number we want
     const steps = maxConcentration;

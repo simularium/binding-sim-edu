@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { map } from "lodash";
 import { Flex } from "antd";
 import classNames from "classnames";
@@ -10,7 +10,10 @@ import {
     Section,
     UiElement,
 } from "../../types";
-import { SimulariumContext } from "../../simulation/context";
+import {
+    useSimulariumSimulation,
+    useSimulariumUi,
+} from "../../hooks/useSimulationContext";
 import LiveConcentrationDisplay from "./LiveConcentrationDisplay";
 import ConcentrationSlider from "./ConcentrationSlider";
 import { MICRO, CHANGE_CONCENTRATION_ID } from "../../constants";
@@ -42,20 +45,16 @@ const Concentration: React.FC<AgentProps> = ({
     liveConcentration,
     onChangeComplete,
 }) => {
-    const {
-        isPlaying,
-        maxConcentration,
-        getAgentColor,
-        section,
-        progressionElement,
-    } = useContext(SimulariumContext);
+    const { isPlaying, maxConcentration, getAgentColor } =
+        useSimulariumSimulation();
+    const { section, progressionElement } = useSimulariumUi();
     const [width, setWidth] = useState<number>(0);
 
     const MARGINS = 64.2;
     // on super small screens this can result in a negative number
     const widthMinusMargins = Math.max(width - MARGINS, 0);
     const [highlightState, setHighlightState] = useState<HighlightState>(
-        HighlightState.Initial
+        HighlightState.Initial,
     );
 
     if (
@@ -75,7 +74,7 @@ const Concentration: React.FC<AgentProps> = ({
 
     const getComponent = (
         agent: AgentName,
-        currentConcentrationOfAgent: number
+        currentConcentrationOfAgent: number,
     ) => {
         if (adjustableAgent === agent && !isPlaying) {
             return (
@@ -175,7 +174,7 @@ const Concentration: React.FC<AgentProps> = ({
                                 >
                                     {getComponent(
                                         agent,
-                                        agentLiveConcentration
+                                        agentLiveConcentration,
                                     )}
                                     <span className={styles.unit}>
                                         {MICRO}M
@@ -183,7 +182,7 @@ const Concentration: React.FC<AgentProps> = ({
                                 </ResizeContainer>
                             </Flex>
                         );
-                    }
+                    },
                 )}
             </Flex>
         </>

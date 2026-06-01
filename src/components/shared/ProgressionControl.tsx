@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { SimulariumContext } from "../../simulation/context";
+import React from "react";
+import { useSimulariumUi } from "../../hooks/useSimulationContext";
 import { BaseHandler, ProgressionControlEvent } from "../../types";
 
 import styles from "./progression-control.module.css";
@@ -24,7 +24,7 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
     children,
     elementId,
 }) => {
-    const { page, setPage, progressionElement } = useContext(SimulariumContext);
+    const { page, setPage, progressionElement } = useSimulariumUi();
     const shouldProgress = progressionElement === elementId;
     const progress = () => {
         if (shouldProgress) {
@@ -37,7 +37,7 @@ const ProgressionControl: React.FC<ProgressionControlProps> = ({
     const mergeHandlers = (baseHandler: BaseHandler) => {
         return (
             event: ProgressionControlEvent,
-            optionalValue?: string | number | string[] | number[]
+            optionalValue?: string | number | string[] | number[],
         ) => {
             const returnValue = baseHandler(event, optionalValue);
             // generally, all handlers are going to return undefined
