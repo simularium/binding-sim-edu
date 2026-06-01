@@ -121,7 +121,8 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
                 successMessage={getSuccessMessage(selectedAnswer!)}
                 failureMessage="Visit the “Learn how to derive Kd” button above, then use the Equilibrium concentration plot to answer."
                 formState={formState}
-                formID="Kd Value"
+                formID="kd-value"
+                minimizedTitle="Kd Value"
             />
         </VisibilityControl>
     );

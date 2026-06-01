@@ -101,7 +101,8 @@ const KiQuestion: React.FC<KiQuestionProps> = ({ canAnswer, ki }) => {
                 successMessage={getSuccessMessage(selectedAnswer!)}
                 failureMessage='Visit the "Learn how to derive Ki" button above, then use the Equilibrium concentration plot to answer.'
                 formState={formState}
-                formID="Ki Value"
+                formID="ki-value"
+                minimizedTitle="Ki Value"
             />
         </VisibilityControl>
     );

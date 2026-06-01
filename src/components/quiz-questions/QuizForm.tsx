@@ -19,6 +19,7 @@ interface QuizFormProps {
     successMessage: string | JSX.Element;
     failureMessage: string;
     formID: string;
+    minimizedTitle: string;
 }
 
 const QuizForm: React.FC<QuizFormProps> = ({
@@ -29,12 +30,13 @@ const QuizForm: React.FC<QuizFormProps> = ({
     formState,
     successMessage,
     failureMessage,
+    minimizedTitle,
 }) => {
     const { lastOpened, setLastOpened } = React.useContext(CenterPanelContext);
     const [show, setShow] = React.useState(false);
 
     const isFormMaximized = lastOpened === formID;
-    const minimizedTitle = `Q:${formID}`;
+    const minimizedLabel = `Q:${minimizedTitle}`;
 
     // open form on mount
     useEffect(() => {
@@ -68,7 +70,7 @@ const QuizForm: React.FC<QuizFormProps> = ({
             >
                 <div className={styles.header}>
                     <h3 className={styles.title}>
-                        {isFormMaximized ? title : minimizedTitle}
+                        {isFormMaximized ? title : minimizedLabel}
                     </h3>
                     <IconButton
                         onClick={toggleFormVisibility}
