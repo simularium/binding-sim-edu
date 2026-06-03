@@ -9,7 +9,7 @@ An educational web app for exploring molecular binding simulations, built for th
 ```
 binding-sim-edu/
 ├── CLAUDE.md                    <- this file
-├── CONTEXT_ORGANIZATION.md      <- context/state architecture docs
+├── docs/CONTEXT_ORGANIZATION.md <- context/state architecture docs
 ├── src/
 │   ├── components/              <- UI components
 │   ├── hooks/                   <- React hooks (incl. useSimulationContext.ts)
