@@ -25,8 +25,7 @@ binding-sim-edu/
 
 ## State Architecture
 
-Context is split into three providers — see `CONTEXT_ORGANIZATION.md` for full details:
-
+Context is split into three providers — see `docs/CONTEXT_ORGANIZATION.md` for full details:
 - **SimulariumUiContext** — page, module, section, viewport type, quiz, progression, completed modules
 - **SimulariumSimulationContext** — playback, controller, trajectory, concentrations, agents, handlers
 - **SimulariumAnalysisContext** — recorded concentrations, analysis reset
