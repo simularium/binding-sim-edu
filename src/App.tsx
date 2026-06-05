@@ -310,7 +310,7 @@ function App() {
             1,
         [halfFilled, uniqMeasuredConcentrations],
     );
-    const canDetermineKd = useMemo(() => {
+    const canDetermineConstant = useMemo(() => {
         return (
             hasAValueAboveKd &&
             hasAValueBelowKd &&
@@ -833,8 +833,12 @@ function App() {
                             <MainLayout
                                 centerPanel={
                                     <CenterPanel
-                                        kd={simulationData.getKd(currentModule)}
-                                        canDetermineEquilibrium={canDetermineKd}
+                                        eqConstant={simulationData.getEquilibriumConstant(
+                                            currentModule,
+                                        )}
+                                        canDetermineConstant={
+                                            canDetermineConstant
+                                        }
                                         overlay={pageContent.visualContent}
                                     />
                                 }
@@ -843,7 +847,7 @@ function App() {
                                         pageContent={{
                                             ...pageContent,
                                             nextButton:
-                                                (canDetermineKd &&
+                                                (canDetermineConstant &&
                                                     pageContent.section ===
                                                         Section.Experiment) ||
                                                 pageContent.nextButton,
@@ -920,9 +924,10 @@ function App() {
                                             timeToEquilibrium:
                                                 timeToReachEquilibrium,
                                             colors: dataColors,
-                                            kd: simulationData.getKd(
-                                                currentModule,
-                                            ),
+                                            eqConstant:
+                                                simulationData.getEquilibriumConstant(
+                                                    currentModule,
+                                                ),
                                         }}
                                         equilibriumFeedback={
                                             equilibriumFeedback

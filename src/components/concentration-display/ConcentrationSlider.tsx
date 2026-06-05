@@ -5,14 +5,16 @@ import Slider from "../shared/Slider";
 import { useSimulariumAnalysis } from "../../hooks/useSimulationContext";
 import styles from "./concentration-slider.module.css";
 import classNames from "classnames";
+import HelpPopup from "../HelpPopup";
 
 interface SliderProps {
-    min: number;
-    max: number;
+    disabled?: boolean;
     initialValue: number;
+    max: number;
+    min: number;
+    name: string;
     onChange: (name: string, value: number) => void;
     onChangeComplete?: (name: string, value: number) => void;
-    name: string;
 }
 
 const Mark: React.FC<{
@@ -53,12 +55,13 @@ const Mark: React.FC<{
 };
 
 const ConcentrationSlider: React.FC<SliderProps> = ({
-    min,
-    max,
+    disabled,
     initialValue,
+    max,
+    min,
+    name,
     onChange,
     onChangeComplete,
-    name,
 }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const disabledNumbers = [0];
@@ -75,26 +78,39 @@ const ConcentrationSlider: React.FC<SliderProps> = ({
                                 : index
                         }
                         disabledNumbers={disabledNumbers}
-                        onMouseUp={() => onChangeComplete?.(name, index)}
+                        onMouseUp={
+                            disabled
+                                ? () => {}
+                                : () => onChangeComplete?.(name, index)
+                        }
                     />
                 ),
             };
         }
         return marks;
-    }, [min, max, disabledNumbers, onChangeComplete, name, stepSize]);
+    }, [min, max, disabledNumbers, disabled, onChangeComplete, name, stepSize]);
     return (
-        <Slider
-            initialValue={initialValue}
-            className={styles.container}
-            name={name}
-            min={min}
-            max={max}
-            step={stepSize}
-            onChange={onChange}
-            onChangeComplete={onChangeComplete}
-            marks={marks}
-            disabledNumbers={disabledNumbers}
-        />
+        <HelpPopup
+            content="You need to measure a baseline value before you can add any of the inhibitor"
+            trigger="hover"
+            open={disabled ? undefined : false}
+        >
+            <div style={{ width: "100%" }}>
+                <Slider
+                    disabled={disabled}
+                    initialValue={initialValue}
+                    className={styles.container}
+                    name={name}
+                    min={min}
+                    max={max}
+                    step={stepSize}
+                    onChange={onChange}
+                    onChangeComplete={onChangeComplete}
+                    marks={marks}
+                    disabledNumbers={disabledNumbers}
+                />
+            </div>
+        </HelpPopup>
     );
 };
 
