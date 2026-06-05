@@ -83,7 +83,7 @@ const KiQuestion: React.FC<KiQuestionProps> = ({ canAnswer, ki }) => {
             <Flex gap={8} align="baseline" style={{ maxWidth: 130 }}>
                 <InputNumber
                     aria-labelledby="ki-question"
-                    value={selectedAnswer || ""}
+                    value={selectedAnswer ?? ""}
                     onChange={handleAnswerSelection}
                     placeholder="Type value..."
                 />
@@ -101,7 +101,8 @@ const KiQuestion: React.FC<KiQuestionProps> = ({ canAnswer, ki }) => {
                 successMessage={getSuccessMessage(selectedAnswer!)}
                 failureMessage='Visit the "Learn how to derive Ki" button above, then use the Equilibrium concentration plot to answer.'
                 formState={formState}
-                id="Ki Value"
+                formID="ki-value"
+                minimizedTitle="Ki Value"
             />
         </VisibilityControl>
     );

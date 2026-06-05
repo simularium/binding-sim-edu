@@ -99,7 +99,10 @@ const Concentration: React.FC<AgentProps> = ({
         } else {
             let percentage: number | undefined = undefined;
             const startingConcentration = concentration[agent];
-            if (startingConcentration !== undefined) {
+            if (
+                startingConcentration !== undefined &&
+                startingConcentration !== 0
+            ) {
                 percentage =
                     (startingConcentration / maxConcentration) *
                     widthMinusMargins;

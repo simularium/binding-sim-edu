@@ -104,7 +104,7 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
             <Flex gap={8} align="baseline" style={{ maxWidth: 130 }}>
                 <InputNumber
                     aria-labelledby="kd question"
-                    value={selectedAnswer || ""}
+                    value={selectedAnswer ?? ""}
                     onChange={handleAnswerSelection}
                     placeholder="Type value..."
                 />
@@ -121,7 +121,8 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
                 successMessage={getSuccessMessage(selectedAnswer!)}
                 failureMessage="Visit the “Learn how to derive Kd” button above, then use the Equilibrium concentration plot to answer."
                 formState={formState}
-                id="Kd Value"
+                formID="kd-value"
+                minimizedTitle="Kd Value"
             />
         </VisibilityControl>
     );
