@@ -9,7 +9,7 @@ An educational web app for exploring molecular binding simulations, built for th
 ```
 binding-sim-edu/
 ├── CLAUDE.md                    <- this file
-├── CONTEXT_ORGANIZATION.md      <- context/state architecture docs
+├── docs/CONTEXT_ORGANIZATION.md <- context/state architecture docs
 ├── src/
 │   ├── components/              <- UI components
 │   ├── hooks/                   <- React hooks (incl. useSimulationContext.ts)
@@ -25,8 +25,7 @@ binding-sim-edu/
 
 ## State Architecture
 
-Context is split into three providers — see `CONTEXT_ORGANIZATION.md` for full details:
-
+Context is split into three providers — see `docs/CONTEXT_ORGANIZATION.md` for full details:
 - **SimulariumUiContext** — page, module, section, viewport type, quiz, progression, completed modules
 - **SimulariumSimulationContext** — playback, controller, trajectory, concentrations, agents, handlers
 - **SimulariumAnalysisContext** — recorded concentrations, analysis reset
