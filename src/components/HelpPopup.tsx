@@ -4,17 +4,20 @@ import { Popover } from "antd";
 interface HelpPopupProps {
     children: React.ReactNode;
     content: React.ReactNode;
-    initialOpen: boolean;
+    open?: boolean;
+    trigger?: "hover" | "click" | "focus";
 }
 
 const HelpPopup: React.FC<HelpPopupProps> = ({
     children,
     content,
-    initialOpen,
+    open,
+    trigger,
 }) => {
     return (
         <Popover
-            open={initialOpen}
+            open={open}
+            trigger={trigger}
             content={content}
             placement="left"
             arrow={true}

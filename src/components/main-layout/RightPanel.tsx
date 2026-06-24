@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext, useState } from "react";
+import React, { ReactNode, useState } from "react";
 
 import VisibilityControl from "../shared/VisibilityControl";
 import ProductConcentrationPlot from "../plots/ProductConcentrationPlot";
@@ -9,7 +9,7 @@ import { ProductOverTimeTrace } from "../plots/types";
 import styles from "./layout.module.css";
 import { AB, AC } from "../agent-symbols";
 import ResizeContainer from "../shared/ResizeContainer";
-import { SimulariumContext } from "../../simulation/context";
+import { useSimulariumSimulation } from "../../hooks/useSimulationContext";
 import HelpPopup from "../HelpPopup";
 import InfoText from "../shared/InfoText";
 import { ProductName, UiElement } from "../../types";
@@ -25,7 +25,7 @@ interface RightPanelProps {
         productConcentrations: number[];
         timeToEquilibrium: number[];
         colors: string[];
-        kd: number;
+        eqConstant: number;
     };
     equilibriumFeedback: ReactNode | string;
     showHelpPanel: boolean;
@@ -40,7 +40,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
     currentAdjustableAgentConcentration,
     showHelpPanel,
 }) => {
-    const { productName } = useContext(SimulariumContext);
+    const { productName } = useSimulariumSimulation();
     const [width, setWidth] = useState<number>(0);
     const [height, setHeight] = useState<number>(0);
     let data = productOverTimeTraces;
@@ -71,7 +71,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
                     content={
                         "Use this plot to help determine when the reaction reaches equilibrium."
                     }
-                    initialOpen={showHelpPanel}
+                    open={showHelpPanel}
                 >
                     <ProductConcentrationPlot
                         data={data}
@@ -94,7 +94,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
                     x={equilibriumData.reactantConcentrations}
                     y={equilibriumData.productConcentrations}
                     colors={equilibriumData.colors}
-                    kd={equilibriumData.kd}
+                    eqConstant={equilibriumData.eqConstant}
                 />
                 <div className={styles.recordButton}>
                     <RecordEquilibriumButton

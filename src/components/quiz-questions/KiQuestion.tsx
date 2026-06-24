@@ -9,13 +9,14 @@ import { FormState } from "./types";
 import styles from "./popup.module.css";
 import { MICRO } from "../../constants";
 import { useSimulariumUi } from "../../hooks/useSimulationContext";
+import { AB, D } from "../agent-symbols";
 
-interface KdQuestionProps {
-    kd: number;
+interface KiQuestionProps {
     canAnswer: boolean;
+    ki: number;
 }
 
-const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
+const KiQuestion: React.FC<KiQuestionProps> = ({ canAnswer, ki }) => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [formState, setFormState] = useState(FormState.Clear);
 
@@ -26,53 +27,30 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
         setFormState(FormState.Clear);
     }, [module]);
 
-    const getSuccessMessage = (selectedAnswer: number) => {
-        if (selectedAnswer < 5) {
-            return (
-                <>
-                    {selectedAnswer} {MICRO}M is considered a{" "}
-                    <strong>
-                        low K<sub>d</sub>
-                    </strong>
-                    , which means A and B have a <strong>high affinity</strong>{" "}
-                    for one another because it takes a low amount of B to create
-                    the complex.
-                </>
-            );
-        } else {
-            return (
-                <>
-                    {selectedAnswer} {MICRO}M is considered a{" "}
-                    <strong>
-                        high K<sub>d</sub>
-                    </strong>
-                    , which means A and C have a <strong>low affinity</strong>{" "}
-                    for one another because it takes a lot of C to create the
-                    complex.
-                </>
-            );
-        }
-    };
+    const getSuccessMessage = (answer: number) => (
+        <>
+            {answer} {MICRO}M{" "}
+            <strong>
+                K<sub>i</sub>
+            </strong>{" "}
+            means that adding {answer} {MICRO}M of inhibitor <D /> reduces the
+            amount of <AB /> formed by half.
+        </>
+    );
 
     const handleAnswerSelection = (answer: valueType | null) => {
         setSelectedAnswer(Number(answer));
-
-        // instead of clicking the "try again" button they
-        // can just select a different answer, in that case
-        // we should reset the form state
         if (formState === FormState.Incorrect) {
             setFormState(FormState.Clear);
         }
     };
+
     const handleSubmit = () => {
-        const correctAnswer = kd;
+        const correctAnswer = ki;
         const tolerance = 1.5;
         if (selectedAnswer === null) {
-            // No answer selected
             return;
         }
-        // If they already submitted an incorrect answer
-        // hitting the submit button again will reset the form
         if (formState === FormState.Incorrect) {
             setSelectedAnswer(null);
             setFormState(FormState.Clear);
@@ -90,20 +68,21 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
 
     const formContent = (
         <div className={styles.inputFormContent}>
-            <p id="kd question">
-                You have now measured enough points to estimate the value of B
-                where half of the binding sites of A are occupied.
+            <p id="ki-question">
+                You have now measured enough points to estimate the
+                concentration of D where inhibition reduces binding by 50%
+                (IC&#x2085;&#x2080;).
             </p>
             <p>
                 If you're not sure, look at where the line crosses the 50% mark
                 on the <strong>Equilibrium concentration plot.</strong>
             </p>
             <b>
-                K<sub>d</sub> = ?
+                K<sub>i</sub> = ?
             </b>
             <Flex gap={8} align="baseline" style={{ maxWidth: 130 }}>
                 <InputNumber
-                    aria-labelledby="kd question"
+                    aria-labelledby="ki-question"
                     value={selectedAnswer ?? ""}
                     onChange={handleAnswerSelection}
                     placeholder="Type value..."
@@ -112,20 +91,21 @@ const KdQuestion: React.FC<KdQuestionProps> = ({ kd, canAnswer }) => {
             </Flex>
         </div>
     );
+
     return (
         <VisibilityControl conditionalRender={canAnswer} notInBonusMaterial>
             <QuizForm
-                title="What is the binding affinity?"
+                title="What is the inhibition constant?"
                 formContent={formContent}
                 onSubmit={handleSubmit}
                 successMessage={getSuccessMessage(selectedAnswer!)}
-                failureMessage="Visit the “Learn how to derive Kd” button above, then use the Equilibrium concentration plot to answer."
+                failureMessage='Visit the "Learn how to derive Ki" button above, then use the Equilibrium concentration plot to answer.'
                 formState={formState}
-                formID="kd-value"
-                minimizedTitle="Kd Value"
+                formID="ki-value"
+                minimizedTitle="Ki Value"
             />
         </VisibilityControl>
     );
 };
 
-export default KdQuestion;
+export default KiQuestion;

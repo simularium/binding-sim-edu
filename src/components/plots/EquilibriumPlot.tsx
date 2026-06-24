@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from "react";
+import React, { useMemo } from "react";
 import regression, { DataPoint } from "regression";
 import Plot from "react-plotly.js";
 
@@ -8,7 +8,10 @@ import {
     CONFIG,
     GRAY_COLOR,
 } from "./constants";
-import { SimulariumContext } from "../../simulation/context";
+import {
+    useSimulariumSimulation,
+    useSimulariumUi,
+} from "../../hooks/useSimulationContext";
 import { AGENT_A_COLOR, AGENT_AB_COLOR } from "../../constants/colors";
 import { MICRO } from "../../constants";
 
@@ -22,7 +25,7 @@ interface PlotProps {
     height: number;
     width: number;
     colors: string[];
-    kd: number;
+    eqConstant: number;
 }
 
 const EquilibriumPlot: React.FC<PlotProps> = ({
@@ -31,17 +34,17 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
     height,
     width,
     colors,
-    kd,
+    eqConstant,
 }) => {
     const {
         fixedAgentStartingConcentration,
         productName,
         getAgentColor,
         adjustableAgentName,
-        module,
-    } = useContext(SimulariumContext);
+    } = useSimulariumSimulation();
+    const { module } = useSimulariumUi();
     const xMax = Math.max(...x);
-    const xAxisMax = Math.max(kd * 2, xMax * 1.1);
+    const xAxisMax = Math.max(eqConstant * 2, xMax * 1.1);
 
     // Calculate the best fit line for the data points
     const bestFit = useMemo(() => {
@@ -63,7 +66,8 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
             // ln(halfMax / a) = b*x
             // x = ln(halfMax / a) / b
             value =
-                Math.log(halfMax / fitResult.equation[0]) / fitResult.equation[1];
+                Math.log(halfMax / fitResult.equation[0]) /
+                fitResult.equation[1];
         } else {
             fitResult = regression.logarithmic(regressionData);
 
@@ -226,7 +230,7 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
                 color: getAgentColor(adjustableAgentName),
             },
             tickmode: bestFitVisible ? ("array" as const) : ("auto" as const),
-            tickvals: [...xAxisTicks, bestFit.value],
+            tickvals: [...xAxisTicks, Number(bestFit.value.toFixed(1))],
         },
         yaxis: {
             ...AXIS_SETTINGS,

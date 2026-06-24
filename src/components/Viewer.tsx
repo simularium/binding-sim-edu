@@ -1,11 +1,4 @@
-import {
-    ReactNode,
-    useCallback,
-    useContext,
-    useEffect,
-    useRef,
-    useState,
-} from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import SimulariumViewer, {
     RenderStyle,
@@ -13,7 +6,10 @@ import SimulariumViewer, {
 } from "@aics/simularium-viewer";
 import "@aics/simularium-viewer/style/style.css";
 
-import { SimulariumContext } from "../simulation/context";
+import {
+    useSimulariumSimulation,
+    useSimulariumUi,
+} from "../hooks/useSimulationContext";
 import styles from "./viewer.module.css";
 import useWindowResize from "../hooks/useWindowResize";
 import { LIVE_SIMULATION_NAME } from "../constants";
@@ -43,8 +39,8 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         simulariumController,
         handleTrajectoryChange,
         trajectoryName,
-        page,
-    } = useContext(SimulariumContext);
+    } = useSimulariumSimulation();
+    const { page } = useSimulariumUi();
 
     const setViewportToContainerSize = useCallback(() => {
         if (container.current) {
