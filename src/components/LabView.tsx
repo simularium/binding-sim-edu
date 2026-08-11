@@ -17,7 +17,7 @@ const LabView: React.FC = () => {
         getAgentColor,
         productName,
     } = useSimulariumSimulation();
-    const { page, module, setViewportType } = useSimulariumUi();
+    const { module, page, setViewportType } = useSimulariumUi();
     const color = getAgentColor(productName);
     const colorGradient = useMemo(() => {
         const rainbow = new Rainbow();
