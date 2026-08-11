@@ -8,7 +8,7 @@ const fetch3DTrajectory = async (
     url: string,
     simulariumController: SimulariumController,
     setTrajectoryPlotData: (plotData: ScatterTrace[]) => void
-) => {
+): Promise<boolean> => {
     try {
         const response = await fetch(url);
         if (response.ok) {
@@ -22,11 +22,13 @@ const fetch3DTrajectory = async (
             );
             const plotData = simulariumFile.getPlotData();
             setTrajectoryPlotData(plotData[0].data as ScatterTrace[]); // we're not using histograms
+            return true;
         } else {
             throw new Error(`Failed to fetch - ${response.status}`);
         }
     } catch (error) {
         console.log(error);
+        return false;
     }
 };
 
