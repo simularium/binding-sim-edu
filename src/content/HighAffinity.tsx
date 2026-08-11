@@ -154,8 +154,8 @@ export const highAffinityContentArray: PageContent[] = [
         ),
         callToAction: (
             <>
-                When you're done observing the color in the Lab view,{" "}
-                <strong>pause</strong> the simulation to move on.
+                When you're done observing the color changes to the solution in
+                the cuvette, <strong>pause</strong> the simulation to move on.
             </>
         ),
 

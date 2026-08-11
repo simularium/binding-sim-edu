@@ -75,12 +75,13 @@ export const IconButton: React.FC<IconButtonProps> = (props) => {
 };
 
 interface OverlayButtonProps extends React.ComponentProps<typeof AntdButton> {
+    active?: boolean;
     children?: React.ReactNode;
     style?: React.CSSProperties;
 }
 
 export const OverlayButton: React.FC<OverlayButtonProps> = (props) => {
-    const { style } = props;
+    const { active, style } = props;
     let buttonStyle: React.CSSProperties = {
         position: "absolute",
         zIndex: zStacking.viewerOverlay,
@@ -89,5 +90,12 @@ export const OverlayButton: React.FC<OverlayButtonProps> = (props) => {
     if (style) {
         buttonStyle = { ...buttonStyle, ...style };
     }
-    return <TertiaryButton size="large" {...props} style={buttonStyle} />;
+    return (
+        <TertiaryButton
+            size="large"
+            {...props}
+            className={classNames(props.className, { [styles.active]: active })}
+            style={buttonStyle}
+        />
+    );
 };
