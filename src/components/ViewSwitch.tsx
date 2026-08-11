@@ -47,7 +47,10 @@ const ViewSwitch: React.FC = () => {
 
     return (
         <div style={{ position: "relative", height: "100%" }}>
-            <VisibilityControl notInBonusMaterial>
+            <VisibilityControl
+                notInBonusMaterial
+                excludedPages={{ [Module.A_B_AB]: [2] }}
+            >
                 {showLabToggleButton && (
                     <ProgressionControl elementId={VIEW_SWITCH_ID}>
                         <OverlayButton
