@@ -63,10 +63,7 @@ const ViewSwitch: React.FC = () => {
                                 <LabIcon />
                             )
                         }
-                    >
-                        {viewportType === ViewType.Lab ? "Simulation" : "Lab"}{" "}
-                        view
-                    </OverlayButton>
+                    />
                 </ProgressionControl>
             </VisibilityControl>
             <PlayButton />

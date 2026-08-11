@@ -29,7 +29,7 @@
 
 .inset {
     position: absolute;
-    top: 16px;
+    top: 64px;
     right: 16px;
     width: 210px;
     border: 1px solid var(--app-border-color);
