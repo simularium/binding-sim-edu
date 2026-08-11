@@ -27,7 +27,16 @@ const LabView: React.FC = () => {
     const position = (currentProductionConcentration / maxConcentration) * 100;
     const isIntroPage = page === 1 && module === Module.A_B_AB;
 
-    if (!isIntroPage) {
+    if (isIntroPage) {
+        // shows the full screen illustrated cuvette on the first page of the first module
+        return (
+            <div className={classNames(styles.container, styles.top)}>
+                <div className={styles.cuvette}>
+                    <Cuvette color={colorGradient.colorAt(position)} />
+                </div>
+            </div>
+        );
+    } else {
         return (
             <div className={styles.inset}>
                 <div className={styles.insetLabel}>
@@ -52,14 +61,6 @@ const LabView: React.FC = () => {
             </div>
         );
     }
-
-    return (
-        <div className={classNames(styles.container, styles.top)}>
-            <div className={styles.cuvette}>
-                <Cuvette color={colorGradient.colorAt(position)} />
-            </div>
-        </div>
-    );
 };
 
 export default LabView;

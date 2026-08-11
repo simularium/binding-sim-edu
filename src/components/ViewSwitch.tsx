@@ -50,27 +50,24 @@ const ViewSwitch: React.FC = () => {
             <VisibilityControl
                 notInBonusMaterial
                 excludedPages={{ [Module.A_B_AB]: [2] }}
+                conditionalRender={showLabToggleButton}
             >
-                {showLabToggleButton && (
-                    <ProgressionControl elementId={VIEW_SWITCH_ID}>
-                        <OverlayButton
-                            onClick={setViewportType}
-                            style={buttonStyle}
-                            icon={
-                                viewportType === ViewType.Lab ? (
-                                    <Molecules />
-                                ) : (
-                                    <LabIcon />
-                                )
-                            }
-                        >
-                            {viewportType === ViewType.Lab
-                                ? "Molecular"
-                                : "Lab"}{" "}
-                            view
-                        </OverlayButton>
-                    </ProgressionControl>
-                )}
+                <ProgressionControl elementId={VIEW_SWITCH_ID}>
+                    <OverlayButton
+                        onClick={setViewportType}
+                        style={buttonStyle}
+                        icon={
+                            viewportType === ViewType.Lab ? (
+                                <Molecules />
+                            ) : (
+                                <LabIcon />
+                            )
+                        }
+                    >
+                        {viewportType === ViewType.Lab ? "Simulation" : "Lab"}{" "}
+                        view
+                    </OverlayButton>
+                </ProgressionControl>
             </VisibilityControl>
             <PlayButton />
             {viewportType === ViewType.Lab ? <LabView /> : null}
