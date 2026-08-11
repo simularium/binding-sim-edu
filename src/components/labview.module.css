@@ -29,12 +29,13 @@
 
 .inset {
     position: absolute;
-    top: 64px;
+    top: 58px;
     right: 16px;
     width: 210px;
     border: 1px solid var(--app-border-color);
     overflow: hidden;
     z-index: var(--bottom);
+    border-radius: 4px;
 }
 
 /* Blurred lab background image behind inset content */
