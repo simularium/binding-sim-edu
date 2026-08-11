@@ -10,7 +10,7 @@ interface ScaleBarProps {
     className?: string;
 }
 
-const ScaleBar: React.FC<ScaleBarProps> = ({ productColor, className }) => {
+const ScaleBar: React.FC<ScaleBarProps> = ({ className, productColor }) => {
     const { maxConcentration } = useSimulariumSimulation();
     const labelArray = [];
     const interval = maxConcentration / 5;
