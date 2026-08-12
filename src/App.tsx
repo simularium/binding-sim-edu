@@ -12,6 +12,7 @@ import {
     TrajectoryFileInfo,
 } from "@aics/simularium-viewer";
 import { CheckCircleOutlined } from "@ant-design/icons";
+import { Modal } from "antd";
 
 import "./App.css";
 import BindingSimulator from "./simulation/BindingSimulator2D";
@@ -198,7 +199,55 @@ function App() {
 
     const sectionType = content[currentModule][page].section;
 
-    const clientSimulator = useMemo(() => {
+    // Tracks the longestAxis value the simulator was actually built with, so
+    // resize events can be compared against it without that comparison being
+    // a reactive dependency. Growing beyond this value means the simulation
+    // box needs more agents to keep the same concentration; shrinking below
+    // it just means the existing box renders smaller, which needs no
+    // simulator change.
+    const lastBuiltLongestAxis = useRef<number | null>(null);
+    const hasWarnedAboutGrowResize = useRef(false);
+    const [simulatorBoxLongestAxis, setSimulatorBoxLongestAxis] = useState(
+        () => Math.max(viewportSize.width, viewportSize.height),
+    );
+
+    useEffect(() => {
+        const longestAxis = Math.max(viewportSize.width, viewportSize.height);
+        if (
+            lastBuiltLongestAxis.current !== null &&
+            longestAxis <= lastBuiltLongestAxis.current
+        ) {
+            // shrinking (or no meaningful change): keep the simulator's
+            // existing coordinate space, don't recreate it or wipe data
+            return;
+        }
+        // The viewer reports its real container size a moment after mount
+        // (it starts from DEFAULT_VIEWPORT_SIZE as a placeholder before it
+        // can measure the DOM). That first jump to the real size is layout
+        // settling, not a student resizing their browser, so it shouldn't
+        // count as a "grow" that wipes data or warns.
+        const isInitialSizeSettling =
+            lastBuiltLongestAxis.current ===
+            Math.max(DEFAULT_VIEWPORT_SIZE.width, DEFAULT_VIEWPORT_SIZE.height);
+        if (lastBuiltLongestAxis.current !== null && !isInitialSizeSettling) {
+            // growing after a real build: warn once per session before
+            // the recreation below wipes any recorded equilibrium data
+            if (!hasWarnedAboutGrowResize.current) {
+                hasWarnedAboutGrowResize.current = true;
+                Modal.warning({
+                    title: "Heads up!",
+                    content:
+                        "Making the window bigger resets your experiment data, since the simulation needs to add more molecules to fill the extra space. Try to avoid resizing while you're in the middle of collecting data.",
+                });
+            }
+            clearAllAnalysisState();
+        }
+        setSimulatorBoxLongestAxis(longestAxis);
+    }, [viewportSize.width, viewportSize.height, clearAllAnalysisState]);
+
+    // Resets the inputs and any recorded analysis whenever the actual
+    // experiment changes (module or section) — independent of window size.
+    useEffect(() => {
         const activeAgents = simulationData.getActiveAgents(currentModule);
         setInputConcentration(
             simulationData.getInitialConcentrations(
@@ -208,6 +257,10 @@ function App() {
             ),
         );
         clearAllAnalysisState();
+    }, [simulationData, currentModule, sectionType, clearAllAnalysisState]);
+
+    const clientSimulator = useMemo(() => {
+        const activeAgents = simulationData.getActiveAgents(currentModule);
         const trajectory = simulationData.createAgentsFromConcentrations(
             activeAgents,
             currentModule,
@@ -216,24 +269,17 @@ function App() {
         if (!trajectory) {
             return null;
         }
-        const longestAxis = Math.max(viewportSize.width, viewportSize.height);
+        lastBuiltLongestAxis.current = simulatorBoxLongestAxis;
         const startMixed = sectionType !== Section.Introduction;
         if (process.env.NODE_ENV !== "production") {
             console.log("NEW BINDING SIMULATOR");
         }
         return new BindingSimulator(
             trajectory,
-            longestAxis / 3,
+            simulatorBoxLongestAxis / 3,
             startMixed ? InitialCondition.RANDOM : InitialCondition.SORTED,
         );
-    }, [
-        simulationData,
-        currentModule,
-        clearAllAnalysisState,
-        viewportSize.width,
-        viewportSize.height,
-        sectionType,
-    ]);
+    }, [simulationData, currentModule, sectionType, simulatorBoxLongestAxis]);
 
     const preComputedPlotDataManager = useMemo(() => {
         if (!preComputedTrajectoryPlotData) {
