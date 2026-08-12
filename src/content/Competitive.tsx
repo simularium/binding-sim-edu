@@ -1,4 +1,5 @@
 import { A, AB, AD, B, D } from "../components/agent-symbols";
+import KiDerivation from "../components/modals/KiDerivation";
 import StartExperiment from "../components/StartExperiment";
 import {
     PLAY_BUTTON_ID,
@@ -180,6 +181,10 @@ export const competitiveArray: PageContent[] = [
                 where the amount of <AB /> complex is reduced by half.
             </>
         ),
+        modal: {
+            title: "Learn how to derive Ki",
+            content: <KiDerivation />,
+        },
         moreInfo: (
             <>
                 IC<sub>50</sub> = [<D />] (at equilibrium when [<AB />] is half
