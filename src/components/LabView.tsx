@@ -8,7 +8,6 @@ import Cuvette from "./icons/Cuvette";
 import styles from "./labview.module.css";
 import classNames from "classnames";
 import ScaleBar from "./ScaleBar";
-import VisibilityControl from "./shared/VisibilityControl";
 import { Module } from "../types";
 
 const LabView: React.FC = () => {
@@ -18,7 +17,7 @@ const LabView: React.FC = () => {
         getAgentColor,
         productName,
     } = useSimulariumSimulation();
-    const { page, module } = useSimulariumUi();
+    const { module, page, setViewportType } = useSimulariumUi();
     const color = getAgentColor(productName);
     const colorGradient = useMemo(() => {
         const rainbow = new Rainbow();
@@ -26,21 +25,42 @@ const LabView: React.FC = () => {
         return rainbow;
     }, [color]);
     const position = (currentProductionConcentration / maxConcentration) * 100;
-    return (
-        <div
-            className={classNames([
-                styles.container,
-                { [styles.top]: page === 1 && module === Module.A_B_AB },
-            ])}
-        >
-            <VisibilityControl excludedPages={{ [Module.A_B_AB]: [1] }}>
-                <ScaleBar productColor={color} />
-            </VisibilityControl>
-            <div className={styles.cuvette}>
-                <Cuvette color={colorGradient.colorAt(position)} />
+    const isIntroPage = page === 1 && module === Module.A_B_AB;
+
+    if (isIntroPage) {
+        // shows the full screen illustrated cuvette on the first page of the first module
+        return (
+            <div className={classNames(styles.container, styles.top)}>
+                <div className={styles.cuvette}>
+                    <Cuvette color={colorGradient.colorAt(position)} />
+                </div>
             </div>
-        </div>
-    );
+        );
+    } else {
+        return (
+            <div className={styles.inset}>
+                <div className={styles.insetLabel}>
+                    <span>In the wet lab</span>
+                    <button
+                        className={styles.insetClose}
+                        onClick={setViewportType}
+                        aria-label="Close lab view"
+                    >
+                        ×
+                    </button>
+                </div>
+                <div className={styles.insetBody}>
+                    <ScaleBar
+                        productColor={color}
+                        className={styles.scaleBarInset}
+                    />
+                    <div className={styles.insetCuvette}>
+                        <Cuvette color={colorGradient.colorAt(position)} />
+                    </div>
+                </div>
+            </div>
+        );
+    }
 };
 
 export default LabView;

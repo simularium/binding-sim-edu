@@ -23,6 +23,7 @@ const ViewSwitch: React.FC = () => {
 
     const isFirstPageOfFirstModule =
         page === FIRST_PAGE[module] + 1 && module === Module.A_B_AB;
+    const isLabViewOpen = viewportType === ViewType.Lab;
 
     let buttonStyle: React.CSSProperties = {
         top: 16,
@@ -44,26 +45,32 @@ const ViewSwitch: React.FC = () => {
 
     return (
         <div style={{ position: "relative", height: "100%" }}>
-            <VisibilityControl notInBonusMaterial>
+            <VisibilityControl
+                notInBonusMaterial
+                excludedPages={{ [Module.A_B_AB]: [2] }}
+            >
                 <ProgressionControl elementId={VIEW_SWITCH_ID}>
                     <OverlayButton
+                        active={isLabViewOpen && !isFirstPageOfFirstModule}
                         onClick={setViewportType}
                         style={buttonStyle}
                         icon={
-                            viewportType === ViewType.Lab ? (
+                            isFirstPageOfFirstModule && isLabViewOpen ? (
                                 <Molecules />
                             ) : (
                                 <LabIcon />
                             )
                         }
                     >
-                        {viewportType === ViewType.Lab ? "Molecular" : "Lab"}{" "}
-                        view
+                        {/* on the first page we show text, but on other pages we just show the icon */}
+                        {isFirstPageOfFirstModule
+                            ? `${isLabViewOpen ? "Simulation" : "Lab"} view`
+                            : null}
                     </OverlayButton>
                 </ProgressionControl>
             </VisibilityControl>
             <PlayButton />
-            {viewportType === ViewType.Lab ? <LabView /> : null}
+            {isLabViewOpen ? <LabView /> : null}
             <Viewer
                 isPlaying={isPlaying}
                 setIsPlaying={setIsPlaying}

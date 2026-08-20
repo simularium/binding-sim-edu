@@ -1,4 +1,5 @@
 import React from "react";
+import classNames from "classnames";
 
 import styles from "./scalebar.module.css";
 import { MICRO } from "../constants";
@@ -6,9 +7,10 @@ import { useSimulariumSimulation } from "../hooks/useSimulationContext";
 
 interface ScaleBarProps {
     productColor: string;
+    className?: string;
 }
 
-const ScaleBar: React.FC<ScaleBarProps> = ({ productColor }) => {
+const ScaleBar: React.FC<ScaleBarProps> = ({ className, productColor }) => {
     const { maxConcentration } = useSimulariumSimulation();
     const labelArray = [];
     const interval = maxConcentration / 5;
@@ -17,7 +19,7 @@ const ScaleBar: React.FC<ScaleBarProps> = ({ productColor }) => {
     }
     return (
         <div
-            className={styles.container}
+            className={classNames(styles.container, className)}
             role="img"
             aria-label={`Color key for the cuvette. The lowest concentration (white) is 0 ${MICRO}M and the highest concentration (yellow) is ${maxConcentration} ${MICRO}M.`}
         >
@@ -29,8 +31,6 @@ const ScaleBar: React.FC<ScaleBarProps> = ({ productColor }) => {
                 ))}
             </div>
             <div
-                // inlined this style because the agent color is in javascript
-                // and I want to avoid defining it in both places
                 style={{
                     background: `linear-gradient(0deg, #ffffff 0%, ${productColor} 100%)`,
                 }}

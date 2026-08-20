@@ -37,6 +37,17 @@
     transition: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
+/* Filled-in state for a toggle-style overlay button, e.g. to show it's currently active/open */
+.tertiary.active {
+    background: var(--light-purple);
+    border-color: var(--light-purple);
+    color: var(--background-color);
+}
+
+.tertiary.active :global(.custom-icon) {
+    color: var(--background-color);
+}
+
 .icon {
     width: 12px !important;
     min-width: 12px !important;
