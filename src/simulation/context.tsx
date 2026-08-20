@@ -10,7 +10,14 @@ import {
     NANO,
     ProgressionElement,
 } from "../constants";
-import { AgentName, Module, ProductName, Section, ViewType } from "../types";
+import {
+    AgentName,
+    Module,
+    ProductName,
+    Section,
+    TrajectoryStatus,
+    ViewType,
+} from "../types";
 
 export interface SimulariumUiContextType {
     addCompletedModule: (value: Module) => void;
@@ -40,11 +47,13 @@ export interface SimulariumSimulationContextType {
     maxConcentration: number;
     productName: ProductName;
     setIsPlaying: (value: boolean) => void;
+    setTrajectoryStatus: (value: TrajectoryStatus) => void;
     setViewportSize: (value: { width: number; height: number }) => void;
     simulariumController: SimulariumController | null;
     timeFactor: number;
     timeUnit: string;
     trajectoryName: string;
+    trajectoryStatus: TrajectoryStatus;
     viewportSize: { width: number; height: number };
 }
 
@@ -82,11 +91,13 @@ export const SimulariumSimulationContext =
         maxConcentration: 10,
         productName: ProductName.AB,
         setIsPlaying: () => {},
+        setTrajectoryStatus: () => {},
         setViewportSize: () => {},
         simulariumController: null,
         timeFactor: 30,
         timeUnit: NANO,
         trajectoryName: LIVE_SIMULATION_NAME,
+        trajectoryStatus: TrajectoryStatus.INITIAL,
         viewportSize: DEFAULT_VIEWPORT_SIZE,
     });
 

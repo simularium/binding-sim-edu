@@ -5,14 +5,17 @@ import SimulariumViewer, {
     TimeData,
 } from "@aics/simularium-viewer";
 import "@aics/simularium-viewer/style/style.css";
+import { Spin } from "antd";
 
+import { LIVE_SIMULATION_NAME } from "../constants";
 import {
     useSimulariumSimulation,
     useSimulariumUi,
 } from "../hooks/useSimulationContext";
-import styles from "./viewer.module.css";
 import useWindowResize from "../hooks/useWindowResize";
-import { LIVE_SIMULATION_NAME } from "../constants";
+import { TrajectoryStatus } from "../types";
+import { SecondaryButton } from "./shared/ButtonLibrary";
+import styles from "./viewer.module.css";
 
 interface ViewerProps {
     handleTimeChange: (timeData: TimeData) => void;
@@ -34,11 +37,13 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
     });
     const container = useRef<HTMLDivElement>(null);
     const {
-        viewportSize,
+        handleTrajectoryChange,
+        setTrajectoryStatus,
         setViewportSize,
         simulariumController,
-        handleTrajectoryChange,
         trajectoryName,
+        trajectoryStatus,
+        viewportSize,
     } = useSimulariumSimulation();
     const { page } = useSimulariumUi();
 
@@ -122,7 +127,27 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
         </div>
     );
 
-    const showHintOverlay = !userHasInteracted && is3DTrajectory;
+    const loadingOverlay = (
+        <div className={styles.loadingOverlay}>
+            <Spin size="large" />
+        </div>
+    );
+
+    const errorOverlay = (
+        <div className={styles.errorOverlay}>
+            <p>Failed to load this content.</p>
+            <SecondaryButton
+                onClick={() => setTrajectoryStatus(TrajectoryStatus.INITIAL)}
+            >
+                Retry
+            </SecondaryButton>
+        </div>
+    );
+
+    const isLoading = trajectoryStatus === TrajectoryStatus.LOADING;
+    const isError = trajectoryStatus === TrajectoryStatus.ERROR;
+    const showHintOverlay =
+        !userHasInteracted && is3DTrajectory && !isLoading && !isError;
     return (
         <div
             className={classNames([styles.container], {
@@ -132,26 +157,30 @@ export default function Viewer({ handleTimeChange }: ViewerProps): ReactNode {
             ref={container}
         >
             {showHintOverlay && hintOverlay}
-            <SimulariumViewer
-                lockedCamera={trajectoryName === LIVE_SIMULATION_NAME}
-                disableCache={trajectoryName === LIVE_SIMULATION_NAME}
-                renderStyle={RenderStyle.WEBGL2_PREFERRED}
-                height={viewportSize.height}
-                width={viewportSize.width}
-                loggerLevel=""
-                onTimeChange={handleTimeChange}
-                simulariumController={simulariumController}
-                onJsonDataArrived={() => {}}
-                showCameraControls={false}
-                onTrajectoryFileInfoChanged={handleTrajectoryChange}
-                selectionStateInfo={selectionStateInfo}
-                onUIDisplayDataChanged={() => {}}
-                loadInitialData={true}
-                showPaths={true}
-                onError={console.log}
-                backgroundColor={[0, 0, 0]}
-                onRecordedMovie={() => {}}
-            />
+            {isLoading && loadingOverlay}
+            {isError && errorOverlay}
+            {!isError && (
+                <SimulariumViewer
+                    lockedCamera={trajectoryName === LIVE_SIMULATION_NAME}
+                    disableCache={trajectoryName === LIVE_SIMULATION_NAME}
+                    renderStyle={RenderStyle.WEBGL2_PREFERRED}
+                    height={viewportSize.height}
+                    width={viewportSize.width}
+                    loggerLevel=""
+                    onTimeChange={handleTimeChange}
+                    simulariumController={simulariumController}
+                    onJsonDataArrived={() => {}}
+                    showCameraControls={false}
+                    onTrajectoryFileInfoChanged={handleTrajectoryChange}
+                    selectionStateInfo={selectionStateInfo}
+                    onUIDisplayDataChanged={() => {}}
+                    loadInitialData={true}
+                    showPaths={true}
+                    onError={console.log}
+                    backgroundColor={[0, 0, 0]}
+                    onRecordedMovie={() => {}}
+                />
+            )}
         </div>
     );
 }

@@ -502,12 +502,16 @@ function App() {
                     setTrajectoryStatus(TrajectoryStatus.LOADING);
                     clearAllAnalysisState();
 
-                    await fetch3DTrajectory(
+                    const didSucceed = await fetch3DTrajectory(
                         url,
                         simulariumController,
                         setPreComputedTrajectoryPlotData,
                     );
-                    setTrajectoryStatus(TrajectoryStatus.LOADED);
+                    setTrajectoryStatus(
+                        didSucceed
+                            ? TrajectoryStatus.LOADED
+                            : TrajectoryStatus.ERROR,
+                    );
                 };
                 changeTrajectory();
             }
@@ -784,11 +788,13 @@ function App() {
             maxConcentration: simulationData.getMaxConcentration(currentModule),
             productName,
             setIsPlaying,
+            setTrajectoryStatus,
             setViewportSize,
             simulariumController,
             timeFactor,
             timeUnit: simulationData.timeUnit,
             trajectoryName,
+            trajectoryStatus,
             viewportSize,
         }),
         [
@@ -808,6 +814,7 @@ function App() {
             simulationData,
             timeFactor,
             trajectoryName,
+            trajectoryStatus,
             viewportSize,
         ],
     );
