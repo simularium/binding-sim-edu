@@ -39,13 +39,13 @@
 
 /* Filled-in state for a toggle-style overlay button, e.g. to show it's currently active/open */
 .tertiary.active {
-    background: var(--light-purple) !important;
-    border-color: var(--light-purple) !important;
-    color: var(--background-color) !important;
+    background: var(--light-purple);
+    border-color: var(--light-purple);
+    color: var(--background-color);
 }
 
 .tertiary.active :global(.custom-icon) {
-    color: var(--background-color) !important;
+    color: var(--background-color);
 }
 
 .icon {
