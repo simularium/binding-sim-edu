@@ -1,5 +1,6 @@
 import { A, AB, AD, B, D } from "../components/agent-symbols";
 import StartExperiment from "../components/StartExperiment";
+import Definition from "../components/shared/Definition";
 import {
     PLAY_BUTTON_ID,
     RECORD_BUTTON_ID,
@@ -200,9 +201,33 @@ export const competitiveArray: PageContent[] = [
         content:
             "Congratulations, you’ve completed the Competitive Binding experiment!",
         backButton: true,
-        // nextButton: true,
+        nextButton: true,
         nextButtonText: "View examples",
         section: Section.BonusContent,
         layout: LayoutType.FullScreenOverlay,
+    },
+    {
+        title: "Real-world example: Hemoglobin, oxygen, and carbon monoxide",
+        content: (
+            <>
+                In this experiment, <D /> competed with <B /> for the same
+                binding site on <A />, which is exactly what happens with{" "}
+                <Definition term="hemoglobin" /> in your blood. Hemoglobin
+                normally binds <Definition term="oxygen" /> reversibly and
+                carries it to your body's tissues. But{" "}
+                <Definition term="carbon monoxide" /> binds that very same
+                site on hemoglobin far more tightly than oxygen does, so even
+                a small amount of carbon monoxide can occupy enough binding
+                sites to significantly reduce hemoglobin's ability to carry
+                oxygen - the same{" "}
+                <Definition term="competitive inhibition" /> you just
+                measured with <D /> and <AB />.
+            </>
+        ),
+        nextButton: true,
+        section: Section.BonusContent,
+        layout: LayoutType.PreComputedSimulation,
+        trajectoryUrl:
+            "https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/binding-affinity_hemoglobin-co.simularium",
     },
 ];
