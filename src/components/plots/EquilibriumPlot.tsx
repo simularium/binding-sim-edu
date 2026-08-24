@@ -43,11 +43,17 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
         adjustableAgentName,
     } = useSimulariumSimulation();
     const { module } = useSimulariumUi();
-    const xMax = Math.max(...x);
+    const xMax = x.length ? Math.max(...x) : 0;
     const xAxisMax = Math.max(eqConstant * 2, xMax * 1.1);
 
     // Calculate the best fit line for the data points
     const bestFit = useMemo(() => {
+        // the best fit line is only shown once there are 3 or more points
+        // (see bestFitVisible below); with fewer points the regression
+        // library produces NaN/garbage, so skip the computation entirely
+        if (x.length < 3) {
+            return { x: [], y: [], value: NaN };
+        }
         const regressionData: DataPoint[] = x.map((xVal, index) => [
             xVal,
             y[index],
@@ -230,7 +236,9 @@ const EquilibriumPlot: React.FC<PlotProps> = ({
                 color: getAgentColor(adjustableAgentName),
             },
             tickmode: bestFitVisible ? ("array" as const) : ("auto" as const),
-            tickvals: [...xAxisTicks, Number(bestFit.value.toFixed(1))],
+            tickvals: bestFitVisible
+                ? [...xAxisTicks, Number(bestFit.value.toFixed(1))]
+                : xAxisTicks,
         },
         yaxis: {
             ...AXIS_SETTINGS,
